@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Application;
+﻿using EasyOC.Core.Dynamic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,9 +21,8 @@ namespace EasyOC.Core
         }
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAbpLazyServiceProvider, AbpLazyServiceProvider>();
-            services.AddAutoMapper(GetType().Assembly);
-            AppServcieBase.ServiceProvider = services.BuildServiceProvider();
+            services.AddScoped<IAbpLazyServiceProvider>(sp=> new AbpLazyServiceProvider(sp));
+            services.AddAutoMapper(GetType().Assembly); 
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
@@ -53,7 +52,7 @@ namespace EasyOC.Core
             {
                 // 指定全局默认的 api 前缀
                 options.DefaultApiPrefix = "api";
-                //options.ActionRouteFactory = new ServiceActionRouteFactory();
+                options.ActionRouteFactory = new ServiceActionRouteFactory();
 
             });
         }

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
@@ -8,13 +8,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="DependencyInjection\**" />
 	  <Compile Remove="Workflow\**" />
+	  <EmbeddedResource Remove="DependencyInjection\**" />
 	  <EmbeddedResource Remove="Workflow\**" />
+	  <None Remove="DependencyInjection\**" />
 	  <None Remove="Workflow\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Remove="AutofacModule.cs" />
+	  <Compile Remove="Extensions\Check.cs" />
+	  <Compile Remove="Extensions\DictionaryExtensions.cs" />
+	  <Compile Remove="Extensions\EnumerableExtensions.cs" />
+	  <Compile Remove="Extensions\StringExtensions.cs" />
 	  <Compile Remove="RunAs.cs" />
 	</ItemGroup>
 
@@ -26,7 +33,7 @@
 	<ItemGroup>
 		<!--<PackageReference Include="Autofac" Version="6.3.0" />-->
 		<!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
-		<PackageReference Include="Panda.DynamicWebApi" />
+		<!--<PackageReference Include="Panda.DynamicWebApi" />-->
 		<!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="Volo.Abp.Core" />
@@ -44,6 +51,9 @@
 		<PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" />
 
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj" />
 	</ItemGroup>
 
 </Project>

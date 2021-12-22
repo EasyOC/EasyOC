@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -20,24 +21,24 @@ namespace EasyOC.Core.Application
     [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
-        public static IServiceProvider ServiceProvider { get; set; }
+        //protected IServiceProvider ServiceProvider { get; set; }
+
+        public AppServcieBase(IServiceProvider serviceProvider)
+        { 
+            LazyServiceProvider = serviceProvider.GetService<IAbpLazyServiceProvider>();
+        }
+
         protected IAbpLazyServiceProvider LazyServiceProvider
         {
             get; set;
-        }
-        public AppServcieBase()
-        {
-            LazyServiceProvider = new AbpLazyServiceProvider(ServiceProvider);
-
-        }
+        } 
 
 
         #region Logger
         private ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetRequiredService<ILoggerFactory>();
         protected ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
         #endregion
-
-        //protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
+         
         protected INotifier Notifier => LazyServiceProvider.LazyGetRequiredService<INotifier>();
 
 
