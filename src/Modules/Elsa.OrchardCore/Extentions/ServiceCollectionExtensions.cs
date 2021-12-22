@@ -8,12 +8,7 @@ using Elsa.Persistence.YesSql.Stores;
 using Elsa.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YesSql;
-using YesSql.Indexes;
 
 namespace Elsa.OrchardCore
 {
@@ -24,7 +19,7 @@ namespace Elsa.OrchardCore
 
             elsa.Services.AddScoped<YesSqlWorkflowDefinitionStore>().AddScoped<YesSqlWorkflowInstanceStore>().AddScoped<YesSqlWorkflowExecutionLogStore>()
                 .AddScoped<YesSqlBookmarkStore>()
-                //.AddSingleton((IServiceProvider sp) => CreateStore(sp))
+                //.AddSingleton((IServiceProvider sp) => CreateStore(sp)) //Use the already existing OrchardCore Store
                 .AddSingleton<ISessionProvider, SessionProvider>()
                 .AddScoped(new Func<IServiceProvider, ISession>(CreateSession))
                 .AddScoped<IDataMigrationManager, DataMigrationManager>()

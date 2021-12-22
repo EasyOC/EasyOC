@@ -20,7 +20,7 @@ namespace Elsa.OrchardCore
 
             services
            .AddElsaCore(elsa => elsa
-               .UseOrchardCorePersistence()
+               .UseOrchardCorePersistence()//Use the already existing OrchardCore Store
                .AddConsoleActivities()
                .AddHttpActivities(options =>
                {
