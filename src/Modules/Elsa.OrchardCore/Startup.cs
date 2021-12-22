@@ -33,18 +33,18 @@ namespace Elsa.OrchardCore
             .AddLiquidExpressionEvaluator();
 
             // Elsa API endpoints.
-            services.AddElsaApiEndpoints();
-            services.AddVersionedApiExplorer(delegate (ApiExplorerOptions o)
-            {
-                o.GroupNameFormat = "'v'VVV";
-                o.SubstituteApiVersionInUrl = true;
-            });
-            services.AddApiVersioning(delegate (ApiVersioningOptions options)
-            {
-                options.ReportApiVersions = true;
-                options.DefaultApiVersion = ApiVersion.Default;
-                options.AssumeDefaultVersionWhenUnspecified = true;
-            });
+            //services.AddElsaApiEndpoints();
+            //services.AddVersionedApiExplorer(delegate (ApiExplorerOptions o)
+            //{
+            //    o.GroupNameFormat = "'v'VVV";
+            //    o.SubstituteApiVersionInUrl = true;
+            //});
+            //services.AddApiVersioning(delegate (ApiVersioningOptions options)
+            //{
+            //    options.ReportApiVersions = true;
+            //    options.DefaultApiVersion = ApiVersion.Default;
+            //    options.AssumeDefaultVersionWhenUnspecified = true;
+            //});
             services.AddSingleton<ConnectionConverter>();
             services.AddSingleton<ActivityBlueprintConverter>();
             services.AddScoped<IWorkflowBlueprintMapper, WorkflowBlueprintMapper>();
