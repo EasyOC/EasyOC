@@ -1,0 +1,43 @@
+{% assign backgroundImage = Model.ContentItem.Content.VAppBar.BackgroundImage.Paths.first  %}
+{% assign color = Model.ContentItem.Content.VAppBar.Color.Text %}
+{% assign elevation = Model.ContentItem.Content.VAppBar.Elevation.Value %}
+{% assign extensionHeight = Model.ContentItem.Content.VAppBar.ExtensionHeight.Value %}
+{% assign scrollThreshold = Model.ContentItem.Content.VAppBar.ScrollThreshold.Value %}
+{% assign height = Model.ContentItem.Content.VAppBar.Height.Value %}
+{% assign width = Model.ContentItem.Content.VAppBar.Width.Value %}
+
+<v-app-bar app clipped-left
+  class="{{ Model.Classes | join: ' ' }}"
+  {{ Model.ContentItem.Content.VAppBar.Props.Values | join: ' ' | raw }}
+  {% if blank != backgroundImage %}src="{{ backgroundImage | asset_url }}"{% endif %}
+  {% if blank != color %}color="{{ color }}"{% endif %}
+  {% if empty !=  extensionHeight %}extension-height="{{ extensionHeight }}"{% endif %}
+  {% if empty != scrollThreshold %}scroll-threshold="{{ scrollThreshold }}"{% endif %}
+  {% if empty != height %}height="{{ height }}"{% endif %}
+  {% if empty != width %}width="{{ width }}"{% endif %}
+>
+  {% comment %} This icon allows the show/hide of the drawer in mobile mode {% endcomment %}
+  <v-app-bar-nav-icon class="hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
+  {{ "AppBarLogo" | shape_new | shape_render }}
+  <v-spacer></v-spacer>
+  {% if Site.Properties.VuetifyThemeSettings.VuetifyThemeSettings.DisplayMode.Text == 'picker' %}
+  <v-tooltip v-if="!$vuetify.theme.dark" bottom>
+    <template v-slot:activator="{ on }">
+      <v-btn v-on="on" icon @click="darkMode">
+        <v-icon class="mr-1">mdi-moon-waxing-crescent</v-icon>
+      </v-btn>
+    </template>
+    <span>{{ "Dark mode" | t }}</span>
+  </v-tooltip>
+  <v-tooltip v-else bottom>
+    <template v-slot:activator="{ on }">
+      <v-btn v-on="on" icon @click="darkMode">
+        <v-icon >mdi-white-balance-sunny</v-icon>
+      </v-btn>
+    </template>
+    <span>{{"Light mode" | t }}</span>
+  </v-tooltip>
+  {% endif %}
+  {{ "UserMenu" | shape_new | shape_render }}
+  {{ "ContentCulturePicker" | shape_new | shape_render }}
+</v-app-bar>

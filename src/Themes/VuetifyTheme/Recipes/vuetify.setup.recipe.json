@@ -1,0 +1,115 @@
+﻿{
+  "name": "vuetify-theme-setup",
+  "displayName": "Vuetify Theme Setup",
+  "description": "Recipe used to enable the vuetify platform from the setup page.",
+  "author": "Digital Innovation Team",
+  "website": "https://digital.statcan.gc.ca",
+  "version": "1.0",
+  "issetuprecipe": true,
+  "categories": ["vuetify"],
+  "tags": ["innovation", "inno"],
+  "steps": [
+    {
+      "name": "feature",
+      "disable": [],
+      "enable": [
+        "OrchardCore.HomeRoute",
+        "OrchardCore.Admin",
+        "OrchardCore.Diagnostics",
+        "OrchardCore.DynamicCache",
+        "OrchardCore.Features",
+        "OrchardCore.Navigation",
+        "OrchardCore.Recipes",
+        "OrchardCore.Resources",
+        "OrchardCore.Roles",
+        "OrchardCore.Settings",
+        "OrchardCore.Themes",
+        "OrchardCore.Users",
+        "OrchardCore.Alias",
+        "OrchardCore.Autoroute",
+        "OrchardCore.Html",
+        "OrchardCore.ContentFields",
+        "OrchardCore.ContentLocalization",
+        "OrchardCore.ContentLocalization.ContentCulturePicker",
+        "OrchardCore.ContentPreview",
+        "OrchardCore.Contents",
+        "OrchardCore.ContentTypes",
+        "OrchardCore.CustomSettings",
+        "OrchardCore.Deployment",
+        "OrchardCore.Indexing",
+        "OrchardCore.Layers",
+        "OrchardCore.Localization",
+        "OrchardCore.Lists",
+        "OrchardCore.Liquid",
+        "OrchardCore.Markdown",
+        "OrchardCore.Media",
+        "OrchardCore.Menu",
+        "OrchardCore.Queries",
+        "OrchardCore.Title",
+        "OrchardCore.Templates",
+        "OrchardCore.Widgets",
+        "OrchardCore.Email",
+        "OrchardCore.Flows",
+        "OrchardCore.Queries.Sql",
+        "OrchardCore.Users.Registration",
+        "OrchardCore.Users.ResetPassword",
+        "StatCan.OrchardCore.DisplayHelpers",
+        "StatCan.OrchardCore.CommonTypes.Page",
+        "StatCan.OrchardCore.CommonTypes.MarkdownWidget",
+        "StatCan.OrchardCore.Menu",
+        "DigitalAdmin",
+        "VuetifyTheme"
+      ]
+    },
+    {
+      "name": "themes",
+      "admin": "DigitalAdmin",
+      "site": "VuetifyTheme"
+    },
+    {
+      "name": "Settings",
+      "Calendar": null,
+      "UseCdn": false,
+      "TimeZoneId": "America/Toronto",
+      "AppendVersion": true,
+      "LocalizationSettings": {
+        "DefaultCulture": "en",
+        "SupportedCultures": ["fr", "en"]
+      },
+      "AdminSettings": {
+        "DisplayMenuFilter": true
+      },
+      "LoginSettings": {
+        "UseSiteTheme": true
+      },
+      "ResetPasswordSettings": {
+        "UseSiteTheme": true
+      },
+      "RegistrationSettings": {
+        "UseSiteTheme": true
+      },
+      "LayerSettings": {
+        "Zones": [
+          "Header",
+          "Breadcrumb",
+          "NavigationDrawer",
+          "Footer",
+          "IEBanner"
+        ]
+      }
+    },
+    {
+      "name": "Layers",
+      "Layers": [
+        {
+          "Name": "All",
+          "Rule": "true",
+          "Description": null
+        }
+      ]
+    }
+  ]
+}
+
+
+

@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>$(AspNetCoreTargetFramework)</TargetFramework>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Admin" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
+		<ProjectReference Include="..\..\Modules\Lib\StatCan.OrchardCore.Extensions\StatCan.OrchardCore.Extensions.csproj" />
+		<ProjectReference Include="..\..\Modules\StatCan.OrchardCore.ContentFields\StatCan.OrchardCore.ContentFields.csproj" />
+		<ProjectReference Include="..\..\Modules\StatCan.OrchardCore.DisplayHelpers\StatCan.OrchardCore.DisplayHelpers.csproj" />
+		<ProjectReference Include="..\..\Modules\StatCan.OrchardCore.Menu\StatCan.OrchardCore.Menu.csproj" />
+		<ProjectReference Include="..\..\Modules\StatCan.OrchardCore.Vuetify\StatCan.OrchardCore.Vuetify.csproj" />
+	</ItemGroup>
+
+	<!-- For content Migrations -->
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Autoroute" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Media" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Flows" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Remove="**\*.less;**\*.scss;" />
+	</ItemGroup>
+
+</Project>
+
+
+

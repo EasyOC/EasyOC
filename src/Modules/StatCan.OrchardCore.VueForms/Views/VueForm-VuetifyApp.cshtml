@@ -1,0 +1,18 @@
+@{
+    Model.Metadata.Alternates.Clear();
+    Model.Metadata.Type = "VueForm__CommonTemplate";
+}
+
+<style asp-name="vuetify"></style>
+<script asp-name="vuetify" at="Foot"></script>
+<script asp-name="vue-forms" at="Foot" depends-on="vuetify"></script>
+<script asp-name="vue-custom-form-components" at="Foot" depends-on="vuetify"></script> 
+<style asp-name="element-theme-chalk"></style>
+<script asp-name="elementUI" at="Foot" depends-on="vue-forms"></script>
+
+<div class="vuetify-app-instance">
+  <v-app>
+    @Tag(Model, Model.Properties["ComponentName"])
+  </v-app>
+</div>
+@await DisplayAsync(Model)

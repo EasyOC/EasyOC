@@ -1,0 +1,9 @@
+包引用替换为项目引用：
+
+<PackageReference Include="(.*)" />
+<ProjectReference Include="$(OrchardCoreLibrariesRoot)\$1\$1.csproj" />
+
+项目引用替换为包引用：
+ProjectReference Include="(.*\\)(.*).csproj" PrivateAssets="none"
+PackageReference Include="$2"  Version="$(StatCanVersion)"
+

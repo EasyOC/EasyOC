@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Lib\StatCan.OrchardCore.Extensions\StatCan.OrchardCore.Extensions.csproj" />
+		<ProjectReference Include="..\StatCan.OrchardCore.DisplayHelpers\StatCan.OrchardCore.DisplayHelpers.csproj" />
+		<ProjectReference Include="..\StatCan.OrchardCore.ContentPermissions\StatCan.OrchardCore.ContentPermissions.csproj" />
+
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="HtmlSanitizer" Version="6.0.453" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.ContentManagement.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Data.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Flows" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Liquid.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Navigation.Core" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Shortcodes.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+ 
+</Project>
+
+
+

@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
+		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Workflow\**" />
+	  <EmbeddedResource Remove="Workflow\**" />
+	  <None Remove="Workflow\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="AutofacModule.cs" />
+	  <Compile Remove="RunAs.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<!--<PackageReference Include="Autofac" Version="6.3.0" />-->
+		<!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
+		<PackageReference Include="Panda.DynamicWebApi" />
+		<!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="Volo.Abp.Core" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Html" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" />
+
+	</ItemGroup>
+
+</Project>
+
+
+

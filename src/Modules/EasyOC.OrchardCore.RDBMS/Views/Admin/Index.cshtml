@@ -1,0 +1,194 @@
+﻿@using EasyOC.OrchardCore.RDBMS.ViewModels
+@model RDBMSMappingConfigViewModel
+
+
+
+<script at="Foot" asp-name="jquery.serializeObject" asp-src="~/EasyOC.OrchardCore.RDBMS/Scripts/jquery.serializeObject.js" debug-src="~/EasyOC.OrchardCore.RDBMS/Scripts/jquery.serializeObject.js" depends-on="jQuery" version="1.0"></script>
+<zone Name="Title">
+    <h1>@RenderTitleSegments(T["Mapping to relational database"])</h1>
+</zone>
+<div id="vue_app">
+    <el-form :model="model">
+        <el-form-item label="数据库连接">
+            <el-select clearable v-model="model.connectionConfigId" @@change="loadAllTables" filterable placeholder="请选择">
+                <el-option v-for="item in allDbConnecton" :key="item.configId" :label="item.configName" :value="item.configId">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="数据表">
+            <el-select v-model="model.tableName" filterable placeholder="请选择">
+                <el-option v-for="item in allTables" :key="`${item.schema}.${item.name}`" :label="`[${item.schema}].[${item.name}]`" :value="`${item.schema}.${item.name}`">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @@click="onSubmit">查询</el-button>
+        </el-form-item>
+    </el-form>
+
+</div>
+<style asp-name="element-theme-chalk" ></style>
+<script at="Foot" asp-name="vuejs" depends-on="JQuery"></script>
+<script at="Foot" asp-name="elementUI" depends-on="vuejs"></script>
+
+<script at="Foot">
+    new Vue({
+        el: '#vue_app',
+        data:()=>( {
+            formInline: {
+                user: '',
+                region: ''
+            },
+            allDbConnecton: [],
+            allTables: [],
+            model: {
+                connectionConfigId: "",
+                tableName:""
+
+            }
+        }),
+    mounted(){
+        this.loadConnections();
+    },
+    methods: {
+        loadConnections(){
+            $.get('/api/RDBMS/AllDbConnecton', function (data) {
+                this.allDbConnecton = data;
+            })
+        },
+        loadAllTables(){
+            $.get('/api/RDBMS/AllTables', function (data) {
+                this.allTables = data;
+            })
+        },
+        onSubmit(){
+
+        }
+    }
+    });
+</script>
+@*<script at="Foot">
+
+
+    var sqlEditor;
+    $(function () {
+
+    $("#btnGetType").click(function () {
+    var fromData = $("form").serializeObject()
+    //console.log(fromData)
+    var url = "@Url.Action("GenerateRecipe", "Admin")";
+    $.ajax({
+    url: url,
+    method: 'GET',
+    data: {
+    ConnectionConfigId: fromData.ConnectionConfigId,
+    TargetTable: fromData.TargetTable
+    },
+    success: function (data) {
+    console.log(data);
+    editor.setValue(data);
+    },
+    error: function (error) {
+    alert($('#move-error-message').data("message"));
+    }
+    });
+    })
+
+
+    $.ajax({
+    url: '@Url.Action("getAllDbConnecton")',
+    method: 'GET',
+    success: (data) => {
+    console.log(data)
+    var select = $("#@Html.IdFor(x=>x.ConnectionConfigId)");
+    select.html('')
+    data.forEach(item => {
+    if (item.text)
+    select.append(`<option value="${item.value}" >${item.text}</option>`)
+    })
+    }
+    })
+    $.ajax({
+    url: '@Url.Action("getAllTypes")',
+    method: 'GET',
+    success: (data) => {
+    console.log(data)
+    var select = $("#@Html.IdFor(x=>x.ContentTypeName)");
+    select.html('')
+    select.append(`<option value="0">--New ContentType--</option>`)
+    data.forEach(item => {
+    if (item.text)
+    select.append(`<option value="${item.value}" >${item.text}</option>`)
+    })
+    }
+    })
+
+
+
+    $("#DbObjectType").change(function () {
+    if ($(this).val() == "SQLCommand") {
+    sqlEditor = CodeMirror.fromTextArea(document.getElementById('@Html.IdFor(x => x.TargetTable)'), {
+    autoRefresh: true,
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    mode: { name: "sql" },
+    });
+    sqlEditor.autoRefresh()
+    } else {
+    if (sqlEditor)
+    sqlEditor.toTextArea()
+    }
+    })
+
+    $("#btnGet").click(function (val) {
+    if ($("#@Html.IdFor(x => x.ContentTypeName)").val() != "0") {
+    var url = "@Url.Action("GenerateMappingData","Admin")";
+    $.ajax({
+    url: url,
+    method: 'GET',
+    data: {
+    typeName: $("#@Html.IdFor(x => x.ContentTypeName)").val()
+    },
+    success: function (data) {
+    console.log(data);
+    editor.setValue(data);
+    },
+    error: function (error) {
+    alert($('#move-error-message').data("message"));
+    }
+    });
+    }
+    })
+
+    $("#btnGet").click(function (val) {
+    var url = "@Url.Action("GenerateMappingData","Admin")";
+    $.ajax({
+    url: url,
+    method: 'GET',
+    data: {
+    typeName: $("#@Html.IdFor(x => x.ContentTypeName)").val()
+    },
+    success: function (data) {
+    console.log(data);
+    editor.setValue(data);
+    },
+    error: function (error) {
+    alert($('#move-error-message').data("message"));
+    }
+    });
+    })
+    var editor = CodeMirror.fromTextArea(document.getElementById('@Html.IdFor(x => x.MappingData)'), {
+    autoRefresh: true,
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    mode: { name: "javascript" },
+    });
+
+
+    });
+    </script>*@
+
+
+

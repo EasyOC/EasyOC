@@ -1,0 +1,13 @@
+﻿@using Etch.OrchardCore.ContentPermissions.ViewModels
+
+@model ContentPermissionsPartSettingsViewModel
+
+<div class="row mb-3">
+    <div class="col-lg">
+        <label asp-for="RedirectUrl">@T["Redirect URL"]</label>
+        <input type="text" asp-for="RedirectUrl" class="form-control" />
+        <span class="hint">@T["User will be redirected to this URL when unable to access content item. Leave blank to disable redirect and handle user not having permission within view template."]</span>
+    </div>
+</div>
+
+

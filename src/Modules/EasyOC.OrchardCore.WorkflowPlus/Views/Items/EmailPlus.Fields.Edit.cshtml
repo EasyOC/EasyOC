@@ -1,0 +1,101 @@
+﻿@using OrchardCore.Email.Workflows.ViewModels;
+@model EmailPlusViewModel
+
+<div class="form-group" asp-validation-class-for="AuthorExpression">
+    <label asp-for="AuthorExpression">@T["From"]</label>
+    <input type="text" asp-for="AuthorExpression" class="form-control code" />
+    <span asp-validation-for="AuthorExpression"></span>
+    <span class="hint">@T["邮件作者的电子邮件地址，留空时将使用默认电子邮件地址。支持Liquid。"]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="SenderExpression">
+    <label asp-for="SenderExpression">@T["Sender"]</label>
+    <input type="text" asp-for="SenderExpression" class="form-control code" />
+    <span asp-validation-for="SenderExpression"></span>
+    <span class="hint">@T["The sender's email address. Required if not the same than the \"From\" email address. With Liquid support."]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="ToExpression">
+    <label asp-for="ToExpression">@T["To"]</label>
+    <input type="text" asp-for="ToExpression" class="form-co ntrol code" />
+    <span asp-validation-for="ToExpression"></span>
+    <span class="hint">@T["以逗号分隔的收件人电子邮件地址列表。支持Liquid。"]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="CcExpression">
+    <label asp-for="CcExpression">@T["Cc"]</label>
+    <input type="text" asp-for="CcExpression" class="form-control code" />
+    <span asp-validation-for="CcExpression"></span>
+    <span class="hint">@T["The sender's email address. Required if not the same than the \"From\" email address. With Liquid support."]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="BccExpression">
+    <label asp-for="BccExpression">@T["Bcc"]</label>
+    <input type="text" asp-for="BccExpression" class="form-control code" />
+    <span asp-validation-for="BccExpression"></span>
+    <span class="hint">@T["The sender's email address. Required if not the same than the \"From\" email address. With Liquid support."]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="ReplyToExpression">
+    <label asp-for="ReplyToExpression">@T["ReplyTo"]</label>
+    <input type="text" asp-for="ReplyToExpression" class="form-control code" />
+    <span asp-validation-for="ReplyToExpression"></span>
+    <span class="hint">@T["The \"reply to\" email address. Required if you want email replies be sent to a different address than the \"From\" address. With Liquid support."]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="SubjectExpression">
+    <label asp-for="SubjectExpression">@T["Subject"]</label>
+    <input type="text" asp-for="SubjectExpression" class="form-control code" />
+    <span asp-validation-for="SubjectExpression"></span>
+    <span class="hint">@T["电子邮件的主题。流体支持。"]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="AttachmentName">
+    <label asp-for="AttachmentName">@T["附件名称"]</label>
+    <input type="text" asp-for="AttachmentName" class="form-control code" />
+    <span asp-validation-for="AttachmentName"></span>
+    <span class="hint">@T["电子邮件的附件名称。流体支持。"]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="AttachmentUrl">
+    <label asp-for="AttachmentUrl">@T["附件地址"]</label>
+    <input type="text" asp-for="AttachmentUrl" class="form-control code" />
+    <span asp-validation-for="AttachmentUrl"></span>
+    <span class="hint">@T["电子邮件的附件地址。流体支持。"]</span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Body">@T["Body"]</label>
+    <textarea asp-for="Body" rows="5" class="form-control"></textarea>
+    <span class="hint">@T["电子邮件的正文。流体支持。"]</span>
+</div>
+
+<div class="form-group">
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" asp-for="IsBodyHtml" />
+        <label class="custom-control-label" asp-for="IsBodyHtml">@T["身体是否包含 HTML？"]</label>
+        <span class="hint dashed">@T["如果选中，请显示邮件消息的尸体是 HTML。如果不加控制，则邮件消息的正文是纯文本。"]</span>
+    </div>
+</div>
+
+<style asp-name="codemirror"></style>
+<script asp-name="codemirror" depends-on="admin" at="Foot"></script>
+<script asp-name="codemirror-mode-javascript" at="Foot"></script>
+<script asp-name="codemirror-addon-mode-simple" at="Foot"></script>
+<script asp-name="codemirror-addon-mode-multiplex" at="Foot"></script>
+<script asp-name="codemirror-mode-xml" at="Foot"></script>
+<script asp-src="~/OrchardCore.Liquid/codemirror/liquid.js" at="Foot"></script>
+
+<script at="Foot">
+$(function () {
+    var editor = CodeMirror.fromTextArea(document.getElementById('@Html.IdFor(x => x.Body)'), {
+        lineNumbers: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        mode: { name: "liquid" },
+      });
+});
+</script>
+
+
+

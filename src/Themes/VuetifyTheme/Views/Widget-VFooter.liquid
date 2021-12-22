@@ -1,0 +1,14 @@
+{% assign color = Model.ContentItem.Content.VFooter.Color.Text %}
+{% assign elevation = Model.ContentItem.Content.VFooter.Elevation.Text %}
+{% assign height = Model.ContentItem.Content.VFooter.Height.Text %}
+{% assign width = Model.ContentItem.Content.VFooter.Width.Text %}
+
+<v-footer class="{{ Model.Classes | join: ' ' }}"
+  {{ Model.ContentItem.Content.VFooter.Props.Values | join: ' ' | raw }}
+  {% if blank != color %}color="{{ color }}"{% endif %}
+  {% if blank != elevation %}elevation="{{ elevation }}"{% endif %}
+  {% if blank != height %}height="{{ height }}"{% endif %}
+  {% if blank != width %}width="{{ width }}"{% endif %}
+>
+  {{ Model.Content.FlowPart | shape_render }}
+</v-footer>

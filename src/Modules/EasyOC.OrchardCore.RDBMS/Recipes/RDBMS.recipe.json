@@ -1,0 +1,224 @@
+﻿{
+  "name": "RDBMS",
+  "displayName": "RDBMS",
+  "description": "RDBMS",
+  "author": "",
+  "website": "",
+  "version": "",
+  "issetuprecipe": false,
+  "categories": [],
+  "tags": [],
+  "steps": [
+    {
+      "name": "ReplaceContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "RDBMSMappingConfig",
+          "DisplayName": "RDBMS Mapping Config",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "RDBMSMappingConfig",
+              "Name": "RDBMSMappingConfig",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "RDBMSMappingConfig",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "TargetTable",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Target Table",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ContentTypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ContentTypeName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "MappingData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "MappingData",
+                  "Editor": "CodeMirror",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "EnableAutoSync",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Enable Auto Sync",
+                  "Editor": "Switch",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "ReadOnly",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Read Only",
+                  "Editor": "Switch",
+                  "Position": "5"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0"
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        }
+      ]
+    },
+    {
+      "name": "ContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "DbConnectionConfig",
+          "DisplayName": "DbConnectionConfig",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "DbConnectionConfig",
+              "Name": "DbConnectionConfig",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "DbConnectionConfig",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "DatabaseProvider",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Database Provider",
+                  "Editor": "PredefinedList",
+                  "Position": "0"
+                },
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "SqlServer",
+                      "value": "SqlServer"
+                    },
+                    {
+                      "name": "Sqlite",
+                      "value": "Sqlite"
+                    },
+                    {
+                      "name": "MySql",
+                      "value": "MySql"
+                    },
+                    {
+                      "name": "PostgreSQL",
+                      "value": "PostgreSQL"
+                    }
+                  ],
+                  "Editor": 1
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ConnectionString",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ConnectionString",
+                  "Editor": "TextArea",
+                  "Position": "2"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0"
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        }
+      ]
+    }
+  ]
+}

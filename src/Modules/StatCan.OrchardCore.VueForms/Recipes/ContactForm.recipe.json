@@ -1,0 +1,308 @@
+﻿{
+  "name": "VueForm.ContactForm",
+  "displayName": "Contact form example",
+  "description": "An example french/english contact form that creates a ContentItem from the form data. Requires you to have french and english as locales on the site.",
+  "author": "StatCan Digital Innovation",
+  "website": "digital.statcan.gc.ca",
+  "version": "1.0.0",
+  "issetuprecipe": false,
+  "categories": ["VueForm"],
+  "tags": ["Example","Form","ContactForm"],
+  "steps": [
+    {
+      "name": "feature",
+      "disable": [],
+      "enable": [
+        "StatCan.OrchardCore.VueForms.Localized",
+        "OrchardCore.Workflows.Http"
+      ]
+    },
+    {
+      "name": "content",
+      "data": [
+        {
+          "ContentItemId": "4ty56s2p8vfhmxp76p4f37b1c3",
+          "ContentItemVersionId": "485ekvx99njnp2eb7rrsnw2p4j",
+          "ContentType": "VueForm",
+          "DisplayText": "Contact Us",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "TitlePart": {
+            "Title": "Contact Us"
+          },
+          "VueForm": {
+            "Disabled": {
+              "Value": false
+            },
+            "Debug": {
+              "Value": false
+            },
+            "DisabledHtml": {
+              "Html": "<div class=\"container text-center mt-2\">\nThe contact form is currently disabled.\n</div>"
+            },
+            "RenderAs": {
+              "Text": "VuetifyApp"
+            },
+            "SuccessMessage": {
+              "Text": "{{ \"successMessage\" | localize }}"
+            },
+            "Template": {
+              "Text": "<v-container >\r\n  <v-card-text>\r\n    <v-row justify=\"center\">\r\n      <v-col cols=\"8\">\r\n        <validation-provider name=\"{{ \"nameLabel\" | localize | downcase }}\" rules=\"required\" v-slot=\"{ errors, valid }\">\r\n          <v-text-field v-model=\"name\" :success=\"valid\" :error-messages=\"errors\" filled=\"filled\" label=\"{{ \"nameLabel\" | localize }}\"></v-text-field>\r\n        </validation-provider>\r\n      </v-col>\r\n      <v-col cols=\"8\">\r\n        <validation-provider name=\"{{ \"emailLabel\" | localize | downcase }}\" rules=\"required|email\" v-slot=\"{ errors, valid }\">\r\n          <v-text-field v-model=\"email\" :success=\"valid\" :error-messages=\"errors\" filled=\"filled\" label=\"{{ \"emailLabel\" | localize }}\"></v-text-field>\r\n        </validation-provider>\r\n      </v-col>\r\n      <v-col cols=\"8\">\r\n        <validation-provider name=\"{{ \"messageLabel\" | localize | downcase }}\" rules=\"required\" v-slot=\"{ errors, valid }\">\r\n       \t  <v-textarea v-model=\"message\" :success=\"valid\" :error-messages=\"errors\" counter=\"true\" filled=\"filled\" label=\"{{ \"messageLabel\" | localize }}\" rows=\"5\">\r\n          </v-textarea>\r\n    \t</validation-provider>\r\n      </v-col>\r\n      <v-col cols=\"8\">\r\n        <v-alert type=\"success\" v-if=\"form.successMessage\">\r\n          {% raw %}{{ form.successMessage }}{% endraw %}\r\n        </v-alert>\r\n        <v-alert type=\"error\" v-if=\"form.serverValidationMessage\">\r\n          {% raw %}{{ form.serverValidationMessage[0] }}{% endraw %}\r\n        </v-alert>\r\n      </v-col>\r\n      <v-col cols=\"8\">\r\n    \t<v-btn type=\"submit\" depressed block @click=\"formHandleSubmit\" :disabled=\"form.submitting\">{{ \"submitLabel\" | localize }}</v-btn>\r\n      </v-col>\r\n    </v-row>\r\n  </v-card-text>\r\n</v-container>"
+            }
+          },
+          "VueFormScripts": {
+            "ClientInit": {
+              "Text": null
+            },
+            "ComponentOptions": {
+              "Text": "{\r\n  data: () => ({\r\n    name: \"\",\r\n\temail: \"{{User | user_email}}\",\r\n    message: \"\",\r\n  })\r\n}"
+            },
+            "OnValidation": {
+              "Text": "var data = requestFormAsJsonObject();\r\nvar localizedText = getLocalizedTextValues(getFormContentItem());\r\n\r\nif(data.name == \"\" || data.email == \"\" || data.message == \"\" || !validateEmail(data.email)) {\r\n  addError('serverValidationMessage', localizedText.serverValidationError);\r\n}"
+            },
+            "OnSubmitted": {
+              "Text": "var data = requestFormAsJsonObject();\r\n\r\nvar item = createContentItem(\"ContactRequest\", true, {\r\n  \"ContactRequest\": {\r\n    \"Name\": {\r\n      \"Text\": data.name\r\n    },\r\n    \"Email\": {\r\n      \"Text\": data.email\r\n    },\r\n    \"Message\": {\r\n      \"Text\": data.message\r\n    }\r\n  }\r\n}); \r\n addSuccessMessage("
+            }
+          },
+          "LocalizedTextPart": {
+            "Data": [
+              {
+                "Name": "nameLabel",
+                "LocalizedItems": [
+                  {
+                    "Culture": "fr",
+                    "Value": "Nom"
+                  },
+                  {
+                    "Culture": "en",
+                    "Value": "Name"
+                  }
+                ]
+              },
+              {
+                "Name": "emailLabel",
+                "LocalizedItems": [
+                  {
+                    "Culture": "fr",
+                    "Value": "Adresse courriel"
+                  },
+                  {
+                    "Culture": "en",
+                    "Value": "Email Address"
+                  }
+                ]
+              },
+              {
+                "Name": "messageLabel",
+                "LocalizedItems": [
+                  {
+                    "Culture": "fr",
+                    "Value": "Message"
+                  },
+                  {
+                    "Culture": "en",
+                    "Value": "Message"
+                  }
+                ]
+              },
+              {
+                "Name": "submitLabel",
+                "LocalizedItems": [
+                  {
+                    "Culture": "fr",
+                    "Value": "Envoyer"
+                  },
+                  { 
+                    "Culture": "en",
+                    "Value": "Send"
+                  }
+                ]
+              },
+              {
+                "Name": "successMessage",
+                "LocalizedItems": [
+                  {
+                    "Culture": "fr",
+                    "Value": "Vôtre message a été reçu avec succès"
+                  },
+                  {
+                    "Culture": "en",
+                    "Value": "Your contact request was successfully received"
+                  }
+                ]
+              },
+              {
+                "Name": "serverValidationError",
+                "LocalizedItems": [
+                  {
+                    "Culture": "fr",
+                    "Value": "Une erreure est survenue."
+                  },
+                  {
+                    "Culture": "en",
+                    "Value": "An error occured."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "ContactRequest",
+          "DisplayName": "ContactRequest",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Listable": true
+            },
+            "FullTextAspectSettings": {
+              "IncludeBodyAspect": false,
+              "IncludeDisplayText": false
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ContactRequest",
+              "Name": "ContactRequest",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                },
+                "TitlePartSettings": {
+                  "Options": 2,
+                  "Pattern": "{{Model.ContentItem.Content.ContactRequest.Name.Email}}"
+                },
+                "ContentIndexSettings": {}
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "ContactRequest",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Name",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Email",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Email",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Message",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Message",
+                  "Position": "2"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WorkflowType",
+      "data": [
+        {
+          "WorkflowTypeId": "4fx1kseezbkcw1e4gcfqn1vkms",
+          "Name": "Form Submit",
+          "IsEnabled": true,
+          "IsSingleton": false,
+          "DeleteFinishedWorkflows": false,
+          "Activities": [
+            {
+              "ActivityId": "4qwshsfxs9m4303n0csm0n86m1",
+              "Name": "VueFormSubmittedEvent",
+              "X": 40,
+              "Y": 40,
+              "IsStart": true,
+              "Properties": {
+                "ActivityMetadata": {
+                  "Title": null
+                },
+                "ExecuteForAllForms": false,
+                "VueFormIds": [
+                  "4ty56s2p8vfhmxp76p4f37b1c3"
+                ]
+              }
+            },
+            {
+              "ActivityId": "4w0he132d2svsw991qb4764hxp",
+              "Name": "EmailTask",
+              "X": 340,
+              "Y": 40,
+              "IsStart": false,
+              "Properties": {
+                "Sender": {
+                  "Expression": "{{Request.Form.email}}"
+                },
+                "Author": {
+                  "Expression": null
+                },
+                "Recipients": {
+                  "Expression": "admin@site.com"
+                },
+                "ReplyTo": {
+                  "Expression": null
+                },
+                "Subject": {
+                  "Expression": "Contact request"
+                },
+                "Body": {
+                  "Expression": "From: {{Request.Form.name}} </br>\r\nEmail: {{Request.Form.email}} </br>\r\nMessage: {{Request.Form.message}} </br>"
+                },
+                "IsBodyHtml": true,
+                "ActivityMetadata": {
+                  "Title": "Send email to admin"
+                }
+              }
+            }
+          ],
+          "Transitions": [
+            {
+              "Id": 0,
+              "SourceActivityId": "4qwshsfxs9m4303n0csm0n86m1",
+              "SourceOutcomeName": "Done",
+              "DestinationActivityId": "4w0he132d2svsw991qb4764hxp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+
+

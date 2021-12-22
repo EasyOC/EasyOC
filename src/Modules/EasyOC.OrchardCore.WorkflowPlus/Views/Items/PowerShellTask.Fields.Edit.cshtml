@@ -1,0 +1,21 @@
+@model PowerShellTaskViewModel
+
+<div class="form-group" asp-validation-class-for="PropertyName">
+    <label asp-for="PropertyName">@T["Property Name"]</label>
+    <input asp-for="PropertyName" class="form-control" />
+    <span asp-validation-for="PropertyName"></span>
+    <span class="hint">@T["Enter workflow property name store to."]</span>
+</div>
+<div class="form-group" asp-validation-class-for="ScriptText">
+  
+</div>
+<div class="form-group" asp-validation-class-for="ScriptText">
+    <label asp-for="ScriptText">@T["PowerShell Script"]</label>
+    <textarea asp-for="ScriptText" class="form-control"></textarea>
+    <span asp-validation-for="ScriptText"></span>
+    <input type="checkbox" asp-for="UseJavascript" />
+    <label asp-for="UseJavascript">@T["Use JavaScript to generate powershell"]</label>
+    <br />
+    <span class="hint">@T["Enter the powershell command text."]</span>
+
+</div>

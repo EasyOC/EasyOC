@@ -1,0 +1,8 @@
+﻿{
+  "name": "EasyOC.orchardcore.rdbms",
+  "version": "1.0.0",
+  "dependencies": {
+    "@aggul/jquery.serializeobject": "^2.0.4"
+  }
+}
+

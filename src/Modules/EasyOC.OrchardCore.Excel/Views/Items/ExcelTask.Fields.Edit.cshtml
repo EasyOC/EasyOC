@@ -1,0 +1,120 @@
+﻿@model ExcelTaskViewModel
+
+<div class="form-group" asp-validation-class-for="PropertyName">
+    <label asp-for="PropertyName">@T["PropertyName"]</label>
+    <input type="text" asp-for="PropertyName" class="form-control code" />
+    <span asp-validation-for="PropertyName"></span>
+    <span class="hint">@T["属性名称，用于从其他节点访问读取到的Excel内容"]</span>
+</div>
+
+
+@*
+    <div class="form-group" asp-validation-class-for="FromUpload">
+    <label asp-for="FromUpload">@T["From Upload File"]</label>
+    <input type="text" asp-for="FromUpload" class="form-control code" />
+    <span asp-validation-for="FromUpload"></span>
+    <span class="hint">@T["使用上传文件，注意！！只会读取第一张表。"]</span>
+    </div>*@
+
+<div class="form-group" asp-validation-class-for="FromUpload">
+    <input type="checkbox" asp-for="FromUpload" />
+    <label asp-for="FromUpload">@T["From Upload File"]</label> <br />
+    <span class="hint">@T["使用上传文件，注意！！只会读取第一张表。"]</span>
+
+</div>
+<div class="form-group" asp-validation-class-for="FilePath">
+    <label asp-for="FilePath">@T["FilePath"]</label>
+    <input type="text" asp-for="FilePath" class="form-control" />
+    <span asp-validation-for="FilePath"></span>
+    <span class="hint">@T["完整的文件路径，如果使用网络路径，请确保当前程序运行账号有权限访问。"]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="RowFilter">
+    <label asp-for="RowFilter">@T["过滤行"]</label>
+    <textarea type="text" asp-for="RowFilter" class="form-control"></textarea>
+    <span asp-validation-for="RowFilter"></span>
+    <span class="hint">@T["Javascript 语法， 使用 DataTable.Select(\"Date < '2021-12-01' and 1 = 1\")"]</span>
+</div>
+
+
+<div class="form-group" asp-validation-class-for="ExtraScripts">
+    <label asp-for="ExtraScripts">@T["Script"]</label>
+    <textarea asp-for="ExtraScripts" class="form-control"></textarea>
+    <span asp-validation-for="ExtraScripts"></span>
+    <span class="hint">@T["额外的处理脚本，通过变量 excelTable 读取原始对象。"]</span>
+</div>
+
+<style asp-name="codemirror"></style>
+<script asp-name="codemirror" depends-on="admin" at="Foot"></script>
+<script asp-name="codemirror-mode-javascript" at="Foot"></script>
+<script asp-name="codemirror-addon-display-autorefresh" at="Foot"></script>
+<script asp-name="codemirror-addon-mode-simple" at="Foot"></script>
+<script asp-name="codemirror-addon-mode-multiplex" at="Foot"></script>
+<script asp-name="codemirror-mode-xml" at="Foot"></script>
+
+<script at="Foot">
+    $(function () {
+
+        var useUploadFile= $("#@Html.IdFor(x=>x.FromUpload)");
+        var filePathCtr=$('#@Html.IdFor(x=>x.FilePath)');
+
+        filePathCtr.parent().toggle(!useUploadFile.prop("checked"));
+
+        useUploadFile.change(function(ck){
+            filePathCtr.parent().toggle(!$(this).prop("checked"));
+        })
+
+        var editor = CodeMirror.fromTextArea(document.getElementById('@Html.IdFor(x => x.ExtraScripts)'), {
+            autoRefresh: true,
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            mode: { name: "javascript" },
+        });
+
+        editor.on('change', function(cmEditor){
+            cmEditor.save();
+        });
+
+        var editor2 = CodeMirror.fromTextArea(document.getElementById('@Html.IdFor(x => x.RowFilter)'), {
+            autoRefresh: true,
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            mode: { name: "javascript" },
+        });
+
+        editor2.on('change', function(cmEditor){
+            cmEditor.save();
+        });
+    });
+</script>
+
+@*<style asp-name="element-theme-chalk"></style>
+    <script asp-name="elementUI" at="Foot" depends-on="vue-forms"></script>*@
+
+@*<script at="Foot">
+
+    new Vue({
+    el: '#vueForm',
+    data: function () {
+    return {
+    v_excelConfigId: '@Model.ExcelConfigId',
+    options: []
+    }
+    },
+    mounted() {
+    $.get("/api/Excel/AllExcelSettings",  (data)=> {
+    this.options = data.map(x => {
+    return { "label": x.text, "value": x.value };
+    });
+    })
+    },
+    methods: {
+    valueChanged() {
+    $('#@Html.IdFor(x=>x.ExcelConfigId)').val(this.v_excelConfigId)
+    }
+    }
+    })
+
+    </script>*@

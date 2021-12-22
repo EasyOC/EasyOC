@@ -1,0 +1,48 @@
+@model SQLTaskViewModel
+
+
+<div class="form-group" asp-validation-class-for="PropertyName">
+    <label asp-for="SQLCommandText">@T["Property Name"]</label>
+    <input asp-for="SQLCommandText" class="form-control" />
+    <span asp-validation-for="PropertyName"></span>
+    <span class="hint">@T["Enter workflow property name."]</span>
+</div>
+<div class="form-group" asp-validation-class-for="UseShellDbConnection">
+    <input type="checkbox" asp-for="UseShellDbConnection" />
+    <label asp-for="UseShellDbConnection">@T["Use Shell Db Connection"]</label> 
+    <span class="hint">@T["Use Shell Db Connection."]</span>
+
+</div>
+<div class="form-group" asp-validation-class-for="ConnectionConfigId">
+    <label asp-for="ConnectionConfigId">@T["Select Connection"]</label>
+    <select asp-for="ConnectionConfigId" asp-items="Model.AllConnections" class="form-control"></select>
+    <span asp-validation-for="ConnectionConfigId"></span>
+    <span class="hint">@T["Select a connection config."]</span>
+</div>
+
+<div class="form-group" asp-validation-class-for="ExcuteMode">
+    <label asp-for="ExcuteMode">@T["SQLResultType"]</label>
+    <select asp-for="ExcuteMode" asp-items="@Html.GetEnumSelectList(Model.ExcuteMode.GetType())" class="form-control"></select>
+    <span asp-validation-for="ExcuteMode"></span>
+    <span class="hint">@T["Controls whether the Join task should wait for all or any inbound activity to be completed."]</span>
+</div> 
+<div class="form-group" asp-validation-class-for="SQLCommandText">
+    <label asp-for="SQLCommandText">@T["SQL Command Text"]</label>
+    <textarea asp-for="SQLCommandText" class="form-control"></textarea>
+    <span asp-validation-for="SQLCommandText"></span>
+    <span class="hint">@T["Enter the sql command text."]</span>
+</div>
+<script at="Foot">
+    $(function(){
+        var connectionCtl=$('#@Html.IdFor(x=>x.ConnectionConfigId)');
+        var useShellDb=$('#@Html.IdFor(x=>x.UseShellDbConnection)'); 
+
+        connectionCtl.parent().toggle(useShellDb.prop("checked")=="checked"); 
+
+        useShellDb.change(function(ck){
+            connectionCtl.parent().toggle(!$(this).prop("checked"));
+
+        })
+
+    })
+</script>

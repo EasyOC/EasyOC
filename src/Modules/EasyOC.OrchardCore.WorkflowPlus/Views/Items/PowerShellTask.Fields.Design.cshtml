@@ -1,0 +1,6 @@
+@model ActivityViewModel<PowerShellTask>
+
+<header>
+    <h4><i class="fa fa-code-fork"></i>@Model.Activity.GetTitleOrDefault(() => T["PowerShell Task"])</h4>
+</header> 
+<span>Set @Model.Activity.PropertyName</span>

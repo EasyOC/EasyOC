@@ -1,0 +1,6 @@
+@model ActivityViewModel<ExcelTask>
+<header>
+    <h4><i class="fa fa-file-excel-o"></i>@Model.Activity.GetTitleOrDefault(() => T["Read Excel"])</h4>
+</header>
+<em>&quot;@Model.Activity.Name&quot;</em>
+<em>Store to &quot;@Model.Activity.PropertyName&quot;</em>

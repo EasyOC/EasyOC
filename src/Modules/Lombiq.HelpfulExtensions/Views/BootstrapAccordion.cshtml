@@ -1,0 +1,56 @@
+﻿@using Lombiq.HelpfulExtensions.Models
+@using OrchardCore.Mvc.Utilities
+
+@{
+    var additionalClasses = Model.AdditionalClasses?.ToString() ?? string.Empty;
+}
+
+<div class="card-accordion @additionalClasses">
+    @foreach (BootstrapAccordionItem items in Model.Children)
+    {
+        var id = items.Title.Value.HtmlClassify();
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between"
+                 id="heading-@id"
+                 data-target="#collapse-@id"
+                 aria-expanded="true"
+                 aria-controls="collapse-@id">
+                <h5 class="mb-0">@items.Title</h5>
+                <div class="card-header-icon">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="card-header-icon hide">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div id="collapse-@id"
+                 class="collapse"
+                 aria-labelledby="heading-@id"
+                 data-parent=".card-accordion">
+                <div class="card-body">
+                    @await DisplayAsync(items.Shape)
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script at="Foot" depends-on="jquery">
+    (function ($) {
+        $(function() {
+            $('.card-accordion .card-header').click(function () {
+                var accordionBodySelector = $(this).data('target');
+                $(accordionBodySelector).collapse('toggle')
+
+                $('.card-accordion .card-header-icon').toggle();
+            });
+
+            $('.card-accordion .hide').hide();
+        });
+    }(jQuery))
+</script>
+
+
+

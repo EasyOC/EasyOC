@@ -1,0 +1,4 @@
+@{
+    var contentItem = ((ContentItem)Model.ContentItem);
+}
+@Html.Raw(await Orchard.LiquidShortcodesAsync((string)contentItem.Content.VueComponent.Template.Text, (object)Model))

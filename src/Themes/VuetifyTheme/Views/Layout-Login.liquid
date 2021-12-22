@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html 
+  lang="{{ Culture.Name }}"
+  data-display-mode="{{ Site.Properties.VuetifyThemeSettings.VuetifyThemeSettings.DisplayMode.Text }}"
+  data-theme="{{ Site.Properties.VuetifyThemeSettings.VuetifyThemeSettings.ThemeOptions.Text | base64_encode }}"
+>
+  <head>
+    <title>{{ "PageTitle" | shape_new | shape_stringify }}</title>
+    {{ "CommonLayoutResources" | shape_new | shape_render }}
+    {% resources type: "Meta" %}
+    {% resources type: "HeadLink" %}
+    {% resources type: "Stylesheet" %}
+    {% render_section "HeadMeta", required: false %}
+    {% resources type: "HeadScript" %}
+  </head>
+  <body dir="{{ Culture.Dir }}">
+    <div id="outdated"></div>
+    <div id="vuetify-theme-app" v-cloak>
+      <v-app>
+        <a class="d-sr-only-focusable" href="#main">{{ "Skip to main content" | t }}</a>
+        {% render_section "Header", required: false %}
+        <v-main id="main">
+          {% render_section "IEBanner", required: false %}
+      
+          {% assign messagesNotEmpty = "Messages" | section_not_empy %}
+          {% if messagesNotEmpty %}
+            <v-container>
+              {% render_section "Messages", required: false %}
+            </v-container>
+          {% endif %} 
+          
+          <v-container>
+            <v-row justify="center">
+              <v-col cols="12" md="6">
+                {% render_body %}
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-main>
+        {% render_section "Footer", required: false %}
+      </v-app>
+    </div>
+    {% resources type: "FootScript" %}
+  </body>
+</html>

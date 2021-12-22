@@ -1,0 +1,84 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>		
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>		
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Controllers\ApiController.cs" />
+	</ItemGroup>
+	<!-- <ItemGroup>
+		<Compile Remove="Recipes\**" />
+		<EmbeddedResource Remove="Recipes\**" />
+		<None Remove="Recipes\**" />
+	</ItemGroup> -->
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="FreeSql.Provider.MySql" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" />
+		<PackageReference Include="FreeSql.Provider.SqlServer" />
+		<PackageReference Include="IdleBus" Version="1.5.2" />
+
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
+		<PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Navigation.Core" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Queries.Abstractions" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Navigation.Core\OrchardCore.Navigation.Core.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Queries.Abstractions\OrchardCore.Queries.Abstractions.csproj" />
+	<!--
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Contents.Core\OrchardCore.Contents.Core.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Infrastructure\OrchardCore.Infrastructure.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement.Abstractions\OrchardCore.ContentManagement.Abstractions.csproj" />
+
+	<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Email\OrchardCore.Email.csproj" />
+
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Workflows\OrchardCore.Workflows.csproj" />
+		
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Data.Abstractions\OrchardCore.Data.Abstractions.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.FileStorage.FileSystem\OrchardCore.FileStorage.FileSystem.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Indexing.Abstractions\OrchardCore.Indexing.Abstractions.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Media.Abstractions\OrchardCore.Media.Abstractions.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Application.Cms.Targets\OrchardCore.Application.Cms.Targets.csproj"  />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement\OrchardCore.ContentManagement.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentTypes.Abstractions\OrchardCore.ContentTypes.Abstractions.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.DisplayManagement\OrchardCore.DisplayManagement.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Logging.NLog\OrchardCore.Logging.NLog.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ResourceManagement\OrchardCore.ResourceManagement.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Theme.Targets\OrchardCore.Theme.Targets.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement.GraphQL\OrchardCore.ContentManagement.GraphQL.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Admin.Abstractions\OrchardCore.Admin.Abstractions.csproj" />
+		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Workflows.Abstractions\OrchardCore.Workflows.Abstractions.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Autoroute\OrchardCore.Autoroute.csproj" />
+		
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Flows\OrchardCore.Flows.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Html\OrchardCore.Html.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Workflows\OrchardCore.Workflows.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Lists\OrchardCore.Lists.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.DynamicCache\OrchardCore.DynamicCache.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Contents\OrchardCore.Contents.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.BackgroundTasks\OrchardCore.BackgroundTasks.csproj" />
+		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.ContentFields\OrchardCore.ContentFields.csproj" />
+	-->
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
+		<ProjectReference Include="..\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
+	</ItemGroup>
+</Project>
+
+
+

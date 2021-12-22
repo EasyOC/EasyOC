@@ -1,0 +1,8 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="Dependencies.props" />  
+	<!--<ItemGroup>
+		--><!--This is used for Source Link --><!--
+		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
+	</ItemGroup>-->
+
+</Project>

@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement.Liquid" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentLocalization.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Liquid.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Users.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Infrastructure.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Shortcodes.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Taxonomies" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Users.Core" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="HtmlSanitizer"  />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Lib\StatCan.OrchardCore.Manifest\StatCan.OrchardCore.Manifest.csproj" />
+	</ItemGroup>
+
+
+</Project>
+
+
+
