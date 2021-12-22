@@ -111,6 +111,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{F4BC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.Application.Targets", "src\Targets\EasyOC.OrchardCore.Application.Targets.csproj", "{5B731B49-B228-4987-8782-173DE6DA1B68}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ElsaWorkflows", "ElsaWorkflows", "{E6229C52-931B-4167-8B47-B36CEC91EEC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elsa.OrchardCore", "src\Modules\Elsa.OrchardCore\Elsa.OrchardCore.csproj", "{42C86052-CFF9-41BB-93DA-2C5C5FF50C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -229,6 +233,10 @@ Global
 		{5B731B49-B228-4987-8782-173DE6DA1B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B731B49-B228-4987-8782-173DE6DA1B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B731B49-B228-4987-8782-173DE6DA1B68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C86052-CFF9-41BB-93DA-2C5C5FF50C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C86052-CFF9-41BB-93DA-2C5C5FF50C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C86052-CFF9-41BB-93DA-2C5C5FF50C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C86052-CFF9-41BB-93DA-2C5C5FF50C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -264,9 +272,10 @@ Global
 		{B584B3DF-A6E5-4F1B-8173-3B84E1E763C4} = {15311B9E-0309-403F-AD9B-2A2E32413D72}
 		{0AB5AB7E-A9A1-405A-8F60-B39CECF81198} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{5B731B49-B228-4987-8782-173DE6DA1B68} = {F4BC6C51-2536-4524-B79C-66AA0E45ED34}
+		{E6229C52-931B-4167-8B47-B36CEC91EEC1} = {5A30262C-639E-4734-AB2A-97425C5A1478}
+		{42C86052-CFF9-41BB-93DA-2C5C5FF50C98} = {E6229C52-931B-4167-8B47-B36CEC91EEC1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}
 	EndGlobalSection
 EndGlobal
-

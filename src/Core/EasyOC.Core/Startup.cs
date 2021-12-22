@@ -30,7 +30,7 @@ namespace EasyOC.Core
             {
                 options.CustomSchemaIds(type => type.FullName);
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
-                { Title = "EasyOC Manufacture ERP Dynamic WebApi", Version = "v1" });
+                { Title = "EasyOC Dynamic WebApi", Version = "v1" });
                 //options.SchemaGeneratorOptions.
                 // TODO:一定要返回true！
                 options.DocInclusionPredicate((docName, description) => true);
@@ -77,7 +77,7 @@ namespace EasyOC.Core
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC ManufactureERP WebApi");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
             });
         }
     }

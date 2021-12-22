@@ -23,6 +23,7 @@
 		<PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Modules\Elsa.OrchardCore\Elsa.OrchardCore.csproj" />
 		<ProjectReference Include="..\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj" /> 
 		<ProjectReference Include="..\Modules\StatCan.OrchardCore.VueForms\StatCan.OrchardCore.VueForms.csproj" />
 		<ProjectReference Include="..\Modules\StatCan.OrchardCore.Vuetify\StatCan.OrchardCore.Vuetify.csproj" />

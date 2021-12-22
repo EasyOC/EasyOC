@@ -22,18 +22,24 @@ namespace EasyOC.OrchardCore.RDBMS.DataAccess
 
             return services.AddSingleton(serviceProvider =>
             {
-
-                var shellOptions = serviceProvider.GetService<IOptions<ShellOptions>>();
-                var option = shellOptions.Value;
-                var shellSettings = serviceProvider.GetService<ShellSettings>();
-                var databaseFolder = Path.Combine(option.ShellsApplicationDataPath, option.ShellsContainerName, shellSettings.Name);
-                var databaseFile = Path.Combine(databaseFolder, "yessql.db");
                 var shellConfig = serviceProvider.GetRequiredService<IShellConfiguration>();
                 var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
                 var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
-
                 var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
-                var fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, $"Data Source={databaseFile};Cache=Shared", logger);
+                IFreeSql fsql = null;
+                if (targetDbType == DataType.Sqlite)
+                {
+                    var shellSettings = serviceProvider.GetService<ShellSettings>();
+                    var shellOptions = serviceProvider.GetService<IOptions<ShellOptions>>();
+                    var option = shellOptions.Value;
+                    var databaseFolder = Path.Combine(option.ShellsApplicationDataPath, option.ShellsContainerName, shellSettings.Name);
+                    var databaseFile = Path.Combine(databaseFolder, "yessql.db");
+                    fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, $"Data Source={databaseFile};Cache=Shared", logger);
+                }
+                else
+                {
+                    fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, dbOptions.ConnectionString, logger);
+                }
                 return fsql;
             });
         }
