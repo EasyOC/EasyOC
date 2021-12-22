@@ -21,7 +21,6 @@ namespace EasyOC.Core
         }
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAbpLazyServiceProvider>(sp=> new AbpLazyServiceProvider(sp));
             services.AddAutoMapper(GetType().Assembly); 
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档

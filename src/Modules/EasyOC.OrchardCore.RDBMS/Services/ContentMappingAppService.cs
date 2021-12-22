@@ -11,7 +11,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
     {
         private readonly IContentManagementAppService _contentManagementAppService;
 
-        public ContentMappingAppService(IContentManagementAppService contentManagementAppService, IServiceProvider serviceProvider):base(serviceProvider)
+        public ContentMappingAppService(IContentManagementAppService contentManagementAppService)
         {
             _contentManagementAppService = contentManagementAppService;
         }

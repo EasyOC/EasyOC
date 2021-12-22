@@ -41,8 +41,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             IMapper mapper,
             IContentManager contentManager, IContentFieldsValuePathProvider contentFieldsValuePathProvider,
             IContentDefinitionManager contentDefinitionManager, IMemoryCache memoryCache, IAuthorizationService authorizationService,
-            IServiceProvider serviceProvider,
-            IDeploymentManager deploymentManager) : base(serviceProvider)
+            IDeploymentManager deploymentManager)
         {
             this.mapper = mapper;
             _contentManager = contentManager;

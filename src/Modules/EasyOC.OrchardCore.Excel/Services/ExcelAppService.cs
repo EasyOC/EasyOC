@@ -24,7 +24,7 @@ namespace EasyOC.OrchardCore.Excel.Services
     {
         private readonly IContentManager _contentManager;
 
-        public ExcelAppService(IContentManager contentManager, IServiceProvider serviceProvider ) : base(serviceProvider)
+        public ExcelAppService(IContentManager contentManager) 
         {
             _contentManager = contentManager;
         }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -12,7 +11,6 @@ using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
 using Panda.DynamicWebApi;
 using Panda.DynamicWebApi.Attributes;
-using System;
 using System.Linq;
 using Volo.Abp.DependencyInjection;
 
@@ -21,11 +19,11 @@ namespace EasyOC.Core.Application
     [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
-        //protected IServiceProvider ServiceProvider { get; set; }
 
-        public AppServcieBase(IServiceProvider serviceProvider)
-        { 
-            LazyServiceProvider = serviceProvider.GetService<IAbpLazyServiceProvider>();
+        public AppServcieBase()
+        {
+            var serviceProvider = ShellScope.Current.ServiceProvider;
+            LazyServiceProvider = new AbpLazyServiceProvider(serviceProvider);
         }
 
         protected IAbpLazyServiceProvider LazyServiceProvider
