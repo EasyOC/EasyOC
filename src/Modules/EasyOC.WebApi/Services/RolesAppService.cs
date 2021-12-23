@@ -33,17 +33,17 @@ namespace EasyOC.WebApi.Services
         private readonly IDocumentStore _documentStore;
 
 
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
         public RolesAppService(IRoleService roleService, RoleManager<IRole> roleManager
-            , IEnumerable<IPermissionProvider> permissionProviders, Mapper mapper
+            , IEnumerable<IPermissionProvider> permissionProviders, IMapper mapper
             , ITypeFeatureProvider typeFeatureProvider, IDocumentStore documentStore
             , IAuthorizationService authorizationService, INotifier notifier)
         {
             _roleService = roleService;
             _roleManager = roleManager;
             _permissionProviders = permissionProviders;
-            this._mapper = mapper;
+            _mapper = mapper;
             _typeFeatureProvider = typeFeatureProvider;
             _documentStore = documentStore;
             _authorizationService = authorizationService;

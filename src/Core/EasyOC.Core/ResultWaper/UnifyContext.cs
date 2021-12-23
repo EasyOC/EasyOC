@@ -1,5 +1,4 @@
 ﻿using EasyOC.Core.ResultWaper.Extensions;
-using EasyOC.Core.ResultWaper.FriendlyException;
 using EasyOC.Core.ResultWaper.Internal;
 using EasyOC.Core.ResultWaper.Providers;
 using Furion.FriendlyException;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using OrchardCore.Environment.Shell.Scope;
 using System;
 using System.Linq;
@@ -185,6 +183,12 @@ namespace EasyOC.Core.Filter
             };
 
             return isDataResult;
+        }
+        public static object TakeExtras(this HttpContext httpContext)
+        {
+            object extras = null;
+            httpContext?.Items?.TryGetValue(UnifyResultExtrasKey, out extras);
+            return extras;
         }
     }
 }

@@ -1,16 +1,8 @@
-﻿using EasyOC.Core.ResultWaper.FriendlyException;
-using EasyOC.Core.ResultWaper.Handlers;
-using EasyOC.Core.ResultWaper.Validation;
+﻿using EasyOC.Core.ResultWaper.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyOC.Core.Filter
@@ -54,6 +46,7 @@ namespace EasyOC.Core.Filter
                     StatusCode = exceptionMetadata.StatusCode
                 };
             }
+
         }
     }
 

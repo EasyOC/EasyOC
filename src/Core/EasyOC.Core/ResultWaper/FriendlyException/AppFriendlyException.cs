@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace EasyOC.Core.ResultWaper.FriendlyException
+namespace EasyOC
 {
     /// <summary>
     /// 自定义友好异常类
