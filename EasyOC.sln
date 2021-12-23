@@ -113,6 +113,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.Applicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panda.DynamicWebApi", "src\Core\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj", "{0AD9E8F8-8133-44C5-82F3-CB889ED7434F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.WebApi", "src\Modules\EasyOC.WebApi\EasyOC.WebApi.csproj", "{F5A9D325-D9B4-4A24-9C9C-F385B98FA18E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -235,6 +237,10 @@ Global
 		{0AD9E8F8-8133-44C5-82F3-CB889ED7434F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AD9E8F8-8133-44C5-82F3-CB889ED7434F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AD9E8F8-8133-44C5-82F3-CB889ED7434F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5A9D325-D9B4-4A24-9C9C-F385B98FA18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5A9D325-D9B4-4A24-9C9C-F385B98FA18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5A9D325-D9B4-4A24-9C9C-F385B98FA18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5A9D325-D9B4-4A24-9C9C-F385B98FA18E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -271,6 +277,7 @@ Global
 		{0AB5AB7E-A9A1-405A-8F60-B39CECF81198} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{5B731B49-B228-4987-8782-173DE6DA1B68} = {F4BC6C51-2536-4524-B79C-66AA0E45ED34}
 		{0AD9E8F8-8133-44C5-82F3-CB889ED7434F} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
+		{F5A9D325-D9B4-4A24-9C9C-F385B98FA18E} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}
