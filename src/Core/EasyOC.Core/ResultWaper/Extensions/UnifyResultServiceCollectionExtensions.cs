@@ -8,6 +8,7 @@
 
 using EasyOC.Core.Filter;
 using EasyOC.Core.ResultWaper.Providers;
+using EasyOC.Core.ResultWaper.UnifyResult.Attributes;
 using Furion.UnifyResult;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;

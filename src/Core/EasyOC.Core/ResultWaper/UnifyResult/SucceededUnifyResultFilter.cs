@@ -40,9 +40,7 @@ namespace Furion.UnifyResult
             // 获取控制器信息
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
-            //// 判断是否支持 MVC 规范化处理
-            //if (!UnifyContext.CheckSupportMvcController(context.HttpContext, actionDescriptor, out _)) return;
-
+            if (typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo)) return;
             //// 判断是否跳过规范化处理
             if (UnifyContext.CheckSucceededNonUnify(actionDescriptor.MethodInfo, out var unifyResult)) return;
 
@@ -55,7 +53,7 @@ namespace Furion.UnifyResult
                 var result = unifyResult.OnValidateFailed(context, validationMetadata);
                 if (result != null) actionExecutedContext.Result = result;
 
-               }
+            }
             else
             {
                 IActionResult result = default;

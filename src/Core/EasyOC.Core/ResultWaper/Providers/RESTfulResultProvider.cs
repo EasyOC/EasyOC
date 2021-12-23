@@ -1,7 +1,7 @@
 
 using EasyOC.Core.Filter;
 using EasyOC.Core.ResultWaper.Internal;
-using EasyOC.Core.ResultWaper.Providers;
+using EasyOC.Core.ResultWaper.UnifyResult.Attributes;
 using EasyOC.Core.ResultWaper.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Threading.Tasks;
 
-namespace Furion.UnifyResult
+namespace EasyOC.Core.ResultWaper.Providers
 {
     /// <summary>
     /// RESTful 风格返回值

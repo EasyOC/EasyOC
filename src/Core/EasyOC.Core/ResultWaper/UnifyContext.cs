@@ -35,24 +35,7 @@ namespace EasyOC.Core.Filter
         /// </summary>
         internal static string UnifyResultExtrasKey = "UNIFY_RESULT_EXTRAS";
 
-        /// <summary>
-        /// 判断是否支持 Mvc 控制器规范化处理
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <param name="actionDescriptor"></param>
-        /// <param name="unifyResultSettings"></param>
-        /// <returns></returns>
-        //internal static bool CheckSupportMvcController(HttpContext httpContext, ControllerActionDescriptor actionDescriptor, out UnifyResultSettingsOptions unifyResultSettings)
-        //{
-        //    // 获取规范化配置选项
-        //    unifyResultSettings = httpContext.RequestServices.GetService<IOptions<UnifyResultSettingsOptions>>()?.Value;
-
-        //    // 如果未启用 MVC 规范化处理，则跳过
-        //    if (unifyResultSettings?.SupportMvcController == false && typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo)) return false;
-
-        //    return true;
-        //}
-
+      
         /// <summary>
         /// 检查请求成功是否进行规范化处理
         /// </summary>

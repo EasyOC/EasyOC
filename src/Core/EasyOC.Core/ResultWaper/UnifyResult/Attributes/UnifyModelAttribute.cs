@@ -1,8 +1,6 @@
-﻿
+﻿using System;
 
-using System;
-
-namespace Furion.UnifyResult
+namespace EasyOC.Core.ResultWaper.UnifyResult.Attributes
 {
     /// <summary>
     /// 规范化模型特性
