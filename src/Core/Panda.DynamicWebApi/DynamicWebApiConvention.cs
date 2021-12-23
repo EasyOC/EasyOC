@@ -57,7 +57,7 @@ namespace Panda.DynamicWebApi
             }
         }
 
-     
+
 
         private void ConfigureArea(ControllerModel controller, DynamicWebApiAttribute attr)
         {
@@ -299,21 +299,11 @@ namespace Panda.DynamicWebApi
 
             // Remove Prefix
             var verbKey = actionName.GetPascalOrCamelCaseFirstWord().ToLower();
-            if (AppConsts.HttpVerbs.ContainsKey(verbKey))
+            if (actionName.Length == verbKey.Length)
             {
-                if (actionName.Length == verbKey.Length)
-                {
-                    return "";
-                }
-                else
-                {
-                    return actionName.Substring(verbKey.Length);
-                }
+                return "";
             }
-            else
-            {
-                return actionName;
-            }
+            return actionName;
         }
 
         private void NormalizeSelectorRoutes(string areaName, string controllerName, ActionModel action)

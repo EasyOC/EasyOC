@@ -84,7 +84,6 @@ namespace EasyOC.WebApi.Services
 
             return model;
         }
-        [HttpPost("Create")]
         public async Task CreateRoleAsync(RoleDto model)
         {
 
@@ -149,7 +148,6 @@ namespace EasyOC.WebApi.Services
                 }
             }
         }
-
 
         public async Task UpdateRoleAsync(RoleDetailsDto input)
         {
