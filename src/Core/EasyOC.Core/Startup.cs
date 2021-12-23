@@ -54,6 +54,7 @@ namespace EasyOC.Core
                 options.ActionRouteFactory = new ServiceActionRouteFactory();
 
             });
+            services.AddUnifyResult();
         }
 
         public override void Configure(IApplicationBuilder app,
