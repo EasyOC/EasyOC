@@ -27,6 +27,7 @@ using EasyOC.WebApi.Dto;
 using OrchardCore.Users.ViewModels;
 using OrchardCore.ContentManagement.GraphQL;
 using OrchardCore.Users;
+using AutoMapper;
 
 namespace EasyOC.WebApi.Services
 {
@@ -37,14 +38,9 @@ namespace EasyOC.WebApi.Services
         private readonly ISession _session;
         private readonly IAuthorizationService _authorizationService;
         private readonly ISiteService _siteService;
-        private readonly IDisplayManager<User> _userDisplayManager;
         private readonly INotifier _notifier;
         private readonly IUserService _userService;
-        private readonly IUpdateModelAccessor _updateModelAccessor;
-
-        private readonly dynamic New;
-        private readonly IHtmlLocalizer H;
-        private readonly IStringLocalizer S;
+        private readonly IMapper _mapper;
 
         public UserAppService(
             IDisplayManager<User> userDisplayManager,
@@ -54,13 +50,8 @@ namespace EasyOC.WebApi.Services
             UserManager<IUser> userManager,
             IUserService userService,
             INotifier notifier,
-            ISiteService siteService,
-            IShapeFactory shapeFactory,
-            IHtmlLocalizer<UserAppService> htmlLocalizer,
-            IStringLocalizer<UserAppService> stringLocalizer,
-            IUpdateModelAccessor updateModelAccessor)
+            ISiteService siteService, IMapper mapper)
         {
-            _userDisplayManager = userDisplayManager;
             _signInManager = signInManager;
             _authorizationService = authorizationService;
             _session = session;
@@ -68,15 +59,12 @@ namespace EasyOC.WebApi.Services
             _notifier = notifier;
             _siteService = siteService;
             _userService = userService;
-            _updateModelAccessor = updateModelAccessor;
 
-            New = shapeFactory;
-            H = htmlLocalizer;
-            S = stringLocalizer;
+            _mapper = mapper;
         }
 
 
-        public async Task<PagedResultDto<User>> Index(UserIndexOptions options, PagerParameters pagerParameters)
+        public async Task<PagedResultDto<UserDto>> GetAllAsync(UserIndexOptions options, PagerParameters pagerParameters)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
@@ -128,13 +116,13 @@ namespace EasyOC.WebApi.Services
                 .ListAsync();
 
 
-            return new PagedResultDto<User>(count, results);
+            return new PagedResultDto<UserDto>(count, _mapper.Map<List<UserDto>>(results));
         }
 
 
 
         [HttpPost]
-        public async Task BulkAction(UserIndexOptions options, IEnumerable<string> itemIds)
+        public async Task BulkActionAsync(UserIndexOptions options, IEnumerable<string> itemIds)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
@@ -151,23 +139,23 @@ namespace EasyOC.WebApi.Services
                     case UsersBulkAction.Approve:
                         foreach (var item in checkedContentItems)
                         {
-                            var token = await _userManager.GenerateEmailConfirmationTokenAsync((IUser)item);
-                            await _userManager.ConfirmEmailAsync((IUser)item, token);
+                            var token = await _userManager.GenerateEmailConfirmationTokenAsync(item);
+                            await _userManager.ConfirmEmailAsync(item, token);
                             await _notifier.SuccessAsync(H["User {0} successfully approved.", item.UserName]);
                         }
                         break;
                     case UsersBulkAction.Delete:
                         foreach (var item in checkedContentItems)
                         {
-                            await _userManager.DeleteAsync((IUser)item);
-                            _notifier.Success(H["User {0} successfully deleted.", item.UserName]);
+                            await _userManager.DeleteAsync(item);
+                            await _notifier.SuccessAsync(H["User {0} successfully deleted.", item.UserName]);
                         }
                         break;
                     case UsersBulkAction.Disable:
                         foreach (var item in checkedContentItems)
                         {
                             item.IsEnabled = false;
-                            await _userManager.UpdateAsync((IUser)item);
+                            await _userManager.UpdateAsync(item);
                             await _notifier.SuccessAsync(H["User {0} successfully disabled.", item.UserName]);
                         }
                         break;
@@ -175,7 +163,7 @@ namespace EasyOC.WebApi.Services
                         foreach (var item in checkedContentItems)
                         {
                             item.IsEnabled = true;
-                            await _userManager.UpdateAsync((IUser)item);
+                            await _userManager.UpdateAsync(item);
                             await _notifier.SuccessAsync(H["User {0} successfully enabled.", item.UserName]);
                         }
                         break;
@@ -185,33 +173,24 @@ namespace EasyOC.WebApi.Services
             }
             //return RedirectToAction("Index");
         }
-        public async Task<IShape> Create()
-        {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
 
-            var shape = await _userDisplayManager.BuildEditorAsync(new User(), updater: _updateModelAccessor.ModelUpdater, isNew: true);
-
-            return shape;
-        }
 
         [HttpPost]
-        [ActionName(nameof(Create))]
-        public async Task CreatePost(User user)
+        public async Task CreateUserAsync(UserDto input)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
             //    return Forbid();
             //}
 
-            await _userService.CreateUserAsync(user, null, null);
-
-
-
-            await _notifier.SuccessAsync(H["User created successfully."]);
-
+            var user = await _userService.CreateUserAsync(_mapper.Map<User>(input), null, async (key, value) =>
+              {
+                  await _notifier.ErrorAsync(H[$"{key}:{value}"]);
+              });
+            if (user != null)
+            {
+                await _notifier.SuccessAsync(H["User created successfully."]);
+            }
             //return RedirectToAction(nameof(Index));
         }
 
@@ -244,14 +223,12 @@ namespace EasyOC.WebApi.Services
         }
 
         [HttpPost]
-        //[ActionName(nameof(Edit))]
-        public async Task EditPost(string id, string returnUrl)
+        public async Task UpdateAsync(UserDto userDto)
         {
+            string id;
             // When no id is provided we assume the user is trying to edit their own profile.
-            var editingOwnUser = false;
-            if (String.IsNullOrEmpty(id))
+            if (userDto.Id.HasValue)
             {
-                editingOwnUser = true;
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
                 //{
@@ -263,55 +240,33 @@ namespace EasyOC.WebApi.Services
             //    return Forbid();
             //}
 
-            var user = await _userManager.FindByIdAsync(id) as User;
+            var user = await _userManager.FindByIdAsync(userDto.Id.ToString()) as User;
             if (user == null)
             {
                 throw new ArgumentException($"Uesr:{user}Not Fount");
             }
-
-            var shape = await _userDisplayManager.UpdateEditorAsync(user, updater: _updateModelAccessor.ModelUpdater, isNew: false);
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return shape;
-            //}
-
+            _mapper.Map(userDto, user);
             var result = await _userManager.UpdateAsync(user);
-
-            foreach (var error in result.Errors)
+            if (result.Errors.Count() == 0)
             {
-                await Notifier.ErrorAsync(H[error.Description]);
+                if (String.Equals(User.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
+                {
+                    await _signInManager.RefreshSignInAsync(user);
+                }
+
+                await _notifier.SuccessAsync(H["User updated successfully."]);
             }
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return shape;
-            //}
-
-            if (String.Equals(User.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
+            else
             {
-                await _signInManager.RefreshSignInAsync(user);
+                foreach (var error in result.Errors)
+                {
+                    await Notifier.ErrorAsync(H[error.Description]);
+                }
             }
-
-            await _notifier.SuccessAsync(H["User updated successfully."]);
-
-            //if (editingOwnUser)
-            //{
-            //    if (!String.IsNullOrEmpty(returnUrl))
-            //    {
-            //        return LocalRedirect(returnUrl);
-            //    }
-
-            //    return RedirectToAction(nameof(Edit));
-            //}
-            //else
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
         }
 
         [HttpPost]
-        public async Task Delete(string id)
+        public async Task DeleteAsync(string id)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
@@ -346,23 +301,10 @@ namespace EasyOC.WebApi.Services
             //return RedirectToAction(nameof(Index));
         }
 
-        public async Task EditPassword(string id)
-        {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
 
-            var user = await _userManager.FindByIdAsync(id) as User;
-
-            if (user == null)
-            {
-                throw new ArgumentException($"Uesr:{user}Not Fount");
-            }
-        }
 
         [HttpPost]
-        public async Task EditPassword(UserDto model)
+        public async Task EditPasswordAsync(ResetUserPasswordtInput model)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
@@ -381,7 +323,7 @@ namespace EasyOC.WebApi.Services
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             if (await _userService.ResetPasswordAsync(model.Email, token, model.NewPassword,
                 async (a, b) =>
-                        { 
+                        {
                             await _notifier.ErrorAsync(H[$"{a}:{b}"]);
                         }
 

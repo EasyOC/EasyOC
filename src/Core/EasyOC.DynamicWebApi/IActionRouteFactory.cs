@@ -26,6 +26,7 @@ namespace EasyOC.DynamicWebApi
         {
             var apiPreFix = GetApiPreFix(action);
             var routeStr = $"{apiPreFix}/{areaName}/{controllerName}/{action.ActionName}".Replace("//", "/");
-            return routeStr;        }
+            return routeStr;
+        }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using EasyOC.Core.Dynamic;
+using EasyOC.Core.Swagger;
+using EasyOC.DynamicWebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Modules;
-using EasyOC.DynamicWebApi;
 using System;
 using System.IO;
-using Volo.Abp.DependencyInjection;
 
 namespace EasyOC.Core
 {
@@ -26,9 +26,12 @@ namespace EasyOC.Core
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
             {
+                options.UseInlineDefinitionsForEnums();
+                options.SchemaFilter<SwaggerEnumSchemaFilter>();
+                options.DocumentFilter<SwaggerDocumentFilter>();
                 options.CustomSchemaIds(type => type.FullName);
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
-                { Title = "EasyOC Manufacture ERP Dynamic WebApi", Version = "v1" });
+                { Title = "EasyOC Dynamic WebApi", Version = "v1" });
                 //options.SchemaGeneratorOptions.
                 // TODO:一定要返回true！
                 options.DocInclusionPredicate((docName, description) => true);
@@ -76,7 +79,7 @@ namespace EasyOC.Core
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC ManufactureERP WebApi");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
             });
         }
     }

@@ -13,15 +13,13 @@ namespace EasyOC.WebApi.Services
 {
      public interface IUserAppService
     {
-        Task<PagedResultDto<User>> Index(UserIndexOptions options, PagerParameters pagerParameters);
-        Task BulkAction(UserIndexOptions options, IEnumerable<string> itemIds);
-        Task<IShape> Create();
-        Task CreatePost(User user);
+        Task<PagedResultDto<UserDto>> GetAllAsync(UserIndexOptions options, PagerParameters pagerParameters);
+        Task BulkActionAsync(UserIndexOptions options, IEnumerable<string> itemIds);
+        Task CreateUserAsync(UserDto user);
         Task<User> GetUserAsync(string id);
-        Task EditPost(string id, string returnUrl);
-        Task Delete(string id);
-        Task EditPassword(string id);
-        Task EditPassword(UserDto model);
+        Task UpdateAsync(UserDto userDto);
+        Task DeleteAsync(string id);
+        Task EditPasswordAsync(ResetUserPasswordtInput model);
 
     }
 }

@@ -299,10 +299,10 @@ namespace EasyOC.DynamicWebApi
 
             // Remove Prefix
             var verbKey = actionName.GetPascalOrCamelCaseFirstWord().ToLower();
-            if (actionName.Length == verbKey.Length)
-            {
-                return "";
-            }
+            //if (actionName.Length == verbKey.Length)
+            //{
+            //    return "";
+            //}
             return actionName;
         }
 

@@ -19,7 +19,7 @@ namespace EasyOC.OrchardCore.RDBMS.Models
         //
         // 摘要:
         //     映射到 C# 类型
-        public Type CsType
+        public TypeDto CsType
         {
             get;
             set;
