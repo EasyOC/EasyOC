@@ -135,7 +135,7 @@
         },
         methods: {
             loadConnections() {
-                $.get('/api/RDBMS/AllDbConnecton', (data) => {
+                $.get(@Href('~/api/RDBMS/AllDbConnecton'), (data) => {
                     this.allDbConnecton = data;
                 })
             },
@@ -144,7 +144,7 @@
                     this.tableFilter.connectionConfigId = this.model.connectionConfigId;
                     this.tableFilter.filterText = filterText;
                     this.loading = true;
-                    $.get('/api/RDBMS/AllTables', this.tableFilter, (data, status) => {
+                    $.get(@Href('~/api/RDBMS/AllTables'), this.tableFilter, (data, status) => {
                         if (status != "success") {
                             console.log(status)
                             this.$message("查询失败")
@@ -159,7 +159,7 @@
             },
             generateRecipe() {
                 this.loading = true;
-                $.get('/api/RDBMS/GenerateRecipe', {
+                $.get(@Href('~/api/RDBMS/GenerateRecipe'), {
                     connectionConfigId: this.model.connectionConfigId,
                     tableName: this.model.tableName
                 }, (data, status) => {
@@ -183,7 +183,7 @@
                 console.log("this.recipeText", this.recipeText)
                 this.loading = true; 
                 $.ajax({
-                    url: '/api/RDBMS/ImportDeploymentPackage',
+                    url: @Href('~/api/RDBMS/ImportDeploymentPackage'),
                     type: "POST",
                     contentType: "application/json",//指定消息请求类型
                     data:JSON.stringify({
