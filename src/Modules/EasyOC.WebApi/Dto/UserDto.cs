@@ -111,11 +111,11 @@ namespace EasyOC.WebApi.Dto
         } = new List<UserClaim>();
 
 
-        public IList<UserLoginInfo> LoginInfos
-        {
-            get;
-            set;
-        } = new List<UserLoginInfo>();
+        //public IList<UserLoginInfo> LoginInfos
+        //{
+        //    get;
+        //    set;
+        //} = new List<UserLoginInfo>();
 
 
         //public IList<UserToken> UserTokens

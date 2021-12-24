@@ -10,9 +10,9 @@ namespace EasyOC.WebApi.Services
     {
         Task CreateRoleAsync(RoleDto model);
         Task DeleteRoleAsync(string id);
-        Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync();
-        Task<EditRoleViewModel> GetRoleDetailsAsync(string id);
+        Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync();
+        Task<RoleDetailsDto> GetRoleDetailsAsync(string id);
         Task<List<RoleDto>> GetRolesAsync();
-        Task UpdateRoleAsync(RoleDetailsDto input);
+        Task UpdateRoleAsync(UpdateRoleInput input);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrchardCore.Users.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,37 +7,43 @@ using System.Threading.Tasks;
 
 namespace EasyOC.WebApi.Dto
 {
-    public class RoleDetailsDto
+    public class UserIndexOptionsDto
     {
-        public string Name
+        public string SearchText
         {
             get;
             set;
         }
 
-        public string RoleDescription
+        public string OriginalSearchText
         {
             get;
             set;
         }
 
-        public IDictionary<string, IEnumerable<PermissionDto>> RoleCategoryPermissions
+        public UsersOrder Order
         {
             get;
             set;
         }
 
-        public IEnumerable<string> EffectivePermissions
+        public UsersFilter Filter
         {
             get;
             set;
         }
 
-      
-        public RoleDto Role
+        public string SelectedRole
         {
             get;
             set;
         }
+
+        public UsersBulkAction BulkAction
+        {
+            get;
+            set;
+        }
+ 
     }
 }

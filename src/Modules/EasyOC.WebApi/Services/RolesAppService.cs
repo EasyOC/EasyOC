@@ -56,7 +56,7 @@ namespace EasyOC.WebApi.Services
 
             return roles.Select(_mapper.Map<RoleDto>).ToList();
         }
-        public async Task<EditRoleViewModel> GetRoleDetailsAsync(string id)
+        public async Task<RoleDetailsDto> GetRoleDetailsAsync(string id)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
             //{
@@ -73,13 +73,13 @@ namespace EasyOC.WebApi.Services
             var installedPermissions = await GetInstalledPermissionsAsync();
             var allPermissions = installedPermissions.SelectMany(x => x.Value);
 
-            var model = new EditRoleViewModel
+            var model = new RoleDetailsDto
             {
-                Role = role,
+                Role = _mapper.Map<RoleDto>(role),
                 Name = role.RoleName,
                 RoleDescription = role.RoleDescription,
                 EffectivePermissions = await GetEffectivePermissions(role, allPermissions),
-                RoleCategoryPermissions = installedPermissions
+                RoleCategoryPermissions = _mapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions)
             };
 
             return model;
@@ -149,7 +149,7 @@ namespace EasyOC.WebApi.Services
             }
         }
 
-        public async Task UpdateRoleAsync(RoleDetailsDto input)
+        public async Task UpdateRoleAsync(UpdateRoleInput input)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
             //{
@@ -175,9 +175,7 @@ namespace EasyOC.WebApi.Services
             await _notifier.SuccessAsync(H["Role updated successfully."]);
 
         }
-
-
-        public async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
+        private async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
         {
             var installedPermissions = new Dictionary<string, IEnumerable<Permission>>();
             foreach (var permissionProvider in _permissionProviders)
@@ -205,6 +203,13 @@ namespace EasyOC.WebApi.Services
             }
 
             return installedPermissions;
+        }
+
+        public async Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync()
+        {
+            var installedPermissions = await GetInstalledPermissionsAsync();
+
+            return _mapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions);
         }
 
         private async Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions)

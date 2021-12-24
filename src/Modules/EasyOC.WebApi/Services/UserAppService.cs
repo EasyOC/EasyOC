@@ -64,7 +64,7 @@ namespace EasyOC.WebApi.Services
         }
 
 
-        public async Task<PagedResultDto<UserDto>> GetAllAsync(UserIndexOptions options, PagerParameters pagerParameters)
+        public async Task<PagedResultDto<UserDto>> GetAllAsync(UserIndexOptionsDto options, PagerParameters pagerParameters)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
@@ -122,7 +122,7 @@ namespace EasyOC.WebApi.Services
 
 
         [HttpPost]
-        public async Task BulkActionAsync(UserIndexOptions options, IEnumerable<string> itemIds)
+        public async Task BulkActionAsync(UserIndexOptionsDto options, IEnumerable<string> itemIds)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             //{
@@ -194,7 +194,7 @@ namespace EasyOC.WebApi.Services
             //return RedirectToAction(nameof(Index));
         }
 
-        public async Task<User> GetUserAsync(string id)
+        public async Task<UserDto> GetUserAsync(string id)
         {
             // When no id is provided we assume the user is trying to edit their own profile.
             if (String.IsNullOrEmpty(id))
@@ -219,7 +219,7 @@ namespace EasyOC.WebApi.Services
                 throw new ArgumentException("Not Fount");
             }
 
-            return user;
+            return _mapper.Map<UserDto>(user);
         }
 
         [HttpPost]

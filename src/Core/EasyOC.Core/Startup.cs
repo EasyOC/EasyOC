@@ -14,11 +14,7 @@ namespace EasyOC.Core
     [RequireFeatures(Constants.EasyOCCoreModuleId)]
     public class Startup : StartupBase
     {
-        private readonly IShellConfiguration _shellConfiguration;
-        public Startup(IShellConfiguration shellConfiguration)
-        {
-            _shellConfiguration = shellConfiguration;
-        }
+      
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(GetType().Assembly); 
@@ -27,9 +23,15 @@ namespace EasyOC.Core
             services.AddSwaggerGen(options =>
             {
                 options.UseInlineDefinitionsForEnums();
-                options.SchemaFilter<SwaggerEnumSchemaFilter>();
                 options.DocumentFilter<SwaggerDocumentFilter>();
-                options.CustomSchemaIds(type => type.FullName);
+                //options.CustomSchemaIds(type => type.Name); 
+                options.ParameterFilter<SwaggerEnumParameterFilter>();
+                options.SchemaFilter<SwaggerEnumSchemaFilter>();
+                options.OperationFilter<SwaggerOperationIdFilter>();
+                options.OperationFilter<SwaggerOperationFilter>();
+                options.CustomDefaultSchemaIdSelector();
+
+
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
                 { Title = "EasyOC Dynamic WebApi", Version = "v1" });
                 //options.SchemaGeneratorOptions.
@@ -48,7 +50,7 @@ namespace EasyOC.Core
                         options.IncludeXmlComments(xmlPath);
                     }
                 }
-            });
+            }).AddSwaggerGenNewtonsoftSupport(); 
             //自定义配置
             services.AddDynamicWebApi((options) =>
             {

@@ -11,10 +11,8 @@ namespace EasyOC.WebApi.Dto
     {
         public string Email { get; set; }
 
-        [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
-        [DataType(DataType.Password)]
         public string PasswordConfirmation { get; set; }
 
         public string ResetToken { get; set; }

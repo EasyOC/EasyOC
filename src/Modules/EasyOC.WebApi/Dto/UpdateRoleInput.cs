@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using OrchardCore.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace EasyOC.WebApi.Dto
 {
-    public class RoleDetailsDto
+    [AutoMap(typeof(Role),ReverseMap = true)]
+    public class UpdateRoleInput
     {
-        public string Name
+        public string RoleName
         {
             get;
             set;
@@ -20,23 +23,16 @@ namespace EasyOC.WebApi.Dto
             set;
         }
 
-        public IDictionary<string, IEnumerable<PermissionDto>> RoleCategoryPermissions
+        public string NormalizedRoleName
         {
             get;
             set;
         }
 
-        public IEnumerable<string> EffectivePermissions
+        public List<RoleClaimDto> RoleClaims
         {
             get;
             set;
-        }
-
-      
-        public RoleDto Role
-        {
-            get;
-            set;
-        }
+        } = new List<RoleClaimDto>();
     }
 }

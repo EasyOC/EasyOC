@@ -1,60 +1,62 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-		<!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
-		<OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
+  <PropertyGroup>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
+    <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
 
-	</PropertyGroup>
+  </PropertyGroup>
 
-	<ItemGroup>
-	  <Compile Remove="DependencyInjection\**" />
-	  <Compile Remove="Workflow\**" />
-	  <EmbeddedResource Remove="DependencyInjection\**" />
-	  <EmbeddedResource Remove="Workflow\**" />
-	  <None Remove="DependencyInjection\**" />
-	  <None Remove="Workflow\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="DependencyInjection\**" />
+    <Compile Remove="Workflow\**" />
+    <EmbeddedResource Remove="DependencyInjection\**" />
+    <EmbeddedResource Remove="Workflow\**" />
+    <None Remove="DependencyInjection\**" />
+    <None Remove="Workflow\**" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Compile Remove="AutofacModule.cs" />
-	  <Compile Remove="Extensions\Check.cs" />
-	  <Compile Remove="Extensions\DictionaryExtensions.cs" />
-	  <Compile Remove="Extensions\EnumerableExtensions.cs" />
-	  <Compile Remove="Extensions\StringExtensions.cs" />
-	  <Compile Remove="RunAs.cs" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="AutofacModule.cs" />
+    <Compile Remove="Extensions\Check.cs" />
+    <Compile Remove="Extensions\DictionaryExtensions.cs" />
+    <Compile Remove="Extensions\EnumerableExtensions.cs" />
+    <Compile Remove="Extensions\StringExtensions.cs" />
+    <Compile Remove="RunAs.cs" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
 
-	<ItemGroup>
-		<!--<PackageReference Include="Autofac" Version="6.3.0" />-->
-		<!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
-		<!--<PackageReference Include="EasyOC.DynamicWebApi" />-->
-		<!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-		<PackageReference Include="Volo.Abp.Core" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Html" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" />
+  <ItemGroup>
+    <!--<PackageReference Include="Autofac" Version="6.3.0" />-->
+    <!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
+    <!--<PackageReference Include="EasyOC.DynamicWebApi" />-->
+    <!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
 
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
-	</ItemGroup>
+    <PackageReference Include="Volo.Abp.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Html" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" />
+
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
+  </ItemGroup>
 
 </Project>
 
