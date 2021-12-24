@@ -1,8 +1,8 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.Models;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
-using Panda.DynamicWebApi;
-using Panda.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi;
+using EasyOC.DynamicWebApi.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 

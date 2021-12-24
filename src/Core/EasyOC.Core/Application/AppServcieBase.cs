@@ -9,8 +9,8 @@ using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
-using Panda.DynamicWebApi;
-using Panda.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi;
+using EasyOC.DynamicWebApi.Attributes;
 using System.Linq;
 using Volo.Abp.DependencyInjection;
 

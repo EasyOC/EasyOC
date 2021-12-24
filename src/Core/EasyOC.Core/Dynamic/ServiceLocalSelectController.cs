@@ -1,5 +1,5 @@
-﻿using Panda.DynamicWebApi;
-using Panda.DynamicWebApi.Attributes;
+﻿using EasyOC.DynamicWebApi;
+using EasyOC.DynamicWebApi.Attributes;
 using System;
 using System.Reflection;
 

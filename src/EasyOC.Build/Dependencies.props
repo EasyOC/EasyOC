@@ -26,7 +26,7 @@
 		<PackageManagement Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageManagement Include="NJsonSchema" Version="10.5.2" />
 		<PackageManagement Include="NSwag.AspNetCore" Version="13.13.2" />
-		<PackageManagement Include="Panda.DynamicWebApi" Version="1.1.2" />
+		<PackageManagement Include="EasyOC.DynamicWebApi" Version="1.1.2" />
 		<PackageManagement Include="FreeSql.Provider.MySql" Version="2.6.100" />
 		<PackageManagement Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
 		<PackageManagement Include="FreeSql.Provider.SqlServer" Version="2.6.100" />

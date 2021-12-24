@@ -11,7 +11,7 @@ using OrchardCore.Roles.ViewModels;
 using OrchardCore.Security;
 using OrchardCore.Security.Permissions;
 using OrchardCore.Security.Services;
-using Panda.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

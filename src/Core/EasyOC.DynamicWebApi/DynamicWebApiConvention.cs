@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
-using Panda.DynamicWebApi.Attributes;
-using Panda.DynamicWebApi.Helpers;
+using EasyOC.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi.Helpers;
 
-namespace Panda.DynamicWebApi
+namespace EasyOC.DynamicWebApi
 {
     public class DynamicWebApiConvention : IApplicationModelConvention
     {

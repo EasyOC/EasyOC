@@ -1,9 +1,9 @@
-﻿using Panda.DynamicWebApi.Helpers;
+﻿using EasyOC.DynamicWebApi.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Panda.DynamicWebApi
+namespace EasyOC.DynamicWebApi
 {
     public static class AppConsts
     {

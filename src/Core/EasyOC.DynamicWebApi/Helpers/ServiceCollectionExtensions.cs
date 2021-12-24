@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Panda.DynamicWebApi.Helpers
+namespace EasyOC.DynamicWebApi.Helpers
 {
     internal static class ServiceCollectionExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace Panda.DynamicWebApi
+namespace EasyOC.DynamicWebApi
 {
     public interface IActionRouteFactory
     {

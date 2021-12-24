@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Panda.DynamicWebApi.Helpers
+namespace EasyOC.DynamicWebApi.Helpers
 {
     internal static class TypeHelper
     {

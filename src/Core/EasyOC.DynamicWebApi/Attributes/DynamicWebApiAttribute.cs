@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Panda.DynamicWebApi.Helpers;
+using EasyOC.DynamicWebApi.Helpers;
 
-namespace Panda.DynamicWebApi.Attributes
+namespace EasyOC.DynamicWebApi.Attributes
 {
 
     [Serializable]

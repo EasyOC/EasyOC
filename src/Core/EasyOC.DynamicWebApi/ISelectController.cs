@@ -1,9 +1,9 @@
-﻿using Panda.DynamicWebApi.Attributes;
-using Panda.DynamicWebApi.Helpers;
+﻿using EasyOC.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi.Helpers;
 using System;
 using System.Reflection;
 
-namespace Panda.DynamicWebApi
+namespace EasyOC.DynamicWebApi
 {
     public interface ISelectController
     {

@@ -33,7 +33,7 @@
 	<ItemGroup>
 		<!--<PackageReference Include="Autofac" Version="6.3.0" />-->
 		<!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
-		<!--<PackageReference Include="Panda.DynamicWebApi" />-->
+		<!--<PackageReference Include="EasyOC.DynamicWebApi" />-->
 		<!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="Volo.Abp.Core" />
@@ -53,7 +53,7 @@
 
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Panda.DynamicWebApi\Panda.DynamicWebApi.csproj" />
+	  <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
 	</ItemGroup>
 
 </Project>

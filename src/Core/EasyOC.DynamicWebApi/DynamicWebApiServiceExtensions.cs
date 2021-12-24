@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Panda.DynamicWebApi.Helpers;
+using EasyOC.DynamicWebApi.Helpers;
 
-namespace Panda.DynamicWebApi
+namespace EasyOC.DynamicWebApi
 {
     /// <summary>
     /// Add Dynamic WebApi

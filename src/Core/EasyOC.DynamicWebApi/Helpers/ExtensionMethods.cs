@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Panda.DynamicWebApi.Helpers
+namespace EasyOC.DynamicWebApi.Helpers
 {
     internal static class ExtensionMethods
     {

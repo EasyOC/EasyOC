@@ -1,4 +1,4 @@
-﻿namespace Panda.DynamicWebApi
+﻿namespace EasyOC.DynamicWebApi
 {
     /// <summary>
     /// Specifies the dynamic webapi options for the assembly.

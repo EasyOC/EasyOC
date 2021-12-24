@@ -1,4 +1,4 @@
-﻿namespace Panda.DynamicWebApi
+﻿namespace EasyOC.DynamicWebApi
 {
     public interface IDynamicWebApi
     {

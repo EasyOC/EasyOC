@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Panda.DynamicWebApi;
-using Panda.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi;
+using EasyOC.DynamicWebApi.Attributes;
 using System.Reflection;
 
 namespace EasyOC.Core.Dynamic

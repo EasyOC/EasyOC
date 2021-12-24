@@ -17,7 +17,7 @@ using OrchardCore.ContentManagement.Records;
 using OrchardCore.Deployment.Services;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Mvc.Utilities;
-using Panda.DynamicWebApi.Attributes;
+using EasyOC.DynamicWebApi.Attributes;
 using System;
 using System.Collections.Generic;
 using System.IO;

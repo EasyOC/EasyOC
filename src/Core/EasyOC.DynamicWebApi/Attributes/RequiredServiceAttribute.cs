@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Panda.DynamicWebApi.Attributes
+namespace EasyOC.DynamicWebApi.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class RequiredServiceAttribute : Attribute

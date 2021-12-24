@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Modules;
-using Panda.DynamicWebApi;
+using EasyOC.DynamicWebApi;
 using System;
 using System.IO;
 using Volo.Abp.DependencyInjection;
