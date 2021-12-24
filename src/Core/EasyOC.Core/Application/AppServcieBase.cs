@@ -1,5 +1,6 @@
 ﻿using Jint;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
@@ -12,6 +13,7 @@ using OrchardCore.Scripting.JavaScript;
 using EasyOC.DynamicWebApi;
 using EasyOC.DynamicWebApi.Attributes;
 using System.Linq;
+using System.Security.Claims;
 using Volo.Abp.DependencyInjection;
 
 namespace EasyOC.Core.Application
@@ -29,14 +31,16 @@ namespace EasyOC.Core.Application
         protected IAbpLazyServiceProvider LazyServiceProvider
         {
             get; set;
-        } 
+        }
+        protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
+        protected ClaimsPrincipal User => HttpContextAccessor.HttpContext.User;
 
         #region Logger
         private ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetRequiredService<ILoggerFactory>();
         protected ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
         #endregion
-         
+
         protected INotifier Notifier => LazyServiceProvider.LazyGetRequiredService<INotifier>();
 
 
