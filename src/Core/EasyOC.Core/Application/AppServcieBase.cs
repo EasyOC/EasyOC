@@ -14,7 +14,7 @@ using EasyOC.DynamicWebApi;
 using EasyOC.DynamicWebApi.Attributes;
 using System.Linq;
 using System.Security.Claims;
-using Volo.Abp.DependencyInjection;
+using EasyOC.Core.DependencyInjection;
 
 namespace EasyOC.Core.Application
 {
@@ -25,10 +25,10 @@ namespace EasyOC.Core.Application
         public AppServcieBase()
         {
             var serviceProvider = ShellScope.Current.ServiceProvider;
-            LazyServiceProvider = new AbpLazyServiceProvider(serviceProvider);
+            LazyServiceProvider = new EasyOCLazyServiceProvider(serviceProvider);
         }
 
-        protected IAbpLazyServiceProvider LazyServiceProvider
+        protected IEasyOCLazyServiceProvider LazyServiceProvider
         {
             get; set;
         }

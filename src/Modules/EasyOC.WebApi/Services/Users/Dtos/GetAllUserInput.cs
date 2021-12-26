@@ -7,19 +7,14 @@ using System.Threading.Tasks;
 
 namespace EasyOC.WebApi.Dto
 {
-    public class UserIndexOptionsDto
+    public class GetAllUserInput : PagedReqest
     {
         public string SearchText
         {
             get;
             set;
         }
-
-        public string OriginalSearchText
-        {
-            get;
-            set;
-        }
+         
 
         public UsersOrder Order
         {
@@ -27,23 +22,12 @@ namespace EasyOC.WebApi.Dto
             set;
         }
 
-        public UsersFilter Filter
-        {
-            get;
-            set;
-        }
 
         public string SelectedRole
         {
             get;
             set;
-        }
+        } 
 
-        public UsersBulkAction BulkAction
-        {
-            get;
-            set;
-        }
- 
     }
 }

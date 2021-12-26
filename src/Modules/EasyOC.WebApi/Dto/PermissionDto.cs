@@ -11,11 +11,10 @@ namespace EasyOC.WebApi.Dto
     [AutoMap(typeof(Permission))]
     public class PermissionDto
     {
-        public const string ClaimType = "Permission";
 
         public string Name
         {
-            get;
+            get;set;
         }
 
         public string Description
@@ -32,7 +31,7 @@ namespace EasyOC.WebApi.Dto
 
         public IEnumerable<PermissionDto> ImpliedBy
         {
-            get;
+            get;set;
         }
     }
 }

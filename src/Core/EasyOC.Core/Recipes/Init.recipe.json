@@ -141,6 +141,7 @@
       "AllowClientCredentialsFlow": true,
       "AllowAuthorizationCodeFlow": true,
       "AllowRefreshTokenFlow": true,
+      "DisableAccessTokenEncryption": true,
       "AllowImplicitFlow": false,
       "AllowLogoutEndpoint": true,
       "AuthorizationEndpointPath": "http://localhost:2919/connect/authorize",

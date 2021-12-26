@@ -18,7 +18,6 @@ namespace EasyOC.Core
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(GetType().Assembly); 
-
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
             {
@@ -30,7 +29,7 @@ namespace EasyOC.Core
                 options.OperationFilter<SwaggerOperationIdFilter>();
                 options.OperationFilter<SwaggerOperationFilter>();
                 options.CustomDefaultSchemaIdSelector();
-
+                
 
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
                 { Title = "EasyOC Dynamic WebApi", Version = "v1" });

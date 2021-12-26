@@ -13,8 +13,8 @@ namespace EasyOC.WebApi.Services
 {
      public interface IUserAppService
     {
-        Task<PagedResultDto<UserDto>> GetAllAsync(UserIndexOptionsDto options, PagerParameters pagerParameters);
-        Task BulkActionAsync(UserIndexOptionsDto options, IEnumerable<string> itemIds);
+        Task<PagedResultDto<UserDto>> GetAllAsync(GetAllUserInput input);
+        Task BulkActionAsync(UsersBulkActionInput BulkAction);
         Task CreateUserAsync(UserDto user);
         Task<UserDto> GetUserAsync(string id);
         Task UpdateAsync(UserDto userDto);

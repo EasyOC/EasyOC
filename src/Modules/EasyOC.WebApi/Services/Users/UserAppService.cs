@@ -1,33 +1,28 @@
-﻿using System;
+﻿using AutoMapper;
+using EasyOC.Core.Application;
+using EasyOC.WebApi.Dto;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using OrchardCore.AuditTrail.Indexes;
+using OrchardCore.AuditTrail.Models;
+using OrchardCore.DisplayManagement.Notify;
+using OrchardCore.Settings;
+using OrchardCore.Users;
+using OrchardCore.Users.AuditTrail.Registration;
+using OrchardCore.Users.AuditTrail.Services;
+using OrchardCore.Users.Indexes;
+using OrchardCore.Users.Models;
+using OrchardCore.Users.Services;
+using OrchardCore.Users.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using EasyOC.Core.Application;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Localization;
-using OrchardCore.DisplayManagement;
-using OrchardCore.DisplayManagement.ModelBinding;
-using OrchardCore.DisplayManagement.Notify;
-using OrchardCore.Navigation;
-using OrchardCore.Routing;
-using OrchardCore.Settings;
-using OrchardCore.Users.Indexes;
-using OrchardCore.Users.Models;
-using OrchardCore.Users.Services;
 using YesSql;
 using YesSql.Services;
-using System.Linq.Dynamic.Core;
-using EasyOC.WebApi.Dto;
-using OrchardCore.Users.ViewModels;
-using OrchardCore.ContentManagement.GraphQL;
-using OrchardCore.Users;
-using AutoMapper;
+using Permissions = OrchardCore.Users.Permissions;
 
 namespace EasyOC.WebApi.Services
 {
@@ -43,7 +38,6 @@ namespace EasyOC.WebApi.Services
         private readonly IMapper _mapper;
 
         public UserAppService(
-            IDisplayManager<User> userDisplayManager,
             SignInManager<IUser> signInManager,
             IAuthorizationService authorizationService,
             ISession session,
@@ -59,45 +53,42 @@ namespace EasyOC.WebApi.Services
             _notifier = notifier;
             _siteService = siteService;
             _userService = userService;
-
             _mapper = mapper;
         }
 
-
-        public async Task<PagedResultDto<UserDto>> GetAllAsync(UserIndexOptionsDto options, PagerParameters pagerParameters)
+        public async Task<PagedResultDto<UserDto>> GetAllAsync(GetAllUserInput input)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            var authUser = new User();
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, authUser))
+            {
+              throw new UnauthorizedAccessException();
+            }
+           
+
+            var users = YesSession.Query<User, UserIndex>();
+
+            //switch (options.Filter)
             //{
-            //    return Forbid();
+            //    case UsersFilter.Approved:
+            //        users = users.Where(u => u.RegistrationStatus == UserStatus.Approved);
+            //        break;
+            //    case UsersFilter.Pending:
+            //        users = users.Where(u => u.RegistrationStatus == UserStatus.Pending);
+            //        break;
+            //    case UsersFilter.EmailPending:
+            //        //users = users.Where(u => u.EmailStatus == UserStatus.Pending);
+            //        break;
             //}
 
-            var siteSettings = await _siteService.GetSiteSettingsAsync();
-            var pager = new Pager(pagerParameters, siteSettings.PageSize);
-
-            var users = _session.Query<User, UserIndex>();
-
-            switch (options.Filter)
+            if (!string.IsNullOrWhiteSpace(input.SearchText))
             {
-                case UsersFilter.Approved:
-                    //users = users.Where(u => u.RegistrationStatus == UserStatus.Approved);
-                    break;
-                case UsersFilter.Pending:
-                    //users = users.Where(u => u.RegistrationStatus == UserStatus.Pending);
-                    break;
-                case UsersFilter.EmailPending:
-                    //users = users.Where(u => u.EmailStatus == UserStatus.Pending);
-                    break;
-            }
-
-            if (!string.IsNullOrWhiteSpace(options.SearchText))
-            {
-                var normalizedSearchUserName = _userManager.NormalizeName(options.SearchText);
-                var normalizedSearchEMail = _userManager.NormalizeEmail(options.SearchText);
+                var normalizedSearchUserName = _userManager.NormalizeName(input.SearchText);
+                var normalizedSearchEMail = _userManager.NormalizeEmail(input.SearchText);
 
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
-            switch (options.Order)
+            switch (input.Order)
             {
                 case UsersOrder.Name:
                     users = users.OrderBy(u => u.NormalizedUserName);
@@ -111,28 +102,32 @@ namespace EasyOC.WebApi.Services
             var count = await users.CountAsync();
 
             var results = await users
-                .Skip(pager.GetStartIndex())
-                .Take(pager.PageSize)
+                .Skip(input.GetStartIndex())
+                .Take(input.PageSize)
                 .ListAsync();
 
+            YesSession.Query<AuditTrailEvent, AuditTrailEventIndex>()
+                //.IsIn<>(x=>x.)
+                .Where(x => x.Category == UserRegistrationAuditTrailEventConfiguration.User
+                && x.Name == UserAuditTrailEventConfiguration.Created);
 
             return new PagedResultDto<UserDto>(count, _mapper.Map<List<UserDto>>(results));
         }
 
 
 
-        [HttpPost]
-        public async Task BulkActionAsync(UserIndexOptionsDto options, IEnumerable<string> itemIds)
+        public async Task BulkActionAsync(UsersBulkActionInput bulkActionInput)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
-
-            if (itemIds?.Count() > 0)
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers))
             {
-                var checkedContentItems = await _session.Query<User, UserIndex>().Where(x => x.UserId.IsIn(itemIds)).ListAsync();
-                switch (options.BulkAction)
+                throw new UnauthorizedAccessException();
+            }
+
+            if (bulkActionInput.ItemIds?.Count() > 0)
+            {
+                var checkedContentItems = await _session.Query<User, UserIndex>()
+                    .Where(x => x.UserId.IsIn(bulkActionInput.ItemIds)).ListAsync();
+                switch (bulkActionInput.BulkAction)
                 {
                     case UsersBulkAction.None:
                         break;
@@ -178,10 +173,10 @@ namespace EasyOC.WebApi.Services
         [HttpPost]
         public async Task CreateUserAsync(UserDto input)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            {
+                throw new UnauthorizedAccessException();
+            }
 
             var user = await _userService.CreateUserAsync(_mapper.Map<User>(input), null, async (key, value) =>
               {
@@ -200,23 +195,23 @@ namespace EasyOC.WebApi.Services
             if (String.IsNullOrEmpty(id))
             {
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
-                //{
-                //    return Forbid();
-                //}
+                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
+                {
+                    throw new UnauthorizedAccessException();
+                }
             }
             else
             {
-                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ApiViewContent))
+                if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
                 {
-                    throw new ArgumentException("Not Fount");
+                    throw new EntryPointNotFoundException();
                 }
             }
 
             var user = await _userManager.FindByIdAsync(id) as User;
             if (user == null)
             {
-                throw new ArgumentException("Not Fount");
+                throw new EntryPointNotFoundException();
             }
 
             return _mapper.Map<UserDto>(user);
@@ -230,15 +225,15 @@ namespace EasyOC.WebApi.Services
             if (userDto.Id.HasValue)
             {
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
-                //{
-                //    return Forbid();
-                //}
+                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
+                {
+                    throw new UnauthorizedAccessException();
+                }
             }
-            //else if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
+            else if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            {
+                throw new EntryPointNotFoundException();
+            }
 
             var user = await _userManager.FindByIdAsync(userDto.Id.ToString()) as User;
             if (user == null)
@@ -268,10 +263,11 @@ namespace EasyOC.WebApi.Services
         [HttpPost]
         public async Task DeleteAsync(string id)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            {
+                throw new UnauthorizedAccessException();
+
+            }
 
             var user = await _userManager.FindByIdAsync(id) as User;
 
@@ -306,10 +302,11 @@ namespace EasyOC.WebApi.Services
         [HttpPost]
         public async Task EditPasswordAsync(ResetUserPasswordtInput model)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            //{
-            //    return Forbid();
-            //}
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            {
+                throw new UnauthorizedAccessException("Not Fount");
+
+            }
 
             var user = await _userManager.FindByEmailAsync(model.Email) as User;
 
@@ -330,9 +327,7 @@ namespace EasyOC.WebApi.Services
             ))
             {
                 await _notifier.SuccessAsync(H["Password updated correctly."]);
-                //return RedirectToAction(nameof(Index));
             }
-            //}
         }
 
 
