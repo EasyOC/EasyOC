@@ -18,7 +18,7 @@ using EasyOC.Core.DependencyInjection;
 
 namespace EasyOC.Core.Application
 {
-    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous]
+    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous, Authorize(AuthenticationSchemes = "Api")]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
 

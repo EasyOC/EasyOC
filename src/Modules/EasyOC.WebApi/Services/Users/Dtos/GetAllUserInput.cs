@@ -14,9 +14,14 @@ namespace EasyOC.WebApi.Dto
             get;
             set;
         }
-         
+
 
         public UsersOrder Order
+        {
+            get;
+            set;
+        }
+        public UsersFilter Filter
         {
             get;
             set;
