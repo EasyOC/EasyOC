@@ -12,20 +12,19 @@ namespace EasyOC.WebApi.Dto
 
     public class PagedAndSortedRequest : PagedReqest
     {
-        [JsonProperty(PropertyName = "field")]
         public string SortField { get; set; }
         [JsonProperty(PropertyName = "order")]
-        public QueryOrder? SortOrder { get; set; }
+        public string SortOrder { get; set; }
         public bool HasOrder()
         {
-             return SortOrder.HasValue && !string.IsNullOrEmpty(SortField); 
+            return !string.IsNullOrEmpty(SortOrder) && !string.IsNullOrEmpty(SortField);
         }
-         
+
         public string GetOrderStr()
         {
             if (HasOrder())
             {
-                if (SortOrder == QueryOrder.Ascend)
+                if (SortOrder == "ascend")
                 {
                     return $"{SortField} asc";
 
@@ -39,10 +38,6 @@ namespace EasyOC.WebApi.Dto
         }
     }
 
-    public enum QueryOrder
-    {
-        Ascend,
-        Descend,
-    }
+
 
 }
