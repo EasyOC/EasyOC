@@ -11,64 +11,77 @@ namespace EasyOC.OrchardCore.RDBMS.Services
     {
         static IdleBus<IFreeSql> ib = new IdleBus<IFreeSql>(TimeSpan.FromMinutes(10));
 
-        public static IFreeSql GetFreeSql(string providerName, string connectionString, ILogger logger = null)
+        public static IFreeSql GetFreeSql(string providerName, string connectionString, ILogger logger = null, string tablePrefix = default)
         {
-            return GetFreeSql(Enum.Parse<DataType>(providerName), connectionString, logger);
+            return GetFreeSql(Enum.Parse<DataType>(providerName), connectionString, logger, tablePrefix);
         }
-        public static IFreeSql GetFreeSql(DataType dataType, string connectionString, ILogger logger = null)
+        public static IFreeSql GetFreeSql(DataType dataType, string connectionString, ILogger logger = null, string tablePrefix = default)
         {
-
-            if (ib.Exists(connectionString))
+            var ibKey = $"{connectionString}_{tablePrefix}";
+            if (ib.Exists(ibKey))
             {
-                var fsq = ib.Get(connectionString);
+                var fsq = ib.Get(ibKey);
                 if (fsq.Ado.MasterPool.IsAvailable && fsq.Ado.ExecuteConnectTest())
                 {
                     return fsq;
                 }
                 else
                 {
-                    ib.TryRemove(connectionString, true);
+                    ib.TryRemove(ibKey, true);
                 }
             }
 
 
             //按照需要添加其他数据库的引用 
-            ib.Register(connectionString,
-                () => new FreeSqlBuilder().UseConnectionString(dataType, connectionString)
-                    .UseMonitorCommand(executing =>
+            ib.Register(ibKey,
+                () =>
+                {
+                    var fsql = new FreeSqlBuilder().UseConnectionString(dataType, ibKey)
+                                       .UseMonitorCommand(executing =>
+                                       {
+                                           executing.CommandTimeout = 6000;
+
+                                       }, executed: (cmd, traceLog) =>
+                                       {
+                                           var logStr = new StringBuilder();
+                                           if (cmd.Parameters.Count > 0)
+                                           {
+                                               logStr.AppendLine($"--Parameters: \r\ndeclare ");
+                                               var tempArray = new List<string>();
+                                               foreach (DbParameter item in cmd.Parameters)
+                                               {
+                                                   tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
+                                               }
+                                               logStr.AppendLine(string.Join(",\r\n", tempArray));
+                                           }
+
+                                           logStr.AppendLine($"\n{traceLog}\r\n");
+
+                                           var result = logStr.ToString();
+                                           Console.WriteLine(result);
+                                           if (logger != null)
+                                           {
+                                               if (logger.IsEnabled(LogLevel.Debug))
+                                               {
+                                                   logger.LogDebug(result);
+                                               }
+                                           }
+                                       })
+                                       .Build();
+                    if (!string.IsNullOrEmpty(tablePrefix))
                     {
-                        executing.CommandTimeout = 6000;
-
-                    }, executed: (cmd, traceLog) =>
-                    {
-                        var logStr = new StringBuilder();
-                        if (cmd.Parameters.Count > 0)
+                        fsql.Aop.ConfigEntity += (s, e) =>
                         {
-                            logStr.AppendLine($"--Parameters: \r\ndeclare ");
-                            var tempArray = new List<string>();
-                            foreach (DbParameter item in cmd.Parameters)
-                            {
-                                tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
-                            }
-                            logStr.AppendLine(string.Join(",\r\n", tempArray));
-                        }
+                            e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, e.ModifyResult.Name); //表名前缀
+                        };
+                    }
+                    return fsql;
+                }
 
-                        logStr.AppendLine($"\n{traceLog}\r\n");
 
-                        var result = logStr.ToString();
-                        Console.WriteLine(result);
-                        if (logger != null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Debug))
-                            {
-                                logger.LogDebug(result);
-                            }
-                        }
-                    })
-                    .Build()
                );
 
-            return ib.Get(connectionString);
+            return ib.Get(ibKey);
         }
     }
 }

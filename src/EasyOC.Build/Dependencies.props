@@ -1,37 +1,38 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="Dependencies.AspNetCore.props" />
-	<PropertyGroup>
-		<!-- OrchardCore 的全局依赖版本-->
-		<OrchardCoreVersion>1.2.0-preview-16615</OrchardCoreVersion>
-		<!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-		<StatCanVersion>1.0.6-candev-4</StatCanVersion>
+  <Import Project="Dependencies.AspNetCore.props" />
+  <PropertyGroup>
+    <!-- OrchardCore 的全局依赖版本-->
+    <OrchardCoreVersion>1.2.0-preview-16615</OrchardCoreVersion>
+    <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
+    <StatCanVersion>1.0.6-candev-4</StatCanVersion>
 
-		<!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-		<!--<OrchardCoreLibrariesRoot Condition="Exists('..\..\..\..\..\..\OrchardCore\src\OrchardCore')">..\..\..\\..\..\..\OrchardCore\src\OrchardCore</OrchardCoreLibrariesRoot>
+    <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
+    <!--<OrchardCoreLibrariesRoot Condition="Exists('..\..\..\..\..\..\OrchardCore\src\OrchardCore')">..\..\..\\..\..\..\OrchardCore\src\OrchardCore</OrchardCoreLibrariesRoot>
 		<OrchardCoreModulesRoot Condition="Exists('..\..\..\..\..\..\OrchardCore\src\OrchardCore.Modules')">..\..\..\\..\..\..\OrchardCore\src\OrchardCore.Modules</OrchardCoreModulesRoot>-->
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<NoWarn>$(NoWarn);CS1591</NoWarn>
-		<Authors>EasyOC Team</Authors>
-		<Copyright>EasyOC Team</Copyright>
-	</PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <Authors>EasyOC Team</Authors>
+    <Copyright>EasyOC Team</Copyright>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<!--依赖的第三方库版本-->
-		<PackageManagement Include="NodaTime"  Version="3.0.9"/>
-	 
-		<PackageManagement Include="RestSharp" Version="106.13.0" />
-		<PackageManagement Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.14.0" />
-		<PackageManagement Include="Volo.Abp.Core" Version="5.0.0-beta.3" />
-		<PackageManagement Include="HtmlSanitizer" Version="6.0.430-beta" />
-		<PackageManagement Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageManagement Include="NJsonSchema" Version="10.5.2" />
-		<PackageManagement Include="NSwag.AspNetCore" Version="13.13.2" />
-		<PackageManagement Include="EasyOC.DynamicWebApi" Version="1.1.2" />
-		<PackageManagement Include="FreeSql.Provider.MySql" Version="2.6.100" />
-		<PackageManagement Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
-		<PackageManagement Include="FreeSql.Provider.SqlServer" Version="2.6.100" />
-		<!--<PackageManagement Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.1.0" />-->
-		<!--<PackageManagement Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardCoreVersion)" />
+  <ItemGroup>
+    <!--依赖的第三方库版本-->
+    <PackageManagement Include="NodaTime"  Version="3.0.9"/>
+
+    <PackageManagement Include="RestSharp" Version="106.13.0" />
+    <PackageManagement Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.14.0" />
+    <PackageManagement Include="Volo.Abp.Core" Version="5.0.0-beta.3" />
+    <PackageManagement Include="HtmlSanitizer" Version="6.0.430-beta" />
+    <PackageManagement Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageManagement Include="NJsonSchema" Version="10.5.2" />
+    <PackageManagement Include="NSwag.AspNetCore" Version="13.13.2" />
+    <PackageManagement Include="EasyOC.DynamicWebApi" Version="1.1.2" />
+    <PackageManagement Include="FreeSql" Version="2.6.100" />
+    <PackageManagement Include="FreeSql.Provider.MySql" Version="2.6.100" />
+    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
+    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="2.6.100" />
+    <!--<PackageManagement Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.1.0" />-->
+    <!--<PackageManagement Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardCoreVersion)" />
 		<PackageManagement Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
 		<PackageManagement Include="OrchardCore.Contents"/>
 		<PackageManagement Include="OrchardCore.Autoroute"  />
@@ -58,9 +59,9 @@
 		<PackageManagement Include="OrchardCore.Data.Abstractions" Version="$(OrchardCoreVersion)" />-->
 
 
-	</ItemGroup>
+  </ItemGroup>
 
-	<!--<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
+  <!--<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
 		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Data.Abstractions\OrchardCore.Data.Abstractions.csproj" />
 		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.FileStorage.FileSystem\OrchardCore.FileStorage.FileSystem.csproj" />
 		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Indexing.Abstractions\OrchardCore.Indexing.Abstractions.csproj" />

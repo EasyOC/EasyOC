@@ -43,7 +43,6 @@ namespace EasyOC.Core.Application
 
         protected INotifier Notifier => LazyServiceProvider.LazyGetRequiredService<INotifier>();
 
-
         #region IStringLocalizer
         protected IStringLocalizerFactory StringLocalizerFactory => LazyServiceProvider.LazyGetRequiredService<IStringLocalizerFactory>();
         protected IStringLocalizer S => LazyServiceProvider.LazyGetService<IStringLocalizer>(provider => StringLocalizerFactory?.Create(GetType()));
@@ -59,6 +58,7 @@ namespace EasyOC.Core.Application
         #endregion
 
         protected YesSql.ISession YesSession => LazyServiceProvider.LazyGetRequiredService<YesSql.ISession>();
+        protected IFreeSql FreeSqlSession => LazyServiceProvider.LazyGetRequiredService<IFreeSql>();
 
 
         protected IScriptingManager ScriptingManager => LazyServiceProvider.LazyGetRequiredService<IScriptingManager>();

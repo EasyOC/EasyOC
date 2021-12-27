@@ -22,20 +22,34 @@ namespace EasyOC.OrchardCore.RDBMS.DataAccess
 
             return services.AddSingleton(serviceProvider =>
             {
-
-                var shellOptions = serviceProvider.GetService<IOptions<ShellOptions>>();
-                var option = shellOptions.Value;
-                var shellSettings = serviceProvider.GetService<ShellSettings>();
-                var databaseFolder = Path.Combine(option.ShellsApplicationDataPath, option.ShellsContainerName, shellSettings.Name);
-                var databaseFile = Path.Combine(databaseFolder, "yessql.db");
                 var shellConfig = serviceProvider.GetRequiredService<IShellConfiguration>();
                 var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
                 var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
 
                 var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
-                var fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, $"Data Source={databaseFile};Cache=Shared", logger);
-                return fsql;
+                if (targetDbType == DataType.Sqlite)
+                {
+                    var sqliteConnectionString = serviceProvider.GetSqliteConnectionString(); 
+                    var fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, sqliteConnectionString, logger, dbOptions.TablePrefix);
+                    return fsql;
+                }
+                else
+                {
+                    var fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, dbOptions.ConnectionString, logger, dbOptions.TablePrefix);
+                    return fsql;
+                }
+
             });
+        }
+
+        public static string GetSqliteConnectionString(this IServiceProvider serviceProvider)
+        {
+            var shellOptions = serviceProvider.GetService<IOptions<ShellOptions>>();
+            var option = shellOptions.Value;
+            var shellSettings = serviceProvider.GetService<ShellSettings>();
+            var databaseFolder = Path.Combine(option.ShellsApplicationDataPath, option.ShellsContainerName, shellSettings.Name);
+            var databaseFile = Path.Combine(databaseFolder, "yessql.db");
+            return $"Data Source={databaseFile};Cache=Shared";
         }
 
 

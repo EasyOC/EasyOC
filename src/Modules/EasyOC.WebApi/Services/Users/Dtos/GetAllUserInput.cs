@@ -7,32 +7,11 @@ using System.Threading.Tasks;
 
 namespace EasyOC.WebApi.Dto
 {
-    public class GetAllUserInput : PagedReqest
+    public class GetAllUserInput : PagedAndSortedRequest
     {
-        public string SearchText
-        {
-            get;
-            set;
-        }
+        public string SearchText { get; set; }
 
-
-        public UsersOrder Order
-        {
-            get;
-            set;
-        }
-        public UsersFilter Filter
-        {
-            get;
-            set;
-        }
-
-
-        public string SelectedRole
-        {
-            get;
-            set;
-        } 
+        public string SelectedRole { get; set; }
 
     }
 }

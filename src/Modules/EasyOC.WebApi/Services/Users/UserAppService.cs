@@ -32,7 +32,6 @@ namespace EasyOC.WebApi.Services
         private readonly SignInManager<IUser> _signInManager;
         private readonly ISession _session;
         private readonly IAuthorizationService _authorizationService;
-        private readonly ISiteService _siteService;
         private readonly INotifier _notifier;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -51,7 +50,6 @@ namespace EasyOC.WebApi.Services
             _session = session;
             _userManager = userManager;
             _notifier = notifier;
-            _siteService = siteService;
             _userService = userService;
             _mapper = mapper;
         }
@@ -61,25 +59,12 @@ namespace EasyOC.WebApi.Services
             var authUser = new User();
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, authUser))
             {
-              throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException();
             }
-           
+
 
             var users = YesSession.Query<User, UserIndex>();
-
-            //switch (options.Filter)
-            //{
-            //    case UsersFilter.Approved:
-            //        users = users.Where(u => u.RegistrationStatus == UserStatus.Approved);
-            //        break;
-            //    case UsersFilter.Pending:
-            //        users = users.Where(u => u.RegistrationStatus == UserStatus.Pending);
-            //        break;
-            //    case UsersFilter.EmailPending:
-            //        //users = users.Where(u => u.EmailStatus == UserStatus.Pending);
-            //        break;
-            //}
-
+             
             if (!string.IsNullOrWhiteSpace(input.SearchText))
             {
                 var normalizedSearchUserName = _userManager.NormalizeName(input.SearchText);
@@ -88,16 +73,23 @@ namespace EasyOC.WebApi.Services
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
-            switch (input.Order)
+            if (input.HasOrder)
             {
-                case UsersOrder.Name:
-                    users = users.OrderBy(u => u.NormalizedUserName);
-                    break;
-                case UsersOrder.Email:
-                    users = users.OrderBy(u => u.NormalizedEmail);
-                    break;
-
+                switch (input.SortField.ToLower())
+                {
+                    case "username":
+                        input.SortField = "NormalizedUserName";
+                        break;
+                    case "email":
+                        input.SortField = "NormalizedEmail";
+                        break;
+                    default:
+                        break;
+                }
+                users=users.OrderBy(input.OrderStr);
             }
+                
+
 
             var count = await users.CountAsync();
 
@@ -105,11 +97,11 @@ namespace EasyOC.WebApi.Services
                 .Skip(input.GetStartIndex())
                 .Take(input.PageSize)
                 .ListAsync();
-
-            YesSession.Query<AuditTrailEvent, AuditTrailEventIndex>()
-                //.IsIn<>(x=>x.)
-                .Where(x => x.Category == UserRegistrationAuditTrailEventConfiguration.User
-                && x.Name == UserAuditTrailEventConfiguration.Created);
+            //尝试获取用户创建时间
+            //YesSession.Query<AuditTrailEvent, AuditTrailEventIndex>()
+            //    //.IsIn<>(x=>x.)
+            //    .Where(x => x.Category == UserRegistrationAuditTrailEventConfiguration.User
+            //    && x.Name == UserAuditTrailEventConfiguration.Created);
 
             return new PagedResultDto<UserDto>(count, _mapper.Map<List<UserDto>>(results));
         }
