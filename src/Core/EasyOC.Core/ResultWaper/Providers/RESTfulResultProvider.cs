@@ -91,7 +91,7 @@ namespace EasyOC.Core.ResultWaper.Providers
             {
                 StatusCode = statusCode,
                 Succeeded = succeeded,
-                Data = data,
+                Result = data,
                 Errors = errors,
                 Extras = httpContext.TakeExtras(),
                 Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()

@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Newtonsoft.Json;
 
 namespace EasyOC.WebApi.Dto
 {
@@ -20,31 +16,26 @@ namespace EasyOC.WebApi.Dto
         public string SortField { get; set; }
         [JsonProperty(PropertyName = "order")]
         public QueryOrder? SortOrder { get; set; }
-        [JsonIgnore]
-        public bool HasOrder
+        public bool HasOrder()
         {
-            get { return SortOrder.HasValue && !string.IsNullOrEmpty(SortField); }
+             return SortOrder.HasValue && !string.IsNullOrEmpty(SortField); 
         }
-
-        [JsonIgnore]
-        public string OrderStr
+         
+        public string GetOrderStr()
         {
-            get
+            if (HasOrder())
             {
-                if (HasOrder)
+                if (SortOrder == QueryOrder.Ascend)
                 {
-                    if (SortOrder == QueryOrder.Ascend)
-                    {
-                        return $"{SortField} asc";
+                    return $"{SortField} asc";
 
-                    }
-                    else
-                    {
-                        return $"{SortField} desc";
-                    }
                 }
-                else return string.Empty;
+                else
+                {
+                    return $"{SortField} desc";
+                }
             }
+            else return string.Empty;
         }
     }
 

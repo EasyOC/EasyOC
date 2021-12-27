@@ -14,7 +14,7 @@
         /// <summary>
         /// 数据
         /// </summary>
-        public T Data { get; set; }
+        public T Result { get; set; }
 
         /// <summary>
         /// 执行成功
