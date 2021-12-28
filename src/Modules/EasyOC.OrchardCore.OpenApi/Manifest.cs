@@ -1,11 +1,11 @@
 ﻿using OrchardCore.Modules.Manifest;
 
 [assembly: Module(
-    Name = "EasyOC.WebApi",
+    Name = "EasyOC.OrchardCore.OpenApi",
     Author = "The Orchard Core Team",
     Website = "https://orchardcore.net",
     Version = "0.0.1",
-    Description = "EasyOC.WebApi",
+    Description = "EasyOC.OrchardCore.OpenApi",
     Dependencies = new[] { "EasyOC.Core" },
     Category = "Content Management"
 )]

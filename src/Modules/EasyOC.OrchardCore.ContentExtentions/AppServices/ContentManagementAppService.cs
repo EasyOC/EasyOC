@@ -5,11 +5,17 @@ using EasyOC.DynamicWebApi;
 using EasyOC.DynamicWebApi.Attributes;
 using System.Collections.Generic;
 using System.Linq;
+using OrchardCore.Users.Models;
+using EasyOC.Core.Application;
+using System.Threading.Tasks;
+using Permissions = OrchardCore.ContentTypes.Permissions;
+using System;
+using Microsoft.AspNetCore.Authorization;
+using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
-    [DynamicWebApi]
-    public class ContentManagementAppService : IDynamicWebApi, IContentManagementAppService
+    public class ContentManagementAppService : AppServcieBase, IContentManagementAppService
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         public ContentManagementAppService(IContentDefinitionManager contentDefinitionManager)
@@ -21,10 +27,14 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// 列出所有类型定义
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, string> GetAllTypes()
+        public async Task<IEnumerable<ContentTypeDefinitionDto>> GetAllTypesAsync()
         {
-            var result = _contentDefinitionManager.ListTypeDefinitions()
-               .ToDictionary(x => x.Name, v => v.DisplayName);
+            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            {
+                throw new UnauthorizedAccessException();
+            }
+            var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
+               .Select(x=>ObjectMapper.Map<ContentTypeDefinitionDto>(x));
             return result;
         }
 

@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json.Linq;
 using OrchardCore.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EasyOC.WebApi
+namespace EasyOC.OrchardCore.OpenApi
 {
     [AutoMap(typeof(Entity), ReverseMap = true)]
     internal class EntityDto

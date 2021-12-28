@@ -22,6 +22,7 @@
         "OrchardCore.Shortcodes",
         "OrchardCore.ContentFields",
         "EasyOC.OrchardCore.Excel",
+        "EasyOC.OrchardCore.OpenApi",
         "EasyOC.OrchardCore.RDBMS",
         "EasyOC.OrchardCore.ContentExtentions",
         "OrchardCore.Queries",
@@ -30,14 +31,9 @@
         "OrchardCore.Resources",
         "Lombiq.HelpfulExtensions.CodeGeneration",
         "OrchardCore.Autoroute",
-        "OrchardCore.Widgets",
         "OrchardCore.Flows",
         "OrchardCore.Title",
-        "Lombiq.HelpfulExtensions.ContentTypes",
-        "Lombiq.HelpfulExtensions.Flows",
-        "Lombiq.HelpfulExtensions.ShapeTracing",
         "OrchardCore.Html",
-        "Lombiq.HelpfulExtensions.Widgets",
         "OrchardCore.Admin",
         "OrchardCore.AdminDashboard",
         "OrchardCore.AdminMenu",
@@ -96,8 +92,6 @@
         "OrchardCore.ResponseCompression",
         "OrchardCore.ReverseProxy",
         "OrchardCore.Roles",
-        "OrchardCore.Seo",
-        "OrchardCore.Shortcodes.Templates",
         "OrchardCore.Sitemaps.Cleanup",
         "OrchardCore.Sitemaps.RazorPages",
         "OrchardCore.Spatial",
@@ -129,10 +123,17 @@
       "site": "TheTheme"
     },
     {
+      "name": "settings",
+      "HomeRoute": {
+        "Action": "Index",
+        "Controller": "Admin",
+        "Area": "OrchardCore.Admin"
+      }
+    },
+    {
       "name": "OpenIdServerSettings",
       "TestingModeEnabled": false,
       "AccessTokenFormat": "JsonWebToken",
-      "Authority": "http://localhost:2919",
       "EnableTokenEndpoint": true,
       "EnableAuthorizationEndpoint": true,
       "EnableLogoutEndpoint": true,
@@ -143,18 +144,13 @@
       "AllowRefreshTokenFlow": true,
       "DisableAccessTokenEncryption": true,
       "AllowImplicitFlow": false,
-      "AllowLogoutEndpoint": true,
-      "AuthorizationEndpointPath": "http://localhost:2919/connect/authorize",
-      "LogoutEndpointPath": "http://localhost:2919/connect/logout",
-      "TokenEndpointPath": "http://localhost:2919/connect/token",
-      "UserinfoEndpointPath": "http://localhost:2919/connect/userinfo"
+      "AllowLogoutEndpoint": true
     },
     {
       "DisplayName": "Authorization Password Flow",
       "name": "OpenIdApplication",
       "ClientId": "vue_client_app",
-      "RedirectUris": "https://localhost:9527/signin-callback",
-      "PostLogoutRedirectUris": "https://localhost:9527/signout-callback",
+   
       "AllowAuthorizationCodeFlow": true,
       "AllowLogoutEndpoint": true,
       "AllowPasswordFlow": true,

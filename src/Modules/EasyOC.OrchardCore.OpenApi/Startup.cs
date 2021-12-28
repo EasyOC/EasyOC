@@ -1,12 +1,12 @@
 ﻿using System;
-using EasyOC.WebApi.Services;
+using EasyOC.OrchardCore.OpenApi.Services;
 using Fluid;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Modules;
 
-namespace EasyOC.WebApi
+namespace EasyOC.OrchardCore.OpenApi
 {
     public class Startup : StartupBase
     {
@@ -20,7 +20,7 @@ namespace EasyOC.WebApi
         {
             routes.MapAreaControllerRoute(
                 name: "Home",
-                areaName: "EasyOC.WebApi",
+                areaName: "EasyOC.OrchardCore.OpenApi",
                 pattern: "Home/Index",
                 defaults: new { controller = "Home", action = "Index", id = "" }
             );

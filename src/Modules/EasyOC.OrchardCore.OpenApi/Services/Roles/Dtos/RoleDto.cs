@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using OrchardCore.Security;
 
-namespace EasyOC.WebApi.Dto
+namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     [AutoMap(typeof(IRole), ReverseMap = true)]
     public class RoleDto

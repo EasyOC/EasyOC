@@ -15,6 +15,7 @@ using EasyOC.DynamicWebApi.Attributes;
 using System.Linq;
 using System.Security.Claims;
 using EasyOC.Core.DependencyInjection;
+using AutoMapper;
 
 namespace EasyOC.Core.Application
 {
@@ -32,9 +33,14 @@ namespace EasyOC.Core.Application
         {
             get; set;
         }
+
+        protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
         protected ClaimsPrincipal User => HttpContextAccessor.HttpContext.User;
+
+        protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetRequiredService<IAuthorizationService>();
+
 
         #region Logger
         private ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetRequiredService<ILoggerFactory>();

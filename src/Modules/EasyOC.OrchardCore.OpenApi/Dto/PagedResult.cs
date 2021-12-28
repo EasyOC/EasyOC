@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyOC.WebApi.Dto
+namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     public class PagedResultDto<T>
     {

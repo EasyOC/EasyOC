@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyOC.WebApi.Dto
+namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     [AutoMap(typeof(Permission))]
     public class PermissionDto

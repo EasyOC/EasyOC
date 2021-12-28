@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using EasyOC.Core.Swagger.Attributes;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -12,7 +14,8 @@ namespace EasyOC.Core.Swagger
     {
         public void Apply(OpenApiParameter parameter, ParameterFilterContext context)
         {
-            var type = Nullable.GetUnderlyingType(context.ApiParameterDescription.Type) ?? context.ApiParameterDescription.Type;
+            var type = Nullable.GetUnderlyingType(context.ApiParameterDescription.Type) ?? context.ApiParameterDescription.Type; 
+
             if (type.IsEnum)
             {
                 AddEnumParamSpec(parameter, type, context);
@@ -22,7 +25,8 @@ namespace EasyOC.Core.Swagger
             {
                 var itemType = type.GetElementType() ?? type.GenericTypeArguments.First();
                 AddEnumSpec(itemType, context);
-            }
+            } 
+
         }
 
         private static void AddEnumSpec(Type type, ParameterFilterContext context)

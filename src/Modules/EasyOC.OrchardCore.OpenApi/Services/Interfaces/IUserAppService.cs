@@ -1,4 +1,4 @@
-﻿using EasyOC.WebApi.Dto;
+﻿using EasyOC.OrchardCore.OpenApi.Dto;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Navigation;
 using OrchardCore.Users.Models;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyOC.WebApi.Services
+namespace EasyOC.OrchardCore.OpenApi.Services
 {
      public interface IUserAppService
     {

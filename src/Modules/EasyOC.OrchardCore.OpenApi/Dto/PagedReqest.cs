@@ -2,7 +2,7 @@
 using EasyOC.Core.Swagger.Attributes;
 using Newtonsoft.Json;
 
-namespace EasyOC.WebApi.Dto
+namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     public class PagedReqest
     {
@@ -23,7 +23,7 @@ namespace EasyOC.WebApi.Dto
             get { return !string.IsNullOrEmpty(SortOrder) && !string.IsNullOrEmpty(SortField); }
         }
         [SwaggerIgnore]
-        public string GetOrderStr
+        public string OrderStr
         {
             get
             {

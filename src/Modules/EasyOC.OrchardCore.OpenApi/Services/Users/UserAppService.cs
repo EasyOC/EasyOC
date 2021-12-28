@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
-using EasyOC.WebApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +24,7 @@ using YesSql;
 using YesSql.Services;
 using Permissions = OrchardCore.Users.Permissions;
 
-namespace EasyOC.WebApi.Services
+namespace EasyOC.OrchardCore.OpenApi.Services
 {
     public class UserAppService : AppServcieBase, IUserAppService
     {
@@ -86,7 +86,7 @@ namespace EasyOC.WebApi.Services
                     default:
                         break;
                 }
-                users=users.OrderBy(input.GetOrderStr);
+                users=users.OrderBy(input.OrderStr);
             }
                 
 

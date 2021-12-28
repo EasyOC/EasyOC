@@ -1,6 +1,11 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using EasyOC.Core.Swagger.Attributes;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace EasyOC.Core.Swagger
 {
@@ -29,6 +34,23 @@ namespace EasyOC.Core.Swagger
 
                 parameter.Schema = schema;
             }
+
+            var propertiesToRemove = context.MethodInfo.GetParameters()
+            //.Where(methodParm => methodParm.GetCustomAttribute(typeof(FromQueryAttribute), true) != null)
+            .SelectMany(methodParm => methodParm.ParameterType.GetProperties())
+            .Where(property => property.GetCustomAttribute<SwaggerIgnoreAttribute>() != null)
+            .Select(prop => prop.Name)
+            .ToHashSet(StringComparer.InvariantCultureIgnoreCase);
+
+            foreach (var parm in operation.Parameters.ToList())
+            {
+                if (propertiesToRemove.Contains(parm.Name))
+                {
+                    operation.Parameters.Remove(parm);
+                }
+            }
         }
+       
+
     }
 }

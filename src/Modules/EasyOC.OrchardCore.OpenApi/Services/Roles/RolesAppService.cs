@@ -1,27 +1,23 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
-using EasyOC.WebApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Data.Documents;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Extensions;
-using OrchardCore.Roles.ViewModels;
+using OrchardCore.Roles;
 using OrchardCore.Security;
 using OrchardCore.Security.Permissions;
 using OrchardCore.Security.Services;
-using EasyOC.DynamicWebApi.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyOC.WebApi.Services
+namespace EasyOC.OrchardCore.OpenApi.Services
 {
-    [DynamicWebApi, Authorize]
     public class RolesAppService : AppServcieBase, IRolesAppService
     {
         private readonly RoleManager<IRole> _roleManager;
@@ -58,10 +54,10 @@ namespace EasyOC.WebApi.Services
         }
         public async Task<RoleDetailsDto> GetRoleDetailsAsync(string id)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
-            //{
-            //    return Forbid();
-            //}
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
+            {
+                throw new UnauthorizedAccessException();
+            }
 
             var role = (Role)await _roleManager.FindByNameAsync(_roleManager.NormalizeKey(id));
             if (role == null)
@@ -79,7 +75,7 @@ namespace EasyOC.WebApi.Services
                 Name = role.RoleName,
                 RoleDescription = role.RoleDescription,
                 EffectivePermissions = await GetEffectivePermissions(role, allPermissions),
-                RoleCategoryPermissions = _mapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions)
+                RoleCategoryPermissions = ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions)
             };
 
             return model;

@@ -20,7 +20,7 @@ namespace EasyOC.Core
       
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(GetType().Assembly);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
@@ -33,25 +33,23 @@ namespace EasyOC.Core
                 options.OperationFilter<SwaggerOperationIdFilter>();
                 options.OperationFilter<SwaggerOperationFilter>();
                 options.CustomDefaultSchemaIdSelector();
-                //options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
-                //{
-                //    Type = SecuritySchemeType.OpenIdConnect,
-                //    Description = "OpenID Connect",
-                //    Flows = new OpenApiOAuthFlows()
-                //    {
-                //        AuthorizationCode = new OpenApiOAuthFlow()
-                //        {
-                //            Scopes = new Dictionary<string, string>
-                //                {
-                //                { "openid", "OpenID" },
-                //                { "profile", "Profile" },
-                //                { "roles", "Roles" }
-                //                },
-                //            //AuthorizationUrl = new Uri("/connect/authorize"),
-                //            //TokenUrl = new Uri("/connect/token") 
-                //        },
-                //    }
-                //});
+                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Description = "OpenID Connect",
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow()
+                        {
+                            Scopes = new Dictionary<string, string>
+                                {
+                                { "openid", "OpenID" },
+                                { "profile", "Profile" },
+                                { "roles", "Roles" }
+                                }
+                        },
+                    }
+                });
 
                 options.SwaggerDoc("v1", new OpenApiInfo()
                 { Title = "EasyOC Dynamic WebApi", Version = "v1" });

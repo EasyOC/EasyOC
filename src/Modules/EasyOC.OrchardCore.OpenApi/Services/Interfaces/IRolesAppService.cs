@@ -1,10 +1,10 @@
-﻿using EasyOC.WebApi.Dto;
+﻿using EasyOC.OrchardCore.OpenApi.Dto;
 using OrchardCore.Roles.ViewModels;
 using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyOC.WebApi.Services
+namespace EasyOC.OrchardCore.OpenApi.Services
 {
     public interface IRolesAppService
     {

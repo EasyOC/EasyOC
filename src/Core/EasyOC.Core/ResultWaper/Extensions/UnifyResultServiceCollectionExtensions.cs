@@ -82,8 +82,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.Configure<MvcOptions>(options =>
             {
-                options.Filters.Add<SucceededUnifyResultFilter>();
                 options.Filters.Add<FriendlyExceptionFilter>();
+                options.Filters.Add<SucceededUnifyResultFilter>();
             });
 
             return services;
