@@ -1,4 +1,5 @@
-﻿using OrchardCore.Security;
+﻿using AutoMapper;
+using OrchardCore.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyOC.WebApi.Dto
 {
-    [AutoMapper.AutoMap(typeof(RoleClaim), ReverseMap = true)]
+    [AutoMap(typeof(RoleClaim), ReverseMap = true)]
     public class RoleClaimDto
     {
         //

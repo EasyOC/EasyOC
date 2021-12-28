@@ -1,4 +1,5 @@
 ﻿
+using EasyOC.Core.Swagger.Attributes;
 using Newtonsoft.Json;
 
 namespace EasyOC.WebApi.Dto
@@ -10,31 +11,36 @@ namespace EasyOC.WebApi.Dto
         public int GetStartIndex() { return (Page - 1) * PageSize; }
     }
 
+
+
     public class PagedAndSortedRequest : PagedReqest
     {
         public string SortField { get; set; }
-        [JsonProperty(PropertyName = "order")]
         public string SortOrder { get; set; }
-        public bool HasOrder()
+        [SwaggerIgnore]
+        public bool HasOrder
         {
-            return !string.IsNullOrEmpty(SortOrder) && !string.IsNullOrEmpty(SortField);
+            get { return !string.IsNullOrEmpty(SortOrder) && !string.IsNullOrEmpty(SortField); }
         }
-
-        public string GetOrderStr()
+        [SwaggerIgnore]
+        public string GetOrderStr
         {
-            if (HasOrder())
+            get
             {
-                if (SortOrder == "ascend")
+                if (HasOrder)
                 {
-                    return $"{SortField} asc";
+                    if (SortOrder == "ascend")
+                    {
+                        return $"{SortField} asc";
 
+                    }
+                    else
+                    {
+                        return $"{SortField} desc";
+                    }
                 }
-                else
-                {
-                    return $"{SortField} desc";
-                }
+                else return string.Empty;
             }
-            else return string.Empty;
         }
     }
 

@@ -73,7 +73,7 @@ namespace EasyOC.WebApi.Services
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
-            if (input.HasOrder())
+            if (input.HasOrder)
             {
                 switch (input.SortField.ToLower())
                 {
@@ -86,7 +86,7 @@ namespace EasyOC.WebApi.Services
                     default:
                         break;
                 }
-                users=users.OrderBy(input.GetOrderStr());
+                users=users.OrderBy(input.GetOrderStr);
             }
                 
 
