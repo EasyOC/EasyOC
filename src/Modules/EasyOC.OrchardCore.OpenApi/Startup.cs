@@ -12,7 +12,7 @@ namespace EasyOC.OrchardCore.OpenApi
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(this.GetType().Assembly);
+            //services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IRolesAppService, RolesAppService>();
         }
 

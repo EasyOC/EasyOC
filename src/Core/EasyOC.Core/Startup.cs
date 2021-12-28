@@ -1,4 +1,6 @@
-﻿using EasyOC.Core.Dynamic;
+﻿using AutoMapper;
+using EasyOC.Core.Application;
+using EasyOC.Core.Dynamic;
 using EasyOC.Core.Swagger;
 using EasyOC.DynamicWebApi;
 using Microsoft.AspNetCore.Builder;
@@ -17,9 +19,9 @@ namespace EasyOC.Core
     [RequireFeatures(Constants.EasyOCCoreModuleId)]
     public class Startup : StartupBase
     {
-      
+
         public override void ConfigureServices(IServiceCollection services)
-        {
+        { 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
@@ -69,7 +71,7 @@ namespace EasyOC.Core
                         options.IncludeXmlComments(xmlPath);
                     }
                 }
-            }).AddSwaggerGenNewtonsoftSupport(); 
+            }).AddSwaggerGenNewtonsoftSupport();
             //自定义配置
             services.AddDynamicWebApi((options) =>
             {

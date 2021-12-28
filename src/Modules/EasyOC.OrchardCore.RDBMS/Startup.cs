@@ -28,7 +28,7 @@ namespace EasyOC.OrchardCore.RDBMS
             //替换 IQuerySource
             services.Replace(ServiceDescriptor.Scoped<IQuerySource, FreeSqlQuerySource>());
             services.AddSingleton<IGlobalMethodProvider, FreeSqlWorkflowMethodsProvider>();
-            services.AddAutoMapper(GetType().Assembly);
+            //services.AddAutoMapper(GetType().Assembly);
             services.AddActivity<SQLTask, SQLTaskDisplayDriver>();
             services.AddScoped<IRDBMSAppService, RDBMSAppService>();
             //services.AddScoped<IPermissionProvider, Permissions>();

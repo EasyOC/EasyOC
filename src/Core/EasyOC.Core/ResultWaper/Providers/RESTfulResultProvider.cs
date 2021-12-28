@@ -55,7 +55,6 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="statusCode"></param>
-        /// <param name="unifyResultSettings"></param>
         /// <returns></returns>
         public async Task OnResponseStatusCodes(HttpContext context, int statusCode)
         {
