@@ -1,4 +1,8 @@
-﻿using Jint;
+﻿using AutoMapper;
+using EasyOC.Core.DependencyInjection;
+using EasyOC.DynamicWebApi;
+using EasyOC.DynamicWebApi.Attributes;
+using Jint;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +14,12 @@ using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
-using EasyOC.DynamicWebApi;
-using EasyOC.DynamicWebApi.Attributes;
 using System.Linq;
 using System.Security.Claims;
-using EasyOC.Core.DependencyInjection;
-using AutoMapper;
 
 namespace EasyOC.Core.Application
 {
-    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous, Authorize(AuthenticationSchemes = "Api")]
+    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous, Authorize(AuthenticationSchemes = "Api"), Authorize]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
 

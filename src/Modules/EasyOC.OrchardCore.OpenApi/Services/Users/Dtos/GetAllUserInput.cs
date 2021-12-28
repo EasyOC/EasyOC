@@ -1,11 +1,4 @@
-﻿using OrchardCore.Users.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasyOC.OrchardCore.OpenApi.Dto
+﻿namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     public class GetAllUserInput : PagedAndSortedRequest
     {

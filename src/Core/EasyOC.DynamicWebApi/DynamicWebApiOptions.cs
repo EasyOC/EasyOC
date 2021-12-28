@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.AspNetCore.Http;
 
 namespace EasyOC.DynamicWebApi
 {

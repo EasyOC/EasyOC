@@ -1,7 +1,5 @@
 ﻿using EasyOC.Core.Filter;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace EasyOC.Core.ResultWaper.Middlewares

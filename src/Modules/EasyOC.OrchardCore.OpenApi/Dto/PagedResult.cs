@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
 {
@@ -28,8 +24,9 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         //
         // 摘要:
         //     Creates a new Abp.Application.Services.Dto.ListResultDto`1 object.
-        public ListResultDto() {
-           
+        public ListResultDto()
+        {
+
         }
         //
         // 摘要:

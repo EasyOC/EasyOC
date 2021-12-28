@@ -1,7 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.ContentExtentions.AppServices;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 
 namespace EasyOC.OrchardCore.RDBMS.Services

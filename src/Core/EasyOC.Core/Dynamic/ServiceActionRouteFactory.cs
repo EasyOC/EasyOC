@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using EasyOC.DynamicWebApi;
+﻿using EasyOC.DynamicWebApi;
 using EasyOC.DynamicWebApi.Attributes;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.Reflection;
 
 namespace EasyOC.Core.Dynamic

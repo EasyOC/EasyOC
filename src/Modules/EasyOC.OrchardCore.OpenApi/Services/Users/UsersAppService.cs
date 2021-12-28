@@ -4,13 +4,9 @@ using EasyOC.OrchardCore.OpenApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OrchardCore.AuditTrail.Indexes;
-using OrchardCore.AuditTrail.Models;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Settings;
 using OrchardCore.Users;
-using OrchardCore.Users.AuditTrail.Registration;
-using OrchardCore.Users.AuditTrail.Services;
 using OrchardCore.Users.Indexes;
 using OrchardCore.Users.Models;
 using OrchardCore.Users.Services;
@@ -26,7 +22,7 @@ using Permissions = OrchardCore.Users.Permissions;
 
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
-    public class UserAppService : AppServcieBase, IUserAppService
+    public class UsersAppService : AppServcieBase, IUsersAppService
     {
         private readonly UserManager<IUser> _userManager;
         private readonly SignInManager<IUser> _signInManager;
@@ -36,7 +32,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserAppService(
+        public UsersAppService(
             SignInManager<IUser> signInManager,
             IAuthorizationService authorizationService,
             ISession session,
@@ -64,7 +60,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
 
             var users = YesSession.Query<User, UserIndex>();
-             
+
             if (!string.IsNullOrWhiteSpace(input.SearchText))
             {
                 var normalizedSearchUserName = _userManager.NormalizeName(input.SearchText);
@@ -86,9 +82,9 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     default:
                         break;
                 }
-                users=users.OrderBy(input.OrderStr);
+                users = users.OrderBy(input.OrderStr);
             }
-                
+
 
 
             var count = await users.CountAsync();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using OrchardCore.Security;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
@@ -11,7 +6,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
     [AutoMap(typeof(IRole), ReverseMap = true)]
     public class RoleDto
     {
-      public  string RoleName
+        public string RoleName
         {
             get; set;
         }

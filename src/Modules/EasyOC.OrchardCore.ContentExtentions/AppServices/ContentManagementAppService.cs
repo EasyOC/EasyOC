@@ -1,17 +1,15 @@
-﻿using EasyOC.OrchardCore.ContentExtentions.Models;
+﻿using EasyOC.Core.Application;
+using EasyOC.DynamicWebApi.Attributes;
+using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
+using EasyOC.OrchardCore.ContentExtentions.Models;
+using Microsoft.AspNetCore.Authorization;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
-using EasyOC.DynamicWebApi;
-using EasyOC.DynamicWebApi.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using OrchardCore.Users.Models;
-using EasyOC.Core.Application;
 using System.Threading.Tasks;
 using Permissions = OrchardCore.ContentTypes.Permissions;
-using System;
-using Microsoft.AspNetCore.Authorization;
-using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
@@ -34,7 +32,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                 throw new UnauthorizedAccessException();
             }
             var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
-               .Select(x=>ObjectMapper.Map<ContentTypeDefinitionDto>(x));
+               .Select(x => ObjectMapper.Map<ContentTypeDefinitionDto>(x));
             return result;
         }
 

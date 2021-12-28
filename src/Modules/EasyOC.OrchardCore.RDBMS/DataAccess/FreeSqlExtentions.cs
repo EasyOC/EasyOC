@@ -8,10 +8,7 @@ using OrchardCore.Environment.Shell;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Shells.Database.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
-using System.Text;
 
 namespace EasyOC.OrchardCore.RDBMS.DataAccess
 {
@@ -29,7 +26,7 @@ namespace EasyOC.OrchardCore.RDBMS.DataAccess
                 var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
                 if (targetDbType == DataType.Sqlite)
                 {
-                    var sqliteConnectionString = serviceProvider.GetSqliteConnectionString(); 
+                    var sqliteConnectionString = serviceProvider.GetSqliteConnectionString();
                     var fsql = FreeSqlProviderFactory.GetFreeSql(targetDbType, sqliteConnectionString, logger, dbOptions.TablePrefix);
                     return fsql;
                 }

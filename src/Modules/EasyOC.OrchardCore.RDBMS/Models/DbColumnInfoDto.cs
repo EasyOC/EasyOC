@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FreeSql.DatabaseModel;
-using System;
 
 namespace EasyOC.OrchardCore.RDBMS.Models
 {

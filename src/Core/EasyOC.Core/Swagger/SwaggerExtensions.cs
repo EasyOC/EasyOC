@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace EasyOC.Core.Swagger
 {

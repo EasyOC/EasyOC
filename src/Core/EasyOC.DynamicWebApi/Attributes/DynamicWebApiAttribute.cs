@@ -1,6 +1,6 @@
-﻿using System;
+﻿using EasyOC.DynamicWebApi.Helpers;
+using System;
 using System.Reflection;
-using EasyOC.DynamicWebApi.Helpers;
 
 namespace EasyOC.DynamicWebApi.Attributes
 {

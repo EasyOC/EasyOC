@@ -1,5 +1,4 @@
 ﻿using EasyOC.Core.Swagger.Attributes;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -50,7 +49,7 @@ namespace EasyOC.Core.Swagger
                 }
             }
         }
-       
+
 
     }
 }

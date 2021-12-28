@@ -1,9 +1,7 @@
 ﻿using Castle.Core.Internal;
 using EasyOC.Core;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;

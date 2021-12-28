@@ -50,10 +50,10 @@ namespace EasyOC.OrchardCore.RDBMS.Migrations
 
                     }).WithSettings(
                     new TextFieldSettings()
-                        {
-                            Hint =@"FreeSql支持的所有数据库，已添加 MySql, Sqlite, SqlServer.
+                    {
+                        Hint = @"FreeSql支持的所有数据库，已添加 MySql, Sqlite, SqlServer.
                                     其它数据库请手动添加包引用到项目中"
-                        }
+                    }
                     )
                 )
                 .WithField("ConnectionString", field => field

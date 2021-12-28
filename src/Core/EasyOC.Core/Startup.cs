@@ -1,18 +1,16 @@
-﻿using AutoMapper;
-using EasyOC.Core.Application;
-using EasyOC.Core.Dynamic;
+﻿using EasyOC.Core.Dynamic;
 using EasyOC.Core.Swagger;
 using EasyOC.DynamicWebApi;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using OrchardCore.Environment.Shell.Configuration;
+using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Modules;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace EasyOC.Core
 {
@@ -21,7 +19,7 @@ namespace EasyOC.Core
     {
 
         public override void ConfigureServices(IServiceCollection services)
-        { 
+        {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
@@ -35,8 +33,14 @@ namespace EasyOC.Core
                 options.OperationFilter<SwaggerOperationIdFilter>();
                 options.OperationFilter<SwaggerOperationFilter>();
                 options.CustomDefaultSchemaIdSelector();
+                var serviceProvider = ShellScope.Current.ServiceProvider;
+                var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                var request = httpContextAccessor.HttpContext.Request;
+                var tenantSettings = ShellScope.Context.Settings;
+                var baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
                 options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
                 {
+
                     Type = SecuritySchemeType.OAuth2,
                     Description = "OpenID Connect",
                     Flows = new OpenApiOAuthFlows()
@@ -45,10 +49,13 @@ namespace EasyOC.Core
                         {
                             Scopes = new Dictionary<string, string>
                                 {
-                                { "openid", "OpenID" },
-                                { "profile", "Profile" },
-                                { "roles", "Roles" }
-                                }
+                                    { "openid", "OpenID" },
+                                    { "profile", "Profile" },
+                                    { "roles", "Roles" }
+                                },
+                            AuthorizationUrl = new Uri($"{baseUrl}connect/authorize"),
+                            TokenUrl = new Uri($"{baseUrl}connect/token"),
+
                         },
                     }
                 });

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace EasyOC.CMS.WebHost
 {
@@ -30,7 +29,7 @@ namespace EasyOC.CMS.WebHost
             });
 
             services.AddOrchardCms();
-                //.AddDatabaseShellsConfiguration();
+            //.AddDatabaseShellsConfiguration();
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env)

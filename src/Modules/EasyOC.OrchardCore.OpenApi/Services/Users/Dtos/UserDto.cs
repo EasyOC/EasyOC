@@ -1,18 +1,14 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using OrchardCore.Users.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     [AutoMap(typeof(User))]
     public class UserDto
     {
-        public int? Id{get;set;}
+        public int? Id { get; set; }
 
         public string UserId { get; set; }
 

@@ -1,13 +1,13 @@
-﻿using ExcelDataReader;
-using EasyOC.Core.Application;
+﻿using EasyOC.Core.Application;
 using EasyOC.Core.Models;
+using EasyOC.DynamicWebApi;
+using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.Excel.Models;
+using ExcelDataReader;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
-using EasyOC.DynamicWebApi;
-using EasyOC.DynamicWebApi.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,7 +24,7 @@ namespace EasyOC.OrchardCore.Excel.Services
     {
         private readonly IContentManager _contentManager;
 
-        public ExcelAppService(IContentManager contentManager) 
+        public ExcelAppService(IContentManager contentManager)
         {
             _contentManager = contentManager;
         }

@@ -6,7 +6,7 @@ namespace Furion.FriendlyException
     /// <summary>
     /// 异常复写特性
     /// </summary>
-    [ AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
     public sealed class IfExceptionAttribute : Attribute
     {
         /// <summary>

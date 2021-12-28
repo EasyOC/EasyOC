@@ -9,7 +9,7 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Servcie
 {
     public class WorkflowApiAppService : AppServcieBase, IWorkflowApiAppService
     {
-     
+
 
         /// <summary>
         /// 尝试使用反射获取所有 工作流的JS扩展方法（IGlobalMethodProvider）

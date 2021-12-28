@@ -1,5 +1,4 @@
 ﻿using OrchardCore.DisplayManagement.Manifest;
-using static StatCan.OrchardCore.Manifest.StatCanManifestConstants;
 
 [assembly: Theme(
     Name = "VuetifyTheme",

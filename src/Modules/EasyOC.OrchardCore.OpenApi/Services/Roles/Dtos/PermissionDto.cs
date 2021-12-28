@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using OrchardCore.Security.Permissions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
 {
@@ -14,7 +10,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
 
         public string Name
         {
-            get;set;
+            get; set;
         }
 
         public string Description
@@ -31,7 +27,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
 
         public IEnumerable<PermissionDto> ImpliedBy
         {
-            get;set;
+            get; set;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace EasyOC.Core.Filter
         /// </summary>
         internal static string UnifyResultExtrasKey = "UNIFY_RESULT_EXTRAS";
 
-      
+
         /// <summary>
         /// 检查请求成功是否进行规范化处理
         /// </summary>
@@ -79,7 +79,7 @@ namespace EasyOC.Core.Filter
             unifyResult = isSkip ? null : context.RequestServices.GetService<IUnifyResultProvider>();
             return unifyResult == null || isSkip;
         }
-         
+
         /// <summary>
         /// 获取异常元数据
         /// </summary>
@@ -125,7 +125,7 @@ namespace EasyOC.Core.Filter
                             ?? ifExceptionAttributes.FirstOrDefault(u => u.ExceptionType == null);
 
                     // 支持渲染配置文件
-                    if (actionIfExceptionAttribute is { ErrorMessage: not null }) 
+                    if (actionIfExceptionAttribute is { ErrorMessage: not null })
                         errors = actionIfExceptionAttribute.ErrorMessage;
                 }
                 else errors = context.Exception?.InnerException?.Message ?? context.Exception.Message;
@@ -138,7 +138,7 @@ namespace EasyOC.Core.Filter
                 Errors = errors
             };
         }
- 
+
 
         /// <summary>
         /// 检查是否是有效的结果（可进行规范化的结果）

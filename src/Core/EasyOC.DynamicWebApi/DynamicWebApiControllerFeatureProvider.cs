@@ -1,11 +1,9 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using EasyOC.DynamicWebApi.Attributes;
-using EasyOC.DynamicWebApi.Helpers;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using System.Reflection;
 
 namespace EasyOC.DynamicWebApi
 {
-    public class DynamicWebApiControllerFeatureProvider: ControllerFeatureProvider
+    public class DynamicWebApiControllerFeatureProvider : ControllerFeatureProvider
     {
         private ISelectController _selectController;
 

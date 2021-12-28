@@ -1,6 +1,5 @@
 ﻿
 using EasyOC.Core.Swagger.Attributes;
-using Newtonsoft.Json;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
 {

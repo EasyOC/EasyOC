@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using EasyOC.Core.Swagger.Attributes;
-using Microsoft.OpenApi.Any;
+﻿using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.Linq;
 
 namespace EasyOC.Core.Swagger
 {
@@ -18,7 +16,7 @@ namespace EasyOC.Core.Swagger
             {
                 return;
             }
-         
+
             var enumNames = new OpenApiArray();
             enumNames.AddRange(Enum.GetNames(type).Select(_ => new OpenApiString(_)));
             schema.Extensions.Add("x-enumNames", enumNames);
