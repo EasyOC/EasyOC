@@ -19,7 +19,7 @@ using System.Security.Claims;
 
 namespace EasyOC.Core.Application
 {
-    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous, Authorize(AuthenticationSchemes = "Api"), Authorize]
+    [DynamicWebApi, Authorize(AuthenticationSchemes = "Api"), IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
 

@@ -150,7 +150,16 @@
       "DisplayName": "Authorization Password Flow",
       "name": "OpenIdApplication",
       "ClientId": "vue_client_app",
-   
+
+      "AllowAuthorizationCodeFlow": true,
+      "AllowLogoutEndpoint": true,
+      "AllowPasswordFlow": true,
+      "Type": "public"
+    },
+    {
+      "DisplayName": "SwaggerUser",
+      "name": "OpenIdApplication",
+      "ClientId": "SwaggerUser", 
       "AllowAuthorizationCodeFlow": true,
       "AllowLogoutEndpoint": true,
       "AllowPasswordFlow": true,
