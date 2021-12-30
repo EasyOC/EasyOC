@@ -4,6 +4,11 @@ using EasyOC.OrchardCore.OpenApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Metadata;
+using OrchardCore.ContentManagement.Metadata.Models;
+using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Settings;
 using OrchardCore.Users;
@@ -25,10 +30,13 @@ namespace EasyOC.OrchardCore.OpenApi.Services
     public class UsersAppService : AppServcieBase, IUsersAppService
     {
         private readonly UserManager<IUser> _userManager;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly SignInManager<IUser> _signInManager;
         private readonly ISession _session;
         private readonly IAuthorizationService _authorizationService;
         private readonly INotifier _notifier;
+        private readonly IContentManager _contentManager;
+
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
@@ -39,7 +47,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             UserManager<IUser> userManager,
             IUserService userService,
             INotifier notifier,
-            ISiteService siteService, IMapper mapper)
+            ISiteService siteService, IMapper mapper, IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
         {
             _signInManager = signInManager;
             _authorizationService = authorizationService;
@@ -48,6 +56,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             _notifier = notifier;
             _userService = userService;
             _mapper = mapper;
+            _contentManager = contentManager;
+            _contentDefinitionManager = contentDefinitionManager;
         }
 
         public async Task<PagedResultDto<UserDto>> GetAllAsync(GetAllUserInput input)
@@ -284,8 +294,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             //return RedirectToAction(nameof(Index));
         }
-
-
+       
 
         [HttpPost]
         public async Task EditPasswordAsync(ResetUserPasswordtInput model)
@@ -316,6 +325,35 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             {
                 await _notifier.SuccessAsync(H["Password updated correctly."]);
             }
+        }
+
+
+        private IEnumerable<ContentTypeDefinition> GetContentTypeDefinitions()
+            => _contentDefinitionManager
+                .ListTypeDefinitions()
+                .Where(x => x.GetSettings<ContentTypeSettings>().Stereotype == "CustomUserSettings");
+        public async Task<ContentItem> GetUserSettingsAsync(string id)
+        {
+            User user = null;
+            ContentTypeDefinition settingsType = null;
+            JToken property;
+            ContentItem contentItem;
+
+            if (user.Properties.TryGetValue(settingsType.Name, out property))
+            {
+                var existing = property.ToObject<ContentItem>();
+
+                // Create a new item to take into account the current type definition.
+                contentItem = await _contentManager.NewAsync(existing.ContentType);
+                contentItem.Merge(existing);
+            }
+            else
+            {
+                contentItem = await _contentManager.NewAsync(settingsType.Name);
+            }
+
+            return contentItem;
+
         }
 
 

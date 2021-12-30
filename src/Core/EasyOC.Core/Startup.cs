@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Modules;
 using System;
@@ -17,11 +18,16 @@ namespace EasyOC.Core
     [RequireFeatures(Constants.EasyOCCoreModuleId)]
     public class Startup : StartupBase
     {
+        private readonly IShellConfiguration _shellConfiguration;
+
+        public Startup(IShellConfiguration shellConfiguration)
+        {
+            _shellConfiguration = shellConfiguration;
+        }
 
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
             {
@@ -37,12 +43,28 @@ namespace EasyOC.Core
                 var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
                 var request = httpContextAccessor.HttpContext.Request;
                 var tenantSettings = ShellScope.Context.Settings;
-                var baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
-                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+                //var baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
+                var baseUrl = _shellConfiguration["AuthServer:Authority"].EnsureEndsWith('/');
+                var uriKind = UriKind.RelativeOrAbsolute;
+                if (string.IsNullOrEmpty(baseUrl))
+                {
+                    baseUrl = "/";
+                }
+                //options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme()
+                //{
+                //    Description = "Please enter into field the word 'Bearer' followed by a space and the JWT value",
+                //    Name = "Authorization",
+                //    In = ParameterLocation.Header,
+                //    Type = SecuritySchemeType.ApiKey,
+                //});
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
 
                     Type = SecuritySchemeType.OAuth2,
                     Description = "OpenID Connect",
+                    Name = "Authorization",
+                    Scheme="Api",
+                    In = ParameterLocation.Header,
                     Flows = new OpenApiOAuthFlows()
                     {
                         AuthorizationCode = new OpenApiOAuthFlow()
@@ -51,15 +73,29 @@ namespace EasyOC.Core
                                 {
                                     { "openid", "OpenID" },
                                     { "profile", "Profile" },
-                                    { "roles", "Roles" }
+                                    { "roles", "Roles" },
+                                    { "api", "Api" },
                                 },
-                            AuthorizationUrl = new Uri($"{baseUrl}connect/authorize"),
-                            TokenUrl = new Uri($"{baseUrl}connect/token"),
+                            AuthorizationUrl = new Uri($"{baseUrl}connect/authorize", uriKind),
+                            TokenUrl = new Uri($"{baseUrl}connect/token", uriKind),
 
                         },
                     }
                 });
-
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    }
+                                },
+                                Array.Empty<string>()
+                            }
+                        });
                 options.SwaggerDoc("v1", new OpenApiInfo()
                 { Title = "EasyOC Dynamic WebApi", Version = "v1" });
                 //options.SchemaGeneratorOptions.
@@ -107,9 +143,15 @@ namespace EasyOC.Core
             //启用中间件服务生成Swagger作为JSON终结点
             app.UseSwagger();
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
+
+                options.OAuthClientId(_shellConfiguration["AuthServer:SwaggerClientId"]);
+                options.OAuthClientSecret(_shellConfiguration["AuthServer:SwaggerClientSecret"]);
+                options.OAuth2RedirectUrl(_shellConfiguration["AuthServer:SwaggerOAuth2RedirectUrl"]);
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
+                options.OAuthScopes("openid", "profile", "roles", "api");
+
             });
         }
     }

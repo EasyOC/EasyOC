@@ -5,6 +5,7 @@ using EasyOC.OrchardCore.ContentExtentions.Models;
 using Microsoft.AspNetCore.Authorization;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
+using OrchardCore.ContentManagement.Metadata.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,19 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// 列出所有类型定义
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<ContentTypeDefinitionDto>> GetAllTypesAsync()
+        public async Task<IEnumerable<ContentTypeListItemDto>> GetAllTypesAsync()
         {
             if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
             {
                 throw new UnauthorizedAccessException();
             }
             var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
-               .Select(x => ObjectMapper.Map<ContentTypeDefinitionDto>(x));
+               .Select(x =>
+               {
+                   var listItem = ObjectMapper.Map<ContentTypeListItemDto>(x);
+                   listItem.Stereotype = x.GetSettings<ContentTypeSettings>().Stereotype;
+                   return listItem;
+               });
             return result;
         }
 

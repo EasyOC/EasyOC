@@ -3,7 +3,7 @@
     <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
 
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-  </PropertyGroup>
+  </PropertyGroup> 
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

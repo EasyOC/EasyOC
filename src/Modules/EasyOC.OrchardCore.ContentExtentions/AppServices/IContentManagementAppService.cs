@@ -9,7 +9,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
     public interface IContentManagementAppService
     {
         IEnumerable<string> GetAllParts();
-        Task<IEnumerable<ContentTypeDefinitionDto>> GetAllTypesAsync();
+        Task<IEnumerable<ContentTypeListItemDto>> GetAllTypesAsync();
         ContentPartApiModel GetPartDefinition(string name, bool incloudeSettings = false);
         IEnumerable<ContentFiledsApiModel> GetPartFields(ContentPartDefinition partDefinition, bool incloudeSettings = false);
         ContentTypeApiModel GetTypeDefinition(string name, bool incloudeSettings = false);
