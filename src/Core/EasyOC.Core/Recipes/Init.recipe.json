@@ -159,7 +159,7 @@
       "name": "OpenIdApplication",
       "DisplayName": "SwaggerUser",
       "ClientId": "SwaggerUser",
-      "ClientSecret": "123123/q",
+      "ClientSecret": "123123",
       "ConsentType": "implicit",
       "AllowAuthorizationCodeFlow": true,
       "AllowLogoutEndpoint": false,
