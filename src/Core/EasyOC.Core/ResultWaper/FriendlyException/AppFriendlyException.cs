@@ -59,7 +59,7 @@ namespace EasyOC
         public object ErrorMessage { get; set; }
 
         /// <summary>
-        /// 状态码
+        /// 状态码 <see cref="StatusCodes"/>
         /// </summary>
         public int StatusCode { get; set; } = StatusCodes.Status500InternalServerError;
 

@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
+using EasyOC.Core.Models;
+using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Services.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
@@ -32,7 +37,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         private readonly UserManager<IUser> _userManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly SignInManager<IUser> _signInManager;
-        private readonly ISession _session;
         private readonly IAuthorizationService _authorizationService;
         private readonly INotifier _notifier;
         private readonly IContentManager _contentManager;
@@ -43,7 +47,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         public UsersAppService(
             SignInManager<IUser> signInManager,
             IAuthorizationService authorizationService,
-            ISession session,
             UserManager<IUser> userManager,
             IUserService userService,
             INotifier notifier,
@@ -51,7 +54,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         {
             _signInManager = signInManager;
             _authorizationService = authorizationService;
-            _session = session;
             _userManager = userManager;
             _notifier = notifier;
             _userService = userService;
@@ -123,7 +125,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             if (bulkActionInput.ItemIds?.Count() > 0)
             {
-                var checkedContentItems = await _session.Query<User, UserIndex>()
+                var checkedContentItems = await YesSession.Query<User, UserIndex>()
                     .Where(x => x.UserId.IsIn(bulkActionInput.ItemIds)).ListAsync();
                 switch (bulkActionInput.BulkAction)
                 {
@@ -193,27 +195,26 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             if (String.IsNullOrEmpty(id))
             {
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
-                {
-                    throw new UnauthorizedAccessException();
-                }
             }
             else
             {
                 if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
                 {
-                    throw new EntryPointNotFoundException();
+                    throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
                 }
             }
 
             var user = await _userManager.FindByIdAsync(id) as User;
             if (user == null)
             {
-                throw new EntryPointNotFoundException();
+                throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
             }
 
             return _mapper.Map<UserDto>(user);
         }
+
+
+
 
         [HttpPost]
         public async Task UpdateAsync(UserDto userDto)
@@ -294,52 +295,71 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             //return RedirectToAction(nameof(Index));
         }
-       
+
 
         [HttpPost]
         public async Task EditPasswordAsync(ResetUserPasswordtInput model)
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             {
-                throw new UnauthorizedAccessException("Not Fount");
-
+                throw new AppFriendlyException("Not Fount", StatusCodes.Status401Unauthorized);
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email) as User;
 
             if (user == null)
             {
-                throw new ArgumentException($"Uesr:{user}Not Fount");
+                throw new AppFriendlyException($"Uesr:{user}Not Fount", StatusCodes.Status403Forbidden);
             }
 
-            //if (ModelState.IsValid)
-            //{
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var validationResult = new List<string>();
             if (await _userService.ResetPasswordAsync(model.Email, token, model.NewPassword,
-                async (a, b) =>
+                  (a, b) =>
                         {
-                            await _notifier.ErrorAsync(H[$"{a}:{b}"]);
+                            validationResult.Add(H[$"{a}:{b}"].Value);
                         }
-
             ))
             {
                 await _notifier.SuccessAsync(H["Password updated correctly."]);
             }
+            if (validationResult.Count > 0)
+            {
+                throw new AppFriendlyException(
+                    string.Join('\n', validationResult), StatusCodes.Status412PreconditionFailed);
+            }
         }
 
 
-        private IEnumerable<ContentTypeDefinition> GetContentTypeDefinitions()
+        public IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes()
+        {
+            var types = GetUserSettingsTypeDefinitions();
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var results = new List<ContentTypeDefinitionDto>();
+            foreach (var item in types)
+            {
+                //var result = ObjectMapper.Map<ContentTypeDefinitionDto>(item);
+                var str = JsonConvert.SerializeObject(item, jsonSettings);
+                results.Add(JsonConvert.DeserializeObject<ContentTypeDefinitionDto>(str, jsonSettings));
+            }
+            return results;
+        }
+
+        [NonDynamicMethod]
+        public IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions()
             => _contentDefinitionManager
                 .ListTypeDefinitions()
                 .Where(x => x.GetSettings<ContentTypeSettings>().Stereotype == "CustomUserSettings");
-        public async Task<ContentItem> GetUserSettingsAsync(string id)
+
+        [NonDynamicMethod]
+        public async Task<ContentItem> GetUserSettingsAsync(User user, string settingsTypeName)
         {
-            User user = null;
-            ContentTypeDefinition settingsType = null;
             JToken property;
             ContentItem contentItem;
-
-            if (user.Properties.TryGetValue(settingsType.Name, out property))
+            if (user.Properties.TryGetValue(settingsTypeName, out property))
             {
                 var existing = property.ToObject<ContentItem>();
 
@@ -349,11 +369,33 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             }
             else
             {
-                contentItem = await _contentManager.NewAsync(settingsType.Name);
+                contentItem = await _contentManager.NewAsync(settingsTypeName);
             }
-
             return contentItem;
 
+        }
+
+        public async Task<ContentItem> GetUserSettingsAsync(string userId, string settingsTypeName)
+        {
+            if (String.IsNullOrEmpty(userId))
+            {
+                userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+            else
+            {
+                if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
+                {
+                    throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
+                }
+            }
+
+            var user = await _userManager.FindByIdAsync(userId) as User;
+            if (user == null)
+            {
+                throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
+            }
+            var contentItem = await GetUserSettingsAsync(user, settingsTypeName);
+            return contentItem;
         }
 
 

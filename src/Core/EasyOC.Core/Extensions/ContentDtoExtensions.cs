@@ -2,11 +2,13 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Metadata.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OrchardCore.ContentManagement
+namespace EasyOC
 {
     public static class ContentDtoExtensions
     {
@@ -39,6 +41,17 @@ namespace OrchardCore.ContentManagement
             // TODO don't need this is we are pascal casing names first.
             //PropertyNameComparison = StringComparison.OrdinalIgnoreCase
         };
+
+        public static TDto ToDto<TDto>(this ContentDefinition content)
+               where TDto : ContentDefinitionDto
+        {
+            var serialized = JObject.FromObject(content);
+            var deserialized = serialized.ToObject(typeof(TDto)) as TDto;
+            //deserialized.AdditionalPropertiesToCamelCase();
+            return deserialized;
+        }
+
+        
 
         public static TDto ToDto<TDto>(this ContentElement content)
             where TDto : ContentElementDto
