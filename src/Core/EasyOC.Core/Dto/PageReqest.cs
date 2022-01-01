@@ -1,8 +1,4 @@
-﻿
-using EasyOC.Core.Dto;
-using EasyOC.Core.Swagger.Attributes;
-
-namespace EasyOC.Dto
+﻿namespace EasyOC.Dto
 {
     public class PageReqest
     {

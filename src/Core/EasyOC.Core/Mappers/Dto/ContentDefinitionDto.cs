@@ -1,5 +1,4 @@
-﻿using EasyOC.Core.Extensions;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement.Metadata.Models;
 using System.Collections.Generic;
 

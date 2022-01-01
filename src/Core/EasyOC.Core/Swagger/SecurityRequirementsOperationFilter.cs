@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EasyOC.Core.Swagger
 {

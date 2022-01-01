@@ -1,7 +1,4 @@
-﻿using EasyOC.Core;
-using EasyOC.Core.Models;
-using EasyOC.Dto;
-using EasyOC.DynamicWebApi.Attributes;
+﻿using EasyOC.Dto;
 using EasyOC.OrchardCore.OpenApi.Dto;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Models;

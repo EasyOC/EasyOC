@@ -1,17 +1,13 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
-using EasyOC.Core.Models;
 using EasyOC.Dto;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Services.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OrchardCore.AuditTrail.Models;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
@@ -330,7 +326,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
 
         public IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes()
-        { 
+        {
             return ObjectMapper.Map<IEnumerable<ContentTypeDefinitionDto>>(GetUserSettingsTypeDefinitions());
         }
 
