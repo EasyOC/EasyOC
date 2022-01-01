@@ -34,22 +34,8 @@ namespace EasyOC.Core.Mappers
             CreateMap<TimeField, TimeSpan?>().ConvertUsing(s => s.Value);
             CreateMap<TimeField, TimeSpan>().ConvertUsing(s => s.Value ?? new TimeSpan());
             CreateMap<JValue, object>().ConvertUsing(source => source.Value);
-            //CreateMap<JObject, string>().ConvertUsing(s => s != null ? s.ToString() : "");
-            //CreateMap<string, JObject>().ConvertUsing(s => JObject.Parse(s));
-            //CreateMap<ContentDefinition, ContentDefinitionDto>().ConvertUsing((s, t) =>
-            //{
-            //    t.Name = s.Name;
-            //    t.Settings = s.Settings != null ? s.Settings.ToString() : "";
-            //    return t;
-            //});
-
-
-
-            //    .ForMember(x => x.Settings, opt =>
-            //{
-            //    opt.ConvertUsing(new JObjectConverter());
-
-            //});
+            CreateMap<ContentTypeDefinition, ContentTypeDefinitionDto>().ConvertUsing((s, t) => s.ToDto());
+            CreateMap<ContentPartDefinition, ContentPartDefinitionDto>().ConvertUsing((s, t) => s.ToDto());
             #endregion
 
         }

@@ -1,15 +1,15 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
-using EasyOC.Core.Mappers;
-using Newtonsoft.Json;
+﻿using EasyOC.Core.Extensions;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement.Metadata.Models;
 using System.Collections.Generic;
 
 namespace EasyOC
 {
-    [AutoMap(typeof(ContentTypeDefinition))]
-
+    //[AutoMap(typeof(ContentTypeDefinition))]
+    /// <summary>
+    /// Dto of <see cref="ContentTypeDefinition"/>
+    /// Converting Method <see cref="ContentTypeDtoExtentions"/>
+    /// </summary>
     public class ContentTypeDefinitionDto : ContentDefinitionDto
     {
         public string DisplayName { get; set; }
@@ -19,40 +19,43 @@ namespace EasyOC
     }
 
 
-    [AutoMap(typeof(ContentTypePartDefinition))]
+    //[AutoMap(typeof(ContentTypePartDefinition))]
     public class ContentTypePartDefinitionDto : ContentDefinitionDto
     {
         public ContentPartDefinitionDto PartDefinition { get; set; }
-
+        public string DisplayName { get; set; }
+        public string Description { get; internal set; }
     }
-    [AutoMap(typeof(ContentPartDefinition))]
+    //[AutoMap(typeof(ContentPartDefinition))]
+    /// <summary>
+    /// Dto of <see cref="ContentPartDefinition"/>
+    /// </summary>
     public class ContentPartDefinitionDto : ContentDefinitionDto
     {
         public IEnumerable<ContentPartFieldDefinitionDto> Fields { get; set; }
-
+        public string DisplayName { get; set; }
+        public string Description { get; internal set; }
     }
 
-    [AutoMap(typeof(ContentPartFieldDefinition))]
+    //[AutoMap(typeof(ContentPartFieldDefinition))]
     public class ContentPartFieldDefinitionDto : ContentDefinitionDto
     {
         public ContentFieldDefinitionDto FieldDefinition { get; set; }
-
+        public string DisplayName { get; set; }
+        public string Description { get; internal set; }
     }
 
-    [AutoMap(typeof(ContentFieldDefinition))]
+    //[AutoMap(typeof(ContentFieldDefinition))]
     public class ContentFieldDefinitionDto
     {
         public string Name { get; set; }
 
     }
 
-    [AutoMap(typeof(ContentDefinition))]
+    //[AutoMap(typeof(ContentDefinition))]
     public class ContentDefinitionDto
     {
         public string Name { get; set; }
-        //[ValueConverter(typeof(JObjectConverter))]
-        //[JsonProperty(PropertyName = "Settings")]
-
-        public virtual object Settings { get; set; }
+        public virtual JObject Settings { get; set; }
     }
 }

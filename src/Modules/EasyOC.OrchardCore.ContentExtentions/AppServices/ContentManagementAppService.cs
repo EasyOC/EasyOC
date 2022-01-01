@@ -1,8 +1,10 @@
 ﻿using EasyOC.Core.Application;
+using EasyOC.Dto;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 using EasyOC.OrchardCore.ContentExtentions.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.ContentManagement.Metadata.Settings;
@@ -26,76 +28,65 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// 列出所有类型定义
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<ContentTypeListItemDto>> GetAllTypesAsync()
+        public async Task<PagedResult<ContentTypeListItemDto>> GetAllTypesAsync(GetAllTypeFilterInput input)
         {
             if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
             {
-                throw new UnauthorizedAccessException();
+                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
             }
             var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
-               .Select(x =>
-               {
-                   var listItem = ObjectMapper.Map<ContentTypeListItemDto>(x);
-                   listItem.Stereotype = x.GetSettings<ContentTypeSettings>().Stereotype;
-                   return listItem;
-               });
-            return result;
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), x
+                 => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
+                    || x.DisplayName.Contains(input.Filter, StringComparison.OrdinalIgnoreCase))
+                .Select(x =>
+                {
+                    var listItem = new ContentTypeListItemDto();
+                    listItem.Name = x.Name;
+                    listItem.DisplayName = x.DisplayName;
+                    listItem.Stereotype = x.GetSettings<ContentTypeSettings>().Stereotype;
+                    return listItem;
+                })
+                .WhereIf(!string.IsNullOrEmpty(input.Stereotype), x
+                    => input.Stereotype.Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase));
+
+            return result.ToPagedResult(input);
         }
 
-        public IEnumerable<string> GetAllParts()
+        public async Task<PagedResult<ContentPartDefinitionDto>> GetAllPartsAsync(SimpleFilterAndPageQueryInput input)
         {
-
+            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            {
+                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
+            }
             return _contentDefinitionManager.ListPartDefinitions()
-                .Select(x => x.Name);
-
+                .Select(x => x.ToDto(false))
+                .WhereIf(input.Filter.IsNullOrWhiteSpace(), x
+                => x.DisplayName.Contains(input.Filter) || x.Description.Contains(input.Filter))
+                .ToPagedResult(input);
         }
 
-        public ContentPartApiModel GetPartDefinition(string name, bool incloudeSettings = false)
+        public async Task<ContentPartDefinitionDto> GetPartDefinitionAsync(string name, bool withSettings = false)
         {
+            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            {
+                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
+            }
             var part = _contentDefinitionManager.LoadPartDefinition(name);
-
-            return new ContentPartApiModel
-            {
-                Name = part.Name,
-                Settings = part.Settings,
-                Fields = GetPartFields(part, incloudeSettings)
-            };
-
+            return part.ToDto(true, withSettings);
         }
 
-        [NonDynamicMethod]
-        public IEnumerable<ContentFiledsApiModel> GetPartFields(ContentPartDefinition partDefinition, bool incloudeSettings = false)
+
+        public async Task<ContentTypeDefinitionDto> GetTypeDefinitionAsync(string name, bool withSettings = false)
         {
-            return partDefinition.Fields.Select(f => new ContentFiledsApiModel
+            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
             {
-                Name = f.Name,
-                FieldTypeName = f.FieldDefinition.Name,
-                DisplayName = f.DisplayName(),
-                Settings = incloudeSettings ? f.Settings : null
-            });
-        }
-        public ContentTypeApiModel GetTypeDefinition(string name, bool incloudeSettings = false)
-        {
+                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
+            }
             var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
-            var contentTypeDef = new ContentTypeApiModel
-            {
-                Name = typeDefinition.Name,
-                DisplayName = typeDefinition.DisplayName,
-                Settings = incloudeSettings ? typeDefinition.Settings : null,
-                Parts = typeDefinition.Parts.Select(
-                     p =>
-                         {
-                             return new ContentPartApiModel
-                             {
-                                 Name = p.Name,
-                                 Settings = incloudeSettings ? p.Settings : null,
-                                 Fields = GetPartFields(p.PartDefinition, incloudeSettings)
-                             };
-                         })
-
-            };
-            return contentTypeDef;
+            return typeDefinition.ToDto(withSettings);
         }
+
+
 
 
     }
