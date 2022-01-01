@@ -11,9 +11,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
     {
         public string DisplayName { get; set; }
         public string Stereotype { get; internal set; }
-        [Ignore]
-        [IgnoreMap]
-        public override object Settings { get => base.Settings  ; set => base.Settings = value; }
 
     }
 }

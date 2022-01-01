@@ -1,4 +1,5 @@
-﻿using EasyOC.Core.Dynamic;
+﻿using EasyOC.Core.Authorization.Handlers;
+using EasyOC.Core.Dynamic;
 using EasyOC.Core.Swagger;
 using EasyOC.DynamicWebApi;
 using Microsoft.AspNetCore.Builder;
@@ -76,7 +77,7 @@ namespace EasyOC.Core
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                         {
-                            { 
+                            {
                                 new OpenApiSecurityScheme
                                 {
                                     Reference = new OpenApiReference
@@ -115,6 +116,10 @@ namespace EasyOC.Core
                 options.ActionRouteFactory = new ServiceActionRouteFactory();
 
             });
+
+            //授权处理
+            services.AddAppAuthorization<AppAuthorizeHandler>();
+            //友好异常，同一返回值封装
             services.AddUnifyResult();
         }
 
