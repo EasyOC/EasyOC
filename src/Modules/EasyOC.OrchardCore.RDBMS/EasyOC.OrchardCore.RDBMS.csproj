@@ -4,6 +4,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Controllers\ApiController.cs" />
+	  <Compile Remove="OrchardCoreIndexModels\UserIndex.cs" />
+	  <Compile Remove="Services\ContentMappingAppService.cs" />
 	</ItemGroup>
 	<!-- <ItemGroup>
 		<Compile Remove="Recipes\**" />

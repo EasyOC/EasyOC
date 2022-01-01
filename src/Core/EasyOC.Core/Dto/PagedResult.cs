@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace EasyOC.OrchardCore.OpenApi.Dto
+namespace EasyOC.Dto
 {
-    public class PagedResultDto<T>
+    public class PagedResult<T>
     {
-        public PagedResultDto(int total, IEnumerable<T> items)
+        public PagedResult(int total, IEnumerable<T> items)
         {
             Total = total;
             Items = items;
@@ -12,6 +12,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         public int Total { get; set; }
         public IEnumerable<T> Items { get; set; }
     }
+
     //
     // 摘要:
     //     Implements Abp.Application.Services.Dto.IListResult`1.

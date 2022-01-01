@@ -1,18 +1,8 @@
-﻿
-using EasyOC.Core.Swagger.Attributes;
+﻿using EasyOC.Core.Swagger.Attributes;
 
-namespace EasyOC.OrchardCore.OpenApi.Dto
+namespace EasyOC.Dto
 {
-    public class PagedReqest
-    {
-        public int Page { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
-        public int GetStartIndex() { return (Page - 1) * PageSize; }
-    }
-
-
-
-    public class PagedAndSortedRequest : PagedReqest
+    public class OrderInfo
     {
         public string SortField { get; set; }
         public string SortOrder { get; set; }
@@ -42,7 +32,4 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
             }
         }
     }
-
-
-
 }

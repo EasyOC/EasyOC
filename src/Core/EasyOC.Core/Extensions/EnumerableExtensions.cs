@@ -104,5 +104,11 @@ namespace System.Collections.Generic
 
             return source.Where(predicate);
         }
+
+        public static IEnumerable<T> Page<T>(this IEnumerable<T> source, int pageNum, int pageSize, out int total)
+        {
+            total = source.Count();
+            return source.Skip((pageNum - 1) * pageSize).Take(pageSize);
+        }
     }
 }
