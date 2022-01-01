@@ -1,6 +1,4 @@
-﻿using EasyOC.Core;
-using EasyOC.Core.Models;
-using EasyOC.DynamicWebApi.Attributes;
+﻿using EasyOC.Dto;
 using EasyOC.OrchardCore.OpenApi.Dto;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Models;
@@ -12,7 +10,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 {
     public interface IUsersAppService
     {
-        Task<PagedResultDto<UserDto>> GetAllAsync(GetAllUserInput input);
+        Task<PagedResult<UserDto>> GetAllAsync(GetAllUserInput input);
         Task BulkActionAsync(UsersBulkActionInput BulkAction);
         Task CreateUserAsync(UserDto user);
         Task<UserDto> GetUserAsync(string id);

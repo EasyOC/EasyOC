@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
-using EasyOC.Core.Models;
+using EasyOC.Dto;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Services.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
@@ -62,7 +60,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public async Task<PagedResultDto<UserDto>> GetAllAsync(GetAllUserInput input)
+        public async Task<PagedResult<UserDto>> GetAllAsync(GetAllUserInput input)
         {
             var authUser = new User();
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, authUser))
@@ -73,28 +71,29 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             var users = YesSession.Query<User, UserIndex>();
 
-            if (!string.IsNullOrWhiteSpace(input.SearchText))
+            if (!string.IsNullOrWhiteSpace(input.Filter))
             {
-                var normalizedSearchUserName = _userManager.NormalizeName(input.SearchText);
-                var normalizedSearchEMail = _userManager.NormalizeEmail(input.SearchText);
+                var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
+                var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
 
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
-            if (input.HasOrder)
+            if (input.OrderInfo != null && input.OrderInfo.HasOrder)
             {
-                switch (input.SortField.ToLower())
+                var orderInfo = input.OrderInfo;
+                switch (orderInfo.SortField.ToLower())
                 {
                     case "username":
-                        input.SortField = "NormalizedUserName";
+                        orderInfo.SortField = "NormalizedUserName";
                         break;
                     case "email":
-                        input.SortField = "NormalizedEmail";
+                        orderInfo.SortField = "NormalizedEmail";
                         break;
                     default:
                         break;
                 }
-                users = users.OrderBy(input.OrderStr);
+                users = users.OrderBy(orderInfo.OrderStr);
             }
 
 
@@ -105,13 +104,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 .Skip(input.GetStartIndex())
                 .Take(input.PageSize)
                 .ListAsync();
-            //尝试获取用户创建时间
-            //YesSession.Query<AuditTrailEvent, AuditTrailEventIndex>()
-            //    //.IsIn<>(x=>x.)
-            //    .Where(x => x.Category == UserRegistrationAuditTrailEventConfiguration.User
-            //    && x.Name == UserAuditTrailEventConfiguration.Created);
 
-            return new PagedResultDto<UserDto>(count, _mapper.Map<List<UserDto>>(results));
+            return new PagedResult<UserDto>(count, _mapper.Map<IEnumerable<UserDto>>(results));
         }
 
 
@@ -333,19 +327,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
         public IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes()
         {
-            var types = GetUserSettingsTypeDefinitions();
-            var jsonSettings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-            var results = new List<ContentTypeDefinitionDto>();
-            foreach (var item in types)
-            {
-                //var result = ObjectMapper.Map<ContentTypeDefinitionDto>(item);
-                var str = JsonConvert.SerializeObject(item, jsonSettings);
-                results.Add(JsonConvert.DeserializeObject<ContentTypeDefinitionDto>(str, jsonSettings));
-            }
-            return results;
+            return ObjectMapper.Map<IEnumerable<ContentTypeDefinitionDto>>(GetUserSettingsTypeDefinitions());
         }
 
         [NonDynamicMethod]

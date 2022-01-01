@@ -51,7 +51,7 @@ namespace EasyOC
             return deserialized;
         }
 
-        
+
 
         public static TDto ToDto<TDto>(this ContentElement content)
             where TDto : ContentElementDto

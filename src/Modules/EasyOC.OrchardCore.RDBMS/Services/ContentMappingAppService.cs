@@ -15,29 +15,29 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             _contentManagementAppService = contentManagementAppService;
         }
 
-        /// <summary>
-        /// OC Content to RDBMS
-        /// </summary>
-        /// <param name="contentTypeName"></param>
-        /// <returns></returns>
-        public JObject GetContentTypeMappingRDBMSResult(string contentTypeName)
-        {
+        ///// <summary>
+        ///// OC Content to RDBMS
+        ///// </summary>
+        ///// <param name="contentTypeName"></param>
+        ///// <returns></returns>
+        //public JObject GetContentTypeMappingRDBMSResult(string contentTypeName)
+        //{
 
-            var configResult = _contentManagementAppService.GetTypeDefinition(contentTypeName, false);
-            var result = new Dictionary<string, string>();
+        //    var configResult = _contentManagementAppService.(contentTypeName, false);
+        //    var result = new Dictionary<string, string>();
 
-            foreach (var part in configResult.Parts)
-            {
-                foreach (var filed in part.Fields)
-                {
+        //    foreach (var part in configResult.Parts)
+        //    {
+        //        foreach (var filed in part.Fields)
+        //        {
 
-                }
-            }
+        //        }
+        //    }
 
 
-            return JObject.FromObject(null);
+        //    return JObject.FromObject(null);
 
-        }
+        //}
 
         /// <summary>
         /// RDBMS TO OC Content

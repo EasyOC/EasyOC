@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using OrchardCore.Environment.Shell.Scope;
 using System.Threading.Tasks;
 
 namespace EasyOC.Core.Filter
 {
     public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
     {
+
 
         /// <summary>
         /// 异常拦截
@@ -29,12 +32,17 @@ namespace EasyOC.Core.Filter
 
             // 获取控制器信息
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            var serviceProvider = ShellScope.Context.ServiceProvider;
+            var LoggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            ILogger _logger = LoggerFactory.CreateLogger(actionDescriptor.ControllerTypeInfo.AsType());
+            var exception = context.Exception;
+            _logger.LogError(exception, exception.Message);
 
             // 解析异常信息
             var exceptionMetadata = UnifyContext.GetExceptionMetadata(context);
 
             // 判断是否是验证异常
-            var isValidationException = context.Exception is AppFriendlyException friendlyException && friendlyException.ValidationException;
+            var isValidationException = exception is AppFriendlyException friendlyException && friendlyException.ValidationException;
             // 如果是验证异常，返回 400
             if (isValidationException) context.Result = new BadRequestResult();
             else

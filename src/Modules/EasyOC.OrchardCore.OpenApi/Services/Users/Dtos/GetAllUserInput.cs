@@ -1,10 +1,13 @@
-﻿namespace EasyOC.OrchardCore.OpenApi.Dto
+﻿using EasyOC.Dto;
+
+namespace EasyOC.OrchardCore.OpenApi.Dto
 {
-    public class GetAllUserInput : PagedAndSortedRequest
+    public class GetAllUserInput : SimpleFilterAndPageQueryInput
     {
-        public string SearchText { get; set; }
 
         public string SelectedRole { get; set; }
+
+        public OrderInfo OrderInfo { get; set; }
 
     }
 }

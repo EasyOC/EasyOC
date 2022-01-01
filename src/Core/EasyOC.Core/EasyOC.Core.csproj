@@ -51,9 +51,6 @@
   <ItemGroup>
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Authorization\Permissions\" />
-  </ItemGroup>
 
 </Project>
 
