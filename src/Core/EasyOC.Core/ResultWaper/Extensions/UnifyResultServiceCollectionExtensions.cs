@@ -82,7 +82,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.Configure<MvcOptions>(options =>
             {
-                //options.Filters.Add<FriendlyExceptionFilter>();
+                options.Filters.Add<FriendlyExceptionFilter>();
                 options.Filters.Add<SucceededUnifyResultFilter>();
             });
 
