@@ -33,7 +33,7 @@ namespace EasyOC.Core
             {
                 options.UseInlineDefinitionsForEnums();
                 options.DocumentFilter<SwaggerDocumentFilter>();
-                //options.CustomSchemaIds(type => type.Name); 
+                options.CustomSchemaIds(type => type.Name);
                 options.ParameterFilter<SwaggerEnumParameterFilter>();
                 options.SchemaFilter<SwaggerEnumSchemaFilter>();
                 options.OperationFilter<SwaggerOperationIdFilter>();
@@ -50,20 +50,12 @@ namespace EasyOC.Core
                 {
                     baseUrl = "/";
                 }
-                //options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme()
-                //{
-                //    Description = "Please enter into field the word 'Bearer' followed by a space and the JWT value",
-                //    Name = "Authorization",
-                //    In = ParameterLocation.Header,
-                //    Type = SecuritySchemeType.ApiKey,
-                //});
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
 
                     Type = SecuritySchemeType.OAuth2,
                     Description = "OpenID Connect",
                     Name = "Authorization",
-                    Scheme="Api",
                     In = ParameterLocation.Header,
                     Flows = new OpenApiOAuthFlows()
                     {
@@ -84,7 +76,7 @@ namespace EasyOC.Core
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                         {
-                            {
+                            { 
                                 new OpenApiSecurityScheme
                                 {
                                     Reference = new OpenApiReference
