@@ -157,8 +157,8 @@
     },
     {
       "name": "OpenIdApplication",
-      "DisplayName": "SwaggerUser",
-      "ClientId": "SwaggerUser",
+      "DisplayName": "SwaggerClient",
+      "ClientId": "SwaggerClient",
       "ClientSecret": "123123",
       "ConsentType": "implicit",
       "AllowAuthorizationCodeFlow": true,

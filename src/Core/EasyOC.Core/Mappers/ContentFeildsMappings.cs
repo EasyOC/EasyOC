@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
 using OrchardCore.ContentFields.Fields;
+using OrchardCore.ContentManagement.Metadata.Models;
 using System;
 using System.Linq;
 
@@ -31,10 +33,31 @@ namespace EasyOC.Core.Mappers
             CreateMap<DateTimeField, DateTime>().ConvertUsing(s => Convert.ToDateTime(s.Value));
             CreateMap<TimeField, TimeSpan?>().ConvertUsing(s => s.Value);
             CreateMap<TimeField, TimeSpan>().ConvertUsing(s => s.Value ?? new TimeSpan());
+            CreateMap<JValue, object>().ConvertUsing(source => source.Value);
+            //CreateMap<JObject, string>().ConvertUsing(s => s != null ? s.ToString() : "");
+            //CreateMap<string, JObject>().ConvertUsing(s => JObject.Parse(s));
+            //CreateMap<ContentDefinition, ContentDefinitionDto>().ConvertUsing((s, t) =>
+            //{
+            //    t.Name = s.Name;
+            //    t.Settings = s.Settings != null ? s.Settings.ToString() : "";
+            //    return t;
+            //});
 
+
+
+            //    .ForMember(x => x.Settings, opt =>
+            //{
+            //    opt.ConvertUsing(new JObjectConverter());
+
+            //});
             #endregion
 
         }
+    }
+    public class JObjectConverter : IValueConverter<JObject, string>
+    {
+        public string Convert(JObject s, ResolutionContext context)
+            => s != null ? s.ToString() : "";
     }
 }
 
