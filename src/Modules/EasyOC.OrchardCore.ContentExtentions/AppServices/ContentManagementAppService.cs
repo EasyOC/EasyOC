@@ -1,4 +1,5 @@
 ﻿using EasyOC.Core.Application;
+using EasyOC.Core.Authorization.Permissions;
 using EasyOC.Dto;
 using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -6,13 +7,14 @@ using Microsoft.AspNetCore.Http;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using System;
+using OC = OrchardCore.Security.Permissions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Permissions = OrchardCore.ContentTypes.Permissions;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
+    [EOCAuthorization(OrchardCoreContentTypes.ViewContentTypes)]
     public class ContentManagementAppService : AppServcieBase, IContentManagementAppService
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -25,9 +27,10 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// 列出所有类型定义
         /// </summary>
         /// <returns></returns>
-        public async Task<PagedResult<ContentTypeListItemDto>> GetAllTypesAsync(GetAllTypeFilterInput input)
+        [EOCAuthorization(Ignore = true)]
+        public PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input)
         {
-            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            if (!AuthorizationService.AuthorizeAsync(User, new OC.Permission("ViewContentTypes")).Result)
             {
                 throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
             }
@@ -48,37 +51,31 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 
             return result.ToPagedResult(input);
         }
-
-        public async Task<PagedResult<ContentPartDefinitionDto>> GetAllPartsAsync(SimpleFilterAndPageQueryInput input)
+        public PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input)
         {
-            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
-            {
-                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
-            }
+            //if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            //{
+            //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
+            //}
             return _contentDefinitionManager.ListPartDefinitions()
                 .Select(x => x.ToDto(false))
                 .WhereIf(input.Filter.IsNullOrWhiteSpace(), x
                 => x.DisplayName.Contains(input.Filter) || x.Description.Contains(input.Filter))
                 .ToPagedResult(input);
         }
-
-        public async Task<ContentPartDefinitionDto> GetPartDefinitionAsync(string name, bool withSettings = false)
+        public ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false)
         {
-            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
-            {
-                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
-            }
+            //if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            //{
+            //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
+            //}
             var part = _contentDefinitionManager.LoadPartDefinition(name);
             return part.ToDto(true, withSettings);
         }
 
 
-        public async Task<ContentTypeDefinitionDto> GetTypeDefinitionAsync(string name, bool withSettings = false)
+        public ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false)
         {
-            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
-            {
-                throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
-            }
             var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
             return typeDefinition.ToDto(withSettings);
         }

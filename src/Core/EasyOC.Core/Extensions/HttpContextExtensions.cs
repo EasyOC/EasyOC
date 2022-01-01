@@ -1,4 +1,4 @@
-
+﻿
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Linq;
 using System.Text;
@@ -32,25 +32,7 @@ namespace Microsoft.AspNetCore.Http
             return httpContext.GetEndpoint()?.Metadata?.FirstOrDefault(u => u is ControllerActionDescriptor) as ControllerActionDescriptor;
         }
 
-        /// <summary>
-        /// 设置规范化文档自动登录
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <param name="accessToken"></param>
-        public static void SigninToSwagger(this HttpContext httpContext, string accessToken)
-        {
-            // 设置 Swagger 刷新自动授权
-            httpContext.Response.Headers["access-token"] = accessToken;
-        }
-
-        /// <summary>
-        /// 设置规范化文档退出登录
-        /// </summary>
-        /// <param name="httpContext"></param>
-        public static void SignoutToSwagger(this HttpContext httpContext)
-        {
-            httpContext.Response.Headers["access-token"] = "invalid_token";
-        }
+        
 
         /// <summary>
         /// 获取本机 IPv4地址

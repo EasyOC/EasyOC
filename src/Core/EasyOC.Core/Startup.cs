@@ -1,10 +1,14 @@
-﻿using EasyOC.Core.Dynamic;
+﻿using EasyOC.Core.Authorization.Handlers;
+using EasyOC.Core.Authorization.Permissions;
+using EasyOC.Core.Dynamic;
 using EasyOC.Core.Swagger;
 using EasyOC.DynamicWebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Environment.Shell.Scope;
@@ -115,6 +119,12 @@ namespace EasyOC.Core
                 options.ActionRouteFactory = new ServiceActionRouteFactory();
 
             });
+
+            //授权处理
+            services.AddScoped<IOrchardCorePermissionService, OrchardCorePermissionService>();
+
+            //services.AddScoped<IAuthorizationHandler, AppAuthorizeHandler>();
+            //友好异常，同一返回值封装
             services.AddUnifyResult();
         }
 
