@@ -6,9 +6,9 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
     public interface IContentManagementAppService
     {
-        Task<PagedResult<ContentPartDefinitionDto>> GetAllPartsAsync(SimpleFilterAndPageQueryInput input);
-        Task<PagedResult<ContentTypeListItemDto>> GetAllTypesAsync(GetAllTypeFilterInput input);
-        Task<ContentPartDefinitionDto> GetPartDefinitionAsync(string name, bool withSettings = false);
-        Task<ContentTypeDefinitionDto> GetTypeDefinitionAsync(string name, bool withSettings = false);
+        PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input);
+        PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input);
+        ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false);
+        ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false);
     }
 }

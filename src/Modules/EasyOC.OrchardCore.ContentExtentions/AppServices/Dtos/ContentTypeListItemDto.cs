@@ -7,7 +7,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
     public class ContentTypeListItemDto 
     {
         public string DisplayName { get; set; }
-        public string Name { get; set; }
         public string Stereotype { get; internal set; }
         public string Name { get; set; }
 

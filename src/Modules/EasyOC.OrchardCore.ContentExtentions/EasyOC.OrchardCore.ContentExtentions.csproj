@@ -22,10 +22,10 @@
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
   </ItemGroup>
 
 </Project>

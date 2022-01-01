@@ -11,16 +11,18 @@ namespace EasyOC.Core.Authorization.Handlers
     /// <summary>
     /// 授权策略执行程序
     /// </summary>
-    public class AppAuthorizeHandler : IAuthorizationHandler
+    public abstract class ApiAuthorizeHandler : AuthorizationHandler<PermissionRequirement>
     {
         private readonly IOrchardCorePermissionService _orchardCorePermissionService;
         private readonly IPermissionGrantingService _permissionGrantingService;
-        public AppAuthorizeHandler(IOrchardCorePermissionService orchardCorePermissionService, IAuthorizationService authorizationService, IPermissionGrantingService permissionGrantingService)
+        private readonly IAuthorizationService _authorizationService;
+        public ApiAuthorizeHandler(IOrchardCorePermissionService orchardCorePermissionService, IAuthorizationService authorizationService, IPermissionGrantingService permissionGrantingService)
         {
             _orchardCorePermissionService = orchardCorePermissionService;
+            _authorizationService = authorizationService;
             _permissionGrantingService = permissionGrantingService;
         }
-        public async Task HandleAsync(AuthorizationHandlerContext context)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
             if (context.HasSucceeded)
             {
@@ -38,24 +40,22 @@ namespace EasyOC.Core.Authorization.Handlers
 
             if (context?.User?.Identity?.IsAuthenticated ?? false)
             {
-                foreach (var requirement in context.PendingRequirements)
+                // 获取权限特性
+                var authorize = httpContext.GetMetadata<AuthorizeAttribute>();
+                if (authorize != null && authorize.Policy != string.Empty)
                 {
-                    // 获取权限特性
-                    var authorize = httpContext.GetMetadata<AuthorizeAttribute>();
-                    if (authorize != null && authorize.Policy != string.Empty)
+                    var permissions = await _orchardCorePermissionService.GetPermissionsAsync();
+                    var matched = permissions.FirstOrDefault(x => x.Name == authorize.Policy);
+                    if (matched != null)
                     {
-                        var permissions = await _orchardCorePermissionService.GetPermissionsAsync();
-                        var matched = permissions.FirstOrDefault(x => x.Name == authorize.Policy);
-                        if (matched != null &&
-                            _permissionGrantingService.IsGranted(requirement, context.User.Claims))
+                        if (await _authorizationService.AuthorizeAsync(context.User, matched))
                         {
                             context.Succeed(requirement);
                         }
                     }
                 }
-
             }
-            //await HandleOrchardRequirement(context, requirement);
+           await HandleOrchardRequirement(context, requirement);
         }
 
         private Task HandleOrchardRequirement(AuthorizationHandlerContext context, PermissionRequirement requirement)

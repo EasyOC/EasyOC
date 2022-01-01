@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EasyOC.Core.Authorization.Permissions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EasyOC.Core.Authorization.Requirements
 {
@@ -7,6 +8,13 @@ namespace EasyOC.Core.Authorization.Requirements
     /// </summary>
     public sealed class AppAuthorizeRequirement : IAuthorizationRequirement
     {
+        private readonly IOrchardCorePermissionService _orchardCorePermissionService;
+
+        public AppAuthorizeRequirement(IOrchardCorePermissionService orchardCorePermissionService)
+        {
+            _orchardCorePermissionService = orchardCorePermissionService;
+        }
+
         /// <summary>
         /// 构造函数
         /// </summary>

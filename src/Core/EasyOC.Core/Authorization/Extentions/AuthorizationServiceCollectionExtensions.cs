@@ -1,5 +1,4 @@
-﻿using EasyOC.Core.Authorization.Providers;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -28,22 +27,24 @@ namespace Microsoft.Extensions.DependencyInjection
             where TAuthorizationHandler : class, IAuthorizationHandler
         {
             // 注册授权策略提供器
-            services.TryAddSingleton<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
+            //services.AddScoped<IAuthorizationPolicyProvider, AppAuthorizationPolicyProvider>();
 
             // 注册策略授权处理程序
-            services.TryAddSingleton<IAuthorizationHandler, TAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, TAuthorizationHandler>();
 
-            //启用全局授权
-            if (enableGlobalAuthorize)
-            {
-                services.Configure<MvcOptions>(options =>
-                {
-                    options.Filters.Add(new AuthorizeFilter());
-                });
-            }
+            ////启用全局授权
+            //if (enableGlobalAuthorize)
+            //{
+            //    services.Configure<MvcOptions>(options =>
+            //    {
+            //        options.Filters.Add(new AuthorizeFilter());
+            //    });
+            //}
 
             configure?.Invoke(services);
             return services;
         }
+
+
     }
 }
