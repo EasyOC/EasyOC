@@ -3,7 +3,11 @@
     <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
 
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-  </PropertyGroup> 
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Models\ContentDefSettings.cs" />
+    <Compile Remove="Models\ContentTypeApiModel.cs" />
+  </ItemGroup> 
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -19,6 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
