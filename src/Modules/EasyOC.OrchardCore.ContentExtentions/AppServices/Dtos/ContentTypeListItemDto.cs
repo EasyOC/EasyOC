@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
-using EasyOC.Core;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement.Metadata.Models;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 {
     [AutoMap(typeof(ContentTypeDefinition))]
-    public class ContentTypeListItemDto : ContentDefinitionDto
+    public class ContentTypeListItemDto 
     {
         public string DisplayName { get; set; }
         public string Stereotype { get; internal set; }
+        public string Name { get; set; }
 
     }
 }
