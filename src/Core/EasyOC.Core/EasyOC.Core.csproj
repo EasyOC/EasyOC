@@ -14,12 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Authorization\Extentions\AuthorizationServiceCollectionExtensions.cs" />
-    <Compile Remove="Authorization\Extentions\AuthorizationServiceExtensions.cs" />
-    <Compile Remove="Authorization\Handlers\ApiAuthorizeHandler.cs" />
-    <Compile Remove="Authorization\Handlers\AppAuthorizeHandler.cs" />
-    <Compile Remove="Authorization\Handlers\JwtHandler.cs" />
-    <Compile Remove="Authorization\Providers\AppAuthorizationPolicyProvider.cs" />
     <Compile Remove="AutofacModule.cs" />
     <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeItemMetadataAttribute.cs" />
     <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeTypeAttribute.cs" />
@@ -58,11 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Authorization\Extentions\" />
-    <Folder Include="Authorization\Handlers\" />
-    <Folder Include="Authorization\Providers\" />
   </ItemGroup>
 
 </Project>

@@ -16,6 +16,7 @@ namespace EasyOC
     public class EOCAuthorizationAttribute : ActionFilterAttribute, IAuthorizationFilter
     {
         private List<string> _permissions = new List<string>();
+        public bool Ignore { get; set; } = false;
         public EOCAuthorizationAttribute(params OrchardCoreContentTypes[] permission)
         {
             foreach (var item in permission)
@@ -26,6 +27,9 @@ namespace EasyOC
 
         public async void OnAuthorization(AuthorizationFilterContext context)
         {
+            //忽略权限检查
+            if (Ignore) return;
+
             if (!(context.HttpContext.User?.Identity?.IsAuthenticated ?? false))
             {
                 context.Result = new ContentResult()
