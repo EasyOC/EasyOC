@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EasyOC
@@ -14,6 +15,25 @@ namespace EasyOC
         /// </summary>
         public AppFriendlyException() : base()
         {
+        }
+        public AppFriendlyException(SimpleError simpleError) : base()
+        {
+            var desc = simpleError.ToDescriptionOrString();
+            switch (simpleError)
+            {
+                case SimpleError.PermissionDenied:
+                    ErrorMessage = desc;
+                    ErrorCode = StatusCodes.Status403Forbidden;
+
+                    break;
+                case SimpleError.ResourceNotFound:
+                    ErrorMessage = desc;
+                    ErrorCode = StatusCodes.Status404NotFound;
+                    break;
+                default:
+                    ErrorMessage = desc; 
+                    break;
+            }
         }
 
         /// <summary>
@@ -67,5 +87,12 @@ namespace EasyOC
         /// 是否是数据验证异常
         /// </summary>
         public bool ValidationException { get; set; } = false;
+    }
+    public enum SimpleError
+    {
+        [Description("Permission denied.")]
+        PermissionDenied,
+        [Description("Resource not found.")]
+        ResourceNotFound,
     }
 }

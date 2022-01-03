@@ -2,10 +2,10 @@
 using Newtonsoft.Json.Linq;
 using OrchardCore.Entities;
 
-namespace EasyOC.Dto
+namespace EasyOC
 {
     [AutoMap(typeof(Entity), ReverseMap = true)]
-    internal class EntityDto
+    public class EntityDto
     {
         public JObject Properties
         {

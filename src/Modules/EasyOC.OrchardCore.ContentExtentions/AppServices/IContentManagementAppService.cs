@@ -1,6 +1,4 @@
-﻿using EasyOC.Dto;
-using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
-using System.Threading.Tasks;
+﻿using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {

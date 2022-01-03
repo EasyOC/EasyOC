@@ -1,4 +1,4 @@
-﻿namespace EasyOC.Core.Models
+﻿namespace EasyOC.Core.DtoModels
 {
     public abstract class ContentElementDto
     {

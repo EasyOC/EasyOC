@@ -1,4 +1,4 @@
-using EasyOC.Core.ResultWaper.Internal;
+﻿using EasyOC.Core.ResultWaper.Internal;
 using EasyOC.Core.ResultWaper.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Models;
+﻿using EasyOC.Core.DtoModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -51,7 +51,10 @@ namespace EasyOC
             return deserialized;
         }
 
-
+        public static ContentItemDto ToDto(this ContentItem content)
+        {
+            return content.ToDto<ContentItemDto>();
+        }
 
         public static TDto ToDto<TDto>(this ContentElement content)
             where TDto : ContentElementDto

@@ -17,7 +17,7 @@ namespace EasyOC
     {
         private List<string> _permissions = new List<string>();
         public bool Ignore { get; set; } = false;
-        public EOCAuthorizationAttribute(params OrchardCoreContentTypes[] permission)
+        public EOCAuthorizationAttribute(params OCPermissions[] permission)
         {
             foreach (var item in permission)
             {
@@ -25,11 +25,22 @@ namespace EasyOC
             }
         }
 
+        public EOCAuthorizationAttribute(params string[] permission)
+        {
+            foreach (var item in permission)
+            {
+                _permissions.Add(item);
+            }
+        }
         public async void OnAuthorization(AuthorizationFilterContext context)
         {
             //忽略权限检查
             if (Ignore) return;
-
+            //
+            if (context.ActionDescriptor.EndpointMetadata.Any(x => x.GetType() == typeof(AllowAnonymousAttribute)))
+            {
+                return;
+            }
             if (!(context.HttpContext.User?.Identity?.IsAuthenticated ?? false))
             {
                 context.Result = new ContentResult()

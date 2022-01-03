@@ -1,4 +1,4 @@
-﻿namespace EasyOC.Dto
+﻿namespace EasyOC
 {
     public class PageReqest
     {

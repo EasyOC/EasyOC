@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using OrchardCore.Users.Models;
-using EasyOC;
 using System;
 using System.Collections.Generic;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     [AutoMap(typeof(User))]
-    public class UserDto: EntityDto
+    public class UserListItemDto
     {
         public int? Id { get; set; }
 
@@ -18,11 +17,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         public string NormalizedUserName { get; set; }
 
         public string Email { get; set; }
-
-        public string NormalizedEmail { get; set; }
-
-        public string PasswordHash { get; set; }
-        public string SecurityStamp { get; set; }
+ 
 
         public bool EmailConfirmed { get; set; }
 
@@ -44,7 +39,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         public IList<string> RoleNames { get; set; } = new List<string>();
 
 
-        //public IList<UserClaim> UserClaims { get; set; } = new List<UserClaim>();
+        public IList<UserClaim> UserClaims { get; set; } = new List<UserClaim>();
 
 
         //public IList<UserLoginInfo> LoginInfos
@@ -60,6 +55,10 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         //    set;
         //} = new List<UserToken>();
 
-         
+
+        public override string ToString()
+        {
+            return UserName;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EasyOC.Dto
+namespace EasyOC
 {
     public class PagedResult<T>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyOC.Core.Models
+namespace EasyOC.Core.DtoModels
 {
     // This does not implement 'IContent`.
     // It keeps no original track of the content item.

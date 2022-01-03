@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Models;
+﻿using EasyOC.Core.DtoModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Data;

@@ -1,6 +1,4 @@
-﻿using EasyOC.Dto;
-
-namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
+﻿namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 {
     public class GetAllTypeFilterInput : SimpleFilterAndPageQueryInput
     {

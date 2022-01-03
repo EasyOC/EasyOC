@@ -24,7 +24,7 @@
         /// <summary>
         /// 错误信息
         /// </summary>
-        public object Errors { get; set; }
+        public object Messages { get; set; }
 
         /// <summary>
         /// 附加数据

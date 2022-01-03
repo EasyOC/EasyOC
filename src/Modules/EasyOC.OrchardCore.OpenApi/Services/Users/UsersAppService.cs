@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
-using EasyOC.Dto;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +29,7 @@ using Permissions = OrchardCore.Users.Permissions;
 
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
+    [EOCAuthorization("View Users")]
     public class UsersAppService : AppServcieBase, IUsersAppService
     {
         private readonly UserManager<IUser> _userManager;
@@ -60,7 +60,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public async Task<PagedResult<UserDto>> GetAllAsync(GetAllUserInput input)
+        public async Task<PagedResult<UserListItemDto>> GetAllAsync(GetAllUserInput input)
         {
             var authUser = new User();
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, authUser))
@@ -96,20 +96,18 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 users = users.OrderBy(orderInfo.OrderStr);
             }
 
-
-
             var count = await users.CountAsync();
 
             var results = await users
-                .Skip(input.GetStartIndex())
-                .Take(input.PageSize)
+                .Page(input)
                 .ListAsync();
 
-            return new PagedResult<UserDto>(count, _mapper.Map<IEnumerable<UserDto>>(results));
+            return new PagedResult<UserListItemDto>(count,
+                ObjectMapper.Map<IEnumerable<UserListItemDto>>(results));
         }
 
 
-
+        [EOCAuthorization(OCPermissions.ManageUsers)]
         public async Task BulkActionAsync(UsersBulkActionInput bulkActionInput)
         {
             if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers))
@@ -163,7 +161,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             //return RedirectToAction("Index");
         }
 
-
+        [EOCAuthorization(OCPermissions.ManageUsers)]
         [HttpPost]
         public async Task CreateUserAsync(UserDto input)
         {
@@ -209,7 +207,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
 
 
-
+        [EOCAuthorization(OCPermissions.ManageUsers)]
         [HttpPost]
         public async Task UpdateAsync(UserDto userDto)
         {
@@ -220,18 +218,18 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new AppFriendlyException(SimpleError.PermissionDenied);
                 }
             }
             else if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
             {
-                throw new EntryPointNotFoundException();
+                throw new AppFriendlyException(SimpleError.PermissionDenied);
             }
 
-            var user = await _userManager.FindByIdAsync(userDto.Id.ToString()) as User;
+            var user = await _userManager.FindByIdAsync(userDto.UserId.ToString()) as User;
             if (user == null)
             {
-                throw new ArgumentException($"Uesr:{user}Not Fount");
+                throw new ArgumentException($"Uesr:{userDto.Id} Not Fount");
             }
             _mapper.Map(userDto, user);
             var result = await _userManager.UpdateAsync(user);
@@ -241,8 +239,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 {
                     await _signInManager.RefreshSignInAsync(user);
                 }
-
                 await _notifier.SuccessAsync(H["User updated successfully."]);
+
             }
             else
             {
@@ -252,7 +250,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 }
             }
         }
-
+        [EOCAuthorization(OCPermissions.ManageUsers)]
         [HttpPost]
         public async Task DeleteAsync(string id)
         {
@@ -290,20 +288,16 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             //return RedirectToAction(nameof(Index));
         }
 
-
+        [EOCAuthorization(OCPermissions.ManageUsers)]
         [HttpPost]
         public async Task EditPasswordAsync(ResetUserPasswordtInput model)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            {
-                throw new AppFriendlyException("Not Fount", StatusCodes.Status401Unauthorized);
-            }
 
             var user = await _userManager.FindByEmailAsync(model.Email) as User;
 
             if (user == null)
             {
-                throw new AppFriendlyException($"Uesr:{user}Not Fount", StatusCodes.Status403Forbidden);
+                throw new AppFriendlyException($"Uesr:{user}Not Fount", StatusCodes.Status404NotFound);
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -356,29 +350,29 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             return contentItem;
 
         }
+        //[AllowAnonymous]
+        //public async Task<ContentItemDto> GetUserSettingsAsync(string userId, string settingsTypeName)
+        //{
+        //    if (String.IsNullOrEmpty(userId))
+        //    {
+        //        userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    }
+        //    else
+        //    {
+        //        if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
+        //        {
+        //            throw new AppFriendlyException("Permission Denied.", StatusCodes.Status403Forbidden);
+        //        }
+        //    }
 
-        public async Task<ContentItem> GetUserSettingsAsync(string userId, string settingsTypeName)
-        {
-            if (String.IsNullOrEmpty(userId))
-            {
-                userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            }
-            else
-            {
-                if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
-                {
-                    throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
-                }
-            }
-
-            var user = await _userManager.FindByIdAsync(userId) as User;
-            if (user == null)
-            {
-                throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
-            }
-            var contentItem = await GetUserSettingsAsync(user, settingsTypeName);
-            return contentItem;
-        }
+        //    var user = await _userManager.FindByIdAsync(userId) as User;
+        //    if (user == null)
+        //    {
+        //        throw new AppFriendlyException("User not found.", StatusCodes.Status404NotFound);
+        //    }
+        //    var contentItem = await GetUserSettingsAsync(user, settingsTypeName);
+        //    return contentItem.ToDto();
+        //}
 
 
     }

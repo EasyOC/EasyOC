@@ -76,7 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
             UnifyContext.RESTfulResultType = typeof(TUnifyResultProvider).GetCustomAttribute<UnifyModelAttribute>().ModelType;
 
             // 添加规范化提供器
-            services.AddSingleton<IUnifyResultProvider, TUnifyResultProvider>();
+            services.AddScoped<IUnifyResultProvider, TUnifyResultProvider>();
 
             // 添加成功规范化结果筛选器
 

@@ -4,6 +4,8 @@ using EasyOC.Core.ResultWaper.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using OrchardCore.DisplayManagement.Notify;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Furion.UnifyResult
@@ -11,8 +13,15 @@ namespace Furion.UnifyResult
     /// <summary>
     /// 规范化结构（请求成功）过滤器
     /// </summary>
-    public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
+    public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter 
     {
+        private readonly INotifier _notifier;
+
+        public SucceededUnifyResultFilter(INotifier notifier)
+        {
+            _notifier = notifier;
+        }
+
         /// <summary>
         /// 过滤器排序
         /// </summary>
@@ -21,7 +30,7 @@ namespace Furion.UnifyResult
         /// <summary>
         /// 排序属性
         /// </summary>
-        public int Order => FilterOrder;
+        public int Order => FilterOrder; 
 
         /// <summary>
         /// 处理规范化结果
@@ -41,7 +50,7 @@ namespace Furion.UnifyResult
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
 
             if (typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo)) return;
-            //// 判断是否跳过规范化处理
+            // 判断是否跳过规范化处理
             if (UnifyContext.CheckSucceededNonUnify(actionDescriptor.MethodInfo, out var unifyResult)) return;
 
             // 处理 BadRequestObjectResult 类型规范化处理

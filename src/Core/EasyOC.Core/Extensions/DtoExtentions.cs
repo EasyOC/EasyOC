@@ -1,5 +1,4 @@
-﻿using EasyOC.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YesSql;
 
@@ -7,6 +6,7 @@ namespace EasyOC
 {
     public static class DtoExtentions
     {
+
         public static ListType GetPageList<ListType, T>(this PageReqest input, ListType list, out int total)
               where ListType : IEnumerable<T>
 
@@ -36,11 +36,6 @@ namespace EasyOC
         }
 
 
-        public static IQuery<T> Page<T>(this IQuery<T> source, PageReqest input)
-            where T : class
-        {
-            return source.Skip(input.GetStartIndex()).Take(input.PageSize);
-        }
     }
 
 }

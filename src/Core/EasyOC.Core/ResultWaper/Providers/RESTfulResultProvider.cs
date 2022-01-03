@@ -1,4 +1,4 @@
-
+﻿
 using EasyOC.Core.Filter;
 using EasyOC.Core.ResultWaper.Internal;
 using EasyOC.Core.ResultWaper.UnifyResult.Attributes;
@@ -6,6 +6,7 @@ using EasyOC.Core.ResultWaper.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using OrchardCore.DisplayManagement.Notify;
 using System;
 using System.Threading.Tasks;
 
@@ -15,8 +16,15 @@ namespace EasyOC.Core.ResultWaper.Providers
     /// RESTful 风格返回值
     /// </summary>
     [UnifyModel(typeof(RESTfulResult<>))]
-    public class RESTfulResultProvider : IUnifyResultProvider
+    public class RESTfulResultProvider : IUnifyResultProvider 
     {
+        private readonly INotifier _notifier;
+
+        public RESTfulResultProvider(INotifier notifier)
+        {
+            _notifier = notifier;
+        }
+
         /// <summary>
         /// 异常返回值
         /// </summary>
@@ -25,18 +33,25 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <returns></returns>
         public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
         {
-            return new JsonResult(RESTfulResult(metadata.StatusCode, errors: metadata.Errors, httpContext: context.HttpContext));
+            return new JsonResult(RESTfulResult(metadata.StatusCode, messages: metadata.Errors, httpContext: context.HttpContext));
         }
 
         /// <summary>
         /// 成功返回值
+        /// 同时处理 Message <see cref="NotifyEntry"/>
+        /// <seealso cref="NotifierExtensions.SuccessAsync(INotifier, Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString)"/> 
+        /// <seealso cref="NotifierExtensions.ErrorAsync(INotifier, Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString)"/> 
+        /// <seealso cref="NotifierExtensions.InformationAsync(INotifier, Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString)"/> 
+        /// <seealso cref="NotifierExtensions.WarningAsync(INotifier, Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString)"/> 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="data"></param>
         /// <returns></returns>
         public IActionResult OnSucceeded(ActionExecutedContext context, object data)
         {
-            return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data, httpContext: context.HttpContext));
+            return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
+                messages: _notifier.List(),//处理OC 的代码内执行消息
+                httpContext: context.HttpContext));
         }
 
         /// <summary>
@@ -47,7 +62,7 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <returns></returns>
         public IActionResult OnValidateFailed(ActionExecutingContext context, ValidationMetadata metadata)
         {
-            return new JsonResult(RESTfulResult(StatusCodes.Status400BadRequest, errors: metadata.ValidationResult, httpContext: context.HttpContext));
+            return new JsonResult(RESTfulResult(StatusCodes.Status400BadRequest, messages: metadata.ValidationResult, httpContext: context.HttpContext));
         }
 
         /// <summary>
@@ -62,12 +77,12 @@ namespace EasyOC.Core.ResultWaper.Providers
             {
                 // 处理 401 状态码
                 case StatusCodes.Status401Unauthorized:
-                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, errors: "401 Unauthorized", httpContext: context)
+                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, messages: "401 Unauthorized", httpContext: context)
                         );
                     break;
                 // 处理 403 状态码
                 case StatusCodes.Status403Forbidden:
-                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, errors: "403 Forbidden", httpContext: context)
+                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, messages: "403 Forbidden", httpContext: context)
                         );
                     break;
 
@@ -81,20 +96,21 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <param name="statusCode"></param>
         /// <param name="succeeded"></param>
         /// <param name="data"></param>
-        /// <param name="errors"></param>
+        /// <param name="messages"></param>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object errors = default, HttpContext httpContext = default)
+        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object messages = default, HttpContext httpContext = default)
         {
             return new RESTfulResult<object>
             {
                 StatusCode = statusCode,
                 Succeeded = succeeded,
                 Result = data,
-                Errors = errors,
+                Messages = messages,
                 Extras = httpContext.TakeExtras(),
                 Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             };
         }
+ 
     }
 }

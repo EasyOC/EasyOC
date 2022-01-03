@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Models;
+﻿using EasyOC.Core.DtoModels;
 
 namespace ThisNetWorks.OrchardCore.OpenApi.Models
 {

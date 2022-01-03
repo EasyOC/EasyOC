@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.ResultWaper.Handlers;
+﻿using EasyOC.Core.ResultWaper.Providers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace EasyOC.Core.Filter
 {
-    public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
-    {
+    public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter 
+    { 
 
 
         /// <summary>
@@ -21,10 +21,10 @@ namespace EasyOC.Core.Filter
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             // 解析异常处理服务，实现自定义异常额外操作，如记录日志等
-            var globalExceptionHandler = context.HttpContext.RequestServices.GetService<IGlobalExceptionHandler>();
+            var globalExceptionHandler = context.HttpContext.RequestServices.GetService<IUnifyResultProvider>();
             if (globalExceptionHandler != null)
             {
-                await globalExceptionHandler.OnExceptionAsync(context);
+                  globalExceptionHandler.OnException(context, UnifyContext.GetExceptionMetadata(context));
             }
 
             // 如果异常在其他地方被标记了处理，那么这里不再处理

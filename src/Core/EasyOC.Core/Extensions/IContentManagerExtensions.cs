@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Models;
+﻿using EasyOC.Core.DtoModels;
 using OrchardCore.ContentManagement;
 using System;
 using System.Threading.Tasks;

@@ -1,5 +1,5 @@
 ﻿using EasyOC.Core.Application;
-using EasyOC.Core.Models;
+using EasyOC.Core.DtoModels;
 using EasyOC.DynamicWebApi;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.Excel.Models;

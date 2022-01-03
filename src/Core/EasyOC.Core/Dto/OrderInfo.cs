@@ -1,6 +1,6 @@
 ﻿using EasyOC.Core.Swagger.Attributes;
 
-namespace EasyOC.Dto
+namespace EasyOC
 {
     public class OrderInfo
     {

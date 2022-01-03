@@ -1,6 +1,4 @@
-﻿using EasyOC.Dto;
-
-namespace EasyOC.OrchardCore.OpenApi.Dto
+﻿namespace EasyOC.OrchardCore.OpenApi.Dto
 {
     public class GetAllUserInput : SimpleFilterAndPageQueryInput
     {

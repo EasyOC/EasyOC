@@ -149,7 +149,7 @@
     {
       "name": "OpenIdApplication",
       "DisplayName": "Authorization Password Flow",
-      "ClientId": "vue_client_app", 
+      "ClientId": "vue_client_app",
       "AllowAuthorizationCodeFlow": true,
       "AllowLogoutEndpoint": true,
       "AllowPasswordFlow": true,
@@ -171,38 +171,66 @@
       "name": "OpenIdScope",
       "Description": "A scope to provide openid for remote clients",
       "DisplayName": "openid Scope",
-      "ScopeName": "openid",
-      "Resources": "my_recipient"
+      "ScopeName": "openid"
     },
     {
       "name": "OpenIdScope",
       "Description": "A scope to provide profile for remote clients",
       "DisplayName": "profile Scope",
-      "ScopeName": "profile",
-      "Resources": "my_recipient"
+      "ScopeName": "profile"
     },
     {
       "name": "OpenIdScope",
       "Description": "A scope to provide roles for remote clients",
       "DisplayName": "roles Scope",
-      "ScopeName": "roles",
-      "Resources": "my_recipient"
+      "ScopeName": "roles"
     },
     {
       "name": "OpenIdScope",
       "Description": "A scope to provide permissions for remote clients",
       "DisplayName": "permissions Scope",
-      "ScopeName": "permissions",
-      "Resources": "my_recipient"
+      "ScopeName": "permissions"
     },
     {
       "name": "OpenIdScope",
       "Description": "A scope to provide api for remote clients",
       "DisplayName": "api Scope",
-      "ScopeName": "api",
-      "Resources": "my_recipient"
+      "ScopeName": "api"
+    },
+    {
+      "name": "AdminMenu",
+      "data": [
+        {
+          "Id": "c9a8b1e213064e16912cf33266e500f6",
+          "Name": "Development",
+          "Enabled": true,
+          "MenuItems": [
+            {
+              "$type": "OrchardCore.AdminMenu.AdminNodes.LinkAdminNode, OrchardCore.AdminMenu",
+              "LinkText": "Swagger Api",
+              "LinkUrl": "/swagger",
+              "IconClass": "far fa-list-alt",
+              "PermissionNames": [
+                "ManageAdminSettings"
+              ],
+              "UniqueId": "ace742f959bf46bb94189792b73c6489",
+              "Enabled": true,
+              "Text": null,
+              "Id": null,
+              "Href": null,
+              "Url": null,
+              "Position": "9",
+              "Priority": 0,
+              "LinkToFirstChild": true,
+              "LocalNav": false,
+              "Culture": null,
+              "Items": [],
+              "Classes": []
+            }
+          ]
+        }
+      ]
     }
+
   ]
 }
-
-

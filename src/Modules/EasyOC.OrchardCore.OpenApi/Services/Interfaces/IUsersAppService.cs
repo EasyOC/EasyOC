@@ -1,5 +1,4 @@
-﻿using EasyOC.Dto;
-using EasyOC.OrchardCore.OpenApi.Dto;
+﻿using EasyOC.OrchardCore.OpenApi.Dto;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.Users.Models;
@@ -10,7 +9,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 {
     public interface IUsersAppService
     {
-        Task<PagedResult<UserDto>> GetAllAsync(GetAllUserInput input);
+        Task<PagedResult<UserListItemDto>> GetAllAsync(GetAllUserInput input);
         Task BulkActionAsync(UsersBulkActionInput BulkAction);
         Task CreateUserAsync(UserDto user);
         Task<UserDto> GetUserAsync(string id);
@@ -19,7 +18,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes();
         IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions();
         Task<ContentItem> GetUserSettingsAsync(User user, string settingsTypeName);
-        Task<ContentItem> GetUserSettingsAsync(string userId, string settingsTypeName);
+        //Task<ContentItemDto> GetUserSettingsAsync(string userId, string settingsTypeName);
 
     }
 }
