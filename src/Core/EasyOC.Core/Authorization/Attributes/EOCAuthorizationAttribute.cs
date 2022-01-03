@@ -45,8 +45,8 @@ namespace EasyOC
             {
                 context.Result = new ContentResult()
                 {
-                    Content = "Unauthorized.",
-                    StatusCode = StatusCodes.Status401Unauthorized
+                    Content = "Authentication Timeout.",
+                    StatusCode = StatusCodes.Status419AuthenticationTimeout
                 };
                 return;
             }
