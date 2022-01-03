@@ -7,6 +7,26 @@ namespace EasyOC
     public static class DtoExtentions
     {
 
+        public static bool HasOrder(this OrderInfo orderInfo)
+        {
+            return !string.IsNullOrEmpty(orderInfo.SortOrder) && !string.IsNullOrEmpty(orderInfo.SortField);
+        }
+        public static string GetOrderStr(this OrderInfo orderInfo)
+        {
+            if (orderInfo.HasOrder())
+            {
+                if (orderInfo.SortOrder == "ascend")
+                {
+                    return $"{orderInfo.SortField} asc";
+
+                }
+                else
+                {
+                    return $"{orderInfo.SortField} desc";
+                }
+            }
+            else return string.Empty;
+        } 
         public static ListType GetPageList<ListType, T>(this PageReqest input, ListType list, out int total)
               where ListType : IEnumerable<T>
 

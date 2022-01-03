@@ -36,11 +36,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         //    set;
         //}
 
-        public IList<string> RoleNames { get; set; } = new List<string>();
-
-
-        public IList<UserClaim> UserClaims { get; set; } = new List<UserClaim>();
-
+        public IList<string> RoleNames { get; set; } = new List<string>(); 
 
         //public IList<UserLoginInfo> LoginInfos
         //{

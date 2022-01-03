@@ -79,7 +79,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
-            if (input.OrderInfo != null && input.OrderInfo.HasOrder)
+            if (input.OrderInfo != null && input.OrderInfo.HasOrder())
             {
                 var orderInfo = input.OrderInfo;
                 switch (orderInfo.SortField.ToLower())
@@ -93,7 +93,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     default:
                         break;
                 }
-                users = users.OrderBy(orderInfo.OrderStr);
+                users = users.OrderBy(orderInfo.GetOrderStr());
             }
 
             var count = await users.CountAsync();
