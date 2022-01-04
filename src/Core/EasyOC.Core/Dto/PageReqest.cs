@@ -13,10 +13,10 @@
 
     }
 
-    public class PageAndOrderRequest : PageReqest
+    public class PageAndOrderRequest : PageReqest, ISortInfo
     {
-        public OrderInfo OrderInfo { get; set; }
-
+        public string SortField { get; set; }
+        public string SortOrder { get; set; }
     }
 
 

@@ -6,8 +6,9 @@ using System.Collections.Generic;
 
 namespace EasyOC.OrchardCore.OpenApi.Dto
 {
-    [AutoMap(typeof(User))]
-    public class UserDto: EntityDto
+    [AutoMap(typeof(User), ReverseMap = true)]
+    [Serializable]
+    public class UserDetailsDto : EntityDto
     {
         public int? Id { get; set; }
 
@@ -21,19 +22,16 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
 
         public string NormalizedEmail { get; set; }
 
-        public string PasswordHash { get; set; }
-        public string SecurityStamp { get; set; }
-
-        public bool EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; } = false;
 
         public bool IsEnabled { get; set; } = true;
 
 
-        public bool IsLockoutEnabled { get; set; }
+        public bool IsLockoutEnabled { get; set; } = false;
 
         public DateTime? LockoutEndUtc { get; set; }
 
-        public int AccessFailedCount { get; set; }
+        public int AccessFailedCount { get; set; } = 0;
 
         //public string ResetToken
         //{
@@ -60,6 +58,6 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         //    set;
         //} = new List<UserToken>();
 
-         
+
     }
 }

@@ -79,21 +79,20 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
-            if (input.OrderInfo != null && input.OrderInfo.HasOrder())
-            {
-                var orderInfo = input.OrderInfo;
-                switch (orderInfo.SortField.ToLower())
+            if (input.HasOrder())
+            { 
+                switch (input.SortField.ToLower())
                 {
                     case "username":
-                        orderInfo.SortField = "NormalizedUserName";
+                        input.SortField = "NormalizedUserName";
                         break;
                     case "email":
-                        orderInfo.SortField = "NormalizedEmail";
+                        input.SortField = "NormalizedEmail";
                         break;
                     default:
                         break;
                 }
-                users = users.OrderBy(orderInfo.GetOrderStr());
+                users = users.OrderBy(input.GetOrderStr());
             }
 
             var count = await users.CountAsync();
@@ -162,15 +161,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         }
 
         [EOCAuthorization(OCPermissions.ManageUsers)]
-        [HttpPost]
-        public async Task CreateUserAsync(UserDto input)
+        public async Task NewUserAsync(UserDetailsDto input)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
-            {
-                throw new UnauthorizedAccessException();
-            }
 
-            var user = await _userService.CreateUserAsync(_mapper.Map<User>(input), null, async (key, value) =>
+            var user = await _userService.CreateUserAsync(ObjectMapper.Map<User>(input), null, async (key, value) =>
               {
                   await _notifier.ErrorAsync(H[$"{key}:{value}"]);
               });
@@ -181,7 +175,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             //return RedirectToAction(nameof(Index));
         }
 
-        public async Task<UserDto> GetUserAsync(string id)
+        public async Task<UserDetailsDto> GetUserAsync(string id)
         {
             // When no id is provided we assume the user is trying to edit their own profile.
             if (String.IsNullOrEmpty(id))
@@ -202,35 +196,39 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
             }
 
-            return _mapper.Map<UserDto>(user);
+            return _mapper.Map<UserDetailsDto>(user);
         }
 
 
 
         [EOCAuthorization(OCPermissions.ManageUsers)]
         [HttpPost]
-        public async Task UpdateAsync(UserDto userDto)
+        public async Task UpdateAsync(UserDetailsDto userDto)
         {
-            string id;
             // When no id is provided we assume the user is trying to edit their own profile.
-            if (userDto.Id.HasValue)
+            var id = userDto.UserId;
+            var editingOwnUser = false;
+            if (String.IsNullOrEmpty(userDto.UserId))
             {
+                editingOwnUser = true;
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
                 {
                     throw new AppFriendlyException(SimpleError.PermissionDenied);
                 }
             }
-            else if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+
+            var user = await _userManager.FindByIdAsync(id) as User;
+            if (user == null)
+            {
+                throw new AppFriendlyException(SimpleError.ResourceNotFound);
+            }
+
+            if (!editingOwnUser && !await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, user))
             {
                 throw new AppFriendlyException(SimpleError.PermissionDenied);
             }
 
-            var user = await _userManager.FindByIdAsync(userDto.UserId.ToString()) as User;
-            if (user == null)
-            {
-                throw new ArgumentException($"Uesr:{userDto.Id} Not Fount");
-            }
             _mapper.Map(userDto, user);
             var result = await _userManager.UpdateAsync(user);
             if (result.Errors.Count() == 0)

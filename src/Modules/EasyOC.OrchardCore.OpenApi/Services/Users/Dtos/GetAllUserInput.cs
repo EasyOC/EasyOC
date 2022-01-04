@@ -1,11 +1,10 @@
 ﻿namespace EasyOC.OrchardCore.OpenApi.Dto
 {
-    public class GetAllUserInput : SimpleFilterAndPageQueryInput
+    public class GetAllUserInput : SimpleFilterAndPageQueryInput, ISortInfo
     {
 
         public string SelectedRole { get; set; }
-
-        public OrderInfo OrderInfo { get; set; }
-
+        public string SortField { get; set; }
+        public string SortOrder { get; set; }
     }
 }

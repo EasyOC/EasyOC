@@ -11,9 +11,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
     {
         Task<PagedResult<UserListItemDto>> GetAllAsync(GetAllUserInput input);
         Task BulkActionAsync(UsersBulkActionInput BulkAction);
-        Task CreateUserAsync(UserDto user);
-        Task<UserDto> GetUserAsync(string id);
-        Task UpdateAsync(UserDto userDto); Task DeleteAsync(string id);
+        Task NewUserAsync(UserDetailsDto user);
+        Task<UserDetailsDto> GetUserAsync(string id);
+        Task UpdateAsync(UserDetailsDto userDto);
+        Task DeleteAsync(string id);
         Task EditPasswordAsync(ResetUserPasswordtInput model);
         IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes();
         IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions();

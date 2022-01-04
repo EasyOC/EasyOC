@@ -7,11 +7,11 @@ namespace EasyOC
     public static class DtoExtentions
     {
 
-        public static bool HasOrder(this OrderInfo orderInfo)
+        public static bool HasOrder(this ISortInfo orderInfo)
         {
             return !string.IsNullOrEmpty(orderInfo.SortOrder) && !string.IsNullOrEmpty(orderInfo.SortField);
         }
-        public static string GetOrderStr(this OrderInfo orderInfo)
+        public static string GetOrderStr(this ISortInfo orderInfo)
         {
             if (orderInfo.HasOrder())
             {
