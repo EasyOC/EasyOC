@@ -1,32 +1,33 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
-		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Compile Remove="ViewModels\**" />
-		<EmbeddedResource Remove="ViewModels\**" />
-		<None Remove="ViewModels\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ViewModels\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="ViewModels\**" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
 
-	</ItemGroup>
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+  </ItemGroup>
 
 </Project>

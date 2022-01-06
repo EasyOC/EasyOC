@@ -1,4 +1,4 @@
-﻿using EasyOC.OrchardCore.RDBMS.DataAccess;
+﻿using EasyOC.Core.Extensions;
 using EasyOC.OrchardCore.RDBMS.Migrations;
 using EasyOC.OrchardCore.RDBMS.Queries.Sql;
 using EasyOC.OrchardCore.RDBMS.Scripting;

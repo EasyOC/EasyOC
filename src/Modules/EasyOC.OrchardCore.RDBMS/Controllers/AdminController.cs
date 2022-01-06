@@ -1,4 +1,5 @@
-﻿using EasyOC.OrchardCore.RDBMS.Models;
+﻿using EasyOC;
+using EasyOC.OrchardCore.RDBMS.Models;
 using EasyOC.OrchardCore.RDBMS.Services;
 using EasyOC.OrchardCore.RDBMS.ViewModels;
 using FreeSql;
@@ -12,7 +13,6 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Records;
 using OrchardCore.ContentManagement.Records;
-using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Settings;
@@ -37,12 +37,10 @@ namespace OrchardCore.RelationDb.Controllers
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
 
 
-        private readonly dynamic New;
 
         public AdminController(
             IAuthorizationService authorizationService,
             ISiteService siteService,
-            IShapeFactory shapeFactory,
             IStringLocalizer<AdminController> stringLocalizer,
             IHtmlLocalizer<AdminController> htmlLocalizer,
             INotifier notifier,
@@ -53,7 +51,6 @@ namespace OrchardCore.RelationDb.Controllers
             _authorizationService = authorizationService;
             _siteService = siteService;
             _updateModelAccessor = updateModelAccessor;
-            New = shapeFactory;
             _notifier = notifier;
             S = stringLocalizer;
             H = htmlLocalizer;

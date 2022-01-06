@@ -1,0 +1,122 @@
+﻿{
+  "name": "User Profiles",
+  "displayName": "User Profiles",
+  "description": "User Profiles",
+  "author": "EasyOC",
+  "website": "EasyOC",
+  "version": "",
+  "issetuprecipe": false,
+  "categories": [],
+  "tags": [],
+  "steps": [
+    {
+      "name": "ReplaceContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "UserProfile",
+          "DisplayName": "User Profiles",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "CustomUserSettings"
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "UserProfilePart",
+              "Name": "UserProfilePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0"
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "UserProfilePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true
+            }
+          },
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "NickName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "NickName",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "FirstName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "FirstName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "LastName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "LastName",
+                  "Position": "2"
+                }
+              }
+            },
+
+            {
+              "FieldName": "TextField",
+              "Name": "Gender",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Gender",
+                  "Editor": "PredefinedList",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {},
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "Male",
+                      "value": "Male"
+                    },
+                    {
+                      "name": "Female",
+                      "value": "Female"
+                    },
+                    {
+                      "name": "Unknown",
+                      "value": ""
+                    }
+                  ]
+                },
+                "ContentIndexSettings": {}
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -19,10 +19,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="FreeSql.Provider.MySql" />
-		<PackageReference Include="FreeSql.Provider.Sqlite" />
-		<PackageReference Include="FreeSql.Provider.SqlServer" />
-		<PackageReference Include="IdleBus" Version="1.5.2" />
 
 	</ItemGroup>
 

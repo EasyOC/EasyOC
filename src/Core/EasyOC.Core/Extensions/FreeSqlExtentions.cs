@@ -1,5 +1,4 @@
-﻿using EasyOC.OrchardCore.RDBMS.Services;
-using FreeSql;
+﻿using FreeSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,7 +9,7 @@ using OrchardCore.Shells.Database.Configuration;
 using System;
 using System.IO;
 
-namespace EasyOC.OrchardCore.RDBMS.DataAccess
+namespace EasyOC
 {
     public static class FreeSqlExtentions
     {

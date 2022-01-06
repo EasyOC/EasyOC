@@ -1,11 +1,13 @@
-﻿using FreeSql;
+﻿using EasyOC.Core.Indexs;
+using FreeSql;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Text;
 
-namespace EasyOC.OrchardCore.RDBMS.Services
+namespace EasyOC
 {
     public class FreeSqlProviderFactory
     {
@@ -68,13 +70,19 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                                            }
                                        })
                                        .Build();
-                    if (!string.IsNullOrEmpty(tablePrefix))
+                    fsql.Aop.ConfigEntity += (s, e) =>
                     {
-                        fsql.Aop.ConfigEntity += (s, e) =>
+                        if (!string.IsNullOrEmpty(tablePrefix))
                         {
-                            e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, e.ModifyResult.Name); //表名前缀
-                        };
-                    }
+                            var tableName = e.EntityType.Name;
+
+                            if (e.ModifyResult is EOCTableAttribute tableAttribute)
+                            {
+                                tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
+                            }
+                            e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, tableName); //表名前缀
+                        }
+                    };
                     return fsql;
                 }
 

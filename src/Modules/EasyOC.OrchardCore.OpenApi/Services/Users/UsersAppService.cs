@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentFields.Indexing.SQL;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.ContentManagement.Metadata.Settings;
+using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.Notify;
+using OrchardCore.Indexing;
 using OrchardCore.Settings;
 using OrchardCore.Users;
 using OrchardCore.Users.Indexes;
@@ -67,20 +70,16 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             {
                 throw new UnauthorizedAccessException();
             }
-
-
             var users = YesSession.Query<User, UserIndex>();
-
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
                 var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
                 var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
-
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
+                //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
             }
-
             if (input.HasOrder())
-            { 
+            {
                 switch (input.SortField.ToLower())
                 {
                     case "username":
@@ -94,13 +93,12 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 }
                 users = users.OrderBy(input.GetOrderStr());
             }
-
+            //users = users.With<ContentItemIndex>(x => x.ContentType == "UserProfiles")
+            //                  .Where(x => x.DisplayText.Contains(input.Filter));
             var count = await users.CountAsync();
-
             var results = await users
                 .Page(input)
                 .ListAsync();
-
             return new PagedResult<UserListItemDto>(count,
                 ObjectMapper.Map<IEnumerable<UserListItemDto>>(results));
         }
@@ -108,12 +106,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
         [EOCAuthorization(OCPermissions.ManageUsers)]
         public async Task BulkActionAsync(UsersBulkActionInput bulkActionInput)
-        {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers))
-            {
-                throw new UnauthorizedAccessException();
-            }
-
+        { 
             if (bulkActionInput.ItemIds?.Count() > 0)
             {
                 var checkedContentItems = await YesSession.Query<User, UserIndex>()

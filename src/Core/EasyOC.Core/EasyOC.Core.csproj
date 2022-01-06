@@ -32,7 +32,11 @@
     <!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
+    <PackageReference Include="IdleBus" Version="1.5.2" />
     <PackageReference Include="FreeSql" />
+    <PackageReference Include="FreeSql.Provider.MySql" />
+    <PackageReference Include="FreeSql.Provider.Sqlite" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" />
 
     <!--<PackageReference Include="Volo.Abp.Core" />-->
   </ItemGroup>

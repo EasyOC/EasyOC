@@ -13,7 +13,7 @@ namespace Furion.UnifyResult
     /// <summary>
     /// 规范化结构（请求成功）过滤器
     /// </summary>
-    public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter 
+    public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
     {
         private readonly INotifier _notifier;
 
@@ -30,7 +30,7 @@ namespace Furion.UnifyResult
         /// <summary>
         /// 排序属性
         /// </summary>
-        public int Order => FilterOrder; 
+        public int Order => FilterOrder;
 
         /// <summary>
         /// 处理规范化结果
@@ -42,7 +42,7 @@ namespace Furion.UnifyResult
         {
             // 执行 Action 并获取结果
             var actionExecutedContext = await next();
-
+            //context.Result = actionExecutedContext.Result;
             // 如果出现异常，则不会进入该过滤器
             if (actionExecutedContext.Exception != null) return;
 
