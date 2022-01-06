@@ -84,7 +84,6 @@
                 }
               }
             },
-
             {
               "FieldName": "TextField",
               "Name": "Gender",
@@ -112,6 +111,17 @@
                   ]
                 },
                 "ContentIndexSettings": {}
+              }
+            },
+
+            {
+              "FieldName": "TextField",
+              "Name": "JobTitle",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Job Title",
+                  "Position": "0"
+                }
               }
             }
           ]

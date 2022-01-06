@@ -34,8 +34,10 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
 
         public async Task<int> UpdateFrom2Async()
         {
-            var str = await _recipeMigrator.ExecuteAsync("../Ricpes/UserProfiles.recipe.json", this);
+            var str = await _recipeMigrator.ExecuteAsync("UserProfiles.json", this);
+            System.Console.WriteLine(str);
             return 3;
         }
+      
     }
 }
