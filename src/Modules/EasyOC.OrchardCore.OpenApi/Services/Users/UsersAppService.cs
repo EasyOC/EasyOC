@@ -99,14 +99,21 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             var results = await users
                 .Page(input)
                 .ListAsync();
-            return new PagedResult<UserListItemDto>(count,
-                ObjectMapper.Map<IEnumerable<UserListItemDto>>(results));
+            var result = new List<UserListItemDto>();
+            foreach (var item in results)
+            {
+                var u = ObjectMapper.Map<UserListItemDto>(item);
+                u.Properties = item.Properties;
+                result.Add(u);
+            }
+
+            return new PagedResult<UserListItemDto>(count, result);
         }
 
 
         [EOCAuthorization(OCPermissions.ManageUsers)]
         public async Task BulkActionAsync(UsersBulkActionInput bulkActionInput)
-        { 
+        {
             if (bulkActionInput.ItemIds?.Count() > 0)
             {
                 var checkedContentItems = await YesSession.Query<User, UserIndex>()

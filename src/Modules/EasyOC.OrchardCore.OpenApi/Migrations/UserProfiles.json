@@ -59,7 +59,7 @@
               "Name": "NickName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "NickName",
+                  "DisplayName": "Nick Name",
                   "Position": "0"
                 }
               }
@@ -69,7 +69,7 @@
               "Name": "FirstName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "FirstName",
+                  "DisplayName": "First Name",
                   "Position": "1"
                 }
               }
@@ -79,7 +79,7 @@
               "Name": "LastName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "LastName",
+                  "DisplayName": "Last Name",
                   "Position": "2"
                 }
               }

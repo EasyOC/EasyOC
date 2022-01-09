@@ -2,7 +2,7 @@
   <Import Project="Dependencies.AspNetCore.props" />
   <PropertyGroup>
     <!-- OrchardCore 的全局依赖版本-->
-    <OrchardCoreVersion>1.2.0-preview-16615</OrchardCoreVersion>
+    <OrchardCoreVersion>1.2.0</OrchardCoreVersion>
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
     <StatCanVersion>1.0.6-candev-4</StatCanVersion>
 

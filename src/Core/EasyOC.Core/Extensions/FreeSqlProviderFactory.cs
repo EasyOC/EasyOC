@@ -75,10 +75,13 @@ namespace EasyOC
                         if (!string.IsNullOrEmpty(tablePrefix))
                         {
                             var tableName = e.EntityType.Name;
-
-                            if (e.ModifyResult is EOCTableAttribute tableAttribute)
+                            if (e.ModifyResult != null && !e.ModifyResult.Name.IsNullOrEmpty())
                             {
-                                tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
+                                tableName = e.ModifyResult.Name;
+                                if (e.ModifyResult is EOCTableAttribute tableAttribute)
+                                {
+                                    tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
+                                }
                             }
                             e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, tableName); //表名前缀
                         }

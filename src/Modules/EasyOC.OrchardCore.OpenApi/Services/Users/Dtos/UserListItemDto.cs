@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
+using Newtonsoft.Json.Linq;
 using OrchardCore.Users.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         public string NormalizedUserName { get; set; }
 
         public string Email { get; set; }
- 
+
 
         public bool EmailConfirmed { get; set; }
 
@@ -29,6 +31,8 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         public DateTime? LockoutEndUtc { get; set; }
 
         public int AccessFailedCount { get; set; }
+        [Ignore]
+        public JObject Properties { get; set; }
 
         //public string ResetToken
         //{
@@ -36,7 +40,7 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         //    set;
         //}
 
-        public IList<string> RoleNames { get; set; } = new List<string>(); 
+        public IList<string> RoleNames { get; set; } = new List<string>();
 
         //public IList<UserLoginInfo> LoginInfos
         //{
