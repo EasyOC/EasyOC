@@ -1,0 +1,112 @@
+﻿{
+  "name": "SampleData",
+  "displayName": "创建测试数据",
+  "description": "创建测试数据",
+  "author": "EasyOC",
+  "website": "EasyOC",
+  "version": "",
+  "issetuprecipe": false,
+  "categories": [],
+  "tags": [],
+  "steps": [
+    {
+      "name": "Content",
+      "data": [
+        {
+          "ContentItemId": "4nqmnzst1gx5ttnt3m14c0k2cp",
+          "ContentItemVersionId": "4tvrv6tkddcxt6bes75fey76wc",
+          "ContentType": "Department",
+          "DisplayText": "总公司",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-10T11:16:00.143212Z",
+          "PublishedUtc": "2022-01-10T11:16:00.1995655Z",
+          "CreatedUtc": "2022-01-10T11:16:00.143212Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Department": {
+            "ParentDepartmentId": {
+              "ContentItemIds": []
+            },
+            "OrderIndex": {
+              "Value": 0.0
+            },
+            "Status": {
+              "Value": true
+            },
+            "Description": {
+              "Text": null
+            }
+          },
+          "TitlePart": {
+            "Title": "总公司"
+          }
+        },
+        {
+          "ContentItemId": "4dp22n7gb5zf6yxzerntch69xm",
+          "ContentItemVersionId": "4edyw0r966k3tx25eem3svzzc6",
+          "ContentType": "Department",
+          "DisplayText": "财务部",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-10T11:16:08.5105019Z",
+          "PublishedUtc": "2022-01-10T11:16:08.5142674Z",
+          "CreatedUtc": "2022-01-10T11:16:08.5105019Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Department": {
+            "ParentDepartmentId": {
+              "ContentItemIds": [
+                "4nqmnzst1gx5ttnt3m14c0k2cp"
+              ]
+            },
+            "OrderIndex": {
+              "Value": null
+            },
+            "Status": {
+              "Value": true
+            },
+            "Description": {
+              "Text": null
+            }
+          },
+          "TitlePart": {
+            "Title": "财务部"
+          }
+        },
+        {
+          "ContentItemId": "41msgnes61qvwvmm7sfzawjxcg",
+          "ContentItemVersionId": "43pkxpy09yk8krrb4xs30e60ck",
+          "ContentType": "Department",
+          "DisplayText": "销售部",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-10T11:16:16.0521687Z",
+          "PublishedUtc": "2022-01-10T11:16:16.0548932Z",
+          "CreatedUtc": "2022-01-10T11:16:16.0521687Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Department": {
+            "ParentDepartmentId": {
+              "ContentItemIds": [
+                "4nqmnzst1gx5ttnt3m14c0k2cp"
+              ]
+            },
+            "OrderIndex": {
+              "Value": null
+            },
+            "Status": {
+              "Value": true
+            },
+            "Description": {
+              "Text": null
+            }
+          },
+          "TitlePart": {
+            "Title": "销售部"
+          }
+        }
+      ]
+    }
+  ]
+}

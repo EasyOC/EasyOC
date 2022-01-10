@@ -13,7 +13,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
     [AutoMap(typeof(UserProfilePart), ReverseMap = true)]
     [AutoMap(typeof(ContentItem), ReverseMap = true)]
     [AutoMap(typeof(User), ReverseMap = true)]
-    [EOCIndex("IDX_UserProfileIndex_DocumentId", "DocumentId,NickName,UserId,Username,FirstName,LastName,Gender")]
+    [EOCIndex("IDX_UserProfileIndex_DocumentId", "DocumentId,NickName,UserId,Username,FirstName,LastName,Gender,DepartmentId")]
     [EOCTable]
     public class UserProfileIndex : FreeSqlDocumentIndex
     {
@@ -23,6 +23,8 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
         public string LastName { get; set; }
         public string Gender { get; set; }
         public string NickName { get; set; }
+        public string Department { get; set; } 
+        public string Manager { get; set; }
     }
     public class UserProfileIndexProvider : IndexProvider<User>
     {

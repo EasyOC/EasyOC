@@ -24,9 +24,10 @@ namespace EasyOC.Core.Mappers
             CreateMap<NumericField, int>().ConvertUsing(s => s.Value.To<int>());
             CreateMap<NumericField, long?>().ConvertUsing(s => Convert.ToInt64(s.Value));
             CreateMap<NumericField, long?>().ConvertUsing(s => Convert.ToInt64(s.Value));
-            //CreateMap<UserPickerField, string[]>().ConvertUsing(s => s.UserIds);
+            CreateMap<UserPickerField, string[]>().ConvertUsing(s => s.UserIds);
             CreateMap<UserPickerField, string>().ConvertUsing(s => s.UserIds.FirstOrDefault());
-            //CreateMap<ContentPickerField, string[]>().ConvertUsing(s => s.ContentItemIds);
+            CreateMap<ContentPickerField, string[]>().ConvertUsing(s => s.ContentItemIds);
+            CreateMap<ContentPickerField, string>().ConvertUsing(s => s.ContentItemIds.FirstOrDefault());
             CreateMap<DateField, DateTime?>().ConvertUsing(s => s.Value);
             CreateMap<DateField, DateTime>().ConvertUsing(s => s.Value.To<DateTime>());
             CreateMap<DateTimeField, DateTime>().ConvertUsing(s => Convert.ToDateTime(s.Value));
