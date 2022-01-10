@@ -21,7 +21,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
             _recipeMigrator = recipeMigrator;
         }
 
-        public int Create()
+        public async Task<int> CreateAsync()
         {
 
 
@@ -35,6 +35,8 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
                      .Column<string>(nameof(UserProfileIndex.NickName))
                      .Column<string>(nameof(UserProfileIndex.Department))
                      .Column<string>(nameof(UserProfileIndex.Manager))
+                     .Column<string>(nameof(UserProfileIndex.Name))
+                     .Column<string>(nameof(UserProfileIndex.EmployeCode))
                  );
             SchemaBuilder.AlterIndexTable<UserProfileIndex>(table => table
                 .CreateIndex("IDX_UserProfileIndex_DocumentId",
@@ -46,23 +48,13 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
                     nameof(UserProfileIndex.Gender),
                     nameof(UserProfileIndex.NickName),
                     nameof(UserProfileIndex.Department),
-                    nameof(UserProfileIndex.Manager)
+                    nameof(UserProfileIndex.Manager),
+                    nameof(UserProfileIndex.Name),
+                    nameof(UserProfileIndex.EmployeCode)
                     ));
+
+            var str = await _recipeMigrator.ExecuteAsync("UserProfiles.json", this);
             return 1;
-        }
-
-        public async Task<int> UpdateFrom2Async()
-        {
-            var str = await _recipeMigrator.ExecuteAsync("UserProfiles.json", this);
-            return 2;
-        }
-
-        public async Task<int> UpdateFrom3Async()
-        {
-            var str = await _recipeMigrator.ExecuteAsync("UserProfiles.json", this);
-     
-            return 3;
-
-        }
+        } 
     }
 }

@@ -87,7 +87,27 @@
               "Attachable": true
             }
           },
-          "ContentPartFieldDefinitionRecords": [
+          "ContentPartFieldDefinitionRecords": [ 
+            {
+              "FieldName": "TextField",
+              "Name": "EmployeCode",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "员工号",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "姓名",
+                  "Position": "1"
+                }
+              }
+            },
             {
               "FieldName": "TextField",
               "Name": "NickName",
