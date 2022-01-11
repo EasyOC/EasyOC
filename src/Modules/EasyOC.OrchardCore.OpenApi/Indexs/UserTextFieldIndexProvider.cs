@@ -60,7 +60,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                         // Can we safely ignore this content item?
                         if (_ignoredTypes.Contains(contentItem.ContentType))
                         {
-                            return null;
+                            continue;
                         }
 
 
@@ -69,7 +69,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                         if (contentTypeDefinition == null)
                         {
                             _ignoredTypes.Add(contentItem.ContentType);
-                            return null;
+                            continue; 
                         }
 
 
@@ -77,7 +77,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                         if (fieldDefinitions.Length == 0)
                         {
                             _ignoredTypes.Add(contentItem.ContentType);
-                            return null;
+                            continue;
                         }
 
 

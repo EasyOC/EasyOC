@@ -45,10 +45,10 @@ namespace System
         /// <param name="item">Item to check</param>
         /// <param name="list">List of items</param>
         /// <typeparam name="T">Type of the items</typeparam>
-        public static bool IsIn<T>(this T item, params T[] list)
-        {
-            return list.Contains(item);
-        }
+        //public static bool IsIn<T>(this T item, params T[] list)
+        //{
+        //    return list.Contains(item);
+        //}
 
         /// <summary>
         /// Check if an item is in the given enumerable.
@@ -56,10 +56,10 @@ namespace System
         /// <param name="item">Item to check</param>
         /// <param name="items">Items</param>
         /// <typeparam name="T">Type of the items</typeparam>
-        public static bool IsIn<T>(this T item, IEnumerable<T> items)
-        {
-            return items.Contains(item);
-        }
+        //public static bool IsIn<T>(this T item, IEnumerable<T> items)
+        //{
+        //    return items.Contains(item);
+        //}
 
         /// <summary>
         /// Can be used to conditionally perform a function

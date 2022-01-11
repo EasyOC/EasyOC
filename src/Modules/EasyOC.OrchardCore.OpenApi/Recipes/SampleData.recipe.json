@@ -7,7 +7,7 @@
   "version": "",
   "issetuprecipe": false,
   "categories": [],
-  "tags": [],
+  "tags": [ "Department" ],
   "steps": [
     {
       "name": "Content",

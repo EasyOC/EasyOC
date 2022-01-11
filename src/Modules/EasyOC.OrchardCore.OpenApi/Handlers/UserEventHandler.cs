@@ -117,7 +117,7 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
                                 continue;
                         }
                         SetContentFieldIndexValue(contentItem, contentTypePartDefinition, contentPartFieldDefinition, idx);
-                        _fsql.Insert(idx);
+                        //_fsql.Insert(idx);
                     }
 
                 }

@@ -2,6 +2,7 @@
 using EasyOC.Core.Dynamic;
 using EasyOC.Core.Swagger;
 using EasyOC.DynamicWebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -120,9 +121,8 @@ namespace EasyOC.Core
             //授权处理
             services.AddScoped<IOrchardCorePermissionService, OrchardCorePermissionService>();
 
-            //services.AddScoped<IAuthorizationHandler, AppAuthorizeHandler>();
             //友好异常，同一返回值封装
-            //services.AddUnifyResult();
+            services.AddUnifyResult();
         }
 
         public override void Configure(IApplicationBuilder app,
