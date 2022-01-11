@@ -122,7 +122,7 @@ namespace EasyOC.Core
 
             //services.AddScoped<IAuthorizationHandler, AppAuthorizeHandler>();
             //友好异常，同一返回值封装
-            services.AddUnifyResult();
+            //services.AddUnifyResult();
         }
 
         public override void Configure(IApplicationBuilder app,

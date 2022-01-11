@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" />
+    <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" />
 
 	</ItemGroup>
 

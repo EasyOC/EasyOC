@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace EasyOC.Core.Mappers
 {
-    public class ContentFeildsMappings : Profile
+    public class ContentFieldsMappings : Profile
     {
-        public ContentFeildsMappings()
+        public ContentFieldsMappings()
         {
             #region OC fileds maping
 

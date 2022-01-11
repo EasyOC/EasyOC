@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Indexs;
 using EasyOC.OrchardCore.OpenApi.Model;
-using FreeSql.DataAnnotations;
 using OrchardCore.ContentManagement;
 using OrchardCore.Entities;
 using OrchardCore.Users.Models;
-using System;
-using YesSql;
 using YesSql.Indexes;
 namespace EasyOC.OrchardCore.OpenApi.Indexs
 {
