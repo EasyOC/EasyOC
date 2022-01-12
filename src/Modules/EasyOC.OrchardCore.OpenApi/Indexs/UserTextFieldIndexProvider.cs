@@ -12,6 +12,7 @@ using OrchardCore.Data;
 using OrchardCore.Entities;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Users.Models;
+using YesSql;
 using YesSql.Indexes;
 
 namespace EasyOC.OrchardCore.OpenApi.Indexs
@@ -19,23 +20,26 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
 
     public class UserTextFieldIndexProvider : IndexProvider<User>, IScopedIndexProvider, IIndexProvider
     {
-        private readonly IServiceProvider _serviceProvider;
+        private IServiceProvider _serviceProvider;
         private readonly HashSet<string> _ignoredTypes = new HashSet<string>();
         private IContentDefinitionManager _contentDefinitionManager;
-
-        public UserTextFieldIndexProvider(IServiceProvider serviceProvider)
+        private readonly IContentItemIdGenerator _idGenerator;
+        public UserTextFieldIndexProvider(IContentItemIdGenerator idGenerator)
         {
-            _serviceProvider = serviceProvider;
+            _idGenerator = idGenerator;
         }
 
         public override void Describe(DescribeContext<User> context)
         {
+          
             context.For<TextFieldIndex>()
-                .Map(user =>
+                .Map(async user =>
                 {
 
                     var results = new List<TextFieldIndex>();
-                    _contentDefinitionManager ??= ShellScope.Current.ServiceProvider.GetRequiredService<IContentDefinitionManager>();
+                    // Lazy initialization because of ISession cyclic dependency
+                    _serviceProvider = ShellScope.Current.ServiceProvider;
+                    _contentDefinitionManager ??= _serviceProvider.GetRequiredService<IContentDefinitionManager>();
 
                     // Search for TextField
                     var contentTypeDefinitions = _contentDefinitionManager
@@ -44,12 +48,13 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                     foreach (var contentTypeDefinition in contentTypeDefinitions)
                     {
                         var contentItem = user.As<ContentItem>(contentTypeDefinition.Name);
-                        var fieldDefinitions = contentTypeDefinitions.SelectMany(x => x.Parts.SelectMany(x => x.PartDefinition.Fields.Where(f => f.FieldDefinition.Name == nameof(TextField))))
-                                        .ToArray();
+                        var fieldDefinitions = contentTypeDefinitions.SelectMany(x =>
+                            x.Parts.SelectMany(x =>
+                                x.PartDefinition.Fields.Where(f => f.FieldDefinition.Name == nameof(TextField))))
+                            .ToArray();
 
-
-                        // Lazy initialization because of ISession cyclic dependency
-                        _contentDefinitionManager ??= _serviceProvider.GetRequiredService<IContentDefinitionManager>();
+                        contentItem.ContentItemId = user.UserId;
+                        contentItem.ContentItemVersionId = _idGenerator.GenerateUniqueId(contentItem);
 
                         // Remove index records of soft deleted items.
                         //if (!contentItem.Published && !contentItem.Latest)
@@ -69,7 +74,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                         if (contentTypeDefinition == null)
                         {
                             _ignoredTypes.Add(contentItem.ContentType);
-                            continue; 
+                            continue;
                         }
 
 
@@ -101,8 +106,8 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
 
                             results.Add(new TextFieldIndex
                             {
-                                Latest = contentItem.Latest,
-                                Published = contentItem.Published,
+                                Latest = contentItem.Latest = true,
+                                Published = contentItem.Published = true,
                                 ContentItemId = contentItem.ContentItemId,
                                 ContentItemVersionId = contentItem.ContentItemVersionId,
                                 ContentType = contentItem.ContentType,
@@ -114,6 +119,15 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                         }
 
                     }
+                    var _session = _serviceProvider.GetRequiredService<ISession>();
+
+                    //var history = await _session.QueryIndex<TextFieldIndex>().Where(x => x.ContentItemId == user.UserId).ListAsync();
+                    //foreach (var historyItem in history)
+                    //{
+                    //    historyItem.Latest = false;
+                    //    historyItem.Published = false;
+                    //    _session.Delete(historyItem);
+                    //}
 
                     return results;
                 });

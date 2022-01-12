@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Indexing.SQL;
@@ -44,7 +45,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         private readonly IAuthorizationService _authorizationService;
         private readonly INotifier _notifier;
         private readonly IContentManager _contentManager;
-
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
@@ -120,6 +120,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             var contentDefs = GetUserSettingsTypeDefinitions();
             var contentPickerValues = new Dictionary<string[], ContentPickerField>();
             var userPickerValues = new Dictionary<string[], UserPickerField>();
+            #region 查找需要填充的字段
             foreach (var user in users)
             {
                 foreach (var item in contentDefs)
@@ -166,6 +167,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 }
 
             }
+
+            #endregion
+
+            #region 批量填充关联信息
             var ids = contentPickerValues.Values.SelectMany(x => x.ContentItemIds);
             var contentItems = await _contentManager.GetAsync(ids);
             var userids = userPickerValues.Values.SelectMany(x => x.UserIds);
@@ -207,10 +212,11 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                                 jField["UserDetails"] = JArray.FromObject(pickerdUsers);
                             }
                             user.Properties[key[1]][key[2]][key[3]] = jField;
-                        } 
+                        }
                     }
                 }
             }
+            #endregion
 
 
         }

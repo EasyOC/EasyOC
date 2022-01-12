@@ -3,6 +3,11 @@ using OrchardCore.ContentManagement;
 
 namespace EasyOC.OrchardCore.OpenApi.Model
 {
+    public class UserProfile : ContentItem
+    {
+
+
+    }
     public class UserProfilePart : ContentPart
     {
         public TextField NickName { get; set; }

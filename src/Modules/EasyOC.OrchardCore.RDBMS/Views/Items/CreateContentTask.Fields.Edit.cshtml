@@ -132,9 +132,9 @@
 
     function loadTypeDef(){
         var value=$("#@Html.IdFor(x=>x.ContentType)").val();
-               $.get('/api/ContentManagement/TypeDefinition?name='+ value+'&incloudeSettings=false', (data) => {
-                   type = data;
-                   typeString = JSON.stringify(data);
+               $.get('/api/ContentManagement/GetTypeDefinition?name='+ value+'&incloudeSettings=false', (data) => {
+                   type = data.result;
+                   typeString = JSON.stringify(data.result);
                 })
     }
 
@@ -152,7 +152,7 @@
                   resultJsonEditor.getModel().setValue(JSON.stringify(newTypeValue));
                 }
               } catch(e) {
-                console.log("resultJsonEditor")
+                console.log("resultJsonEditor"+e)
               }
            }
           function convertType(value) {

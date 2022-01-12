@@ -65,7 +65,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 {
                     Description = "Text field",
                     FieldName=nameof(TextField),
-                    FieldTypes = new[] { typeof(string) } ,
+                    FieldTypes = new[] { typeof(string) ,typeof(byte[])} ,
                     UnderlyingType = typeof(TextField),
                     ValuePath="Text",
                     FieldAccessor = field => field.Content.Text

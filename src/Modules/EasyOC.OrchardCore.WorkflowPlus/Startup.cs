@@ -26,6 +26,7 @@ namespace EasyOC.OrchardCore.WorkflowPlus
             services.AddActivity<PowerShellTask, PowerShellTaskDisplayDriver>();
             services.AddActivity<EmailPlus, EmailPlusDisplayDriver>();
             services.AddActivity<WorkflowFaultEvent, WorkflowFaultEventDisplayDriver>();
+            services.AddActivity<CreateUserTask, CreateUserTaskDriver>();
             services.AddScoped<IWorkflowFaultHandler, WorkflowFaultHandler>();
             //services.AddScoped<IWorkflowExecutionContextHandler, WorkflowPlusExecutionContextHandler>();
             //services.AddScoped<IQuerySource, FreeSqlQuerySource>();

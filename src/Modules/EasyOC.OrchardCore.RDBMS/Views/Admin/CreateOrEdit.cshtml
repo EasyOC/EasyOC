@@ -96,13 +96,14 @@
                     connectionConfigId: "",
                     tableName: ""
                 },
-                VerificationToken:"",
-                recipeText: "",
+                VerificationToken:$("input[name='__RequestVerificationToken']").val(),
+                recipeText: "", 
                 loading: false,
                 tableFilter: {
                     connectionConfigId: "",
                     filterText: '@Model.MappingData',
-                    maxResultCount: 20
+                    maxResultCount: 20,
+                    VerificationToken:$("input[name='__RequestVerificationToken']").val()
                 }
             }
         },
@@ -135,8 +136,8 @@
         },
         methods: {
             loadConnections() {
-                $.get(@Href("~/api/RDBMS/AllDbConnecton"), (data) => {
-                    this.allDbConnecton = data;
+                $.get("@Href("~/api/RDBMS/GetAllDbConnecton")",{  __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()}, (data) => {
+                    this.allDbConnecton = data.result;
                 })
             },
             loadAllTables(filterText) {
@@ -144,12 +145,12 @@
                     this.tableFilter.connectionConfigId = this.model.connectionConfigId;
                     this.tableFilter.filterText = filterText;
                     this.loading = true;
-                    $.get(@Href("~/api/RDBMS/AllTables"), this.tableFilter, (data, status) => {
+                    $.get("@Href("~/api/RDBMS/GetAllTables")", this.tableFilter, (data, status) => {
                         if (status != "success") {
                             console.log(status)
                             this.$message("查询失败")
                         } else {
-                            this.allTables = data;
+                            this.allTables = data.result;
                         }
                         this.loading = false;
                     })
@@ -159,7 +160,7 @@
             },
             generateRecipe() {
                 this.loading = true;
-                $.get(@Href("~/api/RDBMS/GenerateRecipe"), {
+                $.get("@Href("~/api/RDBMS/GenerateRecipe")", {
                     connectionConfigId: this.model.connectionConfigId,
                     tableName: this.model.tableName
                 }, (data, status) => {
@@ -167,8 +168,8 @@
                     if (status != "success") {
                         this.$message("查询失败")
                     } else {
-                        this.recipeText = JSON.stringify(data);
-                        monacoEditor.getModel().setValue(data);
+                        this.recipeText = JSON.stringify(data.result);
+                        monacoEditor.getModel().setValue(data.result);
                         monacoEditor.getAction(['editor.action.formatDocument'])._run();
                     }
                     this.loading = false;
@@ -183,7 +184,7 @@
                 console.log("this.recipeText", this.recipeText)
                 this.loading = true; 
                 $.ajax({
-                    url: @Href("~/api/RDBMS/ImportDeploymentPackage"),
+                    url: "@Href("~/api/RDBMS/ImportDeploymentPackage")",
                     type: "POST",
                     contentType: "application/json",//指定消息请求类型
                     data:JSON.stringify({
