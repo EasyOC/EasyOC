@@ -17,17 +17,20 @@ namespace EasyOC
     {
         private List<string> _permissions = new List<string>();
         public bool Ignore { get; set; } = false;
-        public EOCAuthorizationAttribute(params OCPermissions[] permission)
+        public EOCAuthorizationAttribute() { }
+        public EOCAuthorizationAttribute(OCPermissions permission, params OCPermissions[] permissions)
         {
-            foreach (var item in permission)
+            _permissions.Add(permission.ToString());
+            foreach (var item in permissions)
             {
                 _permissions.Add(item.ToString());
             }
         }
 
-        public EOCAuthorizationAttribute(params string[] permission)
+        public EOCAuthorizationAttribute(string permission, params string[] permissions)
         {
-            foreach (var item in permission)
+            _permissions.Add(permission);
+            foreach (var item in permissions)
             {
                 _permissions.Add(item);
             }
@@ -36,23 +39,20 @@ namespace EasyOC
         {
             //忽略权限检查
             if (Ignore) return;
-            //
-            if (context.ActionDescriptor.EndpointMetadata.Any(x => x.GetType() == typeof(AllowAnonymousAttribute)))
-            {
-                return;
-            }
-            if (!(context.HttpContext.User?.Identity?.IsAuthenticated ?? false))
+            var ServiceProvider = ShellScope.Current.ServiceProvider;
+            var httpAccessor = ServiceProvider.GetRequiredService<IHttpContextAccessor>();
+
+            if (!(httpAccessor.HttpContext.User?.Identity?.IsAuthenticated ?? false))
             {
                 context.Result = new ContentResult()
                 {
-                    Content = "Authentication Timeout.",
-                    StatusCode = StatusCodes.Status419AuthenticationTimeout
+                    Content = "Unauthorized",
+                    StatusCode = StatusCodes.Status401Unauthorized
                 };
                 return;
             }
             if (_permissions.Any())
             {
-                var ServiceProvider = ShellScope.Current.ServiceProvider;
                 var _orchardCorePermissionService = ServiceProvider.GetRequiredService<IOrchardCorePermissionService>();
                 var _authorizationService =
                     ServiceProvider.GetRequiredService<IAuthorizationService>();
@@ -64,7 +64,7 @@ namespace EasyOC
                     {
                         context.Result = new ContentResult()
                         {
-                            Content = "Permission denied.",
+                            Content = "Permission denied",
                             StatusCode = StatusCodes.Status403Forbidden
                         };
                         return;

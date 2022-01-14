@@ -1,6 +1,5 @@
 ﻿using EasyOC.Core.Indexs;
-using Microsoft.Extensions.DependencyInjection;
-using OrchardCore.Environment.Shell.Scope;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using YesSql;
 using YesSql.Sql;
@@ -16,22 +15,27 @@ namespace EasyOC
         }
 
 
+
+
         public static ISchemaBuilder CreateMapIndexTable<IndexTable>(this ISchemaBuilder builder, string collection = null)
             where IndexTable : class, IFreeSqlMapDocumentIndex
         {
 
-            var fsql = ShellScope.Current.ServiceProvider.GetRequiredService<IFreeSql>();
-            try
-            {
-                fsql.CodeFirst.SyncStructure<IndexTable>();
-            }
-            catch
-            {
-                throw;
-            }
+            //var props = typeof(IndexTable).GetProperties();
+            var fsql = FreeSqlProviderFactory.GetFreeSql(null, builder.Connection.ConnectionString, NullLogger.Instance, builder.TablePrefix);
+            fsql.CodeFirst.SyncStructure<IndexTable>();
+            // builder.CreateMapIndexTable<IndexTable>(table =>
+            //{
+            //    foreach (var item in props)
+            //    {
+            //        table.Column(item.Name, item.PropertyType);
+            //    }
+            //}
+            //, collection);
+
+
 
             return builder;
-
         }
 
         public static ISchemaBuilder CreateForeignKey<IndexTable>(this ISchemaBuilder builder, string collection = null)

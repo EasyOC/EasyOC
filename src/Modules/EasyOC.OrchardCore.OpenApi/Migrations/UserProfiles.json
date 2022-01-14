@@ -10,7 +10,7 @@
   "tags": [],
   "steps": [
     {
-      "name": "ReplaceContentDefinition",
+      "name": "ContentDefinition",
       "ContentTypes": [
         {
           "Name": "UserProfile",
@@ -28,6 +28,40 @@
               "Settings": {
                 "ContentTypePartSettings": {
                   "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Department",
+          "DisplayName": "部门",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "Department",
+              "Name": "Department",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
                 }
               }
             }
@@ -53,13 +87,33 @@
               "Attachable": true
             }
           },
-          "ContentPartFieldDefinitionRecords": [
+          "ContentPartFieldDefinitionRecords": [ 
+            {
+              "FieldName": "TextField",
+              "Name": "EmployeCode",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "员工号",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "姓名",
+                  "Position": "1"
+                }
+              }
+            },
             {
               "FieldName": "TextField",
               "Name": "NickName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "NickName",
+                  "DisplayName": "Nick Name",
                   "Position": "0"
                 }
               }
@@ -69,8 +123,8 @@
               "Name": "FirstName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "FirstName",
-                  "Position": "1"
+                  "DisplayName": "First Name",
+                  "Position": "3"
                 }
               }
             },
@@ -79,8 +133,8 @@
               "Name": "LastName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "LastName",
-                  "Position": "2"
+                  "DisplayName": "Last Name",
+                  "Position": "4"
                 }
               }
             },
@@ -91,7 +145,7 @@
                 "ContentPartFieldSettings": {
                   "DisplayName": "Gender",
                   "Editor": "PredefinedList",
-                  "Position": "3"
+                  "Position": "5"
                 },
                 "TextFieldSettings": {},
                 "TextFieldPredefinedListEditorSettings": {
@@ -113,18 +167,212 @@
                 "ContentIndexSettings": {}
               }
             },
-
             {
               "FieldName": "TextField",
               "Name": "JobTitle",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "Job Title",
-                  "Position": "0"
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "Department",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "部门",
+                  "Position": "2"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "Department"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "UserPickerField",
+              "Name": "Manager",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "直属上级"
+                },
+                "UserPickerFieldSettings": {
+                  "DisplayedRoles": [
+                    "Employee",
+                    "User"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
                 }
               }
             }
           ]
+        },
+        {
+          "Name": "Department",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "ParentDepartmentId",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "上级部门",
+                  "Position": "0"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "Department"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "NumericField",
+              "Name": "OrderIndex",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "排序",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "Status",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "启用状态",
+                  "Editor": "Switch",
+                  "Position": "2"
+                },
+                "BooleanFieldSettings": {
+                  "DefaultValue": true
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Description",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "备注",
+                  "Editor": "TextArea",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {},
+                "ContentIndexSettings": {}
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "Roles": [
+        {
+          "Name": "Authenticated",
+          "Description": "Authenticated role",
+          "Permissions": [
+            "ViewContent"
+          ]
+        },
+        {
+          "Name": "Anonymous",
+          "Description": "Anonymous role",
+          "Permissions": [
+            "ViewContent"
+          ]
+        },
+        {
+          "Name": "Administrator",
+          "Description": "Administrator role",
+          "Permissions": [
+            "ManageSettings",
+            "PublishContent",
+            "EditContent",
+            "DeleteContent",
+            "PreviewContent",
+            "CloneContent",
+            "AccessContentApi",
+            "ListContent",
+            "ApiViewContent",
+            "ViewContentTypes",
+            "EditContentTypes",
+            "ManageQueries",
+            "ManageSqlQueries",
+            "ManageWorkflows",
+            "ExecuteWorkflows",
+            "SetHomepage",
+            "AccessAdminPanel",
+            "ManageAdminSettings",
+            "AccessAdminDashboard",
+            "ManageAdminDashboard",
+            "ManageAdminMenu",
+            "ManageTemplates",
+            "ManageAdminTemplates",
+            "ExecuteGraphQLMutations",
+            "ViewAuditTrail",
+            "ManageAuditTrailSettings",
+            "ManageBackgroundTasks",
+            "ManageUsers",
+            "ManageCultures",
+            "ManageSitemaps",
+            "Import",
+            "Export",
+            "ManageCorsSettings",
+            "ManageRemoteInstances",
+            "ManageRemoteClients",
+            "ExportRemoteInstances",
+            "ManageEmailSettings",
+            "ManageLayers",
+            "ManageIndexes",
+            "ManageMediaFolder",
+            "ManageMediaProfiles",
+            "ViewMediaOptions",
+            "ManageAssetCache",
+            "ManageMenu",
+            "ManageApplications",
+            "ManageScopes",
+            "ManageClientSettings",
+            "ManageServerSettings",
+            "ManageValidationSettings",
+            "ManagePlacements",
+            "ManageRoles",
+            "SiteOwner",
+            "ManageTaxonomy",
+            "ManageTenants",
+            "ManageTenantFeatureProfiles",
+            "ApplyTheme"
+          ]
+        },
+        {
+          "Name": "Employee",
+          "Description": "Employee",
+          "Permissions": []
+        },
+        {
+          "Name": "User",
+          "Description": "User",
+          "Permissions": []
         }
       ]
     }

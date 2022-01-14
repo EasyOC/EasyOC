@@ -42,7 +42,7 @@
 
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 680px;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </div>
 <script asp-name="monaco" depends-on="admin" at="Foot"></script>
 @*<script at="Foot" asp-name="elementUI" depends-on="vuejs"></script>*@
@@ -132,7 +132,7 @@
 
     function loadTypeDef(){
         var value=$("#@Html.IdFor(x=>x.ContentType)").val();
-               $.get('/api/ContentManagement/TypeDefinition?name='+ value+'&incloudeSettings=false', (data) => {
+               $.get('@Href("/Admin/EasyOC.OrchardCore.RDBMS/Admin/GetTypeDefinition")?name='+ value+'&incloudeSettings=false', (data) => {
                    type = data;
                    typeString = JSON.stringify(data);
                 })
@@ -142,17 +142,15 @@
               try {
                 const obj = JSON.parse(value)
                 if(Array.isArray(obj)){
-                    let list = [];
-                    for(i of obj) {
-                        list.push(convertType(i))
-                    }
-                   resultJsonEditor.getModel().setValue(JSON.stringify(list));
+                   resultJsonEditor.getModel().setValue(JSON.stringify(convertType(obj[0])));
                 } else if(typeof(obj) == "object") {
                     const newTypeValue = convertType(obj);
                   resultJsonEditor.getModel().setValue(JSON.stringify(newTypeValue));
                 }
+                resultJsonEditor.getAction(['editor.action.formatDocument'])._run();
+
               } catch(e) {
-                console.log("resultJsonEditor")
+                console.log("resultJsonEditor"+e)
               }
            }
           function convertType(value) {
@@ -161,12 +159,12 @@
               var expression=$("#PropertyExpresion").val()
               var keyList=Object.keys(value);
                 type.parts.forEach(part=>{
-                  part.fields.forEach(f=>{
+                  part.partDefinition.fields.forEach(f=>{
                       keyList.forEach(k=>{
                         if(f.name.toLowerCase()==k.toLowerCase()){
                             content[part.name] = content[part.name] ? content[part.name] : {};
                             content[part.name][f.name] = content[part.name][f.name] ? content[part.name][f.name]: {};
-                            switch(f.fieldTypeName.toLowerCase()) {
+                            switch(f.fieldDefinition.name.toLowerCase()) {
                                 case "textfield": content[part.name][f.name].Text = `{{${expression}.${k}}}`; break;
                                 //case "multitextfield": content[part.name][f.name].Values =value[k]; break;
                                 case "booleanfield": content[part.name][f.name].Value = `{{${expression}.${k}}}`; break;
@@ -245,6 +243,6 @@
     }
 
 
-</script> 
+</script>
 
 

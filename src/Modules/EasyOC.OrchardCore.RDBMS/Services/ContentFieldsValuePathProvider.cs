@@ -53,7 +53,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                     FieldTypes = new[] {
                         typeof(decimal),typeof(decimal?),
                         typeof(int),typeof(int?),typeof(short),typeof(short?),
-                        typeof(long), typeof(long?),typeof(double?),typeof(double),
+                        typeof(long), typeof(long?),typeof(double?),typeof(double),typeof(Single),
                     },
                     UnderlyingType = typeof(NumericField),
                     FieldAccessor = field => (decimal?)field.Content.Value
@@ -65,7 +65,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 {
                     Description = "Text field",
                     FieldName=nameof(TextField),
-                    FieldTypes = new[] { typeof(string) } ,
+                    FieldTypes = new[] { typeof(string) ,typeof(byte[])} ,
                     UnderlyingType = typeof(TextField),
                     ValuePath="Text",
                     FieldAccessor = field => field.Content.Text

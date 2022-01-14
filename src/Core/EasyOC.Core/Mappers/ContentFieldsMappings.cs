@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace EasyOC.Core.Mappers
 {
-    public class ContentFeildsMappings : Profile
+    public class ContentFieldsMappings : Profile
     {
-        public ContentFeildsMappings()
+        public ContentFieldsMappings()
         {
             #region OC fileds maping
 
@@ -24,15 +24,21 @@ namespace EasyOC.Core.Mappers
             CreateMap<NumericField, int>().ConvertUsing(s => s.Value.To<int>());
             CreateMap<NumericField, long?>().ConvertUsing(s => Convert.ToInt64(s.Value));
             CreateMap<NumericField, long?>().ConvertUsing(s => Convert.ToInt64(s.Value));
-            //CreateMap<UserPickerField, string[]>().ConvertUsing(s => s.UserIds);
-            CreateMap<UserPickerField, string>().ConvertUsing(s => s.UserIds.FirstOrDefault());
-            //CreateMap<ContentPickerField, string[]>().ConvertUsing(s => s.ContentItemIds);
+            CreateMap<UserPickerField, string[]>().ConvertUsing(s => s.UserIds);
+            CreateMap<UserPickerField, string>().ConvertUsing(s =>
+             s != null && s.UserIds != null && s.UserIds.Length > 0 ?
+                            s.UserIds.FirstOrDefault() : string.Empty); 
+            CreateMap<ContentPickerField, string[]>().ConvertUsing(s => s.ContentItemIds ?? Array.Empty<string>());
+            CreateMap<ContentPickerField, string>().ConvertUsing(s =>
+                                s != null && s.ContentItemIds != null && s.ContentItemIds.Length > 0 ?
+                            s.ContentItemIds.FirstOrDefault() : string.Empty);
             CreateMap<DateField, DateTime?>().ConvertUsing(s => s.Value);
             CreateMap<DateField, DateTime>().ConvertUsing(s => s.Value.To<DateTime>());
             CreateMap<DateTimeField, DateTime>().ConvertUsing(s => Convert.ToDateTime(s.Value));
             CreateMap<DateTimeField, DateTime>().ConvertUsing(s => Convert.ToDateTime(s.Value));
             CreateMap<TimeField, TimeSpan?>().ConvertUsing(s => s.Value);
             CreateMap<TimeField, TimeSpan>().ConvertUsing(s => s.Value ?? new TimeSpan());
+            CreateMap<JObject, object>().ConvertUsing(source => source.ToObject<object>());
             CreateMap<JValue, object>().ConvertUsing(source => source.Value);
             CreateMap<ContentTypeDefinition, ContentTypeDefinitionDto>().ConvertUsing((s, t) => s.ToDto());
             CreateMap<ContentPartDefinition, ContentPartDefinitionDto>().ConvertUsing((s, t) => s.ToDto());

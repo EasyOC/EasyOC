@@ -2,11 +2,14 @@
 using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Indexs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Indexing.SQL;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
@@ -14,6 +17,7 @@ using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.Notify;
+using OrchardCore.Entities;
 using OrchardCore.Indexing;
 using OrchardCore.Settings;
 using OrchardCore.Users;
@@ -41,7 +45,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         private readonly IAuthorizationService _authorizationService;
         private readonly INotifier _notifier;
         private readonly IContentManager _contentManager;
-
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
@@ -99,14 +102,129 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             var results = await users
                 .Page(input)
                 .ListAsync();
-            return new PagedResult<UserListItemDto>(count,
-                ObjectMapper.Map<IEnumerable<UserListItemDto>>(results));
+            var result = new List<UserListItemDto>();
+            await FillAdditionalData(results);
+            foreach (var item in results)
+            {
+                var u = ObjectMapper.Map<UserListItemDto>(item);
+                u.Properties = item.Properties;
+                result.Add(u);
+            }
+
+            return new PagedResult<UserListItemDto>(count, result);
+        }
+
+        public async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
+        {
+
+            var contentDefs = GetUserSettingsTypeDefinitions();
+            var contentPickerValues = new Dictionary<string[], ContentPickerField>();
+            var userPickerValues = new Dictionary<string[], UserPickerField>();
+            #region 查找需要填充的字段
+            foreach (var user in users)
+            {
+                foreach (var item in contentDefs)
+                {
+                    var contentItem = user.As<ContentItem>(item.Name);
+                    var allFields = item.Parts.SelectMany(p => p.PartDefinition.Fields);
+                    var contentPickers = allFields.Where(x =>
+                        x.FieldDefinition.Name == nameof(ContentPickerField) ||
+                        x.FieldDefinition.Name == nameof(UserPickerField)
+                    );
+                    var filterdContentParts = contentPickers.Select(x => x.PartDefinition).Distinct();
+                    foreach (var part in filterdContentParts)
+                    {
+                        var jPart = (JObject)contentItem.Content[part.Name];
+                        if (jPart == null)
+                        {
+                            continue;
+                        }
+                        foreach (var picker in contentPickers)
+                        {
+                            if (picker.FieldDefinition.Name == nameof(ContentPickerField))
+                            {
+                                var jField = (JObject)jPart[picker.Name];
+                                if (jField == null)
+                                {
+                                    continue;
+                                }
+                                var field = jField.ToObject<ContentPickerField>();
+                                contentPickerValues.Add(new[] { user.UserId, item.Name, part.Name, picker.Name }, field);
+                            }
+                            if (picker.FieldDefinition.Name == nameof(UserPickerField))
+                            {
+                                var jField = (JObject)jPart[picker.Name];
+                                if (jField == null)
+                                {
+                                    continue;
+                                }
+                                var field = jField.ToObject<UserPickerField>();
+                                userPickerValues.Add(new[] { user.UserId, item.Name, part.Name, picker.Name }, field);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+            #endregion
+
+            #region 批量填充关联信息
+            var ids = contentPickerValues.Values.SelectMany(x => x.ContentItemIds);
+            var contentItems = await _contentManager.GetAsync(ids);
+            var userids = userPickerValues.Values.SelectMany(x => x.UserIds);
+            var userQueryResults = await YesSession.Query<User, UserIndex>()
+                    .Where(x => x.UserId.IsIn(userids)).ListAsync();
+            foreach (var user in users)
+            {
+                // 查找所有 contentPicker 内容项
+                if (contentPickerValues.Keys.Count > 0)
+                {
+
+                    foreach (var key in contentPickerValues.Keys.Where(x => x[0] == user.UserId))
+                    {
+                        var picker = contentPickerValues[key];
+                        var pickerdContents = contentItems.Where(x => picker.ContentItemIds.Contains(x.ContentItemId));
+                        if (pickerdContents.Any())
+                        {
+                            var jField = JObject.FromObject(picker);
+                            jField["DisplayText"] = JArray.FromObject(pickerdContents.Select(x => x.DisplayText));
+                            if (incloudeItemDetails)
+                            {
+                                jField["ContentItems"] = JArray.FromObject(pickerdContents);
+                            }
+                            user.Properties[key[1]][key[2]][key[3]] = jField;
+                        }
+
+                    }
+
+                    foreach (var key in userPickerValues.Keys.Where(x => x[0] == user.UserId))
+                    {
+                        var picker = userPickerValues[key];
+                        var pickerdUsers = userQueryResults.Where(x => picker.UserIds.Contains(x.UserId));
+                        if (pickerdUsers.Any())
+                        {
+                            var jField = JObject.FromObject(picker);
+                            jField["DisplayText"] = JArray.FromObject(pickerdUsers.Select(x => x.Properties.SelectToken("$.UserProfile.UserProfilePart.Name.Text")?.ToString()));
+                            if (incloudeItemDetails)
+                            {
+                                jField["UserDetails"] = JArray.FromObject(pickerdUsers);
+                            }
+                            user.Properties[key[1]][key[2]][key[3]] = jField;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+
         }
 
 
         [EOCAuthorization(OCPermissions.ManageUsers)]
         public async Task BulkActionAsync(UsersBulkActionInput bulkActionInput)
-        { 
+        {
             if (bulkActionInput.ItemIds?.Count() > 0)
             {
                 var checkedContentItems = await YesSession.Query<User, UserIndex>()

@@ -27,6 +27,7 @@ using YesSql;
 
 namespace EasyOC.OrchardCore.RDBMS.Services
 {
+    //[EOCAuthorization(OCPermissions.EditContentTypes)]
     public class RDBMSAppService : AppServcieBase, IRDBMSAppService
     {
         private readonly IMapper mapper;
@@ -89,10 +90,14 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         /// </summary>
         /// <param name="queryTablesDto"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<DbTableInfoDto>> GetAllTablesAsync([FromQuery] QueryTablesDto queryTablesDto)
+        public async Task<IEnumerable<DbTableInfoDto>> GetAllTablesAsync(QueryTablesDto queryTablesDto)
         {
             try
             {
+                if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    Console.WriteLine();
+                }
                 List<DbTableInfo> result = await GetTablesFromCache(queryTablesDto.ConnectionConfigId, queryTablesDto.DisableCache);
 
                 if (!string.IsNullOrEmpty(queryTablesDto.FilterText))
@@ -224,6 +229,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                             ContentPartFieldSettings = new { DisplayName = item.Name, Position = (index++).ToString() }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.CsType);
+                        if (targetFieldType==null)
+                        {
+                            targetFieldType = _contentFieldsValuePathProvider.GetField(typeof(int));
+                        }
                         recrod.FieldName = targetFieldType.FieldName;
                         recrods.Add(recrod);
                     }

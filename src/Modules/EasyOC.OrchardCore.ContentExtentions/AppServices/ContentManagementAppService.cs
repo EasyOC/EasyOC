@@ -61,7 +61,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
             //}
             var part = _contentDefinitionManager.LoadPartDefinition(name);
-            return part.ToDto(true, withSettings);
+            return part.ToDto(withSettings);
         }
 
 

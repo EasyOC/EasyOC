@@ -1,5 +1,4 @@
-﻿using EasyOC;
-using EasyOC.OrchardCore.RDBMS.Models;
+﻿using EasyOC.OrchardCore.RDBMS.Models;
 using EasyOC.OrchardCore.RDBMS.Services;
 using EasyOC.OrchardCore.RDBMS.ViewModels;
 using FreeSql;
@@ -18,13 +17,16 @@ using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Settings;
 using System.Collections.Generic;
 using System.Linq;
+using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
 using YesSql;
+using EasyOC.OrchardCore.ContentExtentions.AppServices;
 
-namespace OrchardCore.RelationDb.Controllers
+namespace EasyOC.OrchardCore.RDBMS.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly IContentManagementAppService _contentManagementAppService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentManager _contentManager;
@@ -35,6 +37,7 @@ namespace OrchardCore.RelationDb.Controllers
         private readonly IHtmlLocalizer H;
         private readonly ISession _session;
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
+        private readonly IRDBMSAppService _rDBMSAppService;
 
 
 
@@ -46,7 +49,7 @@ namespace OrchardCore.RelationDb.Controllers
             INotifier notifier,
             IUpdateModelAccessor updateModelAccessor,
             IContentDefinitionManager contentDefinitionManager,
-            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider)
+            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider, IRDBMSAppService rDBMSAppService, IContentManagementAppService contentManagementAppService)
         {
             _authorizationService = authorizationService;
             _siteService = siteService;
@@ -58,9 +61,10 @@ namespace OrchardCore.RelationDb.Controllers
             _contentManager = contentManager;
             _session = session;
             _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
+            _rDBMSAppService = rDBMSAppService;
+            _contentManagementAppService = contentManagementAppService;
         }
-
-        [ActionName("CreateOrEditAsync")]
+        [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)
         {
             ContentItem contentItem;
@@ -81,13 +85,24 @@ namespace OrchardCore.RelationDb.Controllers
             // };
             return View(model);
         }
-
+        [HttpGet]
         public IActionResult CreateOrEdit()
         {
             var model = new RDBMSMappingConfigViewModel();
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllTablesAsync(QueryTablesDto queryTablesDto)
+        {
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            {
+                return Forbid();
+            }
+            return Json(await _rDBMSAppService.GetAllTablesAsync(queryTablesDto));
+        }
+
+        [HttpGet]
         public async Task<RecipeModel> GenerateRecipeAsync(string tableName, string connectionConfigId)
         {
 
@@ -154,70 +169,33 @@ namespace OrchardCore.RelationDb.Controllers
 
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetAllDbConnecton()
+        [HttpGet]
+        public async Task<IActionResult> GetAllDbConnecton()
         {
-            var connectionSettings = await _session.Query<ContentItem, ContentItemIndex>()
-                                           .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published || x.Latest)).ListAsync();
-            var connectionList = connectionSettings.Select(x => new SelectListItem() { Text = S[x.DisplayText], Value = x.ContentItemId });
-            return connectionList;
-        }
-
-        public IEnumerable<SelectListItem> GetAllTypes()
-        {
-            var allTypes = _contentDefinitionManager.ListTypeDefinitions();
-            var contentTypeslist = allTypes.Select(x => new SelectListItem() { Text = S[x.DisplayName], Value = x.Name });
-            return contentTypeslist;
-        }
-
-
-        /// <summary>
-        /// Get
-        /// </summary>
-        /// <returns></returns>
-        public async Task<object> GetAllConnectionList()
-        {
-            var connectionSettings = await _session.Query<ContentItem, ContentItemIndex>()
-                  .Where(x =>
-                      x.ContentType == "DbConnectionConfig" &&
-                      (x.Published || x.Latest)).ListAsync();
-            return Json(connectionSettings);
-        }
-
-        public async Task<object> TryGetFileds()
-        {
-            var contentItems = await _session.Query<ContentItem, ContentItemIndex>()
-                   .Where(x =>
-                       x.ContentType == "RelationalDbMapping" &&
-                       (x.Published || x.Latest)).ListAsync();
-
-            return null;
-        }
-
-
-        public IActionResult GenerateMappingData(string typeName)
-        {
-            var type = _contentDefinitionManager.LoadTypeDefinition(typeName);
-
-            var part = type.Parts.FirstOrDefault(x => x.Name == type.Name);
-            var partName = part.Name;
-            var partFileds = new List<object>();
-            // This builder only handles parts with fields.
-            foreach (var field in part.PartDefinition.Fields)
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
             {
-                var fieldType = _contentFieldsValuePathProvider.GetField(field);
-                if (fieldType != null)
-                {
-                    partFileds.Add(new
-                    {
-                        name = field.Name,
-                        ocFieldType = field.FieldDefinition.Name,
-                        valuePath = $"{type.Name}.{field.Name}.{fieldType.ValuePath}",
-                        dbField = field.Name
-                    });
-                }
+                return Forbid();
             }
-            return Json(JArray.FromObject(partFileds).ToString());
+            return Json(await _rDBMSAppService.GetAllDbConnecton());
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllTypes()
+        {
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            {
+                return Forbid();
+            }
+            return Json(await _rDBMSAppService.GetAllDbConnecton());
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetTypeDefinitionAsync(string name, bool withSettings = false)
+        {
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            {
+                return Forbid();
+            }
+            return Json(_contentManagementAppService.GetTypeDefinition(name, withSettings));
         }
 
 

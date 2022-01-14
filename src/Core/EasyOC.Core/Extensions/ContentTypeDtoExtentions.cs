@@ -22,18 +22,18 @@ namespace EasyOC
                         Name = p.Name,
                         DisplayName = p.DisplayName(),
                         Description = p.Description(),
-                        PartDefinition = p.PartDefinition.ToDto(incloudeSettings, incloudeSettings),
+                        PartDefinition = p.PartDefinition.ToDto(incloudeSettings),
                     };
                 })
             };
             return dto;
         }
 
-        public static ContentPartDefinitionDto ToDto(this ContentPartDefinition contentPartDefinition, bool withFields = true, bool withSettings = true)
+        public static ContentPartDefinitionDto ToDto(this ContentPartDefinition contentPartDefinition, bool withSettings = true)
         {
             return new ContentPartDefinitionDto
             {
-                Fields = withFields ? contentPartDefinition.GetFields() : null,
+                Fields = contentPartDefinition.GetFields(),
                 Name = contentPartDefinition.Name,
                 Description = contentPartDefinition.Description(),
                 DisplayName = contentPartDefinition.DisplayName(),
