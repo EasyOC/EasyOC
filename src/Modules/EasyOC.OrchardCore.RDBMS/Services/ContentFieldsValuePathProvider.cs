@@ -53,7 +53,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                     FieldTypes = new[] {
                         typeof(decimal),typeof(decimal?),
                         typeof(int),typeof(int?),typeof(short),typeof(short?),
-                        typeof(long), typeof(long?),typeof(double?),typeof(double),
+                        typeof(long), typeof(long?),typeof(double?),typeof(double),typeof(Single),
                     },
                     UnderlyingType = typeof(NumericField),
                     FieldAccessor = field => (decimal?)field.Content.Value

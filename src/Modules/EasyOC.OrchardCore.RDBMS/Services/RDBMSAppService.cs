@@ -229,6 +229,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                             ContentPartFieldSettings = new { DisplayName = item.Name, Position = (index++).ToString() }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.CsType);
+                        if (targetFieldType==null)
+                        {
+                            targetFieldType = _contentFieldsValuePathProvider.GetField(typeof(int));
+                        }
                         recrod.FieldName = targetFieldType.FieldName;
                         recrods.Add(recrod);
                     }

@@ -46,8 +46,8 @@ namespace EasyOC
             {
                 context.Result = new ContentResult()
                 {
-                    Content = "Non Authoritative",
-                    StatusCode = StatusCodes.Status203NonAuthoritative
+                    Content = "Unauthorized",
+                    StatusCode = StatusCodes.Status401Unauthorized
                 };
                 return;
             }
@@ -64,7 +64,7 @@ namespace EasyOC
                     {
                         context.Result = new ContentResult()
                         {
-                            Content = "Permission denied.",
+                            Content = "Permission denied",
                             StatusCode = StatusCodes.Status403Forbidden
                         };
                         return;
