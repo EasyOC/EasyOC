@@ -36,12 +36,13 @@ export interface ILucenQuery {
         [key: string | "bool" | "fuzzy" | "match_all" | "match_phrase" | "match" | "prefix" | "query_string"
             | "range" | "regexp" | "simple_query_string" | "term" | "terms" | "wildcard"]
         : BooleanQuery | object;
-        filter?: []
+
     }
     size?: number
     from?: number
     sort?: { [key: string]: LucenSort; } | Array<{ [key: string]: LucenSort; }>
 }
+ 
 
 
 export interface QueryFragment {
@@ -53,6 +54,10 @@ export class QueryFilter {
 }
 
 export interface BooleanQuery {
+    must?: Term;
+    filter?: [
+
+    ]
     [key: string | "must" | "mustnot" | "must_not" | "should" | "boost" | "minimum_should_match" | "filter"]
     : Term | Array<Term>
 }

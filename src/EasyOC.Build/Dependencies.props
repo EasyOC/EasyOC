@@ -30,6 +30,7 @@
     <PackageManagement Include="FreeSql" Version="2.6.100" />
     <PackageManagement Include="FreeSql.Provider.MySql" Version="2.6.100" />
     <PackageManagement Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
-    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="2.6.100" />  
+    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="2.6.100" />
+    
   </ItemGroup> 
 </Project>

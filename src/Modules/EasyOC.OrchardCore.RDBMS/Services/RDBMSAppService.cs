@@ -161,9 +161,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 
         [HttpGet]
         public async Task<string> GenerateRecipeAsync(string connectionConfigId, string tableName)
-        {
-
-
+        {  
             IFreeSql freeSql = await GetFreeSqlAsync(connectionConfigId);
             using (freeSql)
             {

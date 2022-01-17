@@ -23,6 +23,7 @@
     <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" />
