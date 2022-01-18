@@ -428,7 +428,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         }
 
 
-        public IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes()
+        public IEnumerable<ContentTypeDefinitionDto> GetUserSettingTypes()
         {
             return ObjectMapper.Map<IEnumerable<ContentTypeDefinitionDto>>(GetUserSettingsTypeDefinitions());
         }

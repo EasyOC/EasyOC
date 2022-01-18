@@ -16,7 +16,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         Task UpdateAsync(UserDetailsDto userDto);
         Task DeleteAsync(string id);
         Task EditPasswordAsync(ResetUserPasswordtInput model);
-        IEnumerable<ContentTypeDefinitionDto> GetUserSettingsTypes();
+        IEnumerable<ContentTypeDefinitionDto> GetUserSettingTypes();
         IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions();
         Task<ContentItem> GetUserSettingsAsync(User user, string settingsTypeName);
         //Task<ContentItemDto> GetUserSettingsAsync(string userId, string settingsTypeName);
