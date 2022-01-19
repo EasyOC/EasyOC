@@ -73,7 +73,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             }
             var users = FreeSqlSession.Select<UserIndex, UserProfileIndex>()
                  .LeftJoin((ui, up) => ui.DocumentId == up.DocumentId)
-                 .WhereIf(input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
+                 .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
                  ;
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
