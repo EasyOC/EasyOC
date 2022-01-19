@@ -33,7 +33,7 @@ namespace EasyOC
         }
 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, ILogger logger = default)
-        { 
+        {
             if (logger == default)
             {
                 logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
@@ -108,24 +108,29 @@ namespace EasyOC
                                            }
                                        })
                                        .Build();
-                    if (!string.IsNullOrEmpty(tablePrefix))
+                    
+                    fsql.Aop.ConfigEntity += (s, e) =>
                     {
-                        fsql.Aop.ConfigEntity += (s, e) =>
-                    {
-                      
-                            var tableName = e.EntityType.Name;
-                            if (e.ModifyResult != null && !e.ModifyResult.Name.IsNullOrEmpty())
+                       
+                        var tableName = e.EntityType.Name;
+                        if (e.ModifyResult != null && !e.ModifyResult.Name.IsNullOrEmpty())
+                        {
+                            tableName = e.ModifyResult.Name;
+                            var attr = e.EntityType.GetCustomAttributes().FirstOrDefault(x => x is EOCTableAttribute);
+                            if (attr is EOCTableAttribute tableAttribute)
                             {
-                                tableName = e.ModifyResult.Name;
-                                var attr = e.EntityType.GetCustomAttributes().FirstOrDefault(x => x is EOCTableAttribute);
-                                if (attr is EOCTableAttribute tableAttribute)
-                                {
-                                    tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
-                                }
+                                tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
                             }
+                        }
+                        if (!string.IsNullOrEmpty(tablePrefix))
+                        {
                             e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, tableName); //表名前缀
-                        };
-                    }
+                        }
+                        else
+                        {
+                            e.ModifyResult.Name = tableName;
+                        }
+                    };
                     return fsql;
                 }
 

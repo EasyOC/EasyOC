@@ -4,12 +4,12 @@ namespace EasyOC
 {
     public class PagedResult<T>
     {
-        public PagedResult(int total, IEnumerable<T> items)
+        public PagedResult(long total, IEnumerable<T> items)
         {
             Total = total;
             Items = items;
         }
-        public int Total { get; set; }
+        public long Total { get; set; }
         public IEnumerable<T> Items { get; set; }
     }
 

@@ -100,21 +100,11 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "Name",
+              "Name": "RealName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "姓名",
+                  "DisplayName": "真实姓名",
                   "Position": "1"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "NickName",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Nick Name",
-                  "Position": "0"
                 }
               }
             },
@@ -138,35 +128,35 @@
                 }
               }
             },
-            {
-              "FieldName": "TextField",
-              "Name": "Gender",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Gender",
-                  "Editor": "PredefinedList",
-                  "Position": "5"
-                },
-                "TextFieldSettings": {},
-                "TextFieldPredefinedListEditorSettings": {
-                  "Options": [
-                    {
-                      "name": "Male",
-                      "value": "Male"
-                    },
-                    {
-                      "name": "Female",
-                      "value": "Female"
-                    },
-                    {
-                      "name": "Unknown",
-                      "value": ""
-                    }
-                  ]
-                },
-                "ContentIndexSettings": {}
-              }
-            },
+            //{
+            //  "FieldName": "TextField",
+            //  "Name": "Gender",
+            //  "Settings": {
+            //    "ContentPartFieldSettings": {
+            //      "DisplayName": "Gender",
+            //      "Editor": "PredefinedList",
+            //      "Position": "5"
+            //    },
+            //    "TextFieldSettings": {},
+            //    "TextFieldPredefinedListEditorSettings": {
+            //      "Options": [
+            //        {
+            //          "name": "Male",
+            //          "value": "Male"
+            //        },
+            //        {
+            //          "name": "Female",
+            //          "value": "Female"
+            //        },
+            //        {
+            //          "name": "Unknown",
+            //          "value": ""
+            //        }
+            //      ]
+            //    },
+            //    "ContentIndexSettings": {}
+            //  }
+            //},
             {
               "FieldName": "TextField",
               "Name": "JobTitle",

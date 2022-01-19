@@ -7,29 +7,53 @@ using System.Threading.Tasks;
 
 namespace EasyOC.Core.Indexs
 {
+    //
+    // 摘要:
+    //     索引设置，如：[Index("{tablename}_idx_01", "name")]
+    //
+    // 参数:
+    //   name:
+    //     索引名
+    //     v1.7.0 增加占位符 {TableName} 表名区分索引名 （解决 AsTable 分表 CodeFirst 导致索引名重复的问题）
+    //
+    //   fields:
+    //     索引字段，为属性名以逗号分隔，如：Create_time ASC, Title ASC
     public class EOCIndexAttribute : IndexAttribute
-    {
-
+    { 
         public string Collection { get; set; } = string.Empty;
-
-        public EOCIndexAttribute(string name, string fields, string collection = default) : base(name, fields)
+        /// <summary>
+        ///  索引设置，如：[Index("{tablename}_idx_01", "name")]
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fields"></param>
+        public EOCIndexAttribute(string name,  params string[] fields)
+            : base(name, BuildFields(fields))
         {
-            Rename(name, collection);
+
         }
-  
-
-        public EOCIndexAttribute(string name, string fields, bool isUnique, string collection = default) : base(name, fields, isUnique)
+        /// <summary>
+        ///  索引设置，如：[Index("{tablename}_idx_01", "name")]
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="isUnique"></param>
+        /// <param name="fields"></param>
+        public EOCIndexAttribute(string name, bool isUnique = false, params string[] fields)
+            : base(name, BuildFields(fields), isUnique)
         {
-            Rename(name, collection);
+
         }
 
-        private void Rename(string name, string collection)
+        private static string BuildFields(string[] fields)
         {
-            Collection = collection;
-            if (!collection.IsNullOrWhiteSpace())
+            if (fields != null)
             {
-                Name = String.Format("{0}_{1}", collection, name);
+                return string.Join(",", fields);
+            }
+            else
+            {
+                return string.Empty;
             }
         }
+        
     }
 }
