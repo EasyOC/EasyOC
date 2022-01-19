@@ -154,7 +154,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         : new Dictionary<string, object>();
 
                     var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
-                    _httpContextAccessor.HttpContext.Response.Headers.Add("total_count", result.Count.ToString());
+                    _httpContextAccessor.HttpContext.Response.Headers.Add($"{query.Name}_total_count", result.Count.ToString());
                     return result.Items;
                 }),
                 Type = typeof(ListGraphType<ObjectGraphType<JObject>>)
@@ -216,7 +216,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         : new Dictionary<string, object>();
 
                     var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
-                    _httpContextAccessor.HttpContext.Response.Headers.Add("total_count", result.Count.ToString());
+                    _httpContextAccessor.HttpContext.Response.Headers.Add($"{query.Name}_total_count", result.Count.ToString());
                     return result.Items;
                 }),
                 Type = typetype.Type

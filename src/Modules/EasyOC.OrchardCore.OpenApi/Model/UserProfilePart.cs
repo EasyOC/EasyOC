@@ -16,7 +16,7 @@ namespace EasyOC.OrchardCore.OpenApi.Model
         public TextField Gender { get; set; }
         public UserPickerField Manager { get; set; }
         public ContentPickerField Department { get; set; }
-        public TextField Name { get; set; }
+        public TextField RealName { get; set; }
         public TextField EmployeCode { get; set; }
     }
 }

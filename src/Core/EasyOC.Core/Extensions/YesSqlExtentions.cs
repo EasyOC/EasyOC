@@ -1,7 +1,9 @@
 ﻿using EasyOC.Core.Indexs;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
+using System.Linq.Expressions;
 using YesSql;
+using YesSql.Indexes;
 using YesSql.Sql;
 
 namespace EasyOC
@@ -50,6 +52,22 @@ namespace EasyOC
                     table.CreateIndex($"IDX_FK_{indexTable}", "DocumentId")
                 );
             return builder;
+        }
+
+
+
+        public static IQuery<T, TIndex> WhereIf<T,TIndex>(this IQuery<T, TIndex> query, bool condition, Expression<Func<TIndex, bool>> predicate)
+            where T : class
+            where TIndex : IIndex
+        {
+            if (condition)
+            {
+                return query.Where(predicate);
+            }
+            else
+            {
+                return query;
+            }
         }
 
     }

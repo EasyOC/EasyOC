@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OrchardCore.DisplayManagement.Notify;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EasyOC.Core.ResultWaper.Providers
@@ -16,7 +17,7 @@ namespace EasyOC.Core.ResultWaper.Providers
     /// RESTful 风格返回值
     /// </summary>
     [UnifyModel(typeof(RESTfulResult<>))]
-    public class RESTfulResultProvider : IUnifyResultProvider 
+    public class RESTfulResultProvider : IUnifyResultProvider
     {
         private readonly INotifier _notifier;
 
@@ -33,7 +34,7 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <returns></returns>
         public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
         {
-            return new JsonResult(RESTfulResult(metadata.StatusCode, messages: metadata.Errors, httpContext: context.HttpContext));
+            return new JsonResult(RESTfulResult(metadata.StatusCode, message: metadata.Errors, httpContext: context.HttpContext));
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace EasyOC.Core.ResultWaper.Providers
         public IActionResult OnSucceeded(ActionExecutedContext context, object data)
         {
             return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
-                messages: _notifier.List(),//处理OC 的代码内执行消息
+                messages: _notifier.List().ToArray(),//处理OC 的代码内执行消息
                 httpContext: context.HttpContext));
         }
 
@@ -62,7 +63,7 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <returns></returns>
         public IActionResult OnValidateFailed(ActionExecutingContext context, ValidationMetadata metadata)
         {
-            return new JsonResult(RESTfulResult(StatusCodes.Status400BadRequest, messages: metadata.ValidationResult, httpContext: context.HttpContext));
+            return new JsonResult(RESTfulResult(StatusCodes.Status400BadRequest, message: metadata.ValidationResult, httpContext: context.HttpContext));
         }
 
         /// <summary>
@@ -77,12 +78,12 @@ namespace EasyOC.Core.ResultWaper.Providers
             {
                 // 处理 401 状态码
                 case StatusCodes.Status401Unauthorized:
-                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, messages: "401 Unauthorized", httpContext: context)
+                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, message: "401 Unauthorized", httpContext: context)
                         );
                     break;
                 // 处理 403 状态码
                 case StatusCodes.Status403Forbidden:
-                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, messages: "403 Forbidden", httpContext: context)
+                    await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, message: "403 Forbidden", httpContext: context)
                         );
                     break;
 
@@ -96,21 +97,23 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <param name="statusCode"></param>
         /// <param name="succeeded"></param>
         /// <param name="data"></param>
+        /// <param name="message"></param>
         /// <param name="messages"></param>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object messages = default, HttpContext httpContext = default)
+        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object message = default, object[] messages = default, HttpContext httpContext = default)
         {
             return new RESTfulResult<object>
             {
                 StatusCode = statusCode,
                 Succeeded = succeeded,
                 Result = data,
+                Message = message ?? messages.FirstOrDefault(),
                 Messages = messages,
                 Extras = httpContext.TakeExtras(),
                 Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             };
         }
- 
+
     }
 }

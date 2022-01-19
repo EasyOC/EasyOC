@@ -6,5 +6,7 @@
         public string SelectedRole { get; set; }
         public string SortField { get; set; }
         public string SortOrder { get; set; }
+
+        public string DepartmentId { get; set; }
     }
 }

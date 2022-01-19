@@ -35,5 +35,6 @@
         /// 时间戳
         /// </summary>
         public long Timestamp { get; set; }
+        public object Message { get; internal set; }
     }
 }

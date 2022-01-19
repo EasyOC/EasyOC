@@ -35,7 +35,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
                      .Column<string>(nameof(UserProfileIndex.NickName))
                      .Column<string>(nameof(UserProfileIndex.Department))
                      .Column<string>(nameof(UserProfileIndex.Manager))
-                     .Column<string>(nameof(UserProfileIndex.Name))
+                     .Column<string>(nameof(UserProfileIndex.RealName))
                      .Column<string>(nameof(UserProfileIndex.EmployeCode))
                  );
             SchemaBuilder.AlterIndexTable<UserProfileIndex>(table => table
@@ -49,7 +49,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
                     nameof(UserProfileIndex.NickName),
                     nameof(UserProfileIndex.Department),
                     nameof(UserProfileIndex.Manager),
-                    nameof(UserProfileIndex.Name),
+                    nameof(UserProfileIndex.RealName),
                     nameof(UserProfileIndex.EmployeCode)
                     ));
 

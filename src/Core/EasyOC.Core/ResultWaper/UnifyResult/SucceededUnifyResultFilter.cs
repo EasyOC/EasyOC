@@ -14,14 +14,7 @@ namespace Furion.UnifyResult
     /// 规范化结构（请求成功）过滤器
     /// </summary>
     public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
-    {
-        private readonly INotifier _notifier;
-
-        public SucceededUnifyResultFilter(INotifier notifier)
-        {
-            _notifier = notifier;
-        }
-
+    { 
         /// <summary>
         /// 过滤器排序
         /// </summary>

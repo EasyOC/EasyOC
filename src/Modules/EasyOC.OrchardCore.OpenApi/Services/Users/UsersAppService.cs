@@ -46,22 +46,19 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         private readonly INotifier _notifier;
         private readonly IContentManager _contentManager;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
 
         public UsersAppService(
             SignInManager<IUser> signInManager,
             IAuthorizationService authorizationService,
             UserManager<IUser> userManager,
             IUserService userService,
-            INotifier notifier,
-            ISiteService siteService, IMapper mapper, IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
+            INotifier notifier, IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
         {
             _signInManager = signInManager;
             _authorizationService = authorizationService;
             _userManager = userManager;
             _notifier = notifier;
             _userService = userService;
-            _mapper = mapper;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
         }
@@ -73,7 +70,9 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             {
                 throw new UnauthorizedAccessException();
             }
-            var users = YesSession.Query<User, UserIndex>();
+            var users = YesSession.Query<User, UserProfileIndex>()
+                           .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
+                           .With<UserIndex>();
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
                 var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
@@ -81,6 +80,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
                 //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
             }
+     
             if (input.HasOrder())
             {
                 switch (input.SortField.ToLower())
@@ -95,9 +95,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                         break;
                 }
                 users = users.OrderBy(input.GetOrderStr());
-            }
-            //users = users.With<ContentItemIndex>(x => x.ContentType == "UserProfiles")
-            //                  .Where(x => x.DisplayText.Contains(input.Filter));
+            } 
+        
             var count = await users.CountAsync();
             var results = await users
                 .Page(input)
@@ -307,7 +306,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
             }
 
-            return _mapper.Map<UserDetailsDto>(user);
+            return ObjectMapper.Map<UserDetailsDto>(user);
         }
 
 
@@ -340,7 +339,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 throw new AppFriendlyException(SimpleError.PermissionDenied);
             }
 
-            _mapper.Map(userDto, user);
+            ObjectMapper.Map(userDto, user);
             var result = await _userManager.UpdateAsync(user);
             if (result.Errors.Count() == 0)
             {
@@ -393,8 +392,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     await _notifier.ErrorAsync(H[error.Description]);
                 }
             }
-
-            //return RedirectToAction(nameof(Index));
         }
 
         [EOCAuthorization(OCPermissions.ManageUsers)]
