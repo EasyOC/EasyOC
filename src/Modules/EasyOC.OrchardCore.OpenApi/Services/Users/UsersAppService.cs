@@ -73,6 +73,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             }
             var users = FreeSqlSession.Select<UserIndex, UserProfileIndex>()
                  .LeftJoin((ui, up) => ui.DocumentId == up.DocumentId)
+                 .Where((u, up) => u.IsEnabled)
                  .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
                  ;
             if (!string.IsNullOrWhiteSpace(input.Filter))
@@ -153,7 +154,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         }
 
         public async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
-        { 
+        {
             var contentDefs = GetUserSettingsTypeDefinitions();
             var contentPickerValues = new Dictionary<string[], ContentPickerField>();
             var userPickerValues = new Dictionary<string[], UserPickerField>();
