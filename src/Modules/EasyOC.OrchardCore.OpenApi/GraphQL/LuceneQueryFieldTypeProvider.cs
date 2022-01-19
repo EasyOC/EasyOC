@@ -154,7 +154,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         : new Dictionary<string, object>();
 
                     var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
-                    _httpContextAccessor.HttpContext.Response.Headers.Add($"{query.Name}_total_count", result.Count.ToString());
+                    AppendHeader(query.Name, result.Count);
                     return result.Items;
                 }),
                 Type = typeof(ListGraphType<ObjectGraphType<JObject>>)
@@ -203,7 +203,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                 Name = fieldTypeName,
                 Description = "Represents the " + query.Source + " Query : " + query.Name,
                 //ResolvedType = connectinType,//typetype.ResolvedType,
-                ResolvedType =typetype.ResolvedType,
+                ResolvedType = typetype.ResolvedType,
                 Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
                 {
                     var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
@@ -214,15 +214,26 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                     var queryParameters = parameters != null ?
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
                         : new Dictionary<string, object>();
-
                     var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
-                    _httpContextAccessor.HttpContext.Response.Headers.Add($"{query.Name}_total_count", result.Count.ToString());
+
+                    AppendHeader(query.Name, result.Count);
                     return result.Items;
                 }),
                 Type = typetype.Type
             };
 
             return fieldType;
+        }
+
+        private void AppendHeader(string name, int total)
+        {
+            var response = new
+            {
+                queryName = name,
+                total = total
+            };
+            _httpContextAccessor.HttpContext.Response.Headers.Add("query_total", JsonConvert.SerializeObject(response));
+
         }
     }
 

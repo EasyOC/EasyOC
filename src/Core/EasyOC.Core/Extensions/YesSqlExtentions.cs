@@ -69,6 +69,5 @@ namespace EasyOC
                 return query;
             }
         }
-
     }
 }

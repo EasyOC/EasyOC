@@ -70,9 +70,12 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             {
                 throw new UnauthorizedAccessException();
             }
+
+
             var users = YesSession.Query<User, UserProfileIndex>()
-                           .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
+                           .WhereIf(input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
                            .With<UserIndex>();
+
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
                 var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
@@ -80,7 +83,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
                 //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
             }
-     
+
             if (input.HasOrder())
             {
                 switch (input.SortField.ToLower())
@@ -95,8 +98,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                         break;
                 }
                 users = users.OrderBy(input.GetOrderStr());
-            } 
-        
+            }
+
             var count = await users.CountAsync();
             var results = await users
                 .Page(input)
@@ -109,7 +112,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 u.Properties = item.Properties;
                 result.Add(u);
             }
+            //var fUsers = await FreeSqlSession.Select<UserProfileIndex>()
+            //     .ToListAsync((u) => u.DocumentId);
 
+            //var yUsers = await YesSession.GetAsync<User>(fUsers.ToArray());
             return new PagedResult<UserListItemDto>(count, result);
         }
 

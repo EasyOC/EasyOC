@@ -30,6 +30,7 @@
     <!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
     <!--<PackageReference Include="EasyOC.DynamicWebApi" />-->
     <!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
+    <!--<PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="0.0.6" />-->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
     <PackageReference Include="IdleBus" Version="1.5.2" />
