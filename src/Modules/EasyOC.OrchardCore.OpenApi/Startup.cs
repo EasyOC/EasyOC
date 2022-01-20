@@ -1,4 +1,5 @@
 ﻿using EasyOC.OrchardCore.OpenApi.GraphQL;
+using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
 using EasyOC.OrchardCore.OpenApi.Handlers;
 using EasyOC.OrchardCore.OpenApi.Indexs;
 using EasyOC.OrchardCore.OpenApi.Migrations;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OrchardCore.Apis;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
@@ -27,9 +29,9 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddScoped<IDataMigration, UserProfileMigrations>();
             services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
             //services.AddSingleton<IIndexProvider, UserTextFieldIndexProvider>();
-            services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
             services.AddScoped<IUserEventHandler, UserEventHandler>();
-
+            services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
+            //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

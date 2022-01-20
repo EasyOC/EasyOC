@@ -35,7 +35,7 @@ namespace EasyOC.OrchardCore.RDBMS.Queries.Sql
             _freeSql = freeSql;
         }
 
-        public string Name => "Sql";
+        public string Name => "FreeSql";
 
         public Query Create()
         {

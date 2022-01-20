@@ -71,53 +71,18 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             {
                 throw new UnauthorizedAccessException();
             }
-            var users = FreeSqlSession.Select<UserIndex, UserProfileIndex>()
-                 .LeftJoin((ui, up) => ui.DocumentId == up.DocumentId)
-                 .Where((u, up) => u.IsEnabled)
-                 .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
-                 ;
-            if (!string.IsNullOrWhiteSpace(input.Filter))
-            {
-                var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
-                var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
-                users = users.Where((ui, up) =>
-                    ui.NormalizedUserName.Contains(normalizedSearchUserName) ||
-                    ui.NormalizedEmail.Contains(normalizedSearchEMail));
-            }
-
-            if (input.HasOrder())
-            {
-                switch (input.SortField.ToLower())
-                {
-                    case "username":
-                        input.SortField = "NormalizedUserName";
-                        break;
-                    case "email":
-                        input.SortField = "NormalizedEmail";
-                        break;
-                    default:
-                        break;
-                }
-                users = users.OrderBy(input.GetOrderStr());
-            }
-
-            var pageinfo = new BasePagingInfo() { PageNumber = input.Page, PageSize = input.PageSize };
-            var ids = await users
-                .Page(pageinfo)
-                .ToListAsync((a, b) => a.DocumentId);
-            var results = await YesSession.GetAsync<User>(ids.ToArray());
-
-            #region Yessql
-            //var users = YesSession.Query<User, UserProfileIndex>()
-            //       .WhereIf(input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
-            //       .With<UserIndex>();
-
+            //var users = FreeSqlSession.Select<UserIndex, UserProfileIndex>()
+            //     .LeftJoin((ui, up) => ui.DocumentId == up.DocumentId)
+            //     .Where((u, up) => u.IsEnabled)
+            //     .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
+            //     ;
             //if (!string.IsNullOrWhiteSpace(input.Filter))
             //{
             //    var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
             //    var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
-            //    users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
-            //    //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
+            //    users = users.Where((ui, up) =>
+            //        ui.NormalizedUserName.Contains(normalizedSearchUserName) ||
+            //        ui.NormalizedEmail.Contains(normalizedSearchEMail));
             //}
 
             //if (input.HasOrder())
@@ -136,10 +101,45 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             //    users = users.OrderBy(input.GetOrderStr());
             //}
 
-            //var count = await users.CountAsync();
-            //var results = await users
-            //    .Page(input)
-            //    .ListAsync();
+            //var pageinfo = new BasePagingInfo() { PageNumber = input.Page, PageSize = input.PageSize };
+            //var ids = await users
+            //    .Page(pageinfo)
+            //    .ToListAsync((a, b) => a.DocumentId);
+            //var results = await YesSession.GetAsync<User>(ids.ToArray());
+            //var count= pageinfo.Count;
+            #region Yessql
+            var users = YesSession.Query<User, UserProfileIndex>()
+                   .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
+                   .With<UserIndex>();
+
+            if (!string.IsNullOrWhiteSpace(input.Filter))
+            {
+                var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
+                var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
+                users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
+                //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
+            }
+
+            if (input.HasOrder())
+            {
+                switch (input.SortField.ToLower())
+                {
+                    case "username":
+                        input.SortField = "NormalizedUserName";
+                        break;
+                    case "email":
+                        input.SortField = "NormalizedEmail";
+                        break;
+                    default:
+                        break;
+                }
+                users = users.OrderBy(input.GetOrderStr());
+            }
+
+            var count = await users.CountAsync();
+            var results = await users
+                .Page(input)
+                .ListAsync();
             #endregion
 
             var result = new List<UserListItemDto>();
@@ -150,7 +150,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 u.Properties = item.Properties;
                 result.Add(u);
             }
-            return new PagedResult<UserListItemDto>(pageinfo.Count, result);
+            return new PagedResult<UserListItemDto>(count, result);
         }
 
         public async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
