@@ -1,3 +1,17 @@
+## Features
+
+- [X] Generate ContentType From RDBMS
+- [X] Intergration Freesql to current session (read current shell database)
+- [X] SwaggerUI Intergration
+- [X] Dynamic Web API 
+- [x] Authorization Attribute
+- [X] Read Excel Workflow Task , you can read excel data from Upload or from local/network path
+- [X] SQL Task 
+- [X] Create ContentItem Helper
+- [X] Powershell Task
+- [X] User Profile , SQL indexes that implement custom user extensions
+
+
 ### install
 
 ![image](https://user-images.githubusercontent.com/15613121/146934540-f079cf5a-d462-4458-9ee4-5dd76960e265.png)
