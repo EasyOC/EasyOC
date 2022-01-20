@@ -2,6 +2,7 @@
 
 - [X] Generate ContentType From RDBMS
 - [X] Intergration Freesql to current session (read current shell database)
+- [X] FreeSQL external database connection. With FreeSQL, you can use any of the 15 databases supported by FreeSQL in OC
 - [X] SwaggerUI Intergration
 - [X] [Workflow Error Handle Event](#拦截所有工作流异常)
 - [X] [Dynamic Web API](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Services/Users/UsersAppService.cs)
