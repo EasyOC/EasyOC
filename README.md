@@ -3,13 +3,14 @@
 - [X] Generate ContentType From RDBMS
 - [X] Intergration Freesql to current session (read current shell database)
 - [X] SwaggerUI Intergration
-- [X] Dynamic Web API 
-- [x] Authorization Attribute
+- [X] [Dynamic Web API](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Services/Users/UsersAppService.cs)
+- [x] [Authorization Attribute](https://github.com/EasyOC/EasyOC/blob/master/src/Core/EasyOC.Core/Authorization/Attributes/EOCAuthorizationAttribute.cs)
 - [X] Read Excel Workflow Task , you can read excel data from Upload or from local/network path
 - [X] SQL Task 
 - [X] Create ContentItem Helper
 - [X] Powershell Task
-- [X] User Profile , SQL indexes that implement custom user extensions
+- [X] [User Profile](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Handlers/UserEventHandler.cs) , SQL indexes that implement CustomUserSettings Indexable
+- [ ] GraphQL return items and total
 
 
 ### install
