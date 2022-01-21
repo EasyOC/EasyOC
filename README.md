@@ -1,3 +1,20 @@
+## Features
+
+- [X] Generate ContentType From RDBMS
+- [X] Intergration [FreeSQL](https://github.com/dotnetcore/FreeSql) to current session (read current shell database)
+- [X] [FreeSQL](https://github.com/dotnetcore/FreeSql) external database connection. With FreeSQL, you can use [any of the 16 databases supported by FreeSQL](http://www.freesql.net/guide/type-mapping.html#%E5%88%A0%E9%99%A4) in OC
+- [X] SwaggerUI Intergration
+- [X] [Workflow Error Handle Event](#拦截所有工作流异常)
+- [X] [Dynamic Web API](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Services/Users/UsersAppService.cs)
+- [x] [Authorization Attribute](https://github.com/EasyOC/EasyOC/blob/master/src/Core/EasyOC.Core/Authorization/Attributes/EOCAuthorizationAttribute.cs)
+- [X] [Read Excel Workflow Task](https://github.com/EasyOC/EasyOC/issues/1) , you can read excel data from Upload or from local/network path
+- [X] [SQL Task ](#数据同步)
+- [X] [Create ContentItem Helper](#generate-contentmapping-with-rdbms)
+- [X] Powershell Task
+- [X] [User Profile](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Handlers/UserEventHandler.cs) , SQL indexes that implement CustomUserSettings Indexable
+- [ ] GraphQL return items and total
+
+
 ### install
 
 ![image](https://user-images.githubusercontent.com/15613121/146934540-f079cf5a-d462-4458-9ee4-5dd76960e265.png)
