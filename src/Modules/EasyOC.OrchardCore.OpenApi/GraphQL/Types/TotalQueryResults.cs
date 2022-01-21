@@ -10,6 +10,6 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL.Types
     {
         public IEnumerable<object> Items { get; set; }
 
-        public int Total { get; set; }
+        public int? Total { get; set; }
     }
 }

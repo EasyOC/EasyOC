@@ -67,7 +67,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
                         {
                             var contentType = type.Remove(0, 12);
-                            fieldType = BuildTotalContentTypeFieldType(schema, contentType, query, fieldTypeName); 
+                            fieldType = BuildTotalContentTypeFieldType(schema, contentType, query, fieldTypeName);
                         }
                         else
                         {
@@ -80,12 +80,12 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         {
                             var contentType = type.Remove(0, 12);
                             fieldType = BuildContentTypeFieldType(schema, contentType, query, fieldTypeName);
-                        } 
+                        }
                         else
                         {
-                            fieldType = BuildSchemaBasedFieldType(query, querySchema, fieldTypeName); 
+                            fieldType = BuildSchemaBasedFieldType(query, querySchema, fieldTypeName);
                         }
-                    } 
+                    }
 
                     if (fieldType != null && !schema.Query.HasField(fieldType.Name))
                     {
@@ -231,12 +231,12 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
             totalType.Field(listType.GetType(), "items",
                 resolve: context =>
                 {
-                    return context.Source.Items;
+                    return context.Source?.Items;
                 });
             var total = totalType.Field<IntGraphType>("total",
                          resolve: context =>
                          {
-                             return context.Source.Total;
+                             return context.Source?.Total;
                          });
 
 
@@ -321,14 +321,14 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
             var items = totalType.Field(typetype.Type, "items",
                          resolve: context =>
                          {
-                             return context.Source.Items;
+                             return context.Source?.Items ?? Array.Empty<object>();
                          });
             items.ResolvedType = typetype.ResolvedType;
             var total = totalType.Field<IntGraphType>("total",
-                                resolve: context =>
-                                {
-                                    return context.Source.Total;
-                                });
+                        resolve: context =>
+                        {
+                            return context.Source?.Total??0;
+                        });
 
             var fieldType = new FieldType
             {
@@ -348,9 +348,13 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                     var queryParameters = parameters != null ?
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
                         : new Dictionary<string, object>();
-                    var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
+                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters);
 
-                    return new TotalQueryResults { Total = result.Count, Items = result.Items };
+                    return new TotalQueryResults
+                    {
+                        Total = (result as LuceneQueryResults)?.Count,
+                        Items = result?.Items ?? Array.Empty<object>()
+                    };
                 }),
                 Type = totalType.GetType()
             };

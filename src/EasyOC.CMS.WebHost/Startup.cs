@@ -15,7 +15,6 @@ namespace EasyOC.CMS.WebHost
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithExposedHeaders("query_total");
                     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
