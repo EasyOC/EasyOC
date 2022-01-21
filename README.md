@@ -14,7 +14,7 @@ It adds a series of modules based on Orchard Core CMS to provide SPA services in
 ### For SPA Service Application
 
 - [X] GraphQL lucene queries can support Total and items
-- [X] wrapper API returns the result, You can use the Restful API to query OrchardCore for notifications added using INotify
+- [X] wrapper API returns the result, You can use the Restful API to query OrchardCore for notifications added using `INotify`
 - [X] SwaggerUI
 - [X] [Dynamic Web API](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Services/Users/UsersAppService.cs) 
 - [x] [Authorization Attribute](https://github.com/EasyOC/EasyOC/blob/master/src/Core/EasyOC.Core/Authorization/Attributes/EOCAuthorizationAttribute.cs)
