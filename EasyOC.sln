@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{9AF4BDBD
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{5A30262C-639E-4734-AB2A-97425C5A1478}"
+	ProjectSection(SolutionItems) = preProject
+		src\Modules\Directory.Build.props = src\Modules\Directory.Build.props
+		src\Modules\Directory.Build.targets = src\Modules\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}"
 	ProjectSection(SolutionItems) = preProject

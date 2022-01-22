@@ -11,7 +11,7 @@
 	  <None Remove="Timmers\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Drivers\CAPEventDisplayDriver.cs" />
@@ -22,12 +22,12 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.1.5" />
-		<PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.1.5" />
-		<PackageReference Include="Microsoft.PowerShell.Commands.Utility" Version="7.1.5" />
-		<PackageReference Include="Microsoft.PowerShell.ConsoleHost" Version="7.1.5" />
-		<PackageReference Include="Microsoft.WSMan.Management" Version="7.1.5" />
-		<PackageReference Include="RestSharp" Version="106.12.0" />
+		<PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.PowerShell.Commands.Utility" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.PowerShell.ConsoleHost" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.WSMan.Management" Version="7.3.0-preview.1" />
+		<PackageReference Include="RestSharp" Version="107.1.2-alpha.0.8" />
 
 	</ItemGroup>
 	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		
@@ -12,7 +12,7 @@
 
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,8 +30,8 @@
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
 		<ProjectReference Include="..\EasyOC.OrchardCore.VueElementUI\EasyOC.OrchardCore.VueElementUI.csproj" />
+		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
 	</ItemGroup> 
 	<ItemGroup>
 		<Folder Include="Recipes\" />

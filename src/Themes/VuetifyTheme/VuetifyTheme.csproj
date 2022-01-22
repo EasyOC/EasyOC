@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>$(AspNetCoreTargetFramework)</TargetFramework>
@@ -28,9 +28,9 @@
 		<PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+	<!-- <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup> -->
 
 	<ItemGroup>
 		<EmbeddedResource Remove="**\*.less;**\*.scss;" />

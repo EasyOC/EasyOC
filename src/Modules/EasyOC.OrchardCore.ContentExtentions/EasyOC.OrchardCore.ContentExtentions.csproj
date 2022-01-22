@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
 
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
@@ -9,9 +8,9 @@
     <Compile Remove="Models\ContentTypeApiModel.cs" />
   </ItemGroup> 
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+  <!--<ItemGroup>
+    
+  </ItemGroup>-->
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
 
     <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" />

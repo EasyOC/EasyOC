@@ -238,7 +238,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                          {
                              return context.Source?.Total;
                          });
-
+             
 
             foreach (JProperty child in properties.Children())
             {
@@ -324,11 +324,11 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                              return context.Source?.Items ?? Array.Empty<object>();
                          });
             items.ResolvedType = typetype.ResolvedType;
-            var total = totalType.Field<IntGraphType>("total",
+            totalType.Field<IntGraphType>("total",
                         resolve: context =>
                         {
-                            return context.Source?.Total??0;
-                        });
+                            return context.Source?.Total ?? 0;
+                        }); 
 
             var fieldType = new FieldType
             {
@@ -362,6 +362,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
             return fieldType;
         }
 
+ 
     }
 
 }

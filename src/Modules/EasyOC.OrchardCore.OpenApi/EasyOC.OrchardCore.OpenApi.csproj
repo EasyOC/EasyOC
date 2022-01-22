@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
@@ -15,9 +14,9 @@
     <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+  <!--<ItemGroup>
+    
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />

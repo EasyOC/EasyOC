@@ -103,7 +103,7 @@
                                 <span class="hint">@T["Created {0}", (object)(await DisplayAsync(await New.TimeSpan(Utc: entry.Workflow.CreatedUtc)))]  @entry.Workflow.CreatedUtc.ToLocalTime()</span>
                                 <div class="info">
                                     <span class="badge badge-@statusCss">
-                                        @entry.Workflow.Status.GetLocalizedStatus(T)
+                                        @* @entry.Workflow.Status.GetLocalizedStatus(T) *@
                                     </span>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
             {
                 <li class="list-group-item">
                     <div class="alert alert-info mb-0" role="alert">
-                        @T["<strong>Nothing here!</strong> There are no halted workflows at the moment."] 1111111111111111111
+                        @T["<strong>Nothing here!</strong> There are no halted workflows at the moment."] 
                     </div>
                 </li>
             }
