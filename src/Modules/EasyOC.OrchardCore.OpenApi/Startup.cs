@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.Apis;
 using OrchardCore.Apis.GraphQL;
+using OrchardCore.ContentFields.Fields;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Users.Handlers;
@@ -32,6 +33,7 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddScoped<IUserEventHandler, UserEventHandler>();
             services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
+            services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
