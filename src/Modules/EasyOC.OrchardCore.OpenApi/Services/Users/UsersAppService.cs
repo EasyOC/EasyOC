@@ -153,7 +153,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             return new PagedResult<UserListItemDto>(count, result);
         }
 
-        public async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
+        [NonDynamicMethod]
+        private async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
         {
             var contentDefs = GetUserSettingsTypeDefinitions();
             var contentPickerValues = new Dictionary<string[], ContentPickerField>();

@@ -42,36 +42,15 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL.Types
                });
 
             Field<ListGraphType<ContentItemInterface>, ContentItem[]>()
-             .Name("properties")
-             .Description("the user properties")
+             .Name("UserProfiles")
+             .Description("the user profiles")
              .PagingArguments()
-               .Resolve(x =>
+               .ResolveAsync(async x =>
              {
                  var userIds = x.Source.UserIds;
-                 if (userIds != null && userIds.Length > 0)
-                 {
-                     var serviceProvider = x.ResolveServiceProvider();
-                     var userManager = serviceProvider.GetRequiredService<UserManager<IUser>>();
-
-                     var items = userIds.Select(id =>
-                   {
-                       var u = userManager.FindByIdAsync(id).GetAwaiter().GetResult();
-                       if (u != null)
-                       {
-                           var profile = ((User)u).As<ContentItem>("UserProfile");
-                           return profile;
-                       }
-                       return null;
-
-                   });
-                     return items.Where(u => u != null).ToArray();
-
-                 }
-                 else
-                 {
-                     return Array.Empty<ContentItem>();
-                 }
-
+                 var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
+                 var items = await contentItemLoader.LoadAsync(x.Page(x.Source.UserIds));
+                 return items.Where(item => item != null).ToArray();  
              });
         }
     }

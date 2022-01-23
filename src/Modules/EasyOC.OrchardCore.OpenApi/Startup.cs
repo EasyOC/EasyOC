@@ -14,6 +14,7 @@ using OrchardCore.ContentFields.Fields;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Users.Handlers;
+using OrchardCore.Users.Services;
 using System;
 using YesSql.Indexes;
 
@@ -31,9 +32,11 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
             //services.AddSingleton<IIndexProvider, UserTextFieldIndexProvider>();
             services.AddScoped<IUserEventHandler, UserEventHandler>();
-            services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
+            services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
+            services.AddScoped<IUserClaimsProvider, UserTokenLifeTimeClaimsProvider>();
+
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
