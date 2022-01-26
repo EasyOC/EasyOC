@@ -21,7 +21,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL.Types
     {
         public UserPickerFieldQueryObjectType()
         {
-            Name = nameof(ContentPickerField);
+            Name = nameof(UserPickerField);
 
             Field<ListGraphType<StringGraphType>, IEnumerable<string>>()
                 .Name("userIds")
@@ -50,7 +50,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL.Types
                  var userIds = x.Source.UserIds;
                  var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
                  var items = await contentItemLoader.LoadAsync(x.Page(x.Source.UserIds));
-                 return items.Where(item => item != null).ToArray();  
+                 return items.Where(item => item != null).ToArray();
              });
         }
     }

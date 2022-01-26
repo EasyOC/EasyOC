@@ -28,11 +28,16 @@
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
 
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
