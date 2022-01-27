@@ -1,26 +1,19 @@
-﻿using AutoMapper;
-using EasyOC.Core.Application;
+﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
 using EasyOC.OrchardCore.OpenApi.Indexs;
-using FreeSql.Internal.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentFields.Fields;
-using OrchardCore.ContentFields.Indexing.SQL;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.ContentManagement.Metadata.Settings;
-using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Entities;
-using OrchardCore.Indexing;
-using OrchardCore.Settings;
 using OrchardCore.Users;
 using OrchardCore.Users.Indexes;
 using OrchardCore.Users.Models;
@@ -153,7 +146,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             return new PagedResult<UserListItemDto>(count, result);
         }
 
-        public async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
+        [NonDynamicMethod]
+        private async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
         {
             var contentDefs = GetUserSettingsTypeDefinitions();
             var contentPickerValues = new Dictionary<string[], ContentPickerField>();
