@@ -1,4 +1,4 @@
-@model WorkflowViewModel
+﻿@model WorkflowViewModel
 @using OrchardCore.Workflows.Models;
 @using OrchardCore.Workflows.ViewModels;
 @inject OrchardCore.Modules.ILocalClock LocalClock
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col">
                         <label>@T["Status"]</label>
-                        <span>@Model.Workflow.Status.GetLocalizedStatus(T)</span>
+                        <span>@Model.Workflow.Status.(T)</span>
                     </div>
                     @if (Model.Workflow.Status == WorkflowStatus.Faulted)
                     {

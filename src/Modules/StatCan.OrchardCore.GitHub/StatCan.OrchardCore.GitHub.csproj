@@ -14,7 +14,7 @@
     <PackageReference Include="OrchardCore.Navigation.Core" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />

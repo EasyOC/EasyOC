@@ -3,7 +3,6 @@
   <Import Project="..\EasyOC.Build\Commons.props" />
 
   <PropertyGroup>
-     <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
   </PropertyGroup>
 
 </Project>

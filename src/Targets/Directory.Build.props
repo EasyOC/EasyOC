@@ -2,5 +2,4 @@
 
   <Import Project="..\EasyOC.Build\Commons.props" />
 
-
 </Project>
