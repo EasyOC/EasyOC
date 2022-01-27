@@ -5,7 +5,6 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{9AF4BDBD-CBAC-4F27-BAD7-E1A6FE393A56}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
 		src\EasyOC.Build\Commons.props = src\EasyOC.Build\Commons.props
 		src\EasyOC.Build\Commons.targets = src\EasyOC.Build\Commons.targets
 		src\EasyOC.Build\Dependencies.AspNetCore.props = src\EasyOC.Build\Dependencies.AspNetCore.props
@@ -35,10 +34,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombiq.HelpfulExtensions", "src\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj", "{7033FCB8-F26B-42CA-AABE-986DD06564A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.Excel", "src\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj", "{AD353D9C-E8EE-42F7-A2DE-6989971DFDCE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.VueElementUI", "src\Modules\EasyOC.OrchardCore.VueElementUI\EasyOC.OrchardCore.VueElementUI.csproj", "{7D64445D-6B04-48F8-A82A-FEE5C447E6FA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.VersionCompare", "src\Modules\EasyOC.OrchardCore.VersionCompare\EasyOC.OrchardCore.VersionCompare.csproj", "{68AD44B0-4ED5-4520-951C-08188E9030F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.Core", "src\Core\EasyOC.Core\EasyOC.Core.csproj", "{0ACCF3C6-F556-4331-A519-BCF66E5C0BAB}"
 EndProject
@@ -71,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Themes", "Themes", "{181DF7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOCTheme", "src\Themes\EasyOCTheme\EasyOCTheme.csproj", "{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.VueElementUI", "src\Modules\EasyOC.OrchardCore.VueElementUI\EasyOC.OrchardCore.VueElementUI.csproj", "{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,14 +90,6 @@ Global
 		{AD353D9C-E8EE-42F7-A2DE-6989971DFDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD353D9C-E8EE-42F7-A2DE-6989971DFDCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD353D9C-E8EE-42F7-A2DE-6989971DFDCE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D64445D-6B04-48F8-A82A-FEE5C447E6FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D64445D-6B04-48F8-A82A-FEE5C447E6FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D64445D-6B04-48F8-A82A-FEE5C447E6FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D64445D-6B04-48F8-A82A-FEE5C447E6FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68AD44B0-4ED5-4520-951C-08188E9030F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68AD44B0-4ED5-4520-951C-08188E9030F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68AD44B0-4ED5-4520-951C-08188E9030F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68AD44B0-4ED5-4520-951C-08188E9030F8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0ACCF3C6-F556-4331-A519-BCF66E5C0BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0ACCF3C6-F556-4331-A519-BCF66E5C0BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ACCF3C6-F556-4331-A519-BCF66E5C0BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -133,6 +122,10 @@ Global
 		{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,8 +135,6 @@ Global
 		{CAF72DD5-BFDD-48DB-B865-7A553E6CDAC7} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{7033FCB8-F26B-42CA-AABE-986DD06564A5} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{AD353D9C-E8EE-42F7-A2DE-6989971DFDCE} = {5A30262C-639E-4734-AB2A-97425C5A1478}
-		{7D64445D-6B04-48F8-A82A-FEE5C447E6FA} = {5A30262C-639E-4734-AB2A-97425C5A1478}
-		{68AD44B0-4ED5-4520-951C-08188E9030F8} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{0ACCF3C6-F556-4331-A519-BCF66E5C0BAB} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
 		{CF187415-FA7E-4FCB-9253-608AD9E3972E} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{5555E483-CCDD-4D21-904A-5B2D59C73252} = {9AF4BDBD-CBAC-4F27-BAD7-E1A6FE393A56}
@@ -152,6 +143,7 @@ Global
 		{42DACC0E-2BC4-48C3-A55F-A9FDEC394929} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
 		{F1DBFDCF-C00F-4B26-95B1-9B44AEB5119E} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B} = {181DF740-F0EB-42D9-A94E-076745447CDB}
+		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}

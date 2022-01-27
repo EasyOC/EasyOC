@@ -1,11 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 
 	<ItemGroup>
     <!--<ProjectReference Include="..\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj" />--> 
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" /> 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" /> 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.VueElementUI\EasyOC.OrchardCore.VueElementUI.csproj" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" />
