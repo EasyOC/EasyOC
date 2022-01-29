@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Indexs\CustomUserSettingsIndexProvider.cs" />
     <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
   </ItemGroup>
 

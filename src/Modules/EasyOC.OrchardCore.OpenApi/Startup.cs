@@ -29,7 +29,7 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddScoped<IRolesAppService, RolesAppService>();
             services.AddScoped<IUsersAppService, UsersAppService>();
             services.AddScoped<IDataMigration, UserProfileMigrations>();
-            services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
+            //services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
             //services.AddSingleton<IIndexProvider, UserTextFieldIndexProvider>();
             services.AddScoped<IUserEventHandler, UserEventHandler>();
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();

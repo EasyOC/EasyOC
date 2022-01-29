@@ -1,4 +1,6 @@
-﻿using EasyOC.OrchardCore.OpenApi.Model;
+﻿using AutoMapper;
+using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentFields.Indexing.SQL;
@@ -25,16 +27,18 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
         private readonly IContentManager _contentManager;
         //private readonly IFreeSql _fsql;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
         public UserEventHandler(
           IContentDefinitionManager contentDefinitionManager,
           ILogger<UserEventHandler> logger,
           IContentItemIdGenerator idGenerator,
-          IContentManager contentManager)
+          IContentManager contentManager, IMapper mapper)
         {
             _contentDefinitionManager = contentDefinitionManager;
             _logger = logger;
             _idGenerator = idGenerator;
             _contentManager = contentManager;
+            _mapper = mapper;
         }
 
 
@@ -42,10 +46,30 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
         private Task UpdateIndexAsync(UserContextBase context, Action<ContentItem> action)
         {
             var user = context.User as User;
-            var contentItem = user.As<ContentItem>(nameof(UserProfile));
-            contentItem.Content["User"] = JObject.FromObject(new { user.UserName, user.UserId, user.Email });
+            var contentItem = user.As<ContentItem>("UserProfileInternal");
+            var userSimpleData = _mapper.Map<UserDetailsDto>(user);
+            userSimpleData.Properties = null;
+            var jContent = contentItem.Content as JObject;
+
+            try
+            {
+                jContent["UserProfile"] = contentItem.Content["UserProfileInternal"];
+                jContent.Remove("UserProfileInternal");
+                jContent["UserProfile"]["OwnerUser"] = JObject.FromObject(new
+                {
+                    UserIds = new string[] { user.UserId },
+                    UserNames = new string[] { user.UserName }
+                });
+                jContent["UserProfile"]["User"] = JObject.FromObject(userSimpleData);  
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
             contentItem.ContentItemId = user.UserId;
             contentItem.Owner = user.UserId;
+            //使用 UserProfileInternal 更新 UserProfile
+            contentItem.ContentType = "UserProfile";
             contentItem.Latest = true;
             contentItem.Published = true;
             action?.Invoke(contentItem);
