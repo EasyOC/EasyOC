@@ -44,10 +44,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         }
         public PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input)
         {
-            //if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
-            //{
-            //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
-            //}
+
             return _contentDefinitionManager.ListPartDefinitions()
                 .Select(x => x.ToDto(false))
                 .WhereIf(input.Filter.IsNullOrWhiteSpace(), x
@@ -56,10 +53,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         }
         public ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false)
         {
-            //if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
-            //{
-            //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
-            //}
             var part = _contentDefinitionManager.LoadPartDefinition(name);
             return part.ToDto(withSettings);
         }

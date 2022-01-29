@@ -5,25 +5,17 @@
     <VersionPrefix>1.3.0</VersionPrefix>
     <VersionSuffix>preview</VersionSuffix>
     <VersionSuffix Condition="'$(VersionSuffix)'!='' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>612,618</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <NoWarn>$(NoWarn);CS1998</NoWarn>
-    <NoWarn>$(NoWarn);CS0168</NoWarn>
-    <NoWarn>$(NoWarn);CS1587</NoWarn>
     <DebugType>portable</DebugType>
-    <NetStandardImplicitPackageVersion>2.0.0-*</NetStandardImplicitPackageVersion>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+
 
     <!-- Common NuGet properties-->
     <OCFrameworkDescription>EasyOC  Framework is an application framework for building modular, multi-tenant applications on ASP.NET Core.</OCFrameworkDescription>
     <OCCMSDescription>EasyOC  CMS is a Web Content Management System (CMS) built on top of the EasyOC Team Framework.</OCCMSDescription>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>
-    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
     <!--This is used to generate symbol package for Source Link-->
@@ -31,8 +23,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <!-- This is used by GitHub Repository to find which repository should contain the package when updloaded -->
-    <RepositoryUrl>https://github.com/OrchardCMS/OrchardCore</RepositoryUrl>
-    <PackageProjectUrl>https://www.orchardcore.net/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/EasyOC/EasyOC</RepositoryUrl>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 
     <PackageTags>EasyOC</PackageTags>
@@ -40,12 +31,12 @@
     <Authors>EasyOC Team and Contributors</Authors>
     <Owners>EasyOC Team Community and Contributors</Owners>
   </PropertyGroup>
+  <ItemGroup>
+
+    <!--This is used for Source Link -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
+  </ItemGroup>
   <PropertyGroup>
     <TargetFrameworks>$(CommonTargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    <!--This is used for Source Link -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
 </Project>

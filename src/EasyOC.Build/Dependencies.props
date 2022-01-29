@@ -6,7 +6,10 @@
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
     <StatCanVersion>1.0.6-candev-4</StatCanVersion> 
   </PropertyGroup>
-
+  <PropertyGroup>
+    <!-- Special case - this property is used by a DotNetCliToolReference -->
+    <DotNetXunitVersion>2.3.0</DotNetXunitVersion>
+  </PropertyGroup>
   <ItemGroup>
     <!--依赖的第三方库版本-->
     <PackageManagement Include="NodaTime"  Version="3.0.9"/> 

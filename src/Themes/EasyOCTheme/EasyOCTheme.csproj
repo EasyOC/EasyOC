@@ -8,9 +8,9 @@
     <EmbeddedResource Remove="Views\Layout.liquid" />
   </ItemGroup>
 
-  <!-- <ItemGroup> 
+   <ItemGroup> 
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup> -->
+  </ItemGroup> 
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />

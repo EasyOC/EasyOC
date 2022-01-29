@@ -19,7 +19,7 @@ namespace EasyOC.Core.Filter
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async Task OnExceptionAsync(ExceptionContext context)
+        public Task OnExceptionAsync(ExceptionContext context)
         {
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
             // 获取控制器信息
@@ -31,7 +31,7 @@ namespace EasyOC.Core.Filter
 
 
 
-            if (typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo)) return;
+            if (typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo)) return Task.CompletedTask;
 
             // 解析异常处理服务，实现自定义异常额外操作，如记录日志等
             var globalExceptionHandler = context.HttpContext.RequestServices.GetService<IUnifyResultProvider>();
@@ -41,7 +41,7 @@ namespace EasyOC.Core.Filter
             }
 
             // 如果异常在其他地方被标记了处理，那么这里不再处理
-            if (context.ExceptionHandled) return;
+            if (context.ExceptionHandled) return Task.CompletedTask;
 
 
 
@@ -61,7 +61,7 @@ namespace EasyOC.Core.Filter
                     StatusCode = exceptionMetadata.StatusCode
                 };
             }
-
+            return Task.CompletedTask;
         }
     }
 
