@@ -1,5 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
+using EasyOC.OrchardCore.ContentExtentions.Models;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using System;
@@ -17,11 +18,14 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             _contentDefinitionManager = contentDefinitionManager;
         }
 
+        public IEnumerable<ContentFieldsMappingDto> GetAllFieldsByType(string typeName)
+        {
+            return _contentDefinitionManager.GetAllFields(typeName);
+        }
         /// <summary>
         /// 列出所有类型定义
         /// </summary>
         /// <returns></returns>
-        [EOCAuthorization("ViewContentTypes")]
         public PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input)
         {
 

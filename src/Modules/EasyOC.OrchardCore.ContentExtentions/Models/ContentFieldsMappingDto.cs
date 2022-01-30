@@ -28,18 +28,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.Models
         public string PartDisplayName { get; set; }
         public string PartName { get; set; }
         public JObject FieldSettings { get; set; }
-        public string FieldType { get; set; }
-        //lastValueKey!: string
-        //fieldName!: string
-        //displayName!: string
-        //fieldType!: FieldType
-        //editable!: boolean
-        //visible!: boolean
-        //partName!: string
-        //fieldSettings: any
-        //buildFrom!: 'ContentTypeDefinition' | 'GraphQL'
-        //  isNormal = () => {
-        //    return NormalFields.includes(this.fieldType)
-        //  }
+        public string FieldType { get; set; } 
     }
 }
