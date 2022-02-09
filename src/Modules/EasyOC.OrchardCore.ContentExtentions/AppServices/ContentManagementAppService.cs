@@ -1,5 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
+using EasyOC.OrchardCore.ContentExtentions.Models;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using System;
@@ -42,6 +43,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 
             return result.ToPagedResult(input);
         }
+
         public PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input)
         {
 
@@ -63,7 +65,12 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
             return typeDefinition.ToDto(withSettings);
         }
-
+        /// <summary>
+        /// 获取指定类型的字段清单
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public List<ContentFieldsMappingDto> GetFields(string typeName) => _contentDefinitionManager.GetAllFields(typeName).ToList();
 
 
 
