@@ -14,6 +14,7 @@
   <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
 
     <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />

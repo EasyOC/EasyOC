@@ -24,7 +24,6 @@ namespace EasyOC.OrchardCore.RDBMS
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddFreeSql();
             services.AddScoped<IQuerySource, FreeSqlQuerySource>();
             services.AddSingleton<IGlobalMethodProvider, FreeSqlWorkflowMethodsProvider>();
             //services.AddAutoMapper(GetType().Assembly);

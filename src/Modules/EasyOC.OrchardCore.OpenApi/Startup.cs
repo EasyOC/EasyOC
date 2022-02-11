@@ -1,4 +1,5 @@
-﻿using EasyOC.OrchardCore.OpenApi.GraphQL;
+﻿using EasyOC.Core;
+using EasyOC.OrchardCore.OpenApi.GraphQL;
 using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
 using EasyOC.OrchardCore.OpenApi.Handlers;
 using EasyOC.OrchardCore.OpenApi.Indexs;
@@ -21,6 +22,7 @@ using YesSql.Indexes;
 namespace EasyOC.OrchardCore.OpenApi
 {
     [Feature("EasyOC.OrchardCore.OpenApi")]
+    [RequireFeatures(Constants.EasyOCCoreModuleId)]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)

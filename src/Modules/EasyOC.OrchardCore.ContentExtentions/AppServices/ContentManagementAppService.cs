@@ -1,11 +1,15 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 using EasyOC.OrchardCore.ContentExtentions.Models;
+using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
+using OrchardCore.Lucene;
+using OrchardCore.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
@@ -13,9 +17,11 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
     public class ContentManagementAppService : AppServcieBase, IContentManagementAppService
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        public ContentManagementAppService(IContentDefinitionManager contentDefinitionManager)
+        private readonly IQueryManager _queryManager;
+        public ContentManagementAppService(IContentDefinitionManager contentDefinitionManager, IQueryManager queryManager)
         {
             _contentDefinitionManager = contentDefinitionManager;
+            _queryManager = queryManager;
         }
 
         /// <summary>
@@ -72,7 +78,12 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// <returns></returns>
         public List<ContentFieldsMappingDto> GetFields(string typeName) => _contentDefinitionManager.GetAllFields(typeName).ToList();
 
-
+        [EOCAuthorization(OCPermissions.EditContentTypes)]
+        public async Task<IEnumerable<QueryDefDto>> ListLuceneQueriesAsync()
+        { 
+            var queries = (await _queryManager.ListQueriesAsync()).OfType<LuceneQuery>();
+            return ObjectMapper.Map<IEnumerable<QueryDefDto>>(queries);
+        }
 
     }
 }

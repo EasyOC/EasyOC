@@ -27,11 +27,7 @@ namespace EasyOC
         {
             return GetFreeSql(Enum.Parse<DataType>(providerName), connectionString, logger, tablePrefix);
         }
-        public static IFreeSql GetFreeSql(ILogger logger = default)
-        {
-            return ShellScope.Current.ServiceProvider.GetFreeSql(logger);
-        }
-
+ 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, ILogger logger = default)
         {
             if (logger == default)
