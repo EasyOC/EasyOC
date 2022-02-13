@@ -6,7 +6,7 @@ EasyOC is a SPA development framework based on OrchardCore
 
 It adds a series of modules based on Orchard Core CMS to provide SPA services in a non-invasive manner, and implements some features and functions specifically for SPA by referring to the functional design of ABP
 
-
+前端项目：https://github.com/EasyOC/EasyOC.VbenAdmin
 
 ## Features
 
