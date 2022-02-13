@@ -1,0 +1,31 @@
+@model OrchardCore.ContentFields.ViewModels.EditTextFieldViewModel
+@using OrchardCore.ContentFields.Settings
+@using OrchardCore.ContentLocalization;
+@using OrchardCore.ContentManagement.Metadata.Models
+@using OrchardCore.Localization
+
+@{
+   var settings = Model.PartFieldDefinition.GetSettings<TextFieldSettings>();
+   var culture = await Orchard.GetContentCultureAsync(Model.Field.ContentItem);
+}
+
+<div class="form-group">
+   <label asp-for="Text" class="form-label">@Model.PartFieldDefinition.DisplayName()</label>
+   <textarea asp-for="Text" rows="5" class="form-control content-preview-text" dir="@culture.GetLanguageDirection()"></textarea>
+   <div class="hint" style="font-size: smaller;">
+      @if (!string.IsNullOrWhiteSpace(settings.Hint)) {
+         @settings.Hint<br/>
+      }
+      <strong>F11</strong>: <span>Full Screen</span>,
+      <strong>Esc</strong>: <span>Exit Full Screen</span>,
+      <strong>Ctrl-S</strong>: <span>Save</span>,
+      <strong>Ctrl-Space</strong>: <span>Auto Complete</span>,
+      <strong>Ctrl-F</strong>: <span>Find</span>,
+      <strong>Ctrl-G</strong>: <span>Find next</span>,
+      <strong>Shift-Ctrl-G</strong>: <span>Find previous</span>,
+      <strong>Shift-Ctrl-F</strong>: <span>Replace</span>,
+      <strong>Shift-Ctrl-R</strong>: <span>Replace all</span>.
+   </div>
+</div>
+
+@Html.Partial("CodeMirror", new CodeMirrorViewModel(Html.IdFor(m => m.Text), .5))

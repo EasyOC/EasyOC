@@ -1,0 +1,99 @@
+{
+   "name": "NavigationMainMenu",
+   "displayName": "Navigation / Main Menu",
+   "description": "Provides navigation editor and main menu for setup recipes that didn't create them (e.g. SaaS)",
+   "author": "Dale Newman",
+   "website": "https://github.com/dalenewman/OrchardCore.Transformalize",
+   "version": "0.8.21",
+   "issetuprecipe": false,
+   "categories": [ "default" ],
+   "tags": [ "navigation", "menu" ],
+
+   "variables": {
+      "menuContentItemId": "[js:uuid()]"
+   },
+
+   "steps": [
+      {
+         "name": "feature",
+         "disable": [],
+         "enable": [
+            "OrchardCore.Navigation",
+            "OrchardCore.Menu",
+            "OrchardCore.AdminMenu"
+         ]
+      },
+      {
+         "name": "content",
+         "Data": [
+            {
+               "ContentType": "Menu",
+               "ContentItemId": "[js: variables('menuContentItemId')]",
+               "DisplayText": "Main Menu",
+               "Latest": true,
+               "Published": true,
+               "MenuPart": {},
+               "TitlePart": {
+                  "Title": "Main Menu"
+               },
+               "MenuItemsListPart": {
+                  "MenuItems": [
+                     {
+                        "ContentType": "LinkMenuItem",
+                        "ContentItemId": "[js: uuid()]",
+                        "LinkMenuItemPart": {
+                           "Name": "Reports",
+                           "Url": "~/#reports"
+                        }
+                     },
+                     {
+                        "ContentType": "LinkMenuItem",
+                        "ContentItemId": "[js: uuid()]",
+                        "LinkMenuItemPart": {
+                           "Name": "Tasks",
+                           "Url": "~/#tasks"
+                        }
+                     }
+                  ]
+               },
+               "AliasPart": {
+                  "Alias": "main-menu"
+               }
+            }
+         ]
+      },
+      {
+         "name": "AdminMenu",
+         "data": [
+            {
+               "Id": "baef6f85ad13481681cde70ada401333",
+               "Name": "Admin menu from navigation recipe",
+               "Enabled": true,
+               "MenuItems": [
+                  {
+                     "$type": "OrchardCore.AdminMenu.AdminNodes.LinkAdminNode, OrchardCore.AdminMenu",
+                     "LinkText": "Main Menu",
+                     "LinkUrl": "[js: 'Admin/Contents/ContentItems/' +  variables('menuContentItemId') + '/Edit']",
+                     "IconClass": "fas fa-sitemap",
+                     "UniqueId": "5118cecfde834dacb26ac08980f1b5a7",
+                     "Enabled": true,
+                     "Text": null,
+                     "Id": null,
+                     "Href": null,
+                     "Url": null,
+                     "Position": null,
+                     "LinkToFirstChild": true,
+                     "LocalNav": false,
+                     "Culture": null,
+                     "Resource": null,
+                     "Items": [],
+                     "RouteValues": null,
+                     "Permissions": [],
+                     "Classes": []
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}
