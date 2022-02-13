@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Indexs\CustomUserSettingsIndexProvider.cs" />
     <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
+    <Compile Remove="Services\GraphqlAppService.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>

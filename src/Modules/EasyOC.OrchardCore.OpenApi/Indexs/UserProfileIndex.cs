@@ -41,7 +41,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
             context.For<UserProfileIndex>().Map(user =>
             {
                 var profileIndex = _mapper.Map<UserProfileIndex>(user);
-                var profiles = user.As<ContentItem>("UserProfile");
+                var profiles = user.As<ContentItem>("UserProfileInternal");
 
                 if (profiles != null)
                 {

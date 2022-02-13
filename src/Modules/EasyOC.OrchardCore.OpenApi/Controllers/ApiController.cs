@@ -34,7 +34,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
             _contentDefinitionManager = contentDefinitionManager;
             _session = session;
         }
-
+        [HttpGet]
         public async Task<IActionResult> ExportAsync(string queryName, IDictionary<string, object> parameters, string typeName = default)
         {
 
