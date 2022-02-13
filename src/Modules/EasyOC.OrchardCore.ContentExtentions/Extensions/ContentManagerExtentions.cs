@@ -46,7 +46,7 @@ namespace EasyOC
 
         public static string GetFiledValuePath(string fieldName)
         {
-            var valuePath = "Value";
+            string valuePath;
             switch (fieldName)
             {
                 case "TextField":

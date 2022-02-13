@@ -1,4 +1,5 @@
-﻿using EasyOC.OrchardCore.OpenApi.GraphQL;
+﻿using EasyOC.Core;
+using EasyOC.OrchardCore.OpenApi.GraphQL;
 using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
 using EasyOC.OrchardCore.OpenApi.Handlers;
 using EasyOC.OrchardCore.OpenApi.Indexs;
@@ -21,6 +22,7 @@ using YesSql.Indexes;
 namespace EasyOC.OrchardCore.OpenApi
 {
     [Feature("EasyOC.OrchardCore.OpenApi")]
+    [RequireFeatures(Constants.EasyOCCoreModuleId)]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
@@ -29,7 +31,7 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddScoped<IRolesAppService, RolesAppService>();
             services.AddScoped<IUsersAppService, UsersAppService>();
             services.AddScoped<IDataMigration, UserProfileMigrations>();
-            services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
+            //services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
             //services.AddSingleton<IIndexProvider, UserTextFieldIndexProvider>();
             services.AddScoped<IUserEventHandler, UserEventHandler>();
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
