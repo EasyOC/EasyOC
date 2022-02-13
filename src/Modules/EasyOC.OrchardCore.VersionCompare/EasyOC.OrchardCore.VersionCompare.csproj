@@ -1,16 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup> 
+	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-	</PropertyGroup> 
-	<ItemGroup>
-		 
-	</ItemGroup>
+	</PropertyGroup>
 
 	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
 
-		<PackageReference Include="OrchardCore.Deployment.Abstractions"  Version="$(OrchardCoreVersion)"/>
-		<PackageReference Include="OrchardCore.Sitemaps.Abstractions"  Version="$(OrchardCoreVersion)"/>
+		<PackageReference Include="OrchardCore.Deployment.Abstractions" Version="$(OrchardCoreVersion)"/>
+		<PackageReference Include="OrchardCore.Sitemaps.Abstractions" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.Deployment.Core" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)"/>
@@ -25,7 +22,7 @@
 		<PackageReference Include="OrchardCore.Contents.TagHelpers" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.ContentManagement.Display" Version="$(OrchardCoreVersion)"/>
-		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)"/> 
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.DisplayManagement.Liquid" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.Feeds.Abstractions" Version="$(OrchardCoreVersion)"/>
 		<PackageReference Include="OrchardCore.Indexing.Abstractions" Version="$(OrchardCoreVersion)"/>
@@ -46,7 +43,7 @@
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.FileStorage.FileSystem\OrchardCore.FileStorage.FileSystem.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Indexing.Abstractions\OrchardCore.Indexing.Abstractions.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Media.Abstractions\OrchardCore.Media.Abstractions.csproj" />
-		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Application.Cms.Targets\OrchardCore.Application.Cms.Targets.csproj"  />
+		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Application.Cms.Targets\OrchardCore.Application.Cms.Targets.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement\OrchardCore.ContentManagement.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement.Abstractions\OrchardCore.ContentManagement.Abstractions.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Contents.Core\OrchardCore.Contents.Core.csproj" />
@@ -57,7 +54,7 @@
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Module.Targets\OrchardCore.Module.Targets.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.ResourceManagement\OrchardCore.ResourceManagement.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Theme.Targets\OrchardCore.Theme.Targets.csproj" />
-		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Navigation.Core\OrchardCore.Navigation.Core.csproj"  />
+		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Navigation.Core\OrchardCore.Navigation.Core.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Queries.Abstractions\OrchardCore.Queries.Abstractions.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement.GraphQL\OrchardCore.ContentManagement.GraphQL.csproj" />
 		<ProjectReference Update="$(OrchardCoreLibrariesRoot)\OrchardCore.Admin.Abstractions\OrchardCore.Admin.Abstractions.csproj" />

@@ -3,17 +3,6 @@
 	<PropertyGroup> 
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Remove="package.json" />
-	  <EmbeddedResource Remove="Views\VueForm-CommonTemplate.cshtml" />
-	  <EmbeddedResource Remove="Views\VueForm-VuetifyApp.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Assets.json" />
-	</ItemGroup>
- 
  
 	<!--<ItemGroup >-->
 	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
@@ -24,17 +13,7 @@
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
 		<!--<PackageReference Include="StatCan.OrchardCore.VueForms" Version="$(StatCanVersion)" />-->
 
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' != '' AND '$(OrchardCoreModulesRoot)' != ''">
-
-		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentManagement\OrchardCore.ContentManagement.csproj" />
-		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.ContentTypes.Abstractions\OrchardCore.ContentTypes.Abstractions.csproj" />
-		<ProjectReference Include="$(OrchardCoreLibrariesRoot)\OrchardCore.Module.Targets\OrchardCore.Module.Targets.csproj" />
-		<!--Moudles	      Update-->
-		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.Autoroute\OrchardCore.Autoroute.csproj" />
-		<ProjectReference Include="$(OrchardCoreModulesRoot)\OrchardCore.ContentFields\OrchardCore.ContentFields.csproj" />
-	</ItemGroup>
+	</ItemGroup> 
 </Project>
 
 

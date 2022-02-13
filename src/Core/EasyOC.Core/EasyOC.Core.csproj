@@ -4,7 +4,7 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc> 
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments> 
   </PropertyGroup>
-
+ 
   <ItemGroup>
     <Compile Remove="Workflow\**" />
     <EmbeddedResource Remove="Workflow\**" />
