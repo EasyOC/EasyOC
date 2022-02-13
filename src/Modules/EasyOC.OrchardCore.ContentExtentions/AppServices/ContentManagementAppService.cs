@@ -28,7 +28,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// 列出所有类型定义
         /// </summary>
         /// <returns></returns>
-        [EOCAuthorization("ViewContentTypes")]
         public PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input)
         {
 
