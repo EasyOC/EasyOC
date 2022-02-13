@@ -1,6 +1,6 @@
 EasyOC 是一个基于OrchardCore 的SPA 开发框架
 
-它在采用无入侵的方式基于Orchard Core CMS 增加了一系列模块用于提供 SPA服务 ，参考了 ABP 的功能设计实现了一些专门用于 SPA 的特性和功能
+它在采用无入侵的方式基于Orchard Core CMS 增加了一系列模块用于提供 SPA服务 ，参考 ABP 的功能设计实现了一些用于 SPA 的特性和功能
 
 EasyOC is a SPA development framework based on OrchardCore
 
