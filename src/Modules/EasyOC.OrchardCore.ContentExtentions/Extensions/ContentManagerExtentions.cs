@@ -11,7 +11,7 @@ namespace EasyOC
         {
             var typeDef = contentDefinitionManager.GetTypeDefinition(typeName);
             var fields = new List<ContentFieldsMappingDto>();
-            fields.Add(new ContentFieldsMappingDto { DisplayName = "内容项ID", FieldName = "ContentItemId", IsContentItemProperty = true });
+            fields.Add(new ContentFieldsMappingDto { DisplayName = "ID", FieldName = "ContentItemId", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = "版本号", FieldName = "ContentItemVersionId", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = "内容类型", FieldName = "ContentType", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = "标题", FieldName = "DisplayText", IsContentItemProperty = true });
@@ -30,6 +30,7 @@ namespace EasyOC
                     fields.Add(new ContentFieldsMappingDto
                     {
                         DisplayName = field.DisplayName(),
+                        Description= field.Description(),
                         FieldName = field.Name,
                         PartName = part.Name,
                         PartDisplayName = part.DisplayName(),

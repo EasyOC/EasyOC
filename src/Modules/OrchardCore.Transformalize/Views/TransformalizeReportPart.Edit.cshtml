@@ -1,0 +1,34 @@
+﻿@model EditTransformalizeReportPartViewModel
+@using TransformalizeModule.ViewModels;
+@using TransformalizeModule 
+
+@{
+   var Area = Common.ModuleName;
+   var ContentItemId = Model.TransformalizeReportPart.ContentItem.ContentItemId;
+   var viewLink = Url.Action("Index", "Report", new { Area , ContentItemId });
+   var xmlLink = Url.Action("Run", "Report", new { Format = "xml", Area, ContentItemId });
+   var jsonLink = Url.Action("Run", "Report", new { Format = "json", Area, ContentItemId });
+   var logLink = Url.Action("Log", "Report", new { Format = "json", Area, ContentItemId });
+   var schemaLink = Url.Action("Index", "Schema", new { Format = "xml", Area, ContentItemId });
+}
+
+<fieldset>
+   <div class="btn-group float-right" role="group">
+      <a href="@viewLink" class="btn btn-success btn-sm" role="button" title="view this report">
+         <span class="fas fa-eye"></span>
+      </a>
+      <a href="@xmlLink" class="btn btn-primary btn-sm" role="button" title="run this report as xml">
+         <span class="fas fa-code"></span>
+      </a>
+      <a title="run this report as json" role="button" class="btn btn-secondary btn-sm" href="@jsonLink">
+         <span class="fas fa-exchange-alt"></span>
+      </a> 
+      <a title="view this report's log" role="button" class="btn btn-warning btn-sm" href="@logLink">
+         <span class="fas fa-clipboard-list"></span>
+      </a>
+      <a title="query schema for the entity in this report" role="button" class="btn btn-info btn-sm" href="@schemaLink">
+         <span class="fas fa-search-plus"></span>
+      </a>
+   </div>
+</fieldset>
+
