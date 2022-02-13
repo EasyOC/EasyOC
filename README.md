@@ -8,6 +8,8 @@ It adds a series of modules based on Orchard Core CMS to provide SPA services in
 
 前端项目：https://github.com/EasyOC/EasyOC.VbenAdmin
 
+QQ群：51387245
+
 ## Features
 
 
