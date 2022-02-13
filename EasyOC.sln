@@ -68,6 +68,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOCTheme", "src\Themes\E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.VueElementUI", "src\Modules\EasyOC.OrchardCore.VueElementUI\EasyOC.OrchardCore.VueElementUI.csproj", "{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.Transformalize", "src\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj", "{B86830C1-C455-449F-98B3-C75B661E50C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86830C1-C455-449F-98B3-C75B661E50C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86830C1-C455-449F-98B3-C75B661E50C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86830C1-C455-449F-98B3-C75B661E50C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86830C1-C455-449F-98B3-C75B661E50C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,6 +150,7 @@ Global
 		{F1DBFDCF-C00F-4B26-95B1-9B44AEB5119E} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B} = {181DF740-F0EB-42D9-A94E-076745447CDB}
 		{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F} = {5A30262C-639E-4734-AB2A-97425C5A1478}
+		{B86830C1-C455-449F-98B3-C75B661E50C6} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}

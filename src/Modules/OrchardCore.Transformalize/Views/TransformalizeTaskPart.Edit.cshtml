@@ -1,0 +1,49 @@
+﻿@model EditTransformalizeTaskPartViewModel
+@using TransformalizeModule.ViewModels
+@using TransformalizeModule
+
+@{
+   var Area = Common.ModuleName;
+   var ContentItemId = Model.TransformalizeTaskPart.ContentItem.ContentItemId;
+   var viewLink = Url.Action("Review", "Task", new { Area, ContentItemId });
+   var runLink = Url.Action("Run", "Task", new { Area, ContentItemId });
+   var xmlLink = Url.Action("Run", "Task", new { Format = "xml", Area, ContentItemId });
+   var jsonLink = Url.Action("Run", "Task", new { Format = "json", Area, ContentItemId });
+   var schemaLink = Url.Action("Index", "Schema", new { Format = "xml", Area, ContentItemId });
+}
+
+<fieldset>
+   <div class="btn-group float-right" role="group">
+      <a title="view this task"
+         role="button"
+         class="btn btn-success btn-sm"
+         href="@viewLink">
+         <span class="fas fa-eye"></span>
+      </a>
+      <a title="run this task"
+         role="button"
+         class="btn btn-warning btn-sm"
+         href="@runLink">
+         <span class="fas fa-play"></span>
+      </a>
+      <a title="run this task as xml"
+         role="button"
+         class="btn btn-primary btn-sm"
+         href="@xmlLink">
+         <span class="fas fa-code"></span>
+      </a>
+      <a title="run this task as json"
+         role="button"
+         class="btn btn-secondary btn-sm"
+         href="@jsonLink">
+         <span class="fas fa-exchange-alt"></span>
+      </a>
+      <a title="query schema for the entities in this task"
+         role="button"
+         class="btn btn-info btn-sm"
+         href="@schemaLink">
+         <span class="fas fa-search-plus"></span>
+      </a>
+   </div>
+</fieldset>
+

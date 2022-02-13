@@ -1,0 +1,228 @@
+﻿@using Transformalize.Configuration
+@using Transformalize.Contracts
+@using Microsoft.Extensions.DependencyInjection
+@using TransformalizeModule.Services.Contracts
+@using TransformalizeModule
+@using TransformalizeModule.Ext
+
+@model ReportViewModel
+
+@{
+   RenderTitleSegments(Model.Title, "before");
+
+   var output = Context.Request.Query["output"].ToString() ?? "page";
+
+   var entity = Model.Process.Entities.FirstOrDefault() ?? new Entity { Name = "Missing Entity" };
+   var allFields = entity.GetAllFields().Where(f => !f.System).ToArray();
+   var linkService = Context.RequestServices.GetService<ILinkService>();
+   var hasActions = Model.Process.Actions.Any(a => !a.Before && !a.After && !string.IsNullOrEmpty(a.Description) && !a.Description.StartsWith("Batch", StringComparison.OrdinalIgnoreCase));
+
+   if (hasActions) {
+      var bv = allFields.FirstOrDefault(f => f.Alias == Model.Part.BulkActionValueField.Text);
+      if (bv == null) {
+         hasActions = false;
+      } else {
+         bv.Output = false;
+      }
+   }
+
+}
+
+<script asp-name="jQuery" at="Head"></script>
+<script asp-name="jQuery-ui" at="Foot"></script>
+<script asp-name="bootstrap-select-beta" version="1.14.0" at="Foot"></script>
+<script asp-name="block-ui" version="2.70.0" at="Foot"></script>
+<script asp-name="underscore" at="Foot"></script>
+<script asp-name="bootstrap-calendar" version="0.2.5" at="Foot"></script>
+
+@foreach (var script in Model.Process.Scripts.Where(s => s.Global && !string.IsNullOrEmpty(s.File) && (s.Language == "js" || s.Language == Transformalize.Constants.DefaultSetting && s.File.EndsWith(".js", StringComparison.OrdinalIgnoreCase)))) {
+   <script at="Foot" src="@script.File"></script>
+}
+
+<style asp-name="jQuery-ui"></style>
+<style asp-name="bootstrap-select-beta" version="1.14.0"></style>
+<style asp-name="bootstrap-calendar" version="0.2.5"></style>
+
+@foreach (var script in Model.Process.Scripts.Where(s => s.Global && !string.IsNullOrEmpty(s.File) && (s.Language == "css" || s.Language == Transformalize.Constants.DefaultSetting && s.File.EndsWith(".css", StringComparison.OrdinalIgnoreCase)))) {
+   <style src="@script.File"></style>
+}
+
+<style>
+
+   main.container {
+      max-width: 98%;
+   }
+
+    .btn-xs, .btn-group-xs > .btn {
+        border-radius: 3px;
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+    #busy {
+        position: fixed;
+        left: 46%;
+        top: 40%;
+        display: none;
+        background: transparent url(@Url.Content($"~/{Common.ModuleName}/Styles/busy.gif"));
+        background-size: 149px 149px;
+        background-repeat:no-repeat;
+        z-index: 1020;
+        height: 150px;
+        width: 150px;
+    }
+
+    #busy-holder {
+        background: transparent;
+        width: 100%;
+        height: 100%;
+    }
+
+   /* Calendar Specfic Styles Go here */
+
+   @foreach (var script in Model.Process.Scripts.Where(s => s.Global && s.Language == "css" && string.IsNullOrEmpty(s.File))) {
+   <text>/* @script.Name css script */</text>
+   @Html.Raw(script.Content)
+
+   }
+</style>
+
+@foreach (var logEntry in Model.Process.Log.Where(le => le.LogLevel == LogLevel.Error)) {
+   <div class="alert alert-danger" role="alert">@logEntry.Message</div>
+}
+
+@foreach (var logEntry in Model.Process.Log.Where(le => le.LogLevel == LogLevel.Warn)) {
+   <div class="alert alert-warning" role="alert">@logEntry.Message</div>
+}
+
+<form id="id_report" class="form-inline" role="form" method="GET">
+
+   <input id="id_sort" class="bsh" type="hidden" name="sort" value="@(Context.Request.Query["sort"].ToString() ?? string.Empty)" />
+   <input id="id_page" class="bsh" type="hidden" name="page" value="@entity.Page" />
+   <input id="id_size" class="bsh" type="hidden" name="size" value="@(entity.Size)" />
+
+   @foreach (var parameter in Model.Process.Parameters.Where(p => !p.Prompt && Context.Request.Query[p.Name].ToString() != null).Select(p => p.Name)) {
+      <input type="hidden" name="@parameter" value="@(Context.Request.Query[parameter].ToString())" />
+   }
+
+<div class="container-fluid">
+
+   @Html.Partial("Parameters", Model)
+
+   @Html.Partial("Controls", Model)
+
+   <div id="id_calendar_alert" style="display: none;" class="alert alert-info" role="alert"><span class="fas fa-info-circle"> </span></div>
+
+   <div class="row" style="padding-top: 2px; padding-bottom: 2px;">
+
+      <div class="col-md-3">
+         <h3 id="page-header" class="text-warning" style="margin: 2px 0px 0px 0px;"></h3>
+      </div>
+      <div class="col-md-6">
+         <div class="btn-group calendar-navs" role="group">
+            <button class="btn btn-primary btn-sm" data-calendar-nav="prev"><span class="fas fa-chevron-left"></span> </button>
+            <button class="btn btn-info btn-sm" data-calendar-nav="today">
+               <span>Today</span>
+            </button>
+            <button class="btn btn-primary btn-sm" data-calendar-nav="next"> <span class="fas fa-chevron-right"></span></button>
+         </div>
+      </div>
+      <div class="col-md-3">
+         <div class="btn-group calendar-views float-end" role="group">
+            <button class="btn btn-warning btn-sm" data-calendar-view="year">
+               <span>Year</span>
+            </button>
+            <button class="btn btn-warning active btn-sm" data-calendar-view="month">
+               <span>Month</span>
+            </button>
+            <button class="btn btn-warning btn-sm" data-calendar-view="week">
+               <span>Week</span>
+            </button>
+            <button class="btn btn-warning btn-sm" data-calendar-view="day">
+               <span>Day</span>
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <div id="id_calendar" style="height: 655px; width: 100%; padding-top: 2px;"></div>
+   <script>
+      /* using calendar from here: https://github.com/Serhioromano/bootstrap-calendar */
+      //<!--
+      var dataUrl = '@(linkService.Create(Model.Item.ContentItemId, Url.Action("Stream", "Calendar", new { ContentItemId = Model.IdOrAlias }), !Model.Part.PageSizesExtended.Enabled()))';
+
+      var templatePath = '@Url.Content($"~/{Common.ModuleName}/Scripts/tmpls/")';
+
+      $(document).ready(function() {
+
+         $('#id_calendar').height(Math.round($(window).height() * .71));
+
+         var renderCalendar = function () {
+            dataUrl = dataUrl + (dataUrl.indexOf('?') > -1 ? '&' : '?') + 'random=' + Math.random();
+            $.getJSON( dataUrl, function(data) {
+               var options = {
+                  format12: true,
+                  events_source: function () { return data; },
+                  view: 'month',
+                  tmpl_path: templatePath,
+                  tmpl_cache: false,
+                  day: 'now',
+                  onAfterEventsLoad: function (events) {
+                     console.log("events loaded");
+                  },
+                  onAfterViewLoad: function (view) {
+                     $('#page-header').text(this.getTitle());
+                     $('button',$('.calendar-views')).removeClass('active');
+                     $('button[data-calendar-view="' + view + '"]').addClass('active');
+                  },
+                  classes: {
+                     months: {
+                        general: 'label'
+                     }
+                  }
+               };
+               var calendar = $('#id_calendar').calendar(options);
+
+               $('.calendar-views button[data-calendar-view]').each(function () {
+                  var $this = $(this);
+                  $this.click(function (e) {
+                     e.preventDefault();
+                     calendar.view($this.data('calendar-view'));
+                  });
+               });
+
+               $('.calendar-navs button[data-calendar-nav]').each(function () {
+                  var $this = $(this);
+                  $this.click(function (e) {
+                     e.preventDefault(e);
+                     calendar.navigate($this.data('calendar-nav'));
+                  });
+               });
+
+            });
+         }
+
+         renderCalendar();
+      });
+      //-->
+   </script>
+
+</div>
+
+</form>
+
+<span class="AntiForge">@Html.AntiForgeryToken()</span>
+
+<div id="busy_holder">
+   <div id="busy"></div>
+</div>
+
+<script type="text/javascript">
+   //<!--
+   @foreach (var script in Model.Process.Scripts.Where(s => s.Global && string.IsNullOrEmpty(s.File) && s.Language == "js")) {
+      <text>/* @script.Name */</text>
+      @Html.Raw(script.Content)
+   }
+    //-->
+</script>
+<script asp-src="~/@Common.ModuleName/Scripts/report.js"></script>

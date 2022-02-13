@@ -1,0 +1,39 @@
+@model Transformalize.Configuration.Process
+
+@{ 
+   RenderTitleSegments(Model.Name, "before");
+   var referrer = Model.Parameters.FirstOrDefault(p => p.Name == "TaskReferrer");
+}
+<div class="container">
+   <div class="row">
+      <div class="col-md-4">
+         <h4>Batch Summary</h4>
+
+         @if (Model != null && Model.Entities.Any() && Model.Entities[0].Rows.Any()) {
+            var fields = Model.Entities[0].GetAllOutputFields().Where(f => !TransformalizeModule.Common.SystemFields.Contains(f.Alias)).ToArray();
+            var row = Model.Entities[0].Rows[0];
+            <table class="table table-striped table-bordered table-sm">
+               <tbody>
+                  @foreach (var field in fields) {
+                     <tr>
+                        <td>@field.Label</td>
+                        <td>@(field.Raw ? Html.Raw(row[field.Alias]) : row[field.Alias])</td>
+                     </tr>
+                  }
+               </tbody>
+            </table>
+         }
+      </div>
+      <div class="8">
+         <h4> </h4>
+
+         @if (referrer != null) {
+            <a href="@Html.Raw(referrer.Value)" class="btn btn-primary active" role="button" aria-pressed="true">Back</a>
+         }
+      </div>
+   </div>
+</div>
+
+<div id="busy_holder">
+   <div id="busy"></div>
+</div>

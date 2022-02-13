@@ -1,0 +1,93 @@
+{
+   "name": "Transformalize.Batches.Postgres",
+   "displayName": "Transformalize Batches PostgreSQL",
+   "description": "Batch Create and Batch Write Tasks Needed for Bulk Actions.",
+   "author": "Dale Newman",
+   "website": "https://github.com/dalenewman/Transformalize",
+   "version": "0.8.22",
+   "issetuprecipe": false,
+   "tags": [ "reporting", "etl" ],
+   "steps": [
+      {
+         "name": "content",
+         "Data": [
+            {
+               "ContentItemId": "[js: uuid()]",
+               "ContentType": "TransformalizeTask",
+               "DisplayText": "Batch Create Postgres",
+               "Latest": true,
+               "Published": true,
+               "PublishedUtc": "[js: new Date().toISOString()]",
+               "TitlePart": { "Title": "Batch Create Postgres" },
+               "AliasPart": { "Alias": "batch-create-postgres" },
+               "TransformalizeTaskPart": { "Arrangement": { "Text": "<cfg name=\"Batch Create Postgres\" read-only=\"true\" mode=\"@[Mode]\">\r\n \r\n  <maps>\r\n     <add name=\"Modes\">\r\n       <items>\r\n         <add from=\"Initialize\" to=\"init\" />\r\n         <add from=\"Default\" to=\"default\" />\r\n       </items>\r\n    </add>\r\n  </maps>\r\n  \r\n  <!-- this task creates and returns a batch id for logged in user -->\r\n  \r\n  <parameters>\r\n    <add name=\"Mode\" value=\"default\" prompt=\"true\" map=\"Modes\" />\r\n    <add name=\"Created\" type=\"datetime\" t=\"now()\" />\r\n    <add name=\"UserId\" type=\"int\" />\r\n    <add name=\"UserName\" />\r\n    <add name=\"ReportContentItemId\" />\r\n    <add name=\"ReportTitle\" />\r\n    <add name=\"TaskContentItemId\" />\r\n    <add name=\"TaskTitle\" />\r\n    <add name=\"Description\" />\r\n  </parameters>\r\n  \r\n  <connections>\r\n    <add name=\"db\" provider=\"postgresql\" database=\"Batches\" user=\"postgres\" password=\"*\" />\r\n  </connections>\r\n  \r\n  <actions>\r\n    <add name=\"Create\" \r\n         type=\"run\" \r\n         description=\"Create the batch tables during in init mode.\"\r\n         connection=\"db\" \r\n         mode=\"init\"\r\n         command=\"\r\nCREATE TABLE IF NOT EXISTS BatchStatus (\r\n    Id INT NOT NULL PRIMARY KEY,\r\n    Status VARCHAR(128) NOT NULL\r\n);\r\n\r\nINSERT INTO BatchStatus(Id,Status) SELECT 1, 'Review' WHERE NOT EXISTS(SELECT * FROM BatchStatus WHERE Id = 1);\r\nINSERT INTO BatchStatus(Id,Status) SELECT 2, 'Running' WHERE NOT EXISTS(SELECT * FROM BatchStatus WHERE Id = 2);\r\nINSERT INTO BatchStatus(Id,Status) SELECT 3, 'Completed' WHERE NOT EXISTS(SELECT * FROM BatchStatus WHERE Id = 3);\r\nINSERT INTO BatchStatus(Id,Status) SELECT 4, 'Failed' WHERE NOT EXISTS(SELECT * FROM BatchStatus WHERE Id = 4);\r\n\r\n/* GENERATED ALWAYS AS IDENTITY */\r\nCREATE TABLE IF NOT EXISTS Batch (\r\n    Id INT NOT NULL PRIMARY KEY,\r\n    Created TIMESTAMP NOT NULL,\r\n    UserId INT NOT NULL,\r\n    Username VARCHAR(128) NOT NULL,\r\n    ReportContentItemId VARCHAR(128) NOT NULL,\r\n    ReportTitle VARCHAR(128) NOT NULL,\r\n    TaskContentItemId VARCHAR(128) NOT NULL,\r\n    TaskTitle VARCHAR(128) NOT NULL,\r\n    Description VARCHAR(255) NOT NULL,\r\n    BatchStatusId INT,\r\n    Message VARCHAR(1024) NOT NULL,\r\n    FOREIGN KEY (BatchStatusId) REFERENCES BatchStatus(Id)\r\n);\r\n\r\nCREATE INDEX IF NOT EXISTS IX_Batch_BatchStatusId ON Batch(BatchStatusId);\" />\r\n  </actions>\r\n  \r\n  <entities>\r\n    <add name=\"Script\" \r\n         input=\"db\" \r\n         query=\"\r\n                  INSERT INTO Batch(Id,Created,UserId,UserName,ReportContentItemId,ReportTitle,TaskContentItemId,TaskTitle,Description,BatchStatusId,Message)\r\n                  SELECT COALESCE(MAX(Id),0)+1,@Created,@UserId,@UserName,@ReportContentItemId,@ReportTitle,@TaskContentItemId,@TaskTitle,@Description,1,'' \r\n                  FROM Batch;\r\n                \r\n                  SELECT b.Id AS BatchId\r\n                  FROM Batch b\r\n                  WHERE UserId = @UserId\r\n                  ORDER BY b.Id DESC\r\n                  LIMIT 1\r\n                  \">\r\n      <fields>\r\n          <add name=\"BatchId\" type=\"int\" primary-key=\"true\" />\r\n      </fields>\r\n    </add>\r\n  </entities>\r\n</cfg>" } },
+               "ContentPermissionsPart": {
+                  "Roles": [ "Authenticated" ],
+                  "Enabled": true
+               },
+               "CommonPart": {}
+            },
+            {
+               "ContentItemId": "[js: uuid()]",
+               "ContentType": "TransformalizeTask",
+               "DisplayText": "Batch Write Postgres",
+               "Latest": true,
+               "Published": true,
+               "PublishedUtc": "[js: new Date().toISOString()]",
+               "TitlePart": { "Title": "Batch Write Postgres" },
+               "AliasPart": { "Alias": "batch-write-postgres" },
+               "TransformalizeTaskPart": { "Arrangement": { "Text": "<cfg name=\"Batch\" mode=\"@[Mode]\">\r\n\r\n  <maps>\r\n     <add name=\"Modes\">\r\n       <items>\r\n         <add from=\"Initialize\" to=\"init\" />\r\n         <add from=\"Default\" to=\"default\" />\r\n       </items>\r\n    </add>\r\n  </maps>\r\n  \r\n  <parameters>\r\n    <add name=\"BatchId\" type=\"int\" value=\"0\" />\r\n    <add name=\"Mode\" value=\"default\" prompt=\"true\" map=\"Modes\" />\r\n  </parameters>\r\n\r\n  <connections>\r\n    <!-- the bulk action controller in this module provides the input -->\r\n    <add name=\"input\" provider=\"internal\" />\r\n    <add name=\"output\" provider=\"postgresql\" database=\"Batches\" user=\"postgres\" password=\"*\" />\r\n  </connections>\r\n  \r\n  <entities>\r\n    <add name=\"Record\" update=\"false\">\r\n      <rows>\r\n        <!-- orchard inserts rows -->\r\n      </rows>\r\n      <fields>\r\n        <add name=\"BatchId\" type=\"int\" input=\"false\" default=\"@[BatchId]\" primary-key=\"true\" />\r\n        <add name=\"BatchValue\" length=\"255\" primary-key=\"true\" />\r\n      </fields>\r\n    </add>\r\n  </entities>\r\n</cfg>" } },
+               "ContentPermissionsPart": {
+                  "Roles": [ "Authenticated" ],
+                  "Enabled": true
+               }
+            },
+            {
+               "ContentItemId": "[js: uuid()]",
+               "ContentType": "TransformalizeTask",
+               "DisplayText": "Batch Summary Postgres",
+               "Latest": true,
+               "Published": true,
+               "PublishedUtc": "[js: new Date().toISOString()]",
+               "TitlePart": { "Title": "Batch Summary Postgres" },
+               "AliasPart": { "Alias": "batch-summary-postgres" },
+               "TransformalizeTaskPart": { "Arrangement": { "Text": "<cfg name=\"Batch Summary Postgres\" read-only=\"true\">\r\n\r\n  <parameters>\r\n    <add name=\"BatchId\" type=\"int\" value=\"0\" prompt=\"true\" v=\"required()\" />\r\n  </parameters>\r\n\r\n  <connections>\r\n    <add name=\"db\" provider=\"postgresql\" database=\"Batches\" user=\"postgres\" password=\"*\" />\r\n  </connections>\r\n\r\n  <maps>\r\n    <!-- Bootstrap 4 Contextual Classes are primary, secondary, success, danger, warning, info, light, and dark -->\r\n    <add name=\"ContextualClasses\">\r\n      <items>\r\n        <add from=\"Review\" to=\"secondary\"/>\r\n        <add from=\"Completed\" to=\"success\"/>\r\n        <add from=\"Failed\" to=\"danger\"/>\r\n        <add from=\"Running\" to=\"warning\"/>\r\n      </items>\r\n    </add>\r\n  </maps>\r\n\r\n  <entities>\r\n    <add name=\"Script\" \r\n         input=\"db\" \r\n         query=\"\r\nSELECT\r\n    b.Description,\r\n    b.Id AS BatchId,\r\n    Created,\r\n    b.ReportTitle,\r\n    b.ReportContentItemId,\r\n    b.TaskContentItemId,\r\n    bs.Status, \r\n    Message,\r\n    COALESCE(br.Records, 0) AS Records\r\nFROM Batch b\r\nINNER JOIN BatchStatus bs ON (b.BatchStatusId = bs.Id)\r\nLEFT OUTER JOIN (\r\n    SELECT COUNT(*) AS Records\r\n    FROM BatchRecord br\r\n    WHERE BatchId = @BatchId\r\n) br ON (1=1)\r\nWHERE b.Id = @BatchId;                    \r\n                \">\r\n      <fields>\r\n        <add name=\"Description\" label=\"Bulk Action\" t='format(<strong>{Description}</strong>)' raw=\"true\" />\r\n        <add name=\"BatchId\" type=\"int\" primary-key=\"true\" />\r\n        <add name=\"Created\" type=\"datetime\" t=\"convert().timezone(UTC,Eastern Standard Time)\" />\r\n        <add name=\"ReportTitle\" label=\"Report\" />\r\n        <add name=\"ReportContentItemId\" label=\"Report Id\" />\r\n        <add name=\"TaskContentItemId\" label=\"Task Id\" />\r\n        <add name=\"Status\" output=\"false\" />\r\n        <add input=\"false\" name=\"ContextualClass\" t=\"copy(Status).map(ContextualClasses)\" output=\"false\" />\r\n        <add input=\"false\" name=\"Badge\" label=\"Status\" raw=\"true\" t='format(<span class=\"badge badge-{ContextualClass}\">{Status}</span>)' />\r\n        <add name=\"Message\" />\r\n        <add name=\"Records\" type=\"long\" />\r\n      </fields>\r\n    </add>\r\n  </entities>\r\n</cfg>" } },
+               "ContentPermissionsPart": {
+                  "Roles": [ "Authenticated" ],
+                  "Enabled": true
+               }
+            },
+            {
+               "ContentItemId": "[js: uuid()]",
+               "ContentType": "TransformalizeTask",
+               "DisplayText": "Batch Success Postgres",
+               "Latest": true,
+               "Published": true,
+               "PublishedUtc": "[js: new Date().toISOString()]",
+               "TitlePart": { "Title": "Batch Success Postgres" },
+               "AliasPart": { "Alias": "batch-success-postgres" },
+               "TransformalizeTaskPart": { "Arrangement": { "Text": "<cfg name=\"Batch Success\">\r\n \r\n  <parameters>\r\n    <add name=\"BatchId\" type=\"int\" value=\"0\" />\r\n    <add name=\"RecordsAffected\" type=\"int\" value=\"0\" />\r\n  </parameters>\r\n  \r\n  <connections>\r\n    <add name=\"db\" provider=\"postgresql\" database=\"Batches\" user=\"postgres\" password=\"devdev1!\" />\r\n  </connections>\r\n  \r\n  <actions>\r\n    <add name=\"Create\" \r\n         type=\"run\" \r\n         connection=\"db\" \r\n         command=\"UPDATE Batch \r\n                  SET BatchStatusId = 3,\r\n                      Message = @RecordsAffected || ' Records Affected'\r\n                  WHERE Id = @BatchId;\" />\r\n  </actions>\r\n\r\n</cfg>" } },
+               "ContentPermissionsPart": {
+                  "Roles": [ "Authenticated" ],
+                  "Enabled": true
+               }
+            },
+            {
+               "ContentItemId": "[js: uuid()]",
+               "ContentType": "TransformalizeTask",
+               "DisplayText": "Batch Fail Postgres",
+               "Latest": true,
+               "Published": true,
+               "PublishedUtc": "[js: new Date().toISOString()]",
+               "TitlePart": { "Title": "Batch Fail Postgres" },
+               "AliasPart": { "Alias": "batch-fail-postgres" },
+               "TransformalizeTaskPart": { "Arrangement": { "Text": "<cfg name=\"Batch Fail Postgres\">\r\n \r\n  <parameters>\r\n    <add name=\"BatchId\" type=\"int\" value=\"0\" />\r\n    <add name=\"RecordsAffected\" type=\"int\" value=\"0\" />\r\n    <add name=\"Message\" value=\"\" />\r\n  </parameters>\r\n  \r\n  <connections>\r\n    <add name=\"db\" provider=\"postgresql\" database=\"Batches\" user=\"postgres\" password=\"*\" />\r\n  </connections>\r\n  \r\n  <actions>\r\n    <add name=\"Create\" type=\"run\" connection=\"db\" \r\n         command=\"UPDATE Batch \r\n                  SET BatchStatusId = 4,\r\n                      Message = @RecordsAffected || ' Records Affected. ' || @Message\r\n                  WHERE Id = @BatchId;\" />\r\n  </actions>\r\n\r\n</cfg>" } },
+               "ContentPermissionsPart": {
+                  "Roles": [ "Authenticated" ],
+                  "Enabled": true
+               }
+            }
+         ]
+      }
+   ]
+}

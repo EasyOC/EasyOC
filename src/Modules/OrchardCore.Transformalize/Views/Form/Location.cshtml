@@ -1,0 +1,21 @@
+@model Transformalize.Configuration.Parameter
+@* binding js properties to jquery input fields that are used later in form.js. *@
+@* I realize I should learn a front-end framework, but I don't have time to start over right now. *@
+
+@if (Model.InputType == "location") {
+   <script>$(function () { settings.location.@Model.InputCapture = $("@("#id_" + Model.Name)"); });</script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

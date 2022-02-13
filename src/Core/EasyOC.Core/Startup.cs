@@ -29,6 +29,7 @@ namespace EasyOC.Core
 
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.AddFreeSql();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>

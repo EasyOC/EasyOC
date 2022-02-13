@@ -1,0 +1,83 @@
+@model LogViewModel
+@using Transformalize.Contracts
+
+<div class="row" style="font:larger; font-weight:bolder;">
+   <div class="col-md-6">
+      <div class="float-start">@(Model.Process == null ? "Process" : Model.Process.Name)</div>
+   </div>
+   <div class="col-md-6">
+      <div class="float-end">@(Model.Process == null ? "" : $"{Model.Process.Status}:{Model.Process.Message}")</div>
+   </div>
+</div>
+
+<div class="row" style="padding-top: 2px;">
+   <div class="col-sm-12 table-responsive">
+      <table id="id_error_table" class="table table-sm table-hover table-striped">
+         <thead>
+            <tr>
+               <th title="Time">Time</th>
+               <th title="Level">Level</th>
+               <th title="Process">Process</th>
+               <th title="Entity">Entity</th>
+               <th title="Message">Message</th>
+            </tr>
+         </thead>
+         <tbody>
+            @if (Model.Process != null) {
+               if (Model.Process.Warnings().Any()) {
+                  foreach (var warning in Model.Process.Warnings()) {
+                     <tr>
+                        <td> </td>
+                        <td><span class="badge badge-warning">Warning</span></td>
+                        <td>@Model.Process.Name</td>
+                        <td> </td>
+                        <td>@warning</td>
+                     </tr>
+                  }
+               }
+               if (Model.Process.Errors().Any()) {
+                  foreach (var error in Model.Process.Errors()) {
+                     <tr>
+                        <td> </td>
+                        <td><span class="badge badge-danger">Error</span></td>
+                        <td>@Model.Process.Name</td>
+                        <td> </td>
+                        <td>@error</td>
+                     </tr>
+                  }
+               }
+            }
+
+            @foreach (var entry in Model.Log) {
+               <tr>
+                  <td style="white-space:nowrap;">@entry.Time.ToString("yyyy-MM-dd hh:mm:ss.fff")</td>
+
+                  <td>
+                     @switch (entry.LogLevel) {
+                        case LogLevel.Info:
+                           <span class="badge badge-info">Info</span>
+                           break;
+                        case LogLevel.Debug:
+                           <span class="badge badge-secondary">Debug</span>
+                           break;
+                        case LogLevel.Error:
+                           <span class="badge badge-danger">Error</span>
+                           break;
+                        case LogLevel.Warn:
+                           <span class="badge badge-warning">Warning</span>
+                           break;
+                        default:
+                           <span class="badge badge-light">None</span>
+                           break;
+                     }
+
+                  </td>
+                  <td>@entry.Process</td>
+                  <td>@entry.Entity</td>
+                  <td>@entry.Message</td>
+               </tr>
+            }
+         </tbody>
+      </table>
+   </div>
+</div>

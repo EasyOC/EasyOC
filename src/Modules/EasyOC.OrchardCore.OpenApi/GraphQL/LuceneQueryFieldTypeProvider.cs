@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
+﻿using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
 using GraphQL.Types;
-using GraphQL.Types.Relay;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,9 +8,12 @@ using Newtonsoft.Json.Linq;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.Apis.GraphQL.Resolvers;
 using OrchardCore.ContentManagement.GraphQL.Queries;
-using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using OrchardCore.Lucene;
 using OrchardCore.Queries;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
 
 namespace EasyOC.OrchardCore.OpenApi.GraphQL

@@ -1,0 +1,133 @@
+{
+   "BooleanField_Edit": [
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActions",
+         "place": "Parts:10#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-Map",
+         "place": "Parts:20#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-Calendar",
+         "place": "Parts:30#Calendar:3"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeFormPart-LocationEnableHighAccuracy",
+         "place": "Parts:10#Location:1"
+      }
+   ],
+   "NumericField_Edit": [
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeFormPart-LocationMaximumAge",
+         "place": "Parts:11#Location:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeFormPart-LocationTimeout",
+         "place": "Parts:12#Location:3"
+      }
+   ],
+   "TextField_Edit": [
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionValueField",
+         "place": "Parts:11#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionCreateTask",
+         "place": "Parts:12#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionWriteTask",
+         "place": "Parts:13#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionSummaryTask",
+         "place": "Parts:14#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionRunTask",
+         "place": "Parts:15#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionSuccessTask",
+         "place": "Parts:16#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-BulkActionFailTask",
+         "place": "Parts:17#Bulk Actions:1"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-MapLatitudeField",
+         "place": "Parts:21#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-MapLongitudeField",
+         "place": "Parts:22#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-MapDescriptionField",
+         "place": "Parts:23#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-MapColorField",
+         "place": "Parts:24#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-MapRadiusField",
+         "place": "Parts:25#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-MapOpacityField",
+         "place": "Parts:26#Map:2"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-CalendarIdField",
+         "place": "Parts:31#Calendar:3"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-CalendarTitleField",
+         "place": "Parts:32#Calendar:3"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-CalendarUrlField",
+         "place": "Parts:33#Calendar:3"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-CalendarClassField",
+         "place": "Parts:34#Calendar:3"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-CalendarStartField",
+         "place": "Parts:35#Calendar:3"
+      },
+      {
+         "displayType": "Edit",
+         "differentiator": "TransformalizeReportPart-CalendarEndField",
+         "place": "Parts:36#Calendar:3"
+      }
+   ]
+}

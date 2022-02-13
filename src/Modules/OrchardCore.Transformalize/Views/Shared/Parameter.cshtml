@@ -1,0 +1,85 @@
+@model ParameterViewModel
+@{ 
+   var input = Context.Request.Query[Model.Parameter.Name].ToString();
+}
+@switch (Model.Parameter.Type) {
+   case "date":
+   case "datetime":
+      string requestedDate;
+      if(input == string.Empty) {
+         if(Model.Parameter.Value == string.Empty) {
+            if(Model.Parameter.Format == string.Empty) {
+               requestedDate = DateTime.Now.ToString("yyyy-MM-dd");
+            } else {
+               requestedDate = DateTime.Now.ToString(Model.Parameter.Format);
+            }
+         } else {
+            if(Model.Parameter.Format == string.Empty) {
+               requestedDate = Model.Parameter.Value;
+            } else {
+               if (DateTime.TryParse(Model.Parameter.Value, out DateTime result)) {
+                  requestedDate = result.ToString(Model.Parameter.Format);
+               } else {
+                  requestedDate = Model.Parameter.Value;
+               }
+            }
+         }
+      } else {
+         if (DateTime.TryParse(input, out DateTime result)) {
+            requestedDate = result.ToString(Model.Parameter.Format);
+         } else {
+            requestedDate = input;
+         }
+      }
+      <input class="form-control form-control-sm date"
+             autocomplete="off"
+             required="@Model.Parameter.Required"
+             type="datetime"
+             name="@Model.Parameter.Name"
+             placeholder="@Model.Parameter.Label"
+             value="@requestedDate"
+             @(Html.Raw(Model.Parameter.Width > 0 ? "style=\"width:" + Model.Parameter.Width + "px\"" : string.Empty)) />
+      break;
+   default:
+      var requestedValue = input == string.Empty ? Model.Parameter.Value : input;
+      if (string.IsNullOrEmpty(Model.Parameter.Map)) {
+         <input class="form-control form-control-sm"
+                name="@Model.Parameter.Name"
+                type="text"
+                required="@Model.Parameter.Required"
+                value="@requestedValue"
+                placeholder="@Model.Parameter.Label"
+                @(Html.Raw(Model.Parameter.Width > 0 ? "style=\"width:" + Model.Parameter.Width + "px\"" : string.Empty)) />
+      } else {
+         <select class=""
+                 size="1"
+                 title="All"
+                 data-actions-box="true"
+                 data-width="fit"
+                 multiple="@(Model.Parameter.Multiple)"
+                 name="@Model.Parameter.Name"
+                 style="visibility:hidden;@(Model.Parameter.Width > 0 ? $"width:{Model.Parameter.Width}px;" : string.Empty)">
+            @{
+               var items = Model.Maps.First(m => m.Name == Model.Parameter.Map).Items;
+               var wtf = input.Split(",");
+
+               if (Model.Parameter.Multiple) {
+                  var values = string.IsNullOrEmpty(Context.Request.Query[Model.Parameter.Name].ToString()) ? new HashSet<string>() : new HashSet<string>(wtf);
+                  foreach (var item in items) {
+                     if (item.To != null && item.From != null) {
+                        <option value="@item.To" selected="@(values.Contains(item.To.ToString()))">@item.From</option>
+                     }
+                  }
+               } else {
+                  <option value="*" selected="@(requestedValue == "*")">All</option>
+                  foreach (var item in items) {
+                     if (item.To != null && item.From != null) {
+                        <option value="@item.To" selected="@(item.To.ToString() == requestedValue)">@item.From</option>
+                     }
+                  }
+               }
+            }
+         </select>
+      }
+      break;
+}
