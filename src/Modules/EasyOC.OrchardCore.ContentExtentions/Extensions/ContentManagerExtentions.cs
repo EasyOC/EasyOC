@@ -27,14 +27,16 @@ namespace EasyOC
             {
                 foreach (var field in part.PartDefinition.Fields)
                 {
+                    var lastKey = GetFiledValuePath(field.FieldDefinition.Name);
                     fields.Add(new ContentFieldsMappingDto
                     {
                         DisplayName = field.DisplayName(),
-                        Description= field.Description(),
+                        Description = field.Description(),
                         FieldName = field.Name,
                         PartName = part.Name,
                         PartDisplayName = part.DisplayName(),
-                        KeyPath = $"{part.Name}.{field.Name}.{GetFiledValuePath(field.FieldDefinition.Name)}",
+                        KeyPath = $"{part.Name}.{field.Name}.{lastKey}",
+                        LastValueKey = lastKey,
                         FieldSettings = field.Settings,
                         FieldType = field.FieldDefinition.Name
                     });
