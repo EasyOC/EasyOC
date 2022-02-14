@@ -1,44 +1,17 @@
 ﻿{
   "name": "SampleData",
-  "displayName": "创建测试数据",
-  "description": "创建测试数据",
+  "displayName": "2.Sample Data",
+  "description": "2.Sample Data",
   "author": "EasyOC",
   "website": "EasyOC",
   "version": "",
   "issetuprecipe": false,
   "categories": [],
-  "tags": [ "Department" ],
+  "tags": [ "Department", "Menus" ],
   "steps": [
     {
       "name": "ContentDefinition",
       "ContentTypes": [
-        {
-          "Name": "UserProfile",
-          "DisplayName": "User Profiles",
-          "Settings": {
-            "ContentTypeSettings": {
-              "Stereotype": "CustomUserSettings"
-            },
-            "FullTextAspectSettings": {}
-          },
-          "ContentTypePartDefinitionRecords": [
-            {
-              "PartName": "UserProfilePart",
-              "Name": "UserProfilePart",
-              "Settings": {
-                "ContentTypePartSettings": {
-                  "Position": "0"
-                },
-                "GraphQLContentTypePartSettings": {},
-                "ContentIndexSettings": {
-                  "Included": true,
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            }
-          ]
-        },
         {
           "Name": "Department",
           "DisplayName": "部门",
@@ -63,163 +36,55 @@
               }
             }
           ]
-        }
-      ],
-      "ContentParts": [
+        },
         {
-          "Name": "UserProfilePart",
+          "Name": "Customer",
+          "DisplayName": "客户",
           "Settings": {
-            "ContentPartSettings": {
-              "Attachable": true
-            }
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
           },
-          "ContentPartFieldDefinitionRecords": [
+          "ContentTypePartDefinitionRecords": [
             {
-              "FieldName": "TextField",
-              "Name": "NickName",
+              "PartName": "Customer",
+              "Name": "Customer",
               "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Nick Name",
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
                   "Position": "0"
                 },
-                "TextFieldSettings": {},
-                "ContentIndexSettings": {
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "FirstName",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "First Name",
-                  "Position": "6"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "LastName",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Last Name",
-                  "Position": "7"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "Gender",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Gender",
-                  "Editor": "PredefinedList",
-                  "Position": "8"
-                },
-                "TextFieldSettings": {},
-                "TextFieldPredefinedListEditorSettings": {
-                  "Options": [
-                    {
-                      "name": "Male",
-                      "value": "Male"
-                    },
-                    {
-                      "name": "Female",
-                      "value": "Female"
-                    },
-                    {
-                      "name": "Unknown",
-                      "value": ""
-                    }
-                  ]
+                "GraphQLContentTypePartSettings": {},
+                "TitlePartSettings": {
+                  "Options": 1,
+                  "Pattern": "{{ContentItem.Content.Customer.CustNum.Text}} - {{ContentItem.Content.Customer.Name.Text}}"
                 },
                 "ContentIndexSettings": {}
               }
             },
             {
-              "FieldName": "TextField",
-              "Name": "JobTitle",
+              "PartName": "AddressPart",
+              "Name": "Address",
               "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Job Title",
+                "ContentTypePartSettings": {
+                  "DisplayName": "地址信息",
+                  "Description": "主要地址",
                   "Position": "2"
                 },
-                "TextFieldSettings": {},
-                "ContentIndexSettings": {
-                  "Included": true,
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "ContentPickerField",
-              "Name": "Department",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "部门",
-                  "Position": "5"
-                },
-                "ContentPickerFieldSettings": {
-                  "DisplayedContentTypes": [
-                    "Department"
-                  ]
-                },
-                "ContentIndexSettings": {
-                  "Included": true,
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "UserPickerField",
-              "Name": "Manager",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "直属上级",
-                  "Position": "1"
-                },
-                "UserPickerFieldSettings": {
-                  "DisplayedRoles": [
-                    "Employee",
-                    "User"
-                  ]
-                },
-                "ContentIndexSettings": {
-                  "Included": true,
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "EmployeCode",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "员工号",
-                  "Position": "3"
-                },
-                "TextFieldSettings": {},
-                "ContentIndexSettings": {
-                  "Included": true,
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "Name",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "真实姓名",
-                  "Position": "4"
-                },
-                "TextFieldSettings": {},
+                "GraphQLContentTypePartSettings": {},
                 "ContentIndexSettings": {
                   "Included": true,
                   "Stored": true,
@@ -228,6 +93,113 @@
               }
             }
           ]
+        },
+        {
+          "Name": "Industry",
+          "DisplayName": "客户行业",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "Industry",
+              "Name": "Industry",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "MarketSegment",
+          "DisplayName": "市场细分",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "MarketSegment",
+              "Name": "MarketSegment",
+              "Settings": {}
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {}
+            }
+          ]
+        },
+        {
+          "Name": "CustomerSource",
+          "DisplayName": "客户来源",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "CustomerSource",
+              "Name": "CustomerSource",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0",
+              "Reusable": true
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
         },
         {
           "Name": "Department",
@@ -294,152 +266,689 @@
           ]
         },
         {
-          "Name": "TitlePart",
+          "Name": "Customer",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "客户名称",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "CustNum",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "客户编号",
+                  "Position": "5"
+                },
+                "TextFieldSettings": {},
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "HtmlField",
+              "Name": "CustomerRemark",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "客户备注",
+                  "Editor": "Wysiwyg",
+                  "Position": "7"
+                },
+                "HtmlFieldSettings": {},
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "MarketSegment",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "市场细分",
+                  "Position": "3"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "MarketSegment"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "Source",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "客户来源",
+                  "Position": "4"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "CustomerSource"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "Industry",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "行业",
+                  "Position": "1"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "Industry"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "CustClass",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "客户分类",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "UserPickerField",
+              "Name": "SalesOwner",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "销售负责人"
+                },
+                "UserPickerFieldSettings": {
+                  "DisplayedRoles": [
+                    "Employee",
+                    "User",
+                    "Administrator"
+                  ]
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AddressPart",
           "Settings": {
             "ContentPartSettings": {
               "Attachable": true,
-              "Description": "Provides a Title for your content item.",
-              "DefaultPosition": "0"
+              "Reusable": true,
+              "Description": "地址信息"
             }
           },
-          "ContentPartFieldDefinitionRecords": []
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "CountryName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "国家",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Province",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "省份",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "City",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "城市",
+                  "Position": "3"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "PostalCode",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "邮编",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Details",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "详细地址",
+                  "Position": "5"
+                }
+              }
+            },
+            {
+              "FieldName": "GeoPointField",
+              "Name": "Location",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "定位",
+                  "Position": "6"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "地址名称",
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Industry",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Code",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "编号",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Category",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "行业分类",
+                  "Editor": "PredefinedList",
+                  "Position": "1"
+                },
+                "TextFieldSettings": {
+                  "Hint": "参考：http://www.cye.com.cn/gongju/hangyedaima.htm",
+                  "Required": true
+                },
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "农、林、牧、渔、水利业",
+                      "value": "01"
+                    },
+                    {
+                      "name": "工业",
+                      "value": "02"
+                    },
+                    {
+                      "name": "制造业",
+                      "value": "03"
+                    },
+                    {
+                      "name": "机械、电气、电子设备制造业",
+                      "value": "04"
+                    },
+                    {
+                      "name": "地质普查、勘探业和建筑业",
+                      "value": "05"
+                    },
+                    {
+                      "name": "商业、公共饮食业、物资供销和仓储业",
+                      "value": "06"
+                    },
+                    {
+                      "name": "房地产管理、公用事业、居 民服务和咨询服务业",
+                      "value": "07"
+                    },
+                    {
+                      "name": "卫生、体育和社会服务业",
+                      "value": "08"
+                    },
+                    {
+                      "name": "教育、文化艺术和广播电视业",
+                      "value": "09"
+                    },
+                    {
+                      "name": "科学研究和综合技术服务事业",
+                      "value": "10"
+                    },
+                    {
+                      "name": "国家机关、党政机关和社会团体",
+                      "value": "11"
+                    },
+                    {
+                      "name": "其它行业",
+                      "value": "12"
+                    }
+                  ],
+                  "Editor": 1
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "MarketSegment",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Code",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "编号"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "Disabled",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "已禁用",
+                  "Editor": "Switch"
+                },
+                "BooleanFieldSettings": {},
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "CustomerSource",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "BooleanField",
+              "Name": "Disabled",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "已禁用",
+                  "Editor": "Switch",
+                  "Position": "0"
+                },
+                "BooleanFieldSettings": {},
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Roles",
-      "Roles": [
+      "name": "lucene-index",
+      "Indices": [
         {
-          "Name": "Authenticated",
-          "Description": "Authenticated role",
-          "Permissions": [
-            "ViewContent"
-          ]
-        },
-        {
-          "Name": "Anonymous",
-          "Description": "Anonymous role",
-          "Permissions": [
-            "ViewContent"
-          ]
-        },
-        {
-          "Name": "Employee",
-          "Description": "Employee",
-          "Permissions": []
-        },
-        {
-          "Name": "User",
-          "Description": "User",
-          "Permissions": []
-        },
-        {
-          "Name": "Administrator",
-          "Description": "Administrator role",
-          "Permissions": [
-            "ManageCorsSettings",
-            "ManageSettings",
-            "EditContent",
-            "PublishContent",
-            "DeleteContent",
-            "PreviewContent",
-            "CloneContent",
-            "AccessContentApi",
-            "ListContent",
-            "ApiViewContent",
-            "Publish_DbConnectionConfig",
-            "PublishOwn_DbConnectionConfig",
-            "Edit_DbConnectionConfig",
-            "EditOwn_DbConnectionConfig",
-            "Delete_DbConnectionConfig",
-            "DeleteOwn_DbConnectionConfig",
-            "View_DbConnectionConfig",
-            "ViewOwn_DbConnectionConfig",
-            "Preview_DbConnectionConfig",
-            "PreviewOwn_DbConnectionConfig",
-            "Clone_DbConnectionConfig",
-            "CloneOwn_DbConnectionConfig",
-            "ListContent_DbConnectionConfig",
-            "ViewContentTypes",
-            "EditContentTypes",
-            "ManageQueries",
-            "ManageSqlQueries",
-            "ManageWorkflows",
-            "ExecuteWorkflows",
-            "SetHomepage",
-            "AccessAdminPanel",
-            "ManageAdminSettings",
-            "AccessAdminDashboard",
-            "ManageAdminDashboard",
-            "ManageAdminMenu",
-            "ManageTemplates",
-            "ManageAdminTemplates",
-            "ExecuteGraphQLMutations",
-            "ViewAuditTrail",
-            "ManageAuditTrailSettings",
-            "ManageBackgroundTasks",
-            "ManageUsers",
-            "ManageCultures",
-            "Import",
-            "Export",
-            "ManageRemoteInstances",
-            "ManageRemoteClients",
-            "ExportRemoteInstances",
-            "ManageEmailSettings",
-            "ManageLayers",
-            "ManageIndexes",
-            "ManageMediaFolder",
-            "ManageMediaProfiles",
-            "ViewMediaOptions",
-            "ManageAssetCache",
-            "ManageMenu",
-            "ManageApplications",
-            "ManageScopes",
-            "ManageClientSettings",
-            "ManageServerSettings",
-            "ManageValidationSettings",
-            "ManagePlacements",
-            "ManageRoles",
-            "SiteOwner",
-            "ManageTaxonomy",
-            "ManageTenants",
-            "ManageTenantFeatureProfiles",
-            "ApplyTheme"
-          ]
+          "Crm": {
+            "AnalyzerName": "standardanalyzer",
+            "IndexLatest": true,
+            "IndexedContentTypes": [
+              "Customer",
+              "CustomerSource",
+              "Industry",
+              "MarketSegment"
+            ],
+            "Culture": "any"
+          }
         }
       ]
     },
     {
-      "name": "Content",
+      "name": "Settings",
+      "LuceneSettings": {
+        "SearchIndex": null,
+        "DefaultSearchFields": [
+          "Content.ContentItem.FullText"
+        ],
+        "AllowLuceneQueriesInSearch": false
+      }
+    },
+    {
+      "name": "content",
       "data": [
         {
-          "ContentItemId": "4nqmnzst1gx5ttnt3m14c0k2cp",
-          "ContentItemVersionId": "4tvrv6tkddcxt6bes75fey76wc",
-          "ContentType": "Department",
-          "DisplayText": "总公司",
+          "ContentItemId": "4nwhhp1t1tnqkrc2zazd5d4pxs",
+          "ContentItemVersionId": "4fw11dpayxfbhxjyn8t8ahswmq",
+          "ContentType": "VbenMenu",
+          "DisplayText": "Dashboard",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-10T11:16:00.143212Z",
-          "PublishedUtc": "2022-01-10T11:16:00.1995655Z",
-          "CreatedUtc": "2022-01-10T11:16:00.143212Z",
+          "ModifiedUtc": "2022-02-12T12:43:37.5065688Z",
+          "PublishedUtc": "2022-02-12T12:43:37.5119872Z",
+          "CreatedUtc": "2022-02-12T12:18:05.3818692Z",
           "Owner": "4n80h14q8t8tbv38fbazt6htde",
           "Author": "admin",
-          "Department": {
-            "ParentDepartmentId": {
+          "VbenMenu": {
+            "type": {
+              "Text": "0"
+            },
+            "menuName": {
+              "Text": "Dashboard"
+            },
+            "parentMenu": {
               "ContentItemIds": []
             },
-            "OrderIndex": {
-              "Value": 0.0
+            "orderNo": {
+              "Value": 1.0
             },
-            "Status": {
-              "Value": true
+            "icon": {
+              "Text": "ion:layers-outline"
             },
-            "Description": {
+            "routePath": {
+              "Text": null
+            },
+            "component": {
+              "Text": null
+            },
+            "permission": {
+              "Text": null
+            },
+            "status": {
+              "Text": "1"
+            },
+            "isExt": {
+              "Text": "0"
+            },
+            "keepalive": {
+              "Text": null
+            },
+            "show": {
+              "Text": null
+            },
+            "menuType": {
               "Text": null
             }
           },
           "TitlePart": {
-            "Title": "总公司"
+            "Title": "Dashboard"
+          }
+        },
+        {
+          "ContentItemId": "4m31rtyvcys35wwrj4wy7cpn4e",
+          "ContentItemVersionId": "46fbrv6jb2tjxvyxnr3q5tsvw5",
+          "ContentType": "VbenMenu",
+          "DisplayText": "菜单1",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-02-12T15:52:43.9914127Z",
+          "PublishedUtc": "2022-02-12T15:52:43.9930098Z",
+          "CreatedUtc": "2022-02-12T12:20:05.5282493Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "VbenMenu": {
+            "type": {
+              "Text": "2"
+            },
+            "menuName": {
+              "Text": "菜单1"
+            },
+            "parentMenu": {
+              "ContentItemIds": [
+                "4nwhhp1t1tnqkrc2zazd5d4pxs"
+              ]
+            },
+            "orderNo": {
+              "Value": 1
+            },
+            "icon": {
+              "Text": "ion:document"
+            },
+            "routePath": {
+              "Text": "3434"
+            },
+            "component": {
+              "Text": "/dashboard/welcome/index"
+            },
+            "permission": {
+              "Text": "menu1:view"
+            },
+            "status": {
+              "Text": "0"
+            },
+            "isExt": {
+              "Text": "0"
+            },
+            "keepalive": {
+              "Text": null
+            },
+            "show": {
+              "Text": "1"
+            },
+            "menuType": {
+              "Text": "2"
+            }
+          },
+          "TitlePart": {
+            "Title": "菜单1"
+          }
+        },
+        {
+          "ContentItemId": "4wmsvpf5zjcem2wkm76t7sp4mw",
+          "ContentItemVersionId": "4v783k9355w714jp471sm4qq4k",
+          "ContentType": "VbenMenu",
+          "DisplayText": "按钮1-1",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-02-12T16:15:09.1469909Z",
+          "PublishedUtc": "2022-02-12T16:15:09.1485805Z",
+          "CreatedUtc": "2022-02-12T16:15:00.8393554Z",
+          "Owner": "",
+          "Author": "admin",
+          "VbenMenu": {
+            "menuName": {
+              "Text": "按钮1-1"
+            },
+            "parentMenu": {
+              "ContentItemIds": [
+                "4m31rtyvcys35wwrj4wy7cpn4e"
+              ]
+            },
+            "orderNo": {
+              "Value": 1
+            },
+            "icon": {
+              "Text": null
+            },
+            "routePath": {
+              "Text": null
+            },
+            "component": {
+              "Text": null
+            },
+            "permission": {
+              "Text": "menu1:view:btn1"
+            },
+            "status": {
+              "Text": "1"
+            },
+            "isExt": {
+              "Text": null
+            },
+            "keepalive": {
+              "Text": null
+            },
+            "show": {
+              "Text": null
+            },
+            "menuType": {
+              "Text": "2"
+            }
+          },
+          "TitlePart": {
+            "Title": "按钮1-1"
+          }
+        },
+        {
+          "ContentItemId": "408d6ggvf42m40k1vbtvr3erdf",
+          "ContentItemVersionId": "4w9rn5x3wc1v3x17dwhy4vdbd4",
+          "ContentType": "VbenMenu",
+          "DisplayText": "按钮1-4",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-02-12T16:40:13.7697996Z",
+          "PublishedUtc": "2022-02-12T16:40:13.7713017Z",
+          "CreatedUtc": "2022-02-12T16:40:13.7697996Z",
+          "Owner": "",
+          "Author": "admin",
+          "VbenMenu": {
+            "menuName": {
+              "Text": "按钮1-4"
+            },
+            "parentMenu": {
+              "ContentItemIds": [
+                "4m31rtyvcys35wwrj4wy7cpn4e"
+              ]
+            },
+            "orderNo": {
+              "Value": 2
+            },
+            "icon": {
+              "Text": null
+            },
+            "routePath": {
+              "Text": null
+            },
+            "component": {
+              "Text": null
+            },
+            "permission": {
+              "Text": "menu1:view:btn4"
+            },
+            "status": {
+              "Text": "0"
+            },
+            "isExt": {
+              "Text": null
+            },
+            "keepalive": {
+              "Text": null
+            },
+            "show": {
+              "Text": null
+            },
+            "menuType": {
+              "Text": "2"
+            }
+          },
+          "TitlePart": {
+            "Title": "按钮1-4"
+          }
+        },
+        {
+          "ContentItemId": "4drg7ty8tmckrxpwjf909d0bx3",
+          "ContentItemVersionId": "4vfk1y9mc250z7tychem8fppxc",
+          "ContentType": "VbenMenu",
+          "DisplayText": "按钮1-5",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-02-12T16:42:19.057139Z",
+          "PublishedUtc": "2022-02-12T16:42:19.0673035Z",
+          "CreatedUtc": "2022-02-12T16:42:19.057139Z",
+          "Owner": "",
+          "Author": "admin",
+          "VbenMenu": {
+            "menuName": {
+              "Text": "按钮1-5"
+            },
+            "parentMenu": {
+              "ContentItemIds": [
+                "4m31rtyvcys35wwrj4wy7cpn4e"
+              ]
+            },
+            "orderNo": {
+              "Value": 22
+            },
+            "icon": {
+              "Text": null
+            },
+            "routePath": {
+              "Text": null
+            },
+            "component": {
+              "Text": null
+            },
+            "permission": {
+              "Text": "menu1:view:btn222"
+            },
+            "status": {
+              "Text": "0"
+            },
+            "isExt": {
+              "Text": null
+            },
+            "keepalive": {
+              "Text": null
+            },
+            "show": {
+              "Text": null
+            },
+            "menuType": {
+              "Text": "2"
+            }
+          },
+          "TitlePart": {
+            "Title": "按钮1-5"
           }
         },
         {
@@ -505,82 +1014,222 @@
           "TitlePart": {
             "Title": "销售部"
           }
-        }
-      ]
-    },
-    {
-      "name": "deployment",
-      "Plans": [
+        },
         {
-          "Name": "ExportBasicInformations",
-          "Steps": [
-            {
-              "Type": "ContentDefinitionDeploymentStep",
-              "Step": {
-                "IncludeAll": false,
-                "ContentTypes": [
-                  "Department",
-                  "UserProfile"
-                ],
-                "ContentParts": [
-                  "Department",
-                  "TitlePart",
-                  "UserProfilePart"
-                ],
-                "Id": "88709f7360df4826a0ef67c4cf63b651",
-                "Name": "ContentDefinition"
-              }
+          "ContentItemId": "4vjsa6e801dcgs1sm0h47118my",
+          "ContentItemVersionId": "4h3a57ghs0xkm1y76hh3jeksxk",
+          "ContentType": "Customer",
+          "DisplayText": "00001 - Microsoft",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-21T03:12:13.6901829Z",
+          "PublishedUtc": "2022-01-21T03:12:13.8254053Z",
+          "CreatedUtc": "2022-01-20T15:42:23.4786702Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Customer": {
+            "Name": {
+              "Text": "Microsoft"
             },
-            {
-              "Type": "AllRolesDeploymentStep",
-              "Step": {
-                "Id": "aa2e6c8c7ba14cd8950742c44c5ecdce",
-                "Name": "AllRoles"
-              }
+            "CustNum": {
+              "Text": "00001"
             },
-            {
-              "Type": "ContentItemDeploymentStep",
-              "Step": {
-                "ContentItemId": "4nqmnzst1gx5ttnt3m14c0k2cp",
-                "Id": null,
-                "Name": "ContentItemDeploymentStep"
-              }
+            "Owner": {
+              "UserIds": [
+                "4n80h14q8t8tbv38fbazt6htde"
+              ],
+              "UserNames": [
+                "admin"
+              ]
             },
-            {
-              "Type": "ContentItemDeploymentStep",
-              "Step": {
-                "ContentItemId": "4dp22n7gb5zf6yxzerntch69xm",
-                "Id": null,
-                "Name": "ContentItemDeploymentStep"
-              }
+            "CustomerRemark": {
+              "Html": ""
             },
-            {
-              "Type": "ContentItemDeploymentStep",
-              "Step": {
-                "ContentItemId": "41msgnes61qvwvmm7sfzawjxcg",
-                "Id": null,
-                "Name": "ContentItemDeploymentStep"
-              }
+            "MarketSegment": {
+              "ContentItemIds": []
             },
-            {
-              "Type": "DeploymentPlanDeploymentStep",
-              "Step": {
-                "IncludeAll": false,
-                "DeploymentPlanNames": [
-                  "ExportBasicInformations"
-                ],
-                "Id": "d02f21080f724462bea38e45eedb65c4",
-                "Name": "DeploymentPlan"
-              }
+            "Source": {
+              "ContentItemIds": []
             },
-            {
-              "Type": "AllQueriesDeploymentStep",
-              "Step": {
-                "Id": "4b5c4387bd18432db1b20f26e19025a9",
-                "Name": "AllQueries"
-              }
+            "Industry": {
+              "ContentItemIds": [
+                "4x197as0p2zqryykqegs5nw0n3"
+              ]
+            },
+            "CustClass": {
+              "ContentItemIds": []
+            },
+            "SalseOwner": {
+              "UserIds": [
+                "4ec4kvgnhs8cgxkk11b2g087ch"
+              ],
+              "UserNames": [
+                "99999999911"
+              ]
+            },
+            "SalesOwner": {
+              "UserIds": [
+                "4ec4kvgnhs8cgxkk11b2g087ch"
+              ],
+              "UserNames": [
+                "99999999911"
+              ]
             }
-          ]
+          },
+          "TitlePart": {
+            "Title": "00001 - Microsoft"
+          },
+          "Address": {
+            "CountryName": {
+              "Text": "中国"
+            },
+            "Province": {
+              "Text": "上海"
+            },
+            "City": {
+              "Text": "上海"
+            },
+            "PostalCode": {
+              "Text": "200123"
+            },
+            "Details": {
+              "Text": "上海市松江区洞泾镇"
+            },
+            "Location": {
+              "Latitude": null,
+              "Longitude": null
+            },
+            "Name": {
+              "Text": "总部"
+            }
+          }
+        },
+        {
+          "ContentItemId": "4588wqxm4fs8ssv3kj2s6qvdd5",
+          "ContentItemVersionId": "4gyxnpjc0r5h364wtnj44k1n4e",
+          "ContentType": "Customer",
+          "DisplayText": "0002 - Google",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-28T07:40:12.2068201Z",
+          "PublishedUtc": "2022-01-28T07:40:12.3141522Z",
+          "CreatedUtc": "2022-01-21T03:12:42.2943743Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Customer": {
+            "Name": {
+              "Text": "Google"
+            },
+            "CustNum": {
+              "Text": "0002"
+            },
+            "CustomerRemark": {
+              "Html": ""
+            },
+            "MarketSegment": {
+              "ContentItemIds": []
+            },
+            "Source": {
+              "ContentItemIds": []
+            },
+            "Industry": {
+              "ContentItemIds": [
+                "4x197as0p2zqryykqegs5nw0n3"
+              ]
+            },
+            "CustClass": {
+              "ContentItemIds": []
+            },
+            "SalesOwner": {
+              "UserIds": [
+                "4vp4byw4wec2hytkxzf36njp4m"
+              ],
+              "UserNames": [
+                "33333"
+              ]
+            }
+          },
+          "TitlePart": {
+            "Title": "0002 - Google"
+          },
+          "Address": {
+            "CountryName": {
+              "Text": null
+            },
+            "Province": {
+              "Text": null
+            },
+            "City": {
+              "Text": null
+            },
+            "PostalCode": {
+              "Text": null
+            },
+            "Details": {
+              "Text": null
+            },
+            "Location": {
+              "Latitude": null,
+              "Longitude": null
+            },
+            "Name": {
+              "Text": null
+            }
+          }
+        },
+        {
+          "ContentItemId": "4x197as0p2zqryykqegs5nw0n3",
+          "ContentItemVersionId": "46ssmgv0gp3extv6ew9kfwy1w2",
+          "ContentType": "Industry",
+          "DisplayText": "电子商务",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-19T11:29:35.0278817Z",
+          "PublishedUtc": "2022-01-19T11:29:35.0321173Z",
+          "CreatedUtc": "2022-01-19T11:26:29.6722755Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Industry": {
+            "Code": {
+              "Text": "001"
+            },
+            "Category": {
+              "Text": null
+            }
+          },
+          "TitlePart": {
+            "Title": "电子商务"
+          }
+        },
+        {
+          "ContentItemId": "4nqmnzst1gx5ttnt3m14c0k2cp",
+          "ContentItemVersionId": "4tvrv6tkddcxt6bes75fey76wc",
+          "ContentType": "Department",
+          "DisplayText": "总公司",
+          "Latest": true,
+          "Published": true,
+          "ModifiedUtc": "2022-01-10T11:16:00.143212Z",
+          "PublishedUtc": "2022-01-10T11:16:00.1995655Z",
+          "CreatedUtc": "2022-01-10T11:16:00.143212Z",
+          "Owner": "4n80h14q8t8tbv38fbazt6htde",
+          "Author": "admin",
+          "Department": {
+            "ParentDepartmentId": {
+              "ContentItemIds": []
+            },
+            "OrderIndex": {
+              "Value": 0.0
+            },
+            "Status": {
+              "Value": true
+            },
+            "Description": {
+              "Text": null
+            }
+          },
+          "TitlePart": {
+            "Title": "总公司"
+          }
         }
       ]
     },
@@ -588,12 +1237,12 @@
       "name": "Queries",
       "Queries": [
         {
-          "Index": "IDXUserProfiles",
-          "Template": "\r\n\r\n{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                {\r\n                    \"term\": { \"Content.ContentItem.ContentType\": \"Department\" }\r\n                },\r\n                {\r\n                    \"term\": { \"Content.ContentItem.Published\": 'true' }\r\n                },\r\n                {\r\n                    \"term\": { \"Content.ContentItem.Latest\": \"true\" }\r\n                }\r\n            ],\r\n            {% if filters %}\r\n            \"filter\":[\r\n                  {% for filter in filters %} \r\n                \t{\"{{filter.method}}\": { \"{{filter.key}}\": \"{{filter.value}}\" }},\r\n\t\t\t\t  {% endfor %} \r\n            \t]\r\n            {% endif %}\r\n        }\r\n    },\r\n    \"from\":0,\r\n  \t\"size\":10000\r\n}",
+          "Index": "Crm",
+          "Template": "\r\n\r\n{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"Customer\" } },\r\n                { \"term\": { \"Content.ContentItem.Published\": 'true' } },\r\n                {  \"term\": { \"Content.ContentItem.Latest\": \"true\" } }\r\n            ],\r\n            {% if filters %}\r\n            \"filter\":[\r\n                  {% for filter in filters %} \r\n              \t\t{%if filter.key %}\r\n      \t\t\t\t\t{\"{{filter.method}}\": { \"{{filter.key}}\": \"{{filter.value}}\" }},\r\n                    {%else%}\r\n                    \t{\"{{filter.method}}\":\"{{filter.value}}\"}},\r\n                    {%endif%}\r\n\t\t\t\t  {% endfor %} \r\n            \t]\r\n            {% endif %}\r\n        }\r\n    }\r\n  {% if from %}\r\n    ,\"from\":{{from}}\r\n  {% endif %}\r\n  {%if size %}\r\n   ,\"size\":{{size}}\r\n  {%endif%}  \t\r\n}",
           "ReturnContentItems": true,
-          "Name": "queryDepartment",
+          "Name": "crmCustomers",
           "Source": "Lucene",
-          "Schema": "{\r\n  \"type\":\"contentItem/Department\"\r\n\r\n}"
+          "Schema": "{\r\n  \"type\":\"contentItem/Customer\" ,\r\n  \"hasTotal\": true\r\n}"
         }
       ]
     }
