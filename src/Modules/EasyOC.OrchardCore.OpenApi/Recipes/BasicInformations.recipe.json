@@ -427,22 +427,6 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "Name",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "真实姓名",
-                  "Position": "4"
-                },
-                "TextFieldSettings": {},
-                "ContentIndexSettings": {
-                  "Included": true,
-                  "Stored": true,
-                  "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
               "Name": "RealName",
               "Settings": {
                 "ContentPartFieldSettings": {
