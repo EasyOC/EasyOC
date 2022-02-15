@@ -1,0 +1,16 @@
+{% script name:"amis_js_sdk",at:"Foot", src:"~/JZSoft.OrchardCore.Amis/amis/sdk/sdk.js", version:"1.0" %}
+{% style name:"amis_css",at:"Head", src:"~/JZSoft.OrchardCore.Amis/amis/sdk/sdk.css"%} 
+{% style name:"amis_helper", at:"Head",  src:"~/JZSoft.OrchardCore.Amis/amis/sdk/helper.css"%} 
+
+{% scriptblock at: "Foot", type:"text/javascript" %} 
+	(function () { 
+        let amis = amisRequire('amis/embed');
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON =  function(){ {{ Model.ContentItem.Content.AmisPage.JsonSchema.Text | raw   }} }
+        let amisScoped = amis.embed('#amisRoot', amisJSON());
+      })();
+{% endscriptblock %}
+
+   
+  <div id="amisRoot"></div>
+ 
