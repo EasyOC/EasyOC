@@ -22,7 +22,10 @@ namespace EasyOC
             fields.Add(new ContentFieldsMappingDto { DisplayName = "发布时间", FieldName = "CreatedUtc", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = "归属人", FieldName = "Owner", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = "作者", FieldName = "Author", IsContentItemProperty = true });
-
+            foreach (var item in fields)
+            {
+                item.LastValueKey = item.KeyPath = item.FieldName;
+            }
             foreach (var part in typeDef.Parts)
             {
                 foreach (var field in part.PartDefinition.Fields)
@@ -43,6 +46,8 @@ namespace EasyOC
                 }
 
             }
+
+
             return fields;
         }
 
