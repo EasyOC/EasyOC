@@ -16,6 +16,7 @@ using OrchardCore.ContentManagement;
 using System.Linq;
 using YesSql;
 using YesSql.Services;
+using EasyOC.OrchardCore.ContentExtentions.AppServices;
 
 namespace EasyOC.OrchardCore.OpenApi.Controllers
 {
@@ -26,13 +27,14 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
     {
         private readonly IQueryManager _queryManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-
+        private readonly IContentManagementAppService _contentManagementAppService;
         private readonly ISession _session;
-        public ApiController(IQueryManager queryManager, IContentDefinitionManager contentDefinitionManager, ISession session)
+        public ApiController(IQueryManager queryManager, IContentDefinitionManager contentDefinitionManager, ISession session, IContentManagementAppService contentManagementAppService)
         {
             _queryManager = queryManager;
             _contentDefinitionManager = contentDefinitionManager;
             _session = session;
+            _contentManagementAppService = contentManagementAppService;
         }
         [HttpGet]
         public async Task<IActionResult> ExportAsync(string queryName, IDictionary<string, object> parameters, string typeName = default)
@@ -65,7 +67,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
                 }
                 return null;
             }
-            var fields = _contentDefinitionManager.GetAllFields(typeName);
+            var fields = _contentManagementAppService.GetFields(typeName);
             //执行并获取结果
             ///TODO: 全部导出，需要移除分页参数
             var result = await _queryManager.ExecuteQueryAsync(query, parameters);

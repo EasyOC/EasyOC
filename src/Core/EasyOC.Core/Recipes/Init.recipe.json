@@ -46,7 +46,6 @@
         "OrchardCore.Scripting",
         "OrchardCore.Recipes",
         "OrchardCore.BackgroundTasks",
-        "OrchardCore.ContentFields.Indexing.SQL",
         "OrchardCore.Users",
         "OrchardCore.ContentFields.Indexing.SQL.UserPicker",
         "OrchardCore.Localization",

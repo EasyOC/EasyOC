@@ -30,5 +30,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.Models
         public JObject FieldSettings { get; set; }
         public string FieldType { get; set; }
         public string Description { get; set; }
+        public string LastValueKey { get; set; }
     }
 }
