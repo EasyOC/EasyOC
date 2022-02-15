@@ -1,0 +1,75 @@
+@using OrchardCore.Wechat.ViewModels;
+@model WechatAuthenticationSettingsViewModel;
+
+<p class="alert alert-warning">
+    @T["The current tenant will be reloaded when the settings are saved."]
+   
+</p>
+
+@if (Model.HasDecryptionError)
+{
+    <p class="alert alert-danger">@T["An error occurred while decrypting a setting. Please apply and save."]</p>
+}
+
+<h3>@T["Wechat Authentication Settings"]</h3>
+
+<div class="form-group row" asp-validation-class-for="ClientID">
+    <div class="col-large">
+        <label asp-for="ClientID">@T["Client ID"]</label>
+        <input asp-for="ClientID" class="form-control" />
+        <span asp-validation-for="ClientID"></span>
+        <span class="hint">@T["The Website App defined in the Open Platform For Wechat <a target=\"_blank\" href=\"https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html\">Website App</a>."]</span>
+    </div>
+</div>
+
+<div class="form-group row" asp-validation-class-for="ClientSecret">
+    <div class="col-large">
+        <label asp-for="ClientSecret">@T["Client Secret"]</label>
+        <input asp-for="ClientSecret" class="form-control" type="password" value="@Model.ClientSecret" />
+        <span asp-validation-for="ClientSecret"></span>
+        <span class="hint">@T["The secret for your Website App."]</span>
+    </div>
+</div>
+
+<div class="form-group row" asp-validation-class-for="CallbackUrl">
+    <div class="col-large">
+        <label asp-for="CallbackUrl">@T["CallbackPath"]</label>
+        <input asp-for="CallbackUrl" class="form-control" placeholder="/signin-wechat" />
+        <span asp-validation-for="CallbackUrl"></span>
+        <span class="hint">@T["The request path within the application's base path where the user-agent will be returned. The middleware will process this request when it arrives."]</span>
+    </div>
+</div>
+
+<div class="form-group" asp-validation-class-for="SaveTokens">
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" asp-for="SaveTokens">
+        <label class="custom-control-label" asp-for="SaveTokens">@T["Store tokens"]</label>
+        <span class="hint dashed">@T["Store external authentication tokens for reuse"]</span>
+    </div>
+</div>
+
+<div class="form-group row" asp-validation-class-for="AppId">
+    <div class="col-large">
+        <label asp-for="AppId">@T["App ID"]</label>
+        <input asp-for="AppId" class="form-control" />
+        <span asp-validation-for="AppId"></span>
+        <span class="hint">@T["The Official Accounts Platform in here <a target=\"_blank\" href=\"https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html\">Official Accounts</a>."]</span>
+    </div>
+</div>
+
+<div class="form-group row" asp-validation-class-for="AppSecret">
+    <div class="col-large">
+        <label asp-for="AppSecret">@T["App Secret"]</label>
+        <input asp-for="AppSecret" class="form-control" type="password" value="@Model.AppSecret" />
+        <span asp-validation-for="AppSecret"></span>
+        <span class="hint">@T["The AppSecret for Official Account."]</span>
+    </div>
+</div>
+
+<div class="form-group" asp-validation-class-for="EnableOfficalAccount">
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" asp-for="EnableOfficalAccount">
+        <label class="custom-control-label" asp-for="EnableOfficalAccount">@T["Enable Offical Account"]</label>
+        <span class="hint dashed">@T["Enable Offcial Account when using Wechat client "]</span>
+    </div>
+</div>
