@@ -33,7 +33,7 @@ QQ群：877196442
 - [X] [Create ContentItem Helper](#generate-contentmapping-with-rdbms)
 - [X] Powershell Task
 - [X] [User Profile](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Handlers/UserEventHandler.cs) , SQL indexes that implement CustomUserSettings Indexable
-- [X] WeChat login , Thanks to [@PimHwang](https://github.com/PimHwang/OrchardCore.Community)
+- [X] WeChat Authentication , Thanks to [@PimHwang](https://github.com/PimHwang/OrchardCore.Community)
 
 
 
