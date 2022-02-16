@@ -8,7 +8,7 @@ amis 可视化编辑器, 在线体验：http://aisuda.github.io/amis-editor-demo
 
 1. `npm i` 安装依赖
 2. `npm start` 开服务
-3. `npm run build` 开始编译，等编译出现时间信息后就可以刷新页面看效果了。
+3. `npm run dev` 开始编译，等编译出现时间信息后就可以刷新页面看效果了。
 
 ## 在其他项目中使用 amis-editor
 
@@ -74,7 +74,7 @@ export default class MyRenderer extends React.Component<MyRendererProps> {
 }
 ```
 
-然开开始注册编辑器。
+然后开始注册编辑器。
 
 ```tsx
 import {RendererEditor, BasicEditor} from 'amis-editor';

@@ -22,6 +22,8 @@
 	  </EmbeddedResource> -->
 	</ItemGroup>
 
+	<ProjectExtensions><VisualStudio><UserProperties clientapp_4amis-editor-demo_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 
  
 
