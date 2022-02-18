@@ -96,7 +96,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             fields.Add(new ContentFieldsMappingDto { DisplayName = S["已发布"].Value, FieldName = "Published", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["发布时间"].Value, FieldName = "CreatedUtc", IsContentItemProperty = true });
+            fields.Add(new ContentFieldsMappingDto { DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = S["归属人"].Value, FieldName = "Owner", IsContentItemProperty = true });
             fields.Add(new ContentFieldsMappingDto { DisplayName = S["作者"].Value, FieldName = "Author", IsContentItemProperty = true });
             foreach (var item in fields)
