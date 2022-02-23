@@ -21,6 +21,7 @@ using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
 using YesSql;
 using EasyOC.OrchardCore.ContentExtentions.AppServices;
+using System;
 
 namespace EasyOC.OrchardCore.RDBMS.Controllers
 {
@@ -39,7 +40,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         private readonly IRDBMSAppService _rDBMSAppService;
 
-
+        private readonly IServiceProvider _serviceProvider;
 
         public AdminController(
             IAuthorizationService authorizationService,
@@ -49,7 +50,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             INotifier notifier,
             IUpdateModelAccessor updateModelAccessor,
             IContentDefinitionManager contentDefinitionManager,
-            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider, IRDBMSAppService rDBMSAppService, IContentManagementAppService contentManagementAppService)
+            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider, IRDBMSAppService rDBMSAppService, IContentManagementAppService contentManagementAppService, IServiceProvider serviceProvider)
         {
             _authorizationService = authorizationService;
             _siteService = siteService;
@@ -63,6 +64,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
             _rDBMSAppService = rDBMSAppService;
             _contentManagementAppService = contentManagementAppService;
+            _serviceProvider = serviceProvider;
         }
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)

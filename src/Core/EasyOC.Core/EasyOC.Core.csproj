@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Compile Remove="AutofacModule.cs" />
+    <Compile Remove="Extensions\FreeSqlProviderFactory.cs" />
     <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeItemMetadataAttribute.cs" />
     <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeTypeAttribute.cs" />
     <Compile Remove="RunAs.cs" />
@@ -33,10 +34,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
     <PackageReference Include="IdleBus" Version="1.5.2" />
     <PackageReference Include="FreeSql" />
-    <PackageReference Include="FreeSql.Provider.MySql"/>
-    <PackageReference Include="FreeSql.Provider.Sqlite"  />
-    <PackageReference Include="FreeSql.Provider.PostgreSQL"  />
-    <PackageReference Include="FreeSql.Provider.SqlServer"  />
+    <PackageReference Include="FreeSql.Provider.MySql" />
+    <PackageReference Include="FreeSql.Provider.Sqlite" />
+    <PackageReference Include="FreeSql.Provider.PostgreSQL" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" />
 
     <!--<PackageReference Include="Volo.Abp.Core" />-->
   </ItemGroup>

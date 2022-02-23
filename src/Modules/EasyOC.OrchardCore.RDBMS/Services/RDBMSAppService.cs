@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EasyOC;
 using EasyOC.Core.Application;
 using EasyOC.Core.Extensions;
 using EasyOC.DynamicWebApi.Attributes;
@@ -163,7 +164,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 
         [HttpGet]
         public async Task<string> GenerateRecipeAsync(string connectionConfigId, string tableName)
-        {  
+        {
             IFreeSql freeSql = await GetFreeSqlAsync(connectionConfigId);
             using (freeSql)
             {
@@ -229,7 +230,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                             ContentPartFieldSettings = new { DisplayName = item.Name, Position = (index++).ToString() }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.CsType);
-                        if (targetFieldType==null)
+                        if (targetFieldType == null)
                         {
                             targetFieldType = _contentFieldsValuePathProvider.GetField(typeof(int));
                         }

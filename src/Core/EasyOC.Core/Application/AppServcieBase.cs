@@ -14,6 +14,7 @@ using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
+using System;
 using System.Linq;
 using System.Security.Claims;
 
@@ -22,11 +23,11 @@ namespace EasyOC.Core.Application
     [DynamicWebApi, Authorize(AuthenticationSchemes = "Api"), IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
-
+        protected IServiceProvider CurrentServiceProvider { get; private set; }
         public AppServcieBase()
         {
-            var serviceProvider = ShellScope.Current.ServiceProvider;
-            LazyServiceProvider = new EasyOCLazyServiceProvider(serviceProvider);
+            CurrentServiceProvider = ShellScope.Current.ServiceProvider;
+            LazyServiceProvider = new EasyOCLazyServiceProvider(CurrentServiceProvider);
         }
 
         protected IEasyOCLazyServiceProvider LazyServiceProvider
