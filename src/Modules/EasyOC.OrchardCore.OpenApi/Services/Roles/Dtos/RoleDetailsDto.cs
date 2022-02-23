@@ -26,13 +26,13 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
         {
             get;
             set;
-        }
-
+        } 
 
         public RoleDto Role
         {
             get;
             set;
         }
+        public IEnumerable<string> VbenMenuIds { get; set; }
     }
 }

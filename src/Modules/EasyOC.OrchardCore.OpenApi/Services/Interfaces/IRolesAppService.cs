@@ -1,4 +1,5 @@
 ﻿using EasyOC.OrchardCore.OpenApi.Dto;
+using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

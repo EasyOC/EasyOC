@@ -70,8 +70,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         public async Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId)
         {
             var connectionObject = await GetConnectionConfigAsync(connectionConfigId);
-            return FreeSqlProviderFactory.GetFreeSql(connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value,
-                connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
+            var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
+            var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
+            //无法判断 dynamic 类型 ，所以要先显示指定类型
+            return CurrentServiceProvider.GetFreeSqlFormPool(providerName, connectionStr);
         }
         /// <summary>
         /// Get all Connection Config

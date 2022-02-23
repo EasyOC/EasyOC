@@ -14,7 +14,7 @@ using System;
 
 namespace EasyOC.OrchardCore.Excel
 {
-    [RequireFeatures("EasyOC.OrchardCore.Excel")]
+    [Feature("EasyOC.OrchardCore.Excel")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)

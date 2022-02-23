@@ -107,7 +107,9 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
         {
 
             var connectionObject = await _contentManager.GetAsync(connectionConfigId);
-            IFreeSql freeSql = FreeSqlProviderFactory.GetFreeSql(connectionObject.Content.DbConnectionConfig.ProviderName.Text.Value, connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
+
+            IFreeSql freeSql = _serviceProvider.GetFreeSqlFormPool((string)connectionObject.Content.DbConnectionConfig.ProviderName.Text.Value,
+                (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
             using (freeSql)
             {
                 var recipe = new RecipeModel();
