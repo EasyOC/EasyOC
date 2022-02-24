@@ -210,3 +210,4 @@ src/Templates/**/content/**/[Oo]bj/
 BenchmarkDotNet.Artifacts
 
 /src/EasyOC.OrchardCore.Amis/wwwroot/amis-editor/package-lock.json
+/src/EasyOC.CMS.WebHost/.config/dotnet-tools.json
