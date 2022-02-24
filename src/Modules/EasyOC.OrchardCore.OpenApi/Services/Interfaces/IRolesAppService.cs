@@ -11,6 +11,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync();
         Task<RoleDetailsDto> GetRoleDetailsAsync(string id);
         Task<List<RoleDto>> GetRolesAsync();
-        Task UpdateRoleAsync(UpdateRoleInput input);
+        Task UpdateRoleAsync(RoleDetailsDto input);
     }
 }

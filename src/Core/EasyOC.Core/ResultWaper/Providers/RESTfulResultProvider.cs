@@ -51,7 +51,7 @@ namespace EasyOC.Core.ResultWaper.Providers
         public IActionResult OnSucceeded(ActionExecutedContext context, object data)
         {
             return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
-                messages: _notifier.List().ToArray(),//处理OC 的代码内执行消息
+                message: _notifier.List().ToArray(),//处理OC 的代码内执行消息
                 httpContext: context.HttpContext));
         }
 
@@ -101,15 +101,14 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <param name="messages"></param>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object message = default, object[] messages = default, HttpContext httpContext = default)
+        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object message = default,  HttpContext httpContext = default)
         {
             return new RESTfulResult<object>
             {
                 StatusCode = statusCode,
                 Succeeded = succeeded,
                 Result = data,
-                Message = message ?? messages.FirstOrDefault(),
-                Messages = messages,
+                Msg = message, 
                 Extras = httpContext.TakeExtras(),
                 Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             };

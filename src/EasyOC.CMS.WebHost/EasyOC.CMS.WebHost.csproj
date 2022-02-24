@@ -3,6 +3,7 @@
   <Import Project="..\EasyOC.Build\Commons.props" />
   <PropertyGroup>
     <TargetFrameworks>$(CommonTargetFrameworks)</TargetFrameworks>
+    <TargetFramework>$(CommonTargetFrameworks)</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>612,618</WarningsNotAsErrors>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>

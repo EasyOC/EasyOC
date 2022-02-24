@@ -24,7 +24,7 @@
         /// <summary>
         /// 错误信息
         /// </summary>
-        public object Messages { get; set; }
+        public object Msg { get; set; }
 
         /// <summary>
         /// 附加数据
@@ -34,7 +34,6 @@
         /// <summary>
         /// 时间戳
         /// </summary>
-        public long Timestamp { get; set; }
-        public object Message { get; internal set; }
+        public long Timestamp { get; set; } 
     }
 }

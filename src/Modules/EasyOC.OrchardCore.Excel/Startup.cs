@@ -14,11 +14,12 @@ using System;
 
 namespace EasyOC.OrchardCore.Excel
 {
-    [RequireFeatures("EasyOC.OrchardCore.Excel")]
+    [Feature("EasyOC.OrchardCore.Excel")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IDataMigration, ExcelModuleMigrations>();
             services.AddScoped<IExcelAppService, ExcelAppService>();
             services.AddActivity<ExcelTask, ExcelTaskDisplayDriver>();

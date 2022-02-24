@@ -2,28 +2,32 @@
 using FreeSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using OrchardCore.Environment.Shell;
-using OrchardCore.Environment.Shell.Configuration;
-using OrchardCore.Shells.Database.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using OrchardCore.Environment.Shell;
+using OrchardCore.Environment.Shell.Configuration;
+using OrchardCore.Environment.Shell.Scope;
+using OrchardCore.Shells.Database.Configuration;
 namespace System
 {
     public static class FreeSqlExtentions
     {
         static IdleBus<IFreeSql> ib = new IdleBus<IFreeSql>(TimeSpan.FromMinutes(10));
+        //static Dictionary<string, Func<IFreeSql>> dicPool = new Dictionary<string, Func<IFreeSql>>();
 
         public static IServiceCollection AddFreeSql(this IServiceCollection services)
         {
 
-            return services.AddSingleton(serviceProvider => serviceProvider.GetFreeSql());
+            return services.AddSingleton(serviceProvider =>
+            {
+                return ShellScope.Current.ServiceProvider.GetFreeSql();
+            });
         }
 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider)
@@ -32,7 +36,6 @@ namespace System
             var shellConfig = serviceProvider.GetRequiredService<IShellConfiguration>();
             var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
             var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
-
             if (targetDbType == DataType.Sqlite)
             {
                 var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
@@ -45,6 +48,7 @@ namespace System
                 return fsql;
             }
         }
+    
 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, string providerName, string connectionString, string tablePrefix = default)
         {
@@ -52,93 +56,38 @@ namespace System
         }
 
 
-        public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, DataType dataType, string connectionString, string tablePrefix = default)
+
+
+        public static IFreeSql GetFreeSqlFormPool(this IServiceProvider serviceProvider, string providerName, string connectionString, string tablePrefix = default)
         {
+            return serviceProvider.GetFreeSqlFormPool(Enum.Parse<DataType>(providerName), connectionString, tablePrefix);
+        }
 
+        public static IFreeSql GetFreeSqlFormPool(this IServiceProvider serviceProvider, DataType dataType, string connectionString, string tablePrefix = default)
+        {
             var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
-
             var ibKey = $"{connectionString}_{tablePrefix}";
             if (ib.Exists(ibKey))
             {
                 var fsq = ib.Get(ibKey);
-                if (fsq.Ado.MasterPool.IsAvailable && fsq.Ado.ExecuteConnectTest())
+                if (fsq != null && fsq.Ado.MasterPool.IsAvailable)// && fsq.Ado.ExecuteConnectTest()
                 {
                     return fsq;
                 }
-                else
-                {
-                    ib.TryRemove(ibKey, true);
-                }
             }
 
+            ib.Notice += (object sender, IdleBus<string, IFreeSql>.NoticeEventArgs e) =>
+            {
+                Console.WriteLine(e.Log);
+                logger.LogDebug(e.Log);
+            };
 
             //按照需要添加其他数据库的引用 
             ib.Register(ibKey,
-                () =>
-                {
-                    var fsql = new FreeSqlBuilder().UseConnectionString(dataType, connectionString)
-                                       .UseMonitorCommand(executing =>
-                                       {
-                                           executing.CommandTimeout = 6000;
-
-                                       }, executed: (cmd, traceLog) =>
-                                       {
-                                           var logStr = new StringBuilder();
-                                           if (cmd.Parameters.Count > 0)
-                                           {
-                                               logStr.AppendLine($"--Parameters: \r\ndeclare ");
-                                               var tempArray = new List<string>();
-                                               foreach (DbParameter item in cmd.Parameters)
-                                               {
-                                                   tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
-                                               }
-                                               logStr.AppendLine(string.Join(",\r\n", tempArray));
-                                           }
-
-                                           logStr.AppendLine($"\n{traceLog}\r\n");
-
-                                           var result = logStr.ToString();
-                                           Console.WriteLine(result);
-                                           if (logger != null)
-                                           {
-                                               if (logger.IsEnabled(LogLevel.Debug))
-                                               {
-                                                   logger.LogDebug(result);
-                                               }
-                                           }
-                                       })
-                                       .Build();
-
-                    fsql.Aop.ConfigEntity += (s, e) =>
-                    {
-
-                        var tableName = e.EntityType.Name;
-                        if (e.ModifyResult != null && !e.ModifyResult.Name.IsNullOrEmpty())
-                        {
-                            tableName = e.ModifyResult.Name;
-                            var attr = e.EntityType.GetCustomAttributes().FirstOrDefault(x => x is EOCTableAttribute);
-                            if (attr is EOCTableAttribute tableAttribute)
-                            {
-                                tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
-                            }
-                        }
-                        if (!string.IsNullOrEmpty(tablePrefix))
-                        {
-                            e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, tableName); //表名前缀
-                        }
-                        else
-                        {
-                            e.ModifyResult.Name = tableName;
-                        }
-                    };
-                    return fsql;
-                }
-
-
-               );
-
+                () => serviceProvider.GetFreeSql(dataType, connectionString, tablePrefix));
             return ib.Get(ibKey);
         }
+
 
         public static string GetSqliteConnectionString(this IServiceProvider serviceProvider)
         {
@@ -149,8 +98,6 @@ namespace System
             var databaseFile = Path.Combine(databaseFolder, "yessql.db");
             return $"Data Source={databaseFile};Cache=Shared";
         }
-
-
 
         public static DataType ConvertToFreeSqlDataType(string providerName)
 
@@ -181,6 +128,69 @@ namespace System
             }
             throw new ArgumentException("未识别 或 FreeSql 尚未支持的数据库类型:" + providerName);
         }
+
+
+        public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, DataType dataType, string connectionString, string tablePrefix = default)
+        {
+            var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
+            var fsql = new FreeSqlBuilder().UseConnectionString(dataType, connectionString)
+                               .UseMonitorCommand(executing =>
+                               {
+                                   executing.CommandTimeout = 6000;
+
+                               }, executed: (cmd, traceLog) =>
+                               {
+                                   var logStr = new StringBuilder();
+                                   if (cmd.Parameters.Count > 0)
+                                   {
+                                       logStr.AppendLine($"--Parameters: \r\ndeclare ");
+                                       var tempArray = new List<string>();
+                                       foreach (DbParameter item in cmd.Parameters)
+                                       {
+                                           tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
+                                       }
+                                       logStr.AppendLine(string.Join(",\r\n", tempArray));
+                                   }
+
+                                   logStr.AppendLine($"\n{traceLog}\r\n");
+
+                                   var result = logStr.ToString();
+                                   Console.WriteLine(result);
+                                   if (logger != null)
+                                   {
+                                       if (logger.IsEnabled(LogLevel.Debug))
+                                       {
+                                           logger.LogDebug(result);
+                                       }
+                                   }
+                               })
+                               .Build();
+
+            fsql.Aop.ConfigEntity += (s, e) =>
+            {
+
+                var tableName = e.EntityType.Name;
+                if (e.ModifyResult != null && !e.ModifyResult.Name.IsNullOrEmpty())
+                {
+                    tableName = e.ModifyResult.Name;
+                    var attr = e.EntityType.GetCustomAttributes().FirstOrDefault(x => x is EOCTableAttribute);
+                    if (attr is EOCTableAttribute tableAttribute)
+                    {
+                        tableName = string.Format("{0}_{1}", tableAttribute.Collection, tableName);
+                    }
+                }
+                if (!string.IsNullOrEmpty(tablePrefix))
+                {
+                    e.ModifyResult.Name = string.Format("{0}_{1}", tablePrefix, tableName); //表名前缀
+                }
+                else
+                {
+                    e.ModifyResult.Name = tableName;
+                }
+            };
+            return fsql;
+        }
+
     }
 }
 
