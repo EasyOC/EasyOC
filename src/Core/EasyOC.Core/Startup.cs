@@ -31,10 +31,11 @@ namespace EasyOC.Core
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddFreeSql();
-            //发现并注册所有引入了 AutoMapper 的程序集
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies().Where(a =>
-                a.GetReferencedAssemblies().Any(x => x.FullName.StartsWith(nameof(AutoMapper))))
-            );
+            //发现并注册所有引入了 AutoMapper 的程序集  ,但是这样没法触发后续加载的程序集
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies().Where(a =>
+            //    a.GetReferencedAssemblies().Any(x => x.FullName.StartsWith(nameof(AutoMapper))))
+            //);
+            services.AddAutoMapper(this.GetType().Assembly);
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
             {
