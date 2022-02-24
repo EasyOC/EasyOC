@@ -14,6 +14,7 @@ using OrchardCore.Modules;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace EasyOC.Core
 {
@@ -30,7 +31,7 @@ namespace EasyOC.Core
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddFreeSql();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith("EasyOC")));
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
             {
