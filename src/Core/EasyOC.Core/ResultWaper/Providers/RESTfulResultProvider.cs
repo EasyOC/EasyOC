@@ -98,7 +98,6 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <param name="succeeded"></param>
         /// <param name="data"></param>
         /// <param name="message"></param>
-        /// <param name="messages"></param>
         /// <param name="httpContext"></param>
         /// <returns></returns>
         private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object message = default,  HttpContext httpContext = default)

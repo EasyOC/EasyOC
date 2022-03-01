@@ -41,6 +41,11 @@
               }
             },
             {
+              "PartName": "UserProfile",
+              "Name": "UserProfile",
+              "Settings": {}
+            },
+            {
               "PartName": "TitlePart",
               "Name": "TitlePart",
               "Settings": {
@@ -53,11 +58,6 @@
                 },
                 "ContentIndexSettings": {}
               }
-            },
-            {
-              "PartName": "UserProfile",
-              "Name": "UserProfile",
-              "Settings": {}
             }
           ]
         },
@@ -195,21 +195,43 @@
               }
             }
           ]
+        },
+        {
+          "Name": "AmisSchema",
+          "DisplayName": "Amis Schema",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AmisSchema",
+              "Name": "AmisSchema",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
         }
       ],
       "ContentParts": [
-        {
-          "Name": "TitlePart",
-          "Settings": {
-            "ContentPartSettings": {
-              "Attachable": true,
-              "Description": "Provides a Title for your content item.",
-              "DefaultPosition": "0",
-              "Reusable": true
-            }
-          },
-          "ContentPartFieldDefinitionRecords": []
-        },
         {
           "Name": "UserProfile",
           "Settings": {},
@@ -427,6 +449,22 @@
             },
             {
               "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "真实姓名",
+                  "Position": "4"
+                },
+                "TextFieldSettings": {},
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
               "Name": "RealName",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -580,7 +618,8 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "字段列表",
-                  "Editor": "Monaco"
+                  "Editor": "Monaco",
+                  "Position": "1"
                 },
                 "TextFieldSettings": {},
                 "TextFieldMonacoEditorSettings": {
@@ -595,7 +634,8 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "GraphQL",
-                  "Editor": "Monaco"
+                  "Editor": "Monaco",
+                  "Position": "2"
                 },
                 "TextFieldSettings": {},
                 "TextFieldMonacoEditorSettings": {
@@ -610,7 +650,8 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "包含分页",
-                  "Editor": "Switch"
+                  "Editor": "Switch",
+                  "Position": "3"
                 },
                 "BooleanFieldSettings": {
                   "DefaultValue": true
@@ -623,7 +664,8 @@
               "Name": "QueryName",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "查询名称"
+                  "DisplayName": "查询名称",
+                  "Position": "4"
                 }
               }
             }
@@ -760,6 +802,60 @@
                 "ContentPartFieldSettings": {
                   "DisplayName": "菜单类型",
                   "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0",
+              "Reusable": true
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "AmisSchema",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Schema",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Schema",
+                  "Editor": "Monaco",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Name",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Description",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Description",
+                  "Position": "2"
                 }
               }
             }
@@ -963,6 +1059,91 @@
           "Name": "queryDepartment",
           "Source": "Lucene",
           "Schema": "{\r\n  \"type\":\"contentItem/Department\"\r\n\r\n}"
+        },
+        {
+          "Index": "Crm",
+          "Template": "\r\n\r\n{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"Customer\" } },\r\n                { \"term\": { \"Content.ContentItem.Published\": 'true' } },\r\n                {  \"term\": { \"Content.ContentItem.Latest\": \"true\" } }\r\n            ],\r\n            {% if filters %}\r\n            \"filter\":[\r\n                  {% for filter in filters %} \r\n              \t\t{%if filter.key %}\r\n      \t\t\t\t\t{\"{{filter.method}}\": { \"{{filter.key}}\": \"{{filter.value}}\" }},\r\n                    {%else%}\r\n                    \t{\"{{filter.method}}\":\"{{filter.value}}\"}},\r\n                    {%endif%}\r\n\t\t\t\t  {% endfor %} \r\n            \t]\r\n            {% endif %}\r\n        }\r\n    }\r\n  {% if from %}\r\n    ,\"from\":{{from}}\r\n  {% endif %}\r\n  {%if size %}\r\n   ,\"size\":{{size}}\r\n  {%endif%}  \t\r\n}",
+          "ReturnContentItems": true,
+          "Name": "crmCustomers",
+          "Source": "Lucene",
+          "Schema": "{\r\n  \"type\":\"contentItem/Customer\" ,\r\n  \"hasTotal\": true\r\n}"
+        },
+        {
+          "Template": "SELECT DisplayText FROM ContentItemIndex where contentType='SCMDileveryOrder' and published =1\r\nand DisplayText in ({{ids}}) ",
+          "ReturnDocuments": false,
+          "Name": "SCMQueryExistsedOrderIds",
+          "Source": "Sql",
+          "Schema": "{\r\n\"DisplayText\":\"string\"\r\n}"
+        },
+        {
+          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Appointment' and Published = true",
+          "ReturnDocuments": true,
+          "Name": "AllAppointments",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Employee' and Published = true and Latest = true",
+          "ReturnDocuments": true,
+          "Name": "AllEmployees",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId \r\nFROM AppointmentIndex\r\nWHERE AppointmentIndex.ContentItemId IN\r\n  (SELECT ContentItemId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})) \r\nAND StartDate BETWEEN '{{ startDate }}' AND '{{ endDate }}'\r\nORDER BY StartDate ASC",
+          "ReturnDocuments": true,
+          "Name": "AppointmentsForCalendarsForDate",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Employee' and TermContentItemId in ({{calendarIds}})",
+          "ReturnDocuments": true,
+          "Name": "EmployeesForCalendars",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})",
+          "ReturnDocuments": true,
+          "Name": "AppointmentForCalendars",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT * FROM HackathonItemsIndex where Owner = '{{owner}}'",
+          "ReturnDocuments": false,
+          "Name": "GetOwner",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='{{type}}'",
+          "ReturnDocuments": true,
+          "Name": "GetItemsForHackathon",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT * FROM HackathonUsersIndex where TeamContentItemId = '{{teamContentItemId}}'",
+          "ReturnDocuments": false,
+          "Name": "GetHackersForTeam",
+          "Source": "Sql",
+          "Schema": "null"
+        },
+        {
+          "Template": "SELECT * FROM HackathonItemsIndex where ContentType ='ScoreEntry' and TeamContentItemId = '{{teamContentItemId}}' and Owner = '{{owner}}'",
+          "ReturnDocuments": false,
+          "Name": "GetScoreEntry",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='Team' and ContentItemId = '{{teamContentItemId}}'",
+          "ReturnDocuments": true,
+          "Name": "GetTeam",
+          "Source": "Sql",
+          "Schema": null
         }
       ]
     },
@@ -989,6 +1170,7 @@
               "Step": {
                 "IncludeAll": false,
                 "ContentTypes": [
+                  "AmisSchema",
                   "Department",
                   "UserProfile",
                   "UserProfileInternal",
@@ -996,6 +1178,7 @@
                   "VbenMenu"
                 ],
                 "ContentParts": [
+                  "AmisSchema",
                   "Department",
                   "UserProfile",
                   "UserProfileInternal",
