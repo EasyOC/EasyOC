@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="GraphQL\ContentItemConnectionType.cs" />
     <Compile Remove="Indexs\CustomUserSettingsIndexProvider.cs" />
     <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
     <Compile Remove="Services\GraphqlAppService.cs" />

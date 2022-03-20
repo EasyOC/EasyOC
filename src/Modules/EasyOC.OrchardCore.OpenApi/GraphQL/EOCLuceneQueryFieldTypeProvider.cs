@@ -18,12 +18,12 @@ using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
 
 namespace EasyOC.OrchardCore.OpenApi.GraphQL
 {
-    public class LuceneQueryFieldTypeProvider : ISchemaBuilder
+    public class EOCLuceneQueryFieldTypeProvider : ISchemaBuilder
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger<LuceneQueryFieldTypeProvider> _logger;
+        private readonly ILogger<EOCLuceneQueryFieldTypeProvider> _logger;
 
-        public LuceneQueryFieldTypeProvider(IHttpContextAccessor httpContextAccessor, ILogger<LuceneQueryFieldTypeProvider> logger)
+        public EOCLuceneQueryFieldTypeProvider(IHttpContextAccessor httpContextAccessor, ILogger<EOCLuceneQueryFieldTypeProvider> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -58,10 +58,9 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                     }
                     var type = querySchema["type"].ToString();
                     FieldType fieldType;
-
-                    var fieldTypeName = querySchema["fieldTypeName"]?.ToString() ?? query.Name;
                     if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
                     {
+                        var fieldTypeName = querySchema["fieldTypeName"]?.ToString() ?? query.Name;
                         if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
                         {
                             var contentType = type.Remove(0, 12);
@@ -71,24 +70,21 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         {
                             fieldType = BuildTotalSchemaBasedFieldType(query, querySchema, fieldTypeName);
                         }
-                    }
-                    else
-                    {
-                        if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
+
+                        if (fieldType != null)
                         {
-                            var contentType = type.Remove(0, 12);
-                            fieldType = BuildContentTypeFieldType(schema, contentType, query, fieldTypeName);
-                        }
-                        else
-                        {
-                            fieldType = BuildSchemaBasedFieldType(query, querySchema, fieldTypeName);
+                            if (schema.Query.HasField(fieldType.Name))
+                            {
+                                var existsField = schema.Query.GetField(fieldType.Name);
+                                existsField = fieldType;
+                            }
+                            else
+                            {
+                                schema.Query.AddField(fieldType);
+                            }
                         }
                     }
 
-                    if (fieldType != null && !schema.Query.HasField(fieldType.Name))
-                    {
-                        schema.Query.AddField(fieldType);
-                    }
                 }
                 catch (Exception e)
                 {
@@ -165,7 +161,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
                         : new Dictionary<string, object>();
 
-                    var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
+                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters);
                     return result.Items;
                 }),
                 Type = typeof(ListGraphType<ObjectGraphType<JObject>>)
@@ -185,7 +181,8 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
             var fieldType = new FieldType
             {
                 Arguments = new QueryArguments(
-                        new QueryArgument<StringGraphType> { Name = "parameters" }),
+                        new QueryArgument<StringGraphType> { Name = "parameters" }
+                    ),
 
                 Name = fieldTypeName,
                 Description = "Represents the " + query.Source + " Query : " + query.Name,
@@ -200,7 +197,8 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                     var queryParameters = parameters != null ?
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
                         : new Dictionary<string, object>();
-                    var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
+
+                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters);
                     return result.Items;
                 }),
                 Type = typetype.Type
@@ -208,6 +206,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
 
             return fieldType;
         }
+
         private FieldType BuildTotalSchemaBasedFieldType(LuceneQuery query, JToken querySchema, string fieldTypeName)
         {
             var properties = querySchema["properties"];
@@ -236,7 +235,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                          {
                              return context.Source?.Total;
                          });
-             
+
 
             foreach (JProperty child in properties.Children())
             {
@@ -326,7 +325,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         resolve: context =>
                         {
                             return context.Source?.Total ?? 0;
-                        }); 
+                        });
 
             var fieldType = new FieldType
             {
@@ -360,7 +359,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
             return fieldType;
         }
 
- 
+
     }
 
 }

@@ -37,7 +37,7 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddScoped<IUserEventHandler, UserEventHandler>();
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
-            services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
+            services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
             services.AddScoped<IUserClaimsProvider, UserTokenLifeTimeClaimsProvider>();
 
         }

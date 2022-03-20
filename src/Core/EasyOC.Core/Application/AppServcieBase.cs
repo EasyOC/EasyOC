@@ -5,6 +5,7 @@ using EasyOC.DynamicWebApi.Attributes;
 using Jint;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
@@ -14,6 +15,7 @@ using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
+using OrchardCore.Users;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -80,6 +82,8 @@ namespace EasyOC.Core.Application
             });
         protected Engine JSEngine => JSScope.Engine;
 
+
+        protected UserManager<IUser> UserManager => LazyServiceProvider.LazyGetRequiredService<UserManager<IUser>>();
 
     }
 }
