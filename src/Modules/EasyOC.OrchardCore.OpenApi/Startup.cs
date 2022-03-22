@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.Apis;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
+using OrchardCore.ContentManagement.GraphQL;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Users.Handlers;
@@ -38,6 +39,9 @@ namespace EasyOC.OrchardCore.OpenApi
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
             services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
+            services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
+            //services.AddContentMutationGraphQL();
+
             services.AddScoped<IUserClaimsProvider, UserTokenLifeTimeClaimsProvider>();
 
         }

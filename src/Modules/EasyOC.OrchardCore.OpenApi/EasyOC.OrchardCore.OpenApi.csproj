@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Compile Remove="GraphQL\ContentItemConnectionType.cs" />
+    <Compile Remove="GraphQL\SqlQueryFieldTypeProvider.cs" />
     <Compile Remove="Indexs\CustomUserSettingsIndexProvider.cs" />
     <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
     <Compile Remove="Services\GraphqlAppService.cs" />
@@ -37,6 +38,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EaysOC.GraphQL\EaysOC.GraphQL.csproj" />
+    <ProjectReference Include="..\OrchardCore.ContentManagement.GraphQL\EaysOC.GraphQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
