@@ -1,6 +1,7 @@
 ﻿using EasyOC.Core.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
@@ -21,15 +22,16 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
         private readonly IContentManager _contentManager;
 
-        public ContentManagementAppService(IContentManager contentManager)
+        public ContentManagementAppService(IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
         {
             _contentManager = contentManager;
+            _contentDefinitionManager = contentDefinitionManager;
         }
 
         private static readonly JsonMergeSettings UpdateJsonMergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
 
 
-        public async Task<string> PostContent(ContentModel model)
+        public async Task<string> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
         {
             // It is really important to keep the proper method calls order with the ContentManager
             // so that all event handlers gets triggered in the right sequence.
@@ -75,10 +77,9 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                 {
                     throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
                 }
-
             }
 
-            if (model.Published ?? false)
+            if (!draft)
             {
                 await _contentManager.PublishAsync(contentItem);
             }
@@ -113,10 +114,10 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 contentItem.Published = model.Published.Value;
             }
-            if (model.Latest.HasValue)
-            {
-                contentItem.Latest = model.Latest.Value;
-            }
+            //if (model.Latest.HasValue)
+            //{
+            //    contentItem.Latest = model.Latest.Value;
+            //}
 
             #endregion
             if (selfPart != null)
@@ -126,7 +127,11 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
                     if (fieldPath != null)
                     {
-                        contentItem.Content[contentItem.ContentType][item.Name][fieldPath] = model[item.Name.ToCamelCase()].ToString();
+                        if (jObject.Property(item.Name.ToCamelCase())!= null)
+                        {
+                            contentItem.Content[contentItem.ContentType][item.Name][fieldPath] = jObject[(item.Name.ToCamelCase())];
+
+                        }
                     }
                 }
             }
@@ -138,8 +143,12 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
                     if (fieldPath != null)
                     {
-                        contentItem.Content[part.Name][item.Name][fieldPath] =
-                                jObject[part.Name.ToCamelCase()][item.Name.ToCamelCase()];
+                        if (jObject.ContainsKey(part.Name.ToCamelCase()) && jObject[part.Name.ToCamelCase()][item.Name.ToCamelCase()].HasValues)
+                        {
+                            contentItem.Content[part.Name][item.Name][fieldPath] =
+                               jObject[part.Name.ToCamelCase()][item.Name.ToCamelCase()];
+                        }
+
                     }
 
                 }

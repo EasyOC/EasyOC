@@ -38,6 +38,7 @@ namespace EasyOC.OrchardCore.OpenApi
             //services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
             services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
+            services.AddSingleton<ISchemaBuilder, ContentItemAllVersionQuery>();
             //services.AddContentMutationGraphQL();
 
             services.AddScoped<IUserClaimsProvider, UserTokenLifeTimeClaimsProvider>();
