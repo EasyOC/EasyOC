@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
-    public interface IContentManagementAppService
+    public interface IContentTypeManagementAppService
     {
         PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input);
         PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input);

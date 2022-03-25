@@ -1,161 +1,151 @@
 ﻿using EasyOC.Core.Application;
-using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
-using EasyOC.OrchardCore.ContentExtentions.Models;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
-using OrchardCore.ContentManagement.Metadata.Settings;
-using OrchardCore.Lucene;
-using OrchardCore.Queries;
+using OrchardCore.Contents;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace EasyOC.OrchardCore.ContentExtentions.AppServices
+namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 {
-    [EOCAuthorization(OCPermissions.ViewContentTypes)]
-    public class ContentManagementAppService : AppServcieBase, IContentManagementAppService
+    [EOCAuthorization("AccessContentApi")]
+    public class ContentManagementAppService : AppServcieBase
     {
+
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IQueryManager _queryManager;
-        public ContentManagementAppService(IContentDefinitionManager contentDefinitionManager, IQueryManager queryManager)
+
+        private readonly IContentManager _contentManager;
+
+        public ContentManagementAppService(IContentManager contentManager)
         {
-            _contentDefinitionManager = contentDefinitionManager;
-            _queryManager = queryManager;
+            _contentManager = contentManager;
         }
 
-        /// <summary>
-        /// 列出所有类型定义
-        /// </summary>
-        /// <returns></returns>
-        public PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input)
+        private static readonly JsonMergeSettings UpdateJsonMergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
+
+
+        public async Task<string> PostContent(ContentModel model)
         {
-
-            var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), x
-                 => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
-                    || x.DisplayName.Contains(input.Filter, StringComparison.OrdinalIgnoreCase))
-                .Select(x =>
-                {
-                    var listItem = new ContentTypeListItemDto();
-                    listItem.Name = x.Name;
-                    listItem.DisplayName = x.DisplayName;
-                    listItem.Stereotype = x.GetSettings<ContentTypeSettings>().Stereotype;
-                    return listItem;
-                })
-                .WhereIf(!string.IsNullOrEmpty(input.Stereotype), x
-                    => input.Stereotype.Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase));
-
-            return result.ToPagedResult(input);
-        }
-
-        public PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input)
-        {
-
-            return _contentDefinitionManager.ListPartDefinitions()
-                .Select(x => x.ToDto(false))
-                .WhereIf(input.Filter.IsNullOrWhiteSpace(), x
-                => x.DisplayName.Contains(input.Filter) || x.Description.Contains(input.Filter))
-                .ToPagedResult(input);
-        }
-        public ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false)
-        {
-            var part = _contentDefinitionManager.LoadPartDefinition(name);
-            return part.ToDto(withSettings);
-        }
-
-
-        public ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false)
-        {
-            var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
-            return typeDefinition.ToDto(withSettings);
-        }
-
-
-        [EOCAuthorization(OCPermissions.EditContentTypes)]
-        public async Task<IEnumerable<QueryDefDto>> ListLuceneQueriesAsync()
-        {
-            var queries = (await _queryManager.ListQueriesAsync()).OfType<LuceneQuery>();
-            return ObjectMapper.Map<IEnumerable<QueryDefDto>>(queries);
-        }
-        /// <summary>
-        /// 获取指定类型的字段清单
-        /// </summary>
-        /// <param name="typeName"></param>
-        /// <returns></returns>
-        public List<ContentFieldsMappingDto> GetFields(string typeName)
-        {
-            var typeDef = _contentDefinitionManager.GetTypeDefinition(typeName);
-            var fields = new List<ContentFieldsMappingDto>();
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["ID"].Value, FieldName = "ContentItemId", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["版本号"].Value, FieldName = "ContentItemVersionId", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["内容类型"].Value, FieldName = "ContentType", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["标题"].Value, FieldName = "DisplayText", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["最新版"].Value, FieldName = "Latest", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["已发布"].Value, FieldName = "Published", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["归属人"].Value, FieldName = "Owner", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["作者"].Value, FieldName = "Author", IsContentItemProperty = true });
-            foreach (var item in fields)
+            // It is really important to keep the proper method calls order with the ContentManager
+            // so that all event handlers gets triggered in the right sequence.
+            if (model.ContentType.IsNullOrWhiteSpace())
             {
-                item.LastValueKey = item.KeyPath = item.FieldName;
+                throw new AppFriendlyException("invaild property: contentType", StatusCodes.Status400BadRequest);
             }
-            foreach (var part in typeDef.Parts)
+            var typeDef = _contentDefinitionManager.GetTypeDefinition(model.ContentType);
+            if (typeDef == null)
             {
-                foreach (var field in part.PartDefinition.Fields)
+                throw new AppFriendlyException("invaild property: contentType", StatusCodes.Status400BadRequest);
+            }
+            var contentItem = await _contentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
+            if (contentItem == null)
+            {
+                if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.PublishContent))
                 {
-                    var lastKey = GetFiledValuePath(field.FieldDefinition.Name);
-                    fields.Add(new ContentFieldsMappingDto
-                    {
-                        DisplayName = S[field.DisplayName()].Value,
-                        Description = field.Description(),
-                        FieldName = field.Name,
-                        PartName = part.Name,
-                        PartDisplayName = part.DisplayName(),
-                        KeyPath = $"{part.Name}.{field.Name}.{lastKey}",
-                        LastValueKey = lastKey,
-                        FieldSettings = field.Settings,
-                        FieldType = field.FieldDefinition.Name
-                    });
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+                }
+                var newContentItem = await _contentManager.NewAsync(model.ContentType);
+                newContentItem.Merge(MergeFromSimpleData(newContentItem, model, typeDef));
+
+                var result = await _contentManager.UpdateValidateAndCreateAsync(newContentItem, VersionOptions.Draft);
+
+                if (!result.Succeeded)
+                {
+                    throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
+                }
+                contentItem = newContentItem;
+            }
+            else
+            {
+                if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.EditContent, contentItem))
+                {
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+                }
+                contentItem.Merge(MergeFromSimpleData(contentItem, model, typeDef), UpdateJsonMergeSettings);
+
+                await _contentManager.UpdateAsync(contentItem);
+                var result = await _contentManager.ValidateAsync(contentItem);
+
+                if (!result.Succeeded)
+                {
+                    throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
                 }
 
             }
 
+            if (model.Published ?? false)
+            {
+                await _contentManager.PublishAsync(contentItem);
+            }
+            else
+            {
+                await _contentManager.SaveDraftAsync(contentItem);
+            }
 
-            return fields;
+            return contentItem.ContentItemId;
         }
 
-        public static string GetFiledValuePath(string fieldName)
+        public static ContentItem MergeFromSimpleData(ContentItem contentItem, ContentModel model, ContentTypeDefinition typeDefinition)
         {
-            string valuePath;
-            switch (fieldName)
+            JObject jObject = JObject.FromObject(model);
+            //填充自带属性
+            var selfPart = typeDefinition.Parts.FirstOrDefault(x => x.Name == model.ContentType);
+
+            #region Update BaseInfo
+            if (model.ContentItemId != null)
             {
-                case "TextField":
-                    valuePath = "Text";
-                    break;
-                case "BooleanField":
-                case "DateField":
-                case "TimeField":
-                case "DateTimefield":
-                case "NumericField":
-                    valuePath = "Value";
-                    break;
-                case "ContentPickerField":
-                    valuePath = "ContentItemIds[0]";
-                    break;
-                case "UserPickerField":
-                    valuePath = "UserIds[0]";
-                    break;
-                default:
-                    return null;
+                contentItem.ContentItemId = model.ContentItemId;
             }
-            return valuePath;
+            if (model.ContentItemVersionId != null)
+            {
+                contentItem.ContentItemId = model.ContentItemVersionId;
+            }
+            if (model.DisplayText != null)
+            {
+                contentItem.DisplayText = model.DisplayText;
+            }
+            if (model.Published.HasValue)
+            {
+                contentItem.Published = model.Published.Value;
+            }
+            if (model.Latest.HasValue)
+            {
+                contentItem.Latest = model.Latest.Value;
+            }
+
+            #endregion
+            if (selfPart != null)
+            {
+                foreach (var item in selfPart.PartDefinition.Fields)
+                {
+                    var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
+                    if (fieldPath != null)
+                    {
+                        contentItem.Content[contentItem.ContentType][item.Name][fieldPath] = model[item.Name.ToCamelCase()].ToString();
+                    }
+                }
+            }
+
+            foreach (var part in typeDefinition.Parts.Where(x => x.Name != contentItem.ContentType))
+            {
+                foreach (var item in part.PartDefinition.Fields)
+                {
+                    var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
+                    if (fieldPath != null)
+                    {
+                        contentItem.Content[part.Name][item.Name][fieldPath] =
+                                jObject[part.Name.ToCamelCase()][item.Name.ToCamelCase()];
+                    }
+
+                }
+            }
+
+            return contentItem;
         }
     }
 }
-
-
-

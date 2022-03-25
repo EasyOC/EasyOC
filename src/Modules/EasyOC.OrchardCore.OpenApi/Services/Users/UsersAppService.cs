@@ -23,6 +23,7 @@ using OrchardCore.Users.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YesSql;
@@ -356,19 +357,19 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
                 {
-                    throw new AppFriendlyException(SimpleError.PermissionDenied);
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized);
                 }
             }
 
             var user = await _userManager.FindByIdAsync(id) as User;
             if (user == null)
             {
-                throw new AppFriendlyException(SimpleError.ResourceNotFound);
+                throw new AppFriendlyException(HttpStatusCode.NotFound);
             }
 
             if (!editingOwnUser && !await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, user))
             {
-                throw new AppFriendlyException(SimpleError.PermissionDenied);
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
             }
 
             ObjectMapper.Map(userDto, user);

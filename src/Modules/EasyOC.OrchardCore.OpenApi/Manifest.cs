@@ -6,6 +6,6 @@
     Website = "https://orchardcore.net",
     Version = "0.0.1",
     Description = "EasyOC.OrchardCore.OpenApi",
-    Dependencies = new[] { "EasyOC.Core", "OrchardCore.Lucene" },
+    Dependencies = new[] { "EasyOC.Core" },
     Category = "Content Management"
 )]

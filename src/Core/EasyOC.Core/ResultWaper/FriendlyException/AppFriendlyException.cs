@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel;
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace EasyOC
@@ -16,32 +17,43 @@ namespace EasyOC
         public AppFriendlyException() : base()
         {
         }
-        public AppFriendlyException(SimpleError simpleError) : base()
+        public AppFriendlyException(HttpStatusCode simpleError, object message = null) : base()
         {
-            var desc = simpleError.ToDescriptionOrString();
+
+            if (message == null)
+            {
+                message = simpleError.ToDescriptionOrString();
+            }
+
             switch (simpleError)
             {
-                case SimpleError.PermissionDenied:
-                    ErrorMessage = desc;
+                case HttpStatusCode.Unauthorized:
+                    ErrorMessage = message;
                     ErrorCode = StatusCodes.Status403Forbidden;
 
                     break;
-                case SimpleError.ResourceNotFound:
-                    ErrorMessage = desc;
+                case HttpStatusCode.NotFound:
+                    ErrorMessage = message;
                     ErrorCode = StatusCodes.Status404NotFound;
                     break;
                 default:
-                    ErrorMessage = desc; 
+                    ErrorMessage = message;
                     break;
             }
         }
+
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="message"></param>
         /// <param name="errorCode"></param>
-        public AppFriendlyException(string message, object errorCode) : base(message)
+        public AppFriendlyException(string message, int errorCode) : base(message)
+        {
+            ErrorMessage = message;
+            ErrorCode = errorCode;
+        }
+        public AppFriendlyException(object message, int errorCode) : base(message.ToString())
         {
             ErrorMessage = message;
             ErrorCode = errorCode;
@@ -53,7 +65,7 @@ namespace EasyOC
         /// <param name="message"></param>
         /// <param name="errorCode"></param>
         /// <param name="innerException"></param>
-        public AppFriendlyException(string message, object errorCode, Exception innerException) : base(message, innerException)
+        public AppFriendlyException(string message, int errorCode, Exception innerException) : base(message, innerException)
         {
             ErrorMessage = message;
             ErrorCode = errorCode;

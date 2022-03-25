@@ -14,7 +14,7 @@ namespace EasyOC.OrchardCore.ContentExtentions
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(this.GetType().Assembly);
-            services.AddScoped<IContentManagementAppService, ContentManagementAppService>();
+            services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
 
         }
 

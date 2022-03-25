@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.Apis.GraphQL.Resolvers;
 using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.GraphQL.Queries;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using OrchardCore.Entities;
 using OrchardCore.Queries;
@@ -33,11 +34,17 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
 
         public Task BuildAsync(ISchema schema)
         {
+            var typetype = schema.Query.Fields.OfType<ContentItemsFieldType>().FirstOrDefault(x => x.Name == "UserProfile");
+            if (typetype == null)
+            {
+                return null;
+            }
             var field = new FieldType
             {
                 Name = "Me",
                 Description = S["Information about the current login user."],
                 Type = typeof(ContentItemInterface),
+                //ResolvedType= typetype.ResolvedType,
                 Resolver = new AsyncFieldResolver<ContentItem>(ResolveAsync)
             };
 

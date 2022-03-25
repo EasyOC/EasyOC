@@ -38,8 +38,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
-    <ProjectReference Include="..\EaysOC.GraphQL\EaysOC.GraphQL.csproj" />
-    <ProjectReference Include="..\OrchardCore.ContentManagement.GraphQL\EaysOC.GraphQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

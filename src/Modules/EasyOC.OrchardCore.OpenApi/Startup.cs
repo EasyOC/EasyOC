@@ -2,7 +2,6 @@
 using EasyOC.OrchardCore.OpenApi.GraphQL;
 using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
 using EasyOC.OrchardCore.OpenApi.Handlers;
-using EasyOC.OrchardCore.OpenApi.Indexs;
 using EasyOC.OrchardCore.OpenApi.Migrations;
 using EasyOC.OrchardCore.OpenApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -12,13 +11,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.Apis;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
-using OrchardCore.ContentManagement.GraphQL;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Users.Handlers;
 using OrchardCore.Users.Services;
 using System;
-using YesSql.Indexes;
 
 namespace EasyOC.OrchardCore.OpenApi
 {
@@ -38,6 +35,7 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddScoped<IUserEventHandler, UserEventHandler>();
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
+            //services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
             services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
             //services.AddContentMutationGraphQL();
