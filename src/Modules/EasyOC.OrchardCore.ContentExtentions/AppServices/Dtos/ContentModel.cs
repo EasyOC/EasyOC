@@ -30,17 +30,17 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
         /// <summary>
         /// The logical identifier of the versioned content item.
         /// </summary>
-        public string ContentItemVersionId
-        {
-            get
-            {
-                if (this.ContainsKey("contentItemVersionId"))
-                {
-                    return this["contentItemVersionId"].ToString();
-                }
-                return null;
-            }
-        }
+        //public string ContentItemVersionId
+        //{
+        //    get
+        //    {
+        //        if (this.ContainsKey("contentItemVersionId"))
+        //        {
+        //            return this["contentItemVersionId"].ToString();
+        //        }
+        //        return null;
+        //    }
+        //}
 
         /// <summary>
         /// The content type of the content item.
@@ -61,38 +61,38 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
         /// <summary>
         /// Whether the version is published or not.
         /// </summary>
-        public bool? Published
-        {
-            get
-            {
-                if (this.ContainsKey("published"))
-                {
-                    return (bool)this["published"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        //public bool? Published
+        //{
+        //    get
+        //    {
+        //        if (this.ContainsKey("published"))
+        //        {
+        //            return (bool)this["published"];
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Whether the version is the latest version of the content item.
         /// </summary>
-        public bool? Latest
-        {
-            get
-            {
-                if (this.ContainsKey("latest"))
-                {
-                    return (bool)this["latest"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        //public bool? Latest
+        //{
+        //    get
+        //    {
+        //        if (this.ContainsKey("latest"))
+        //        {
+        //            return (bool)this["latest"];
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// The text representing this content item.

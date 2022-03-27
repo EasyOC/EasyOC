@@ -39,6 +39,10 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                     {
                         Name = "contentItemId",
                         Description = S["Content item id"]
+                    }, new QueryArgument<StringGraphType>
+                    {
+                        Name = "contentItemVersionId",
+                        Description = S["Content item version id"]
                     }
                 ),
                 Resolver = new AsyncFieldResolver<ContentItem>(ResolveAsync)
@@ -52,11 +56,13 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
         private async Task<ContentItem> ResolveAsync(ResolveFieldContext context)
         {
             var contentItemId = context.GetArgument<string>("contentItemId");
+            var contentItemVersionId = context.GetArgument<string>("contentItemVersionId");
             var session = _httpContextAccessor.HttpContext.RequestServices.GetService<YesSql.ISession>();
             var contentItem = await session
                       .Query<ContentItem, ContentItemIndex>()
                       .Where(x =>
-                          x.ContentItemId == contentItemId)
+                          x.ContentItemId == contentItemId&&(x.Latest||x.Published))
+                      .WhereIf(!string.IsNullOrWhiteSpace(contentItemVersionId), x => x.ContentItemVersionId == contentItemVersionId)
                       .FirstOrDefaultAsync();
             return contentItem;
         }

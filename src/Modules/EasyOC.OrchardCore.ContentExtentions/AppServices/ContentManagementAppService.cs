@@ -42,7 +42,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             var typeDef = _contentDefinitionManager.GetTypeDefinition(model.ContentType);
             if (typeDef == null)
             {
-                throw new AppFriendlyException("invaild property: contentType", StatusCodes.Status400BadRequest);
+                throw new AppFriendlyException($"invaild property: contentType ,'{model.ContentType}' is not found "
+                    , StatusCodes.Status400BadRequest);
             }
             var contentItem = await _contentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
             if (contentItem == null)
@@ -66,7 +67,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.EditContent, contentItem))
                 {
-                    throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized, "当前用户没有权限更新此内容");
                 }
                 contentItem.Merge(MergeFromSimpleData(contentItem, model, typeDef), UpdateJsonMergeSettings);
 
@@ -94,32 +95,22 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
         public static ContentItem MergeFromSimpleData(ContentItem contentItem, ContentModel model, ContentTypeDefinition typeDefinition)
         {
             JObject jObject = JObject.FromObject(model);
-            //填充自带属性
-            var selfPart = typeDefinition.Parts.FirstOrDefault(x => x.Name == model.ContentType);
 
             #region Update BaseInfo
             if (model.ContentItemId != null)
             {
                 contentItem.ContentItemId = model.ContentItemId;
             }
-            if (model.ContentItemVersionId != null)
-            {
-                contentItem.ContentItemId = model.ContentItemVersionId;
-            }
+
             if (model.DisplayText != null)
             {
                 contentItem.DisplayText = model.DisplayText;
             }
-            if (model.Published.HasValue)
-            {
-                contentItem.Published = model.Published.Value;
-            }
-            //if (model.Latest.HasValue)
-            //{
-            //    contentItem.Latest = model.Latest.Value;
-            //}
+
 
             #endregion
+            //填充自带属性
+            var selfPart = typeDefinition.Parts.FirstOrDefault(x => x.Name == model.ContentType);
             if (selfPart != null)
             {
                 foreach (var item in selfPart.PartDefinition.Fields)
@@ -127,7 +118,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
                     if (fieldPath != null)
                     {
-                        if (jObject.Property(item.Name.ToCamelCase())!= null)
+                        if (jObject.ContainsKey(item.Name.ToCamelCase()))
                         {
                             contentItem.Content[contentItem.ContentType][item.Name][fieldPath] = jObject[(item.Name.ToCamelCase())];
 
@@ -138,16 +129,19 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
             foreach (var part in typeDefinition.Parts.Where(x => x.Name != contentItem.ContentType))
             {
+                JToken partData;
+                if (!jObject.ContainsKey(part.Name.ToCamelCase()) || (partData = jObject[part.Name.ToCamelCase()]) == null)
+                {
+                    continue;
+                }
+                var partObj = new JObject(partData);
                 foreach (var item in part.PartDefinition.Fields)
                 {
                     var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
-                    if (fieldPath != null)
+                    if (fieldPath != null && partObj.ContainsKey(item.Name.ToCamelCase()))
                     {
-                        if (jObject.ContainsKey(part.Name.ToCamelCase()) && jObject[part.Name.ToCamelCase()][item.Name.ToCamelCase()].HasValues)
-                        {
-                            contentItem.Content[part.Name][item.Name][fieldPath] =
-                               jObject[part.Name.ToCamelCase()][item.Name.ToCamelCase()];
-                        }
+                        contentItem.Content[part.Name][item.Name][fieldPath] =
+                               partObj[item.Name.ToCamelCase()];
 
                     }
 
