@@ -19,6 +19,7 @@ using OrchardCore.Users;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EasyOC.Core.Application
 {
@@ -40,7 +41,7 @@ namespace EasyOC.Core.Application
         protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
-        protected ClaimsPrincipal User => HttpContextAccessor.HttpContext.User;
+        protected ClaimsPrincipal HttpUser => HttpContextAccessor.HttpContext.User;
 
         protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetRequiredService<IAuthorizationService>();
 
@@ -84,6 +85,8 @@ namespace EasyOC.Core.Application
 
 
         protected UserManager<IUser> UserManager => LazyServiceProvider.LazyGetRequiredService<UserManager<IUser>>();
+
+        protected Task<IUser> CurrentUserAsync => LazyServiceProvider.LazyGetService(UserManager.GetUserAsync(HttpUser));
 
     }
 }

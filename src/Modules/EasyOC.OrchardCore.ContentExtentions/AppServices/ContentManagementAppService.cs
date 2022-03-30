@@ -40,7 +40,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
             }
 
-            if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.DeleteContent, contentItem))
+            if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.DeleteContent, contentItem))
             {
                 throw new AppFriendlyException(HttpStatusCode.Unauthorized);
             }
@@ -67,7 +67,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             var contentItem = await _contentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
             if (contentItem == null)
             {
-                if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.PublishContent))
+                if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
                 {
                     throw new AppFriendlyException(HttpStatusCode.Unauthorized);
                 }
@@ -84,7 +84,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             }
             else
             {
-                if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.EditContent, contentItem))
+                if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.EditContent, contentItem))
                 {
                     throw new AppFriendlyException(HttpStatusCode.Unauthorized, "当前用户没有权限更新此内容");
                 }

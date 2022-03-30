@@ -62,7 +62,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         public async Task<PagedResult<UserListItemDto>> GetAllAsync(GetAllUserInput input)
         {
             var authUser = new User();
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, authUser))
+            if (!await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ViewUsers, authUser))
             {
                 throw new UnauthorizedAccessException();
             }
@@ -323,11 +323,11 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             // When no id is provided we assume the user is trying to edit their own profile.
             if (String.IsNullOrEmpty(id))
             {
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                id = HttpUser.FindFirstValue(ClaimTypes.NameIdentifier);
             }
             else
             {
-                if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
+                if (!await _authorizationService.AuthorizeAsync(HttpUser, CommonPermissions.ViewUsers))
                 {
                     throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
                 }
@@ -354,8 +354,8 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             if (String.IsNullOrEmpty(userDto.UserId))
             {
                 editingOwnUser = true;
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
+                id = HttpUser.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (!await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ManageOwnUserInformation))
                 {
                     throw new AppFriendlyException(HttpStatusCode.Unauthorized);
                 }
@@ -367,7 +367,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 throw new AppFriendlyException(HttpStatusCode.NotFound);
             }
 
-            if (!editingOwnUser && !await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, user))
+            if (!editingOwnUser && !await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ViewUsers, user))
             {
                 throw new AppFriendlyException(HttpStatusCode.Unauthorized);
             }
@@ -376,7 +376,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             var result = await _userManager.UpdateAsync(user);
             if (result.Errors.Count() == 0)
             {
-                if (String.Equals(User.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
+                if (String.Equals(HttpUser.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
                 {
                     await _signInManager.RefreshSignInAsync(user);
                 }
@@ -395,7 +395,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         [HttpPost]
         public async Task DeleteAsync(string id)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            if (!await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ManageUsers))
             {
                 throw new UnauthorizedAccessException();
 
@@ -462,6 +462,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         {
             return ObjectMapper.Map<IEnumerable<ContentTypeDefinitionDto>>(GetUserSettingsTypeDefinitions());
         }
+
 
         [NonDynamicMethod]
         public IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions()

@@ -10,14 +10,14 @@ using OrchardCore.ContentManagement.Records;
 using System.Threading.Tasks;
 using YesSql;
 
-namespace EasyOC.OrchardCore.OpenApi.GraphQL
+namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
 {
-    public class ContentItemAllVersionQuery : ISchemaBuilder
+    public class ContentItemByVersionQuery : ISchemaBuilder
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStringLocalizer S;
 
-        public ContentItemAllVersionQuery(IHttpContextAccessor httpContextAccessor,
+        public ContentItemByVersionQuery(IHttpContextAccessor httpContextAccessor,
             IStringLocalizer<ContentItemAllVersionQuery> localizer)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -31,15 +31,11 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
         {
             var field = new FieldType
             {
-                Name = "ContentItemAllVersion",
+                Name = "ContentItemByVersion",
                 Description = S["Content items are instances of content types, just like objects are instances of classes."],
                 Type = typeof(ContentItemInterface),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<StringGraphType>>
-                    {
-                        Name = "contentItemId",
-                        Description = S["Content item id"]
-                    }, new QueryArgument<StringGraphType>
                     {
                         Name = "contentItemVersionId",
                         Description = S["Content item version id"]
@@ -55,15 +51,9 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
 
         private async Task<ContentItem> ResolveAsync(ResolveFieldContext context)
         {
-            var contentItemId = context.GetArgument<string>("contentItemId");
             var contentItemVersionId = context.GetArgument<string>("contentItemVersionId");
-            var session = _httpContextAccessor.HttpContext.RequestServices.GetService<YesSql.ISession>();
-            var contentItem = await session
-                      .Query<ContentItem, ContentItemIndex>()
-                      .Where(x =>
-                          x.ContentItemId == contentItemId&&(x.Latest||x.Published))
-                      .WhereIf(!string.IsNullOrWhiteSpace(contentItemVersionId), x => x.ContentItemVersionId == contentItemVersionId)
-                      .FirstOrDefaultAsync();
+            var contentManager = _httpContextAccessor.HttpContext.RequestServices.GetService<IContentManager>();
+            var contentItem = await contentManager.GetVersionAsync(contentItemVersionId);
             return contentItem;
         }
     }

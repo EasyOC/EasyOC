@@ -1,7 +1,9 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.AppServices;
+using EasyOC.OrchardCore.ContentExtentions.GraphQL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using OrchardCore.Apis.GraphQL;
 using OrchardCore.Modules;
 using System;
 
@@ -15,16 +17,10 @@ namespace EasyOC.OrchardCore.ContentExtentions
         {
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
-
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
-        {
-            //builder.UseDynamicWebApi((serviceProvider, options) =>
-            //{
-            //    options.AddAssemblyOptions(this.GetType().Assembly);
-            //});
-
+        { 
             routes.MapAreaControllerRoute(
                 name: "Home",
                 areaName: "EasyOC.OrchardCore.ContentExtentions",
