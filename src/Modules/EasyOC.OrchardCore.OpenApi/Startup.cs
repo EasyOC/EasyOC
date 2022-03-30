@@ -54,5 +54,5 @@ namespace EasyOC.OrchardCore.OpenApi
                 defaults: new { controller = "Home", action = "Index", id = "" }
             );
         }
-    }
+    }     
 }

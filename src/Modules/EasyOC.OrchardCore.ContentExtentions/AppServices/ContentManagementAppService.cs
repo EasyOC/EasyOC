@@ -30,7 +30,26 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
         private static readonly JsonMergeSettings UpdateJsonMergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
 
+        public async Task<bool> DeleteAsync(string contentItemId)
+        {
+            var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
 
+            if (contentItem == null)
+            {
+                throw new AppFriendlyException(HttpStatusCode.NotFound);
+
+            }
+
+            if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.DeleteContent, contentItem))
+            {
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+            }
+
+            await _contentManager.RemoveAsync(contentItem);
+
+            return true;
+
+        }
         public async Task<string> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
         {
             // It is really important to keep the proper method calls order with the ContentManager
@@ -101,6 +120,10 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 contentItem.ContentItemId = model.ContentItemId;
             }
+            //if (model.ContentItemVersionId != null)
+            //{
+            //    contentItem.ContentItemVersionId = model.ContentItemVersionId;
+            //}
 
             if (model.DisplayText != null)
             {

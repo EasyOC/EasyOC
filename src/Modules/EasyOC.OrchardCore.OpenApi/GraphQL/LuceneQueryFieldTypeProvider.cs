@@ -51,39 +51,29 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                 try
                 {
                     var querySchema = JObject.Parse(query.Schema);
+                    if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
                     if (!querySchema.ContainsKey("type"))
                     {
                         _logger.LogError("The Query '{Name}' schema is invalid, the 'type' property was not found.", name);
                         continue;
-                    }
+                    } 
                     var type = querySchema["type"].ToString();
                     FieldType fieldType;
-
                     var fieldTypeName = querySchema["fieldTypeName"]?.ToString() ?? query.Name;
-                    if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
+
+                    if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var contentType = type.Remove(0, 12);
-                            fieldType = BuildTotalContentTypeFieldType(schema, contentType, query, fieldTypeName);
-                        }
-                        else
-                        {
-                            fieldType = BuildTotalSchemaBasedFieldType(query, querySchema, fieldTypeName);
-                        }
+                        var contentType = type.Remove(0, 12);
+                        fieldType = BuildContentTypeFieldType(schema, contentType, query, fieldTypeName);
                     }
                     else
                     {
-                        if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var contentType = type.Remove(0, 12);
-                            fieldType = BuildContentTypeFieldType(schema, contentType, query, fieldTypeName);
-                        }
-                        else
-                        {
-                            fieldType = BuildSchemaBasedFieldType(query, querySchema, fieldTypeName);
-                        }
+                        fieldType = BuildSchemaBasedFieldType(query, querySchema, fieldTypeName);
                     }
+
 
                     if (fieldType != null && !schema.Query.HasField(fieldType.Name))
                     {

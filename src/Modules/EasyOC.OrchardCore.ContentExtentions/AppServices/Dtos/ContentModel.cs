@@ -30,17 +30,17 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
         /// <summary>
         /// The logical identifier of the versioned content item.
         /// </summary>
-        //public string ContentItemVersionId
-        //{
-        //    get
-        //    {
-        //        if (this.ContainsKey("contentItemVersionId"))
-        //        {
-        //            return this["contentItemVersionId"].ToString();
-        //        }
-        //        return null;
-        //    }
-        //}
+        public string ContentItemVersionId
+        {
+            get
+            {
+                if (this.ContainsKey("contentItemVersionId"))
+                {
+                    return this["contentItemVersionId"].ToString();
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// The content type of the content item.
