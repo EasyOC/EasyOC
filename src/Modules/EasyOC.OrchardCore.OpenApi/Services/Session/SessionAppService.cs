@@ -17,7 +17,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.OpenApi.Services.Session
 {
     [EOCAuthorization]
-    public class SessionAppService : AppServcieBase
+    public class SessionAppService : AppServiceBase
     {
         private readonly IRolesAppService _rolesAppService;
         private readonly RoleManager<IRole> _roleManager;

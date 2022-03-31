@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 {
     [EOCAuthorization(OCPermissions.ViewContentTypes)]
-    public class ContentTypeManagementAppService : AppServcieBase, IContentTypeManagementAppService
+    public class ContentTypeManagementAppService : AppServiceBase, IContentTypeManagementAppService
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IQueryManager _queryManager;

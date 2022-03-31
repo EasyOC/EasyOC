@@ -25,10 +25,10 @@ using System.Threading.Tasks;
 namespace EasyOC.Core.Application
 {
     [DynamicWebApi, Authorize(AuthenticationSchemes = "Api"), IgnoreAntiforgeryToken, AllowAnonymous]
-    public class AppServcieBase : IAppServcieBase, IDynamicWebApi
+    public class AppServiceBase : IAppServcieBase, IDynamicWebApi
     {
         public IServiceProvider CurrentServiceProvider { get; }
-        public AppServcieBase()
+        public AppServiceBase()
         {
             CurrentServiceProvider = ShellScope.Current.ServiceProvider;
             LazyServiceProvider = new EasyOCLazyServiceProvider(CurrentServiceProvider);

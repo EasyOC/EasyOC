@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 {
     [EOCAuthorization("AccessContentApi")]
-    public class ContentManagementAppService : AppServcieBase
+    public class ContentManagementAppService : AppServiceBase
     {
 
         private readonly IContentDefinitionManager _contentDefinitionManager;

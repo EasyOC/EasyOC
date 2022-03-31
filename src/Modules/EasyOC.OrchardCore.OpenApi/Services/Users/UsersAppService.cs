@@ -33,7 +33,7 @@ using Permissions = OrchardCore.Users.Permissions;
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
     [EOCAuthorization(OCPermissions.View_Users)]
-    public class UsersAppService : AppServcieBase, IUsersAppService
+    public class UsersAppService : AppServiceBase, IUsersAppService
     {
         private readonly UserManager<IUser> _userManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;

@@ -20,7 +20,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.Excel.Services
 {
     [DynamicWebApi]
-    public class ExcelAppService : AppServcieBase, IDynamicWebApi, IExcelAppService
+    public class ExcelAppService : AppServiceBase, IDynamicWebApi, IExcelAppService
     {
         private readonly IContentManager _contentManager;
 

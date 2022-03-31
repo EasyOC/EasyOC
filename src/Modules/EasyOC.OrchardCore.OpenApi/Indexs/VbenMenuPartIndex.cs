@@ -13,17 +13,8 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
     public class VbenMenuPartIndex : FreeSqlDocumentIndex
     {
         public string ContentItemId { get; set; }
-
-        /// <summary>
-        /// Whether this content item is published.
-        /// </summary>
         public bool Published { get; set; }
-
-        /// <summary>
-        /// Whether this content item is latest.
-        /// </summary>
         public bool Latest { get; set; }
-
         public string MenuName { get; set; }
         public int OrderNo { get; set; }
         public string RoutePath { get; set; }

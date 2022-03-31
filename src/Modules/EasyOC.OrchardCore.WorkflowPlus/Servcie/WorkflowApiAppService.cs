@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace EasyOC.OrchardCore.WorkflowPlus.Servcie
 {
-    public class WorkflowApiAppService : AppServcieBase, IWorkflowApiAppService
+    public class WorkflowApiAppService : AppServiceBase, IWorkflowApiAppService
     {
 
 
