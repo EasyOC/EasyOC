@@ -1,0 +1,38 @@
+<!-- htmlcs-disable -->
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Editor</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        
+    
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/react-datetime/css/react-datetime.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/cropperjs/dist/cropper.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/video-react/dist/video-react.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/tinymce/skins/ui/oxide/skin.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/froala-editor/css/froala_style.min.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/froala-editor/css/froala_editor.pkgd.min.css" />
+    <link rel="stylesheet" href="node_modules/amis/lib/themes/default.css" />
+    <link rel="stylesheet" href="node_modules/amis-editor/dist/style.css" />
+    <link rel="stylesheet" href="scss/style.css" />
+</head>
+
+    <body>
+        <div id="root" class="app-wrapper"></div>
+    
+<script src="mod.js"></script>
+<script type="text/javascript" src="pkg/editor.html_map.js"></script>
+<script type="text/javascript">
+            /* @require ./index.jsx 标记为同步依赖，提前加载 */
+            /* globals amis */
+            amis.require(['node_modules/amis-editor/dist/index.min','node_modules/react-dom/index'], function (editor, reactDom) {
+                editor.mountInIframe(document.getElementById('root'), reactDom);
+            });
+        </script>
+</body>
+</html>

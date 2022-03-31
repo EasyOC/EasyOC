@@ -1,0 +1,263 @@
+{
+  "name": "AMIS Page",
+  "displayName": "AMIS Page init",
+  "description": "",
+  "author": "JiZhouSoft",
+  "website": "jizhousoft.com",
+  "version": "0.1",
+  "issetuprecipe": false,
+  "categories": [],
+  "tags": [],
+  "steps": [
+    {
+      "name": "ContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "AmisPage",
+          "DisplayName": "Amis Page",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AmisPage",
+              "Name": "AmisPage",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "3"
+                }
+              }
+            },
+            {
+              "PartName": "AliasPart",
+              "Name": "AliasPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "AutoroutePart",
+              "Name": "AutoroutePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "PartName": "HtmlBodyPart",
+              "Name": "HtmlBodyPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "PartName": "PreviewPart",
+              "Name": "PreviewPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "5"
+                }
+              }
+            },
+            {
+              "PartName": "PublishLaterPart",
+              "Name": "PublishLaterPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "6"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "AliasPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a way to define custom aliases for content items."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "AutoroutePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a custom url for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "PreviewPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a way to define the url that is used to render your content item for preview. You only need to use this for the content preview feature when running the frontend decoupled from the admin."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "HtmlBodyPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides an HTML Body for your content item."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0"
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "PublishLaterPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Adds the ability to schedule content items to be published at a given future date and time."
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "AmisPage",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "JsonSchema",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "JsonSchema",
+                  "Editor": "Monaco"
+                },
+                "TextFieldSettings": {},
+                "ContentIndexSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"javascript\"\r\n}"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AdminMenu",
+      "data": [
+        {
+          "Id": "8515a9af81e04718a12746a05e8444f1",
+          "Name": "AMIS Editor",
+          "Enabled": true,
+          "MenuItems": [
+            {
+              "$type": "OrchardCore.AdminMenu.AdminNodes.LinkAdminNode, OrchardCore.AdminMenu",
+              "LinkText": "AMIS Editor",
+              "LinkUrl": "/JZSoft.OrchardCore.Amis/amis-editor/index",
+              "IconClass": "fas fa-braille",
+              "PermissionNames": [
+                "Amis_Editor"
+              ],
+              "UniqueId": "67980d1546c642c892b7a5053db2f761",
+              "Enabled": true,
+              "Text": null,
+              "Id": null,
+              "Href": null,
+              "Url": null,
+              "Position": null,
+              "Priority": 0,
+              "LinkToFirstChild": true,
+              "LocalNav": false,
+              "Culture": null,
+              "Items": [],
+              "Classes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "content",
+      "data": [
+        {
+          "ContentItemId": "47e6ra4qatszmzb9rdhsxfhfnv",
+          "ContentType": "AmisPage",
+          "DisplayText": "TestAMIS",
+          "Latest": true,
+          "Published": true,
+          "Owner": "[js: parameters('AdminUserId')]",
+          "Author": "[js: parameters('AdminUsername')]",
+          "AmisPage": {
+            "JsonSchema": {
+              "Text": " return {\r\n  \"type\": \"page\",\r\n  \"body\": {\r\n    \"type\": \"service\",\r\n    \"api\": \"https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/sample?perPage=5\",\r\n    \"body\": [\r\n      {\r\n        \"type\": \"panel\",\r\n        \"title\": \"简单 List 示例\",\r\n        \"body\": {\r\n          \"type\": \"list\",\r\n          \"source\": \"$rows\",\r\n          \"listItem\": {\r\n            \"body\": [\r\n              {\r\n                \"type\": \"hbox\",\r\n                \"columns\": [\r\n                  {\r\n                    \"label\": \"Engine\",\r\n                    \"name\": \"engine\"\r\n                  },\r\n                  {\r\n                    \"name\": \"version\",\r\n                    \"label\": \"Version\"\r\n                  }\r\n                ]\r\n              }\r\n            ],\r\n            \"actions\": [\r\n              {\r\n                \"type\": \"button\",\r\n                \"level\": \"link\",\r\n                \"label\": \"查看详情\",\r\n                \"actionType\": \"dialog\",\r\n                \"dialog\": {\r\n                  \"title\": \"查看详情\",\r\n                  \"body\": {\r\n                    \"type\": \"form\",\r\n                    \"body\": [\r\n                      {\r\n                        \"label\": \"Engine\",\r\n                        \"name\": \"engine\",\r\n                        \"type\": \"static\"\r\n                      },\r\n                      {\r\n                        \"name\": \"version\",\r\n                        \"label\": \"Version\",\r\n                        \"type\": \"static\"\r\n                      }\r\n                    ]\r\n                  }\r\n                }\r\n              }\r\n            ]\r\n          }\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+            }
+          },
+          "AliasPart": {
+            "Alias": "TestAMIS"
+          },
+          "AutoroutePart": {
+            "Path": "testamis",
+            "SetHomepage": false,
+            "Disabled": false,
+            "RouteContainedItems": false,
+            "Absolute": false
+          },
+          "HtmlBodyPart": {
+            "Html": "ddddddd"
+          },
+          "PreviewPart": {},
+          "PublishLaterPart": {
+            "ScheduledPublishUtc": null
+          },
+          "TitlePart": {
+            "Title": "TestAMIS"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "Templates": {
+        "Content__AmisPage": {
+          "Content": "[file:text('Templates/Content-AmisPage.liquid')]",
+          "Description": null
+        }
+      }
+    }
+  ]
+}

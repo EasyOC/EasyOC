@@ -54,10 +54,8 @@ namespace EasyOC.Core.Filter
             if (isValidationException) context.Result = new BadRequestResult();
             else
             {
-                // 返回友好异常
-                context.Result = new ContentResult()
+                context.Result = new JsonResult(new { Message = exceptionMetadata.Errors, StatusCode = exceptionMetadata.StatusCode })
                 {
-                    Content = exceptionMetadata.Errors.ToString(),
                     StatusCode = exceptionMetadata.StatusCode
                 };
             }

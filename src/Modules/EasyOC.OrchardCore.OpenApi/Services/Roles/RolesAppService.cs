@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
 using EasyOC.Core.DtoModels;
+using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
 using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -68,11 +69,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             var model = new RoleDetailsDto
             {
-                Role = ObjectMapper.Map<RoleDto>(role),
                 Name = role.RoleName,
                 RoleDescription = role.RoleDescription,
-                EffectivePermissions = await GetEffectivePermissions(role, allPermissions),
-                RoleCategoryPermissions = ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions),
+                Permissions = await GetEffectivePermissions(role, allPermissions),
+                //RoleCategoryPermissions = ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions),
                 VbenMenuIds = role.RoleClaims.Where(r => r.ClaimType == RoleClaimType.VbenMenuId.ToString()).Select(x => x.ClaimValue),
             };
 
@@ -144,10 +144,9 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             }
         }
         [EOCAuthorization("ManageRoles")]
-
-        public async Task UpdateRoleAsync(UpdateRoleInput input)
+        public async Task UpdateRoleAsync(RoleDetailsDto input)
         {
-            var role = (Role)await _roleManager.FindByNameAsync(_roleManager.NormalizeKey(input.NormalizedRoleName));
+            var role = (Role)await _roleManager.FindByNameAsync(_roleManager.NormalizeKey(input.Name));
 
             if (role == null)
             {
@@ -156,27 +155,33 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             role.RoleDescription = input.RoleDescription;
 
-            role.RoleClaims.RemoveAll(c => c.ClaimType == RoleClaimType.Permission.ToString());
-            input.RoleClaims.ForEach(c => c.ClaimType = RoleClaimType.Permission);
-            role.RoleClaims.AddRange(ObjectMapper.Map<IEnumerable<RoleClaim>>(input.RoleClaims.AsEnumerable()));
-
-            if (input.VbenMenuIds is not null)
+            role.RoleClaims.Clear();
+            if (input.Permissions is not null && input.Permissions.Any())
             {
-                role.RoleClaims.RemoveAll(c => c.ClaimType == RoleClaimType.VbenMenuId.ToString());
-                input.VbenMenuIds.ForEach(c => c.ClaimType = RoleClaimType.VbenMenuId);
-                role.RoleClaims.AddRange(ObjectMapper.Map<IEnumerable<RoleClaim>>(input.VbenMenuIds.AsEnumerable()));
+                role.RoleClaims.AddRange(input.Permissions
+                   .Select(x => new RoleClaim
+                   {
+                       ClaimType = RoleClaimType.Permission.ToString(),
+                       ClaimValue = x
+                   }));
             }
-
-
-
-
+            if (input.VbenMenuIds is not null && input.VbenMenuIds.Any())
+            {
+                role.RoleClaims.AddRange(input.VbenMenuIds
+                  .Select(x => new RoleClaim
+                  {
+                      ClaimType = RoleClaimType.VbenMenuId.ToString(),
+                      ClaimValue = x
+                  }));
+            }
             await _roleManager.UpdateAsync(role);
 
             await _notifier.SuccessAsync(H["Role updated successfully."]);
 
         }
-      
-        private async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
+
+        [NonDynamicMethod]
+        public async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
         {
             var installedPermissions = new Dictionary<string, IEnumerable<Permission>>();
             foreach (var permissionProvider in _permissionProviders)
@@ -205,15 +210,15 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             return installedPermissions;
         }
-
+        [NonDynamicMethod]
         public async Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync()
         {
             var installedPermissions = await GetInstalledPermissionsAsync();
 
             return ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions);
         }
-
-        private async Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions)
+        [NonDynamicMethod]
+        public async Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions)
         {
             // Create a fake user to check the actual permissions. If the role is anonymous
             // IsAuthenticated needs to be false.

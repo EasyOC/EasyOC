@@ -74,7 +74,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
             var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
             //无法判断 dynamic 类型 ，所以要先显示指定类型
-            return CurrentServiceProvider.GetFreeSqlFormPool(providerName, connectionStr);
+            return CurrentServiceProvider.GetFreeSql(providerName, connectionStr);
         }
         /// <summary>
         /// Get all Connection Config

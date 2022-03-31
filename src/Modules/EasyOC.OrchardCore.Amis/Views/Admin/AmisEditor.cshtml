@@ -1,0 +1,53 @@
+
+
+@{
+    Layout = null;
+    var resourceRoot = "/JZSoft.OrchardCore.Amis/amis-editor";
+}
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <title>Editor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+
+
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/@@fortawesome/fontawesome-free/css/all.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/@@fortawesome/fontawesome-free/css/v4-shims.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/react-datetime/css/react-datetime.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/cropperjs/dist/cropper.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/video-react/dist/video-react.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/tinymce/skins/ui/oxide/skin.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/froala-editor/css/froala_style.min.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/froala-editor/css/froala_editor.pkgd.min.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/amis/lib/themes/default.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/node_modules/amis-editor/dist/style.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/scss/style.css" />
+
+</head> 
+
+<body>
+    <div id="amisRoot" class="app-wrapper"></div>
+
+    <script asp-src="~/JZSoft.OrchardCore.Amis/mod.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/pkg/index.html_map.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/pkg/npm.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/store/Page.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/store/index.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/route/index.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/App.js"></script>
+    <script type="text/javascript" asp-src="@(resourceRoot)/index.js"></script>
+    <script type="text/javascript">
+
+        /* @@require index.tsx 标记为同步依赖，提前加载 */
+        amis.require(['index.tsx'], function (app) {
+            var initialState = {};
+            app.bootstrap(document.getElementById('amisRoot'), initialState);
+        });
+    </script>
+</body>
+</html>

@@ -27,7 +27,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IContentManagementAppService _contentManagementAppService;
+        private readonly IContentTypeManagementAppService _contentManagementAppService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentManager _contentManager;
@@ -50,7 +50,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             INotifier notifier,
             IUpdateModelAccessor updateModelAccessor,
             IContentDefinitionManager contentDefinitionManager,
-            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider, IRDBMSAppService rDBMSAppService, IContentManagementAppService contentManagementAppService, IServiceProvider serviceProvider)
+            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider, IRDBMSAppService rDBMSAppService, IContentTypeManagementAppService contentManagementAppService, IServiceProvider serviceProvider)
         {
             _authorizationService = authorizationService;
             _siteService = siteService;
@@ -110,7 +110,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
 
             var connectionObject = await _contentManager.GetAsync(connectionConfigId);
 
-            IFreeSql freeSql = _serviceProvider.GetFreeSqlFormPool((string)connectionObject.Content.DbConnectionConfig.ProviderName.Text.Value,
+            IFreeSql freeSql = _serviceProvider.GetFreeSql((string)connectionObject.Content.DbConnectionConfig.ProviderName.Text.Value,
                 (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
             using (freeSql)
             {
