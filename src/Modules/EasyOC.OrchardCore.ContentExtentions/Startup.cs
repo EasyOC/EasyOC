@@ -1,11 +1,13 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.AppServices;
 using EasyOC.OrchardCore.ContentExtentions.GraphQL;
+using EasyOC.OrchardCore.ContentExtentions.Handlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.Modules;
 using System;
 
@@ -20,6 +22,9 @@ namespace EasyOC.OrchardCore.ContentExtentions
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
             services.Replace(ServiceDescriptor.Scoped<IContentManager, EOCDefaultContentManager>());
+            services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
+            services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
+
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
