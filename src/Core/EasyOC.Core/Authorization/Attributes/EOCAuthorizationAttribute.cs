@@ -39,10 +39,8 @@ namespace EasyOC
         {
             //忽略权限检查
             if (Ignore) return;
-            var ServiceProvider = ShellScope.Current.ServiceProvider;
-            var httpAccessor = ServiceProvider.GetRequiredService<IHttpContextAccessor>();
 
-            if (!(httpAccessor.HttpContext.User?.Identity?.IsAuthenticated ?? false))
+            if (!(context.HttpContext.User?.Identity?.IsAuthenticated ?? false))
             {
                 context.Result = new ContentResult()
                 {
@@ -53,6 +51,7 @@ namespace EasyOC
             }
             if (_permissions.Any())
             {
+                var ServiceProvider = ShellScope.Current.ServiceProvider; 
                 var _orchardCorePermissionService = ServiceProvider.GetRequiredService<IOrchardCorePermissionService>();
                 var _authorizationService =
                     ServiceProvider.GetRequiredService<IAuthorizationService>();

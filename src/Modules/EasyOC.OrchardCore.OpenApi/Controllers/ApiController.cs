@@ -27,9 +27,9 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
     {
         private readonly IQueryManager _queryManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IContentManagementAppService _contentManagementAppService;
+        private readonly IContentTypeManagementAppService _contentManagementAppService;
         private readonly ISession _session;
-        public ApiController(IQueryManager queryManager, IContentDefinitionManager contentDefinitionManager, ISession session, IContentManagementAppService contentManagementAppService)
+        public ApiController(IQueryManager queryManager, IContentDefinitionManager contentDefinitionManager, ISession session, IContentTypeManagementAppService contentManagementAppService)
         {
             _queryManager = queryManager;
             _contentDefinitionManager = contentDefinitionManager;

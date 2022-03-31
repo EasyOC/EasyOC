@@ -9,9 +9,9 @@ namespace EasyOC.OrchardCore.ContentExtentions.Controllers
     public class AdminController : Controller
     {
         private readonly IAuthorizationService _authorizationService;
-        private readonly IContentManagementAppService _contentManagementAppService;
+        private readonly IContentTypeManagementAppService _contentManagementAppService;
 
-        public AdminController(IContentManagementAppService contentManagementAppService, IAuthorizationService authorizationService)
+        public AdminController(IContentTypeManagementAppService contentManagementAppService, IAuthorizationService authorizationService)
         {
             _contentManagementAppService = contentManagementAppService;
             _authorizationService = authorizationService;

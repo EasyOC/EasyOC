@@ -38,7 +38,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
                  );
             SchemaBuilder.AlterIndexTable<UserProfileIndex>(table => table
                 .CreateIndex("IDX_UserProfileIndex_DocumentId",
-                    nameof(UserProfileIndex.DocumentId),
+                    "DocumentId",
                     nameof(UserProfileIndex.UserId),
                     nameof(UserProfileIndex.UserName),
                     nameof(UserProfileIndex.FirstName),

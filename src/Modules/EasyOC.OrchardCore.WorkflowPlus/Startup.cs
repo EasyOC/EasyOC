@@ -22,6 +22,7 @@ namespace EasyOC.OrchardCore.WorkflowPlus
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(this.GetType().Assembly);
             services.Replace(ServiceDescriptor.Scoped<IWorkflowManager, JZWorkflowManager>());
             services.AddActivity<PowerShellTask, PowerShellTaskDisplayDriver>();
             services.AddActivity<EmailPlus, EmailPlusDisplayDriver>();

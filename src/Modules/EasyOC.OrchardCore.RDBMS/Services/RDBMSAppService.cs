@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EasyOC;
 using EasyOC.Core.Application;
 using EasyOC.Core.Extensions;
 using EasyOC.DynamicWebApi.Attributes;
@@ -70,8 +71,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         public async Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId)
         {
             var connectionObject = await GetConnectionConfigAsync(connectionConfigId);
-            return FreeSqlProviderFactory.GetFreeSql(connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value,
-                connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
+            var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
+            var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
+            //无法判断 dynamic 类型 ，所以要先显示指定类型
+            return CurrentServiceProvider.GetFreeSql(providerName, connectionStr);
         }
         /// <summary>
         /// Get all Connection Config
@@ -161,7 +164,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 
         [HttpGet]
         public async Task<string> GenerateRecipeAsync(string connectionConfigId, string tableName)
-        {  
+        {
             IFreeSql freeSql = await GetFreeSqlAsync(connectionConfigId);
             using (freeSql)
             {
@@ -227,7 +230,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                             ContentPartFieldSettings = new { DisplayName = item.Name, Position = (index++).ToString() }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.CsType);
-                        if (targetFieldType==null)
+                        if (targetFieldType == null)
                         {
                             targetFieldType = _contentFieldsValuePathProvider.GetField(typeof(int));
                         }

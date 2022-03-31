@@ -3,7 +3,7 @@
 namespace EasyOC.DynamicWebApi.Attributes
 {
     [Serializable]
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class NonDynamicMethodAttribute : Attribute
     {
 

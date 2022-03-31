@@ -5,28 +5,33 @@ using EasyOC.DynamicWebApi.Attributes;
 using Jint;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
+using OrchardCore.Users;
+using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EasyOC.Core.Application
 {
     [DynamicWebApi, Authorize(AuthenticationSchemes = "Api"), IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServcieBase : IAppServcieBase, IDynamicWebApi
     {
-
+        public IServiceProvider CurrentServiceProvider { get; }
         public AppServcieBase()
         {
-            var serviceProvider = ShellScope.Current.ServiceProvider;
-            LazyServiceProvider = new EasyOCLazyServiceProvider(serviceProvider);
+            CurrentServiceProvider = ShellScope.Current.ServiceProvider;
+            LazyServiceProvider = new EasyOCLazyServiceProvider(CurrentServiceProvider);
         }
 
         protected IEasyOCLazyServiceProvider LazyServiceProvider
@@ -37,7 +42,7 @@ namespace EasyOC.Core.Application
         protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
-        protected ClaimsPrincipal User => HttpContextAccessor.HttpContext.User;
+        protected ClaimsPrincipal HttpUser => HttpContextAccessor.HttpContext.User;
 
         protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetRequiredService<IAuthorizationService>();
 
@@ -62,7 +67,7 @@ namespace EasyOC.Core.Application
         protected IHtmlLocalizer H => LazyServiceProvider.LazyGetService<IHtmlLocalizer>(provider => HtmlLocalizerFactory?.Create(GetType()));
 
         #endregion
-
+        protected IContentManager ContentManager => LazyServiceProvider.LazyGetRequiredService<IContentManager>();
         protected YesSql.ISession YesSession => LazyServiceProvider.LazyGetRequiredService<YesSql.ISession>();
         protected IFreeSql FreeSqlSession => LazyServiceProvider.LazyGetRequiredService<IFreeSql>();
 
@@ -79,6 +84,10 @@ namespace EasyOC.Core.Application
             });
         protected Engine JSEngine => JSScope.Engine;
 
+
+        protected UserManager<IUser> UserManager => LazyServiceProvider.LazyGetRequiredService<UserManager<IUser>>();
+
+        protected Task<IUser> CurrentUserAsync => LazyServiceProvider.LazyGetService(UserManager.GetUserAsync(HttpUser));
 
     }
 }
