@@ -1,4 +1,6 @@
 ﻿using EasyOC.OrchardCore.OpenApi.Dto;
+using OrchardCore.Security;
+using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,5 +14,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         Task<RoleDetailsDto> GetRoleDetailsAsync(string id);
         Task<List<RoleDto>> GetRolesAsync();
         Task UpdateRoleAsync(RoleDetailsDto input);
+        Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions);
+        Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync();
     }
 }

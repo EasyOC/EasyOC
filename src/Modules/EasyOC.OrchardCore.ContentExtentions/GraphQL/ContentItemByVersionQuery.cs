@@ -18,7 +18,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
         private readonly IStringLocalizer S;
 
         public ContentItemByVersionQuery(IHttpContextAccessor httpContextAccessor,
-            IStringLocalizer<ContentItemAllVersionQuery> localizer)
+            IStringLocalizer<ContentItemByVersionQuery> localizer)
         {
             _httpContextAccessor = httpContextAccessor;
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
@@ -66,7 +67,7 @@ namespace EasyOC.Core.Application
         protected IHtmlLocalizer H => LazyServiceProvider.LazyGetService<IHtmlLocalizer>(provider => HtmlLocalizerFactory?.Create(GetType()));
 
         #endregion
-
+        protected IContentManager ContentManager => LazyServiceProvider.LazyGetRequiredService<IContentManager>();
         protected YesSql.ISession YesSession => LazyServiceProvider.LazyGetRequiredService<YesSql.ISession>();
         protected IFreeSql FreeSqlSession => LazyServiceProvider.LazyGetRequiredService<IFreeSql>();
 

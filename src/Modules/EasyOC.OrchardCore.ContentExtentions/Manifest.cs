@@ -8,7 +8,7 @@ using OrchardCore.Modules.Manifest;
     Version = "0.0.1",
     Description = "EasyOC.OrchardCore.ContentExtentions",
     Category = "Content Management",
-    Dependencies = new[] { Constants.EasyOCCoreModuleId, "OrchardCore.ContentPreview", "OrchardCore.ContentFields" }
+    Dependencies = new[] { Constants.EasyOCCoreModuleId, "OrchardCore.ContentPreview", "OrchardCore.ContentFields", "OrchardCore.Contents" }
 )]
 
 

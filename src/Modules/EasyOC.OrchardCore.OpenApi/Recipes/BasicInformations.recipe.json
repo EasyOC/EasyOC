@@ -165,8 +165,8 @@
           },
           "ContentTypePartDefinitionRecords": [
             {
-              "PartName": "VbenMenu",
-              "Name": "VbenMenu",
+              "PartName": "VbenMenuPart",
+              "Name": "VbenMenuPart",
               "Settings": {
                 "ContentTypePartSettings": {
                   "Position": "1"
@@ -672,12 +672,12 @@
           ]
         },
         {
-          "Name": "VbenMenu",
+          "Name": "VbenMenuPart",
           "Settings": {},
           "ContentPartFieldDefinitionRecords": [
             {
               "FieldName": "TextField",
-              "Name": "menuName",
+              "Name": "MenuName",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "菜单名称",
@@ -687,7 +687,7 @@
             },
             {
               "FieldName": "ContentPickerField",
-              "Name": "parentMenu",
+              "Name": "ParentMenu",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "上级菜单",
@@ -707,7 +707,7 @@
             },
             {
               "FieldName": "NumericField",
-              "Name": "orderNo",
+              "Name": "OrderNo",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "排序",
@@ -717,7 +717,7 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "icon",
+              "Name": "Icon",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "图标",
@@ -727,7 +727,7 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "routePath",
+              "Name": "RoutePath",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "路由地址",
@@ -737,7 +737,7 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "component",
+              "Name": "Component",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "组件路径",
@@ -747,7 +747,7 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "permission",
+              "Name": "Permission",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "权限标识",
@@ -756,8 +756,8 @@
               }
             },
             {
-              "FieldName": "TextField",
-              "Name": "status",
+              "FieldName": "BooleanField",
+              "Name": "Status",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "状态",
@@ -766,8 +766,8 @@
               }
             },
             {
-              "FieldName": "TextField",
-              "Name": "isExt",
+              "FieldName": "BooleanField",
+              "Name": "IsExt",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "是否外链",
@@ -776,8 +776,8 @@
               }
             },
             {
-              "FieldName": "TextField",
-              "Name": "keepalive",
+              "FieldName": "BooleanField",
+              "Name": "Keepalive",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "是否缓存",
@@ -786,8 +786,8 @@
               }
             },
             {
-              "FieldName": "TextField",
-              "Name": "show",
+              "FieldName": "BooleanField",
+              "Name": "Show",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "是否显示",
@@ -797,10 +797,20 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "menuType",
+              "Name": "MenuType",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "菜单类型",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ExtentionData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "扩展信息",
                   "Position": "1"
                 }
               }
@@ -1074,76 +1084,6 @@
           "Name": "SCMQueryExistsedOrderIds",
           "Source": "Sql",
           "Schema": "{\r\n\"DisplayText\":\"string\"\r\n}"
-        },
-        {
-          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Appointment' and Published = true",
-          "ReturnDocuments": true,
-          "Name": "AllAppointments",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Employee' and Published = true and Latest = true",
-          "ReturnDocuments": true,
-          "Name": "AllEmployees",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId \r\nFROM AppointmentIndex\r\nWHERE AppointmentIndex.ContentItemId IN\r\n  (SELECT ContentItemId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})) \r\nAND StartDate BETWEEN '{{ startDate }}' AND '{{ endDate }}'\r\nORDER BY StartDate ASC",
-          "ReturnDocuments": true,
-          "Name": "AppointmentsForCalendarsForDate",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Employee' and TermContentItemId in ({{calendarIds}})",
-          "ReturnDocuments": true,
-          "Name": "EmployeesForCalendars",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})",
-          "ReturnDocuments": true,
-          "Name": "AppointmentForCalendars",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT * FROM HackathonItemsIndex where Owner = '{{owner}}'",
-          "ReturnDocuments": false,
-          "Name": "GetOwner",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='{{type}}'",
-          "ReturnDocuments": true,
-          "Name": "GetItemsForHackathon",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT * FROM HackathonUsersIndex where TeamContentItemId = '{{teamContentItemId}}'",
-          "ReturnDocuments": false,
-          "Name": "GetHackersForTeam",
-          "Source": "Sql",
-          "Schema": "null"
-        },
-        {
-          "Template": "SELECT * FROM HackathonItemsIndex where ContentType ='ScoreEntry' and TeamContentItemId = '{{teamContentItemId}}' and Owner = '{{owner}}'",
-          "ReturnDocuments": false,
-          "Name": "GetScoreEntry",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='Team' and ContentItemId = '{{teamContentItemId}}'",
-          "ReturnDocuments": true,
-          "Name": "GetTeam",
-          "Source": "Sql",
-          "Schema": null
         }
       ]
     },
