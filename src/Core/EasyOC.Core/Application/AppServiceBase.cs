@@ -12,6 +12,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Scripting;
@@ -89,6 +90,11 @@ namespace EasyOC.Core.Application
 
         protected Task<IUser> CurrentUserAsync => LazyServiceProvider.LazyGetService(UserManager.GetUserAsync(HttpUser));
 
+
+        protected IContentDefinitionManager ContentDefinitionManager => LazyServiceProvider.LazyGetRequiredService<IContentDefinitionManager>();
+
+        
+        
     }
 }
 

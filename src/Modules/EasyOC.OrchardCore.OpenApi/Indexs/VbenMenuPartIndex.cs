@@ -6,7 +6,7 @@ using OrchardCore.Entities;
 using YesSql.Indexes;
 namespace EasyOC.OrchardCore.OpenApi.Indexs
 {
-    [AutoMap(typeof(VbenMenuPart), ReverseMap = true)]
+    [AutoMap(typeof(VbenMenu), ReverseMap = true)]
     [EOCIndex("IDX_{tablename}_DocumentId",
         "ContentItemId,Published,Latest,MenuName,RoutePath,Component,MenuType")]
     [EOCTable]
@@ -40,22 +40,30 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
         public override void Describe(DescribeContext<ContentItem> context)
         {
             context.For<VbenMenuPartIndex>()
-                 .When(contentItem => contentItem.Has<VbenMenuPart>())
+                 .When(contentItem => contentItem.Has<VbenMenu>())
                 .Map(menu =>
             {
-                var menuPart = menu.ContentItem.As<VbenMenuPart>();
+                var menuPart = menu.ContentItem.As<VbenMenu>();
 
                 if (menuPart != null)
                 {
-                    var menuPartIndex = _mapper.Map<VbenMenuPartIndex>(menuPart);
-                    menuPartIndex.ContentItemId = menu.ContentItemId;
-                    menuPartIndex.Published = menu.Published;
-                    menuPartIndex.Latest = menu.Latest;
-                    if (menuPartIndex.RoutePath is not null)
+                    try
                     {
-                        menuPartIndex.RoutePath = menuPartIndex.RoutePath.ToLower();
+                        var menuPartIndex = _mapper.Map<VbenMenuPartIndex>(menuPart);
+                        menuPartIndex.ContentItemId = menu.ContentItemId;
+                        menuPartIndex.Published = menu.Published;
+                        menuPartIndex.Latest = menu.Latest;
+                        if (menuPartIndex.RoutePath is not null)
+                        {
+                            menuPartIndex.RoutePath = menuPartIndex.RoutePath.ToLower();
+                        }
+                        return menuPartIndex;
                     }
-                    return menuPartIndex;
+                    catch (System.Exception)
+                    {
+
+                        throw;
+                    }
                 }
                 return null;
             });

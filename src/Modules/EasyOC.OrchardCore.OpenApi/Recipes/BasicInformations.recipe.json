@@ -165,8 +165,8 @@
           },
           "ContentTypePartDefinitionRecords": [
             {
-              "PartName": "VbenMenuPart",
-              "Name": "VbenMenuPart",
+              "PartName": "VbenMenu",
+              "Name": "VbenMenu",
               "Settings": {
                 "ContentTypePartSettings": {
                   "Position": "1"
@@ -672,7 +672,7 @@
           ]
         },
         {
-          "Name": "VbenMenuPart",
+          "Name": "VbenMenu",
           "Settings": {},
           "ContentPartFieldDefinitionRecords": [
             {
@@ -756,7 +756,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "Status",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -766,7 +766,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "IsExt",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -776,7 +776,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "Keepalive",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -786,7 +786,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "Show",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -801,16 +801,6 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "菜单类型",
-                  "Position": "1"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "ExtentionData",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "扩展信息",
                   "Position": "1"
                 }
               }
@@ -1084,6 +1074,76 @@
           "Name": "SCMQueryExistsedOrderIds",
           "Source": "Sql",
           "Schema": "{\r\n\"DisplayText\":\"string\"\r\n}"
+        },
+        {
+          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Appointment' and Published = true",
+          "ReturnDocuments": true,
+          "Name": "AllAppointments",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Employee' and Published = true and Latest = true",
+          "ReturnDocuments": true,
+          "Name": "AllEmployees",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId \r\nFROM AppointmentIndex\r\nWHERE AppointmentIndex.ContentItemId IN\r\n  (SELECT ContentItemId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})) \r\nAND StartDate BETWEEN '{{ startDate }}' AND '{{ endDate }}'\r\nORDER BY StartDate ASC",
+          "ReturnDocuments": true,
+          "Name": "AppointmentsForCalendarsForDate",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Employee' and TermContentItemId in ({{calendarIds}})",
+          "ReturnDocuments": true,
+          "Name": "EmployeesForCalendars",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})",
+          "ReturnDocuments": true,
+          "Name": "AppointmentForCalendars",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT * FROM HackathonItemsIndex where Owner = '{{owner}}'",
+          "ReturnDocuments": false,
+          "Name": "GetOwner",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='{{type}}'",
+          "ReturnDocuments": true,
+          "Name": "GetItemsForHackathon",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT * FROM HackathonUsersIndex where TeamContentItemId = '{{teamContentItemId}}'",
+          "ReturnDocuments": false,
+          "Name": "GetHackersForTeam",
+          "Source": "Sql",
+          "Schema": "null"
+        },
+        {
+          "Template": "SELECT * FROM HackathonItemsIndex where ContentType ='ScoreEntry' and TeamContentItemId = '{{teamContentItemId}}' and Owner = '{{owner}}'",
+          "ReturnDocuments": false,
+          "Name": "GetScoreEntry",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='Team' and ContentItemId = '{{teamContentItemId}}'",
+          "ReturnDocuments": true,
+          "Name": "GetTeam",
+          "Source": "Sql",
+          "Schema": null
         }
       ]
     },

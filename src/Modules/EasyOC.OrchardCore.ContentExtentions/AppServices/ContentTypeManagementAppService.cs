@@ -35,10 +35,11 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         /// <summary>
         /// 列出所有类型定义
         /// </summary>
+        /// <param name="input"></param>
         /// <returns></returns>
         public PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input)
         {
-
+            var onlyStereoTypeNone = input?.Stereotype == Stereotype.OnlyEmpty;
             var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
                 .WhereIf(!string.IsNullOrEmpty(input.Filter), x
                  => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
@@ -51,8 +52,9 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                     listItem.Stereotype = x.GetSettings<ContentTypeSettings>().Stereotype;
                     return listItem;
                 })
-                .WhereIf(!string.IsNullOrEmpty(input.Stereotype), x
-                    => input.Stereotype.Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase));
+                .WhereIf(input.Stereotype.HasValue && !onlyStereoTypeNone,
+                    x => input.Stereotype.Value.ToDescriptionOrString().Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase))
+                .WhereIf(onlyStereoTypeNone, x => x.Stereotype == String.Empty);
 
             return result.ToPagedResult(input);
         }
@@ -162,7 +164,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             return valuePath;
         }
 
-      
+
 
     }
 }

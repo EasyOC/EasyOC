@@ -12,7 +12,7 @@ namespace EasyOC.OrchardCore.OpenApi.Model
 {
     [AutoMap(typeof(VbenMenuPartIndex), ReverseMap = true)]
 
-    public class VbenMenuPart : ContentPart
+    public class VbenMenu : ContentPart
     {
         public TextField MenuName { get; set; }
         public NumericField OrderNo { get; set; }

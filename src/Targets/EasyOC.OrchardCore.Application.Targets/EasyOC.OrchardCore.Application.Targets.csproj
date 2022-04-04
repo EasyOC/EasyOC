@@ -3,6 +3,8 @@
 
 	<ItemGroup>
     <!--<ProjectReference Include="..\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj" />--> 
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" /> 
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" /> 
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" /> 
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />

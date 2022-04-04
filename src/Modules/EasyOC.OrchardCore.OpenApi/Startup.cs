@@ -33,7 +33,7 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddAutoMapper(this.GetType().Assembly);
             //services.AddSingleton<IIndexProvider, CustomUserSettingsIndexProvider>();
             services.AddSingleton<IIndexProvider, VbenMenuPartIndexProvider>();
-            services.AddContentPart<VbenMenuPart>().AddHandler<VbenMenuHandler>();
+            services.AddContentPart<VbenMenu>().AddHandler<VbenMenuHandler>();
 
             services.AddScoped<IRolesAppService, RolesAppService>();
             services.AddScoped<IUsersAppService, UsersAppService>();

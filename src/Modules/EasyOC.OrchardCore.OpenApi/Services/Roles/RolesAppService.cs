@@ -210,7 +210,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             return installedPermissions;
         }
-        [NonDynamicMethod]
         public async Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync()
         {
             var installedPermissions = await GetInstalledPermissionsAsync();

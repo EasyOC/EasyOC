@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EasyOC
 {
-    public static class ContentManagerExtentions
+    public static class ContentTypeManagerExtentions
     {
         //public static List<ContentFieldsMappingDto> GetAllFields(this IContentDefinitionManager contentDefinitionManager, string typeName)
         //{
@@ -51,31 +51,31 @@ namespace EasyOC
         //    return fields;
         //}
 
-        //public static string GetFiledValuePath(string fieldName)
-        //{
-        //    string valuePath;
-        //    switch (fieldName)
-        //    {
-        //        case "TextField":
-        //            valuePath = "Text";
-        //            break;
-        //        case "BooleanField":
-        //        case "DateField":
-        //        case "TimeField":
-        //        case "DateTimefield":
-        //        case "NumericField":
-        //            valuePath = "Value";
-        //            break;
-        //        case "ContentPickerField":
-        //            valuePath = "ContentItemIds[0]";
-        //            break;
-        //        case "UserPickerField":
-        //            valuePath = "UserIds[0]";
-        //            break;
-        //        default:
-        //            return null;
-        //    }
-        //    return valuePath;
-        //}
+        public static string GetFiledValuePath(this ContentFieldDefinition fieldDefinition)
+        {
+            string valuePath;
+            switch (fieldDefinition.Name)
+            {
+                case "TextField":
+                    valuePath = "Text";
+                    break;
+                case "BooleanField":
+                case "DateField":
+                case "TimeField":
+                case "DateTimefield":
+                case "NumericField":
+                    valuePath = "Value";
+                    break;
+                case "ContentPickerField":
+                    valuePath = "ContentItemIds[0]";
+                    break;
+                case "UserPickerField":
+                    valuePath = "UserIds[0]";
+                    break;
+                default:
+                    return null;
+            }
+            return valuePath;
+        }
     }
 }
