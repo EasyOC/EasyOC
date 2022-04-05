@@ -15,19 +15,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 string columnName, int length = 0, bool isSystem = false,
                bool isNullable = false,
                bool isIdentity = false,
-               bool isPrimaryKey = false
+               bool isPrimaryKey = false,
+               bool addToTableIndex = false
             )
         {
             var item = new DynamicIndexFieldItem
             {
-                Name = columnName,
-                IsSystem = isSystem,
                 DbFieldOption = new DbFiledOption
                 {
-                    IsIdentity= isIdentity,
+                    Name = columnName,
+                    IsSystem = isSystem,
+                    AddToTableIndex = addToTableIndex,
+                    IsIdentity = isIdentity,
                     IsPrimaryKey = isPrimaryKey,
-                    CsTypeName = typeof(T).FullName,
                     IsNullable = isNullable,
+                    CsTypeName = typeof(T).FullName,
                 }
             };
             if (length != 0)
@@ -50,11 +52,11 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             var item = new DynamicIndexFieldItem
             {
                 Name = field.Name,
-                IsSystem = false,
 
                 ContentFieldOption = new ContentFieldOption
                 {
-                    FieldName = field.Name,
+
+                    FieldName = isTypeSelf ? field.Name : fieldPath,
                     ValuePath = valuePath,
                     PartName = part.Name,
                     ValueFullPath = $"{fieldPath}.{valuePath}",
@@ -71,7 +73,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             var dbOption = new DbFiledOption();
             dbOption.Name = isTypeSelf ? field.Name : $"{field.PartDefinition.Name}_{field.Name}";
             dbOption.IsNullable = true;
-
+            dbOption.IsSystem = false;
             ///TODO: 可以考虑使用必填检查将字段设置为必填，但如果通过UI将非必填改为必填会出现空值列无法设置为不可为空
             ///暂不处理
             switch (field.FieldDefinition.Name)

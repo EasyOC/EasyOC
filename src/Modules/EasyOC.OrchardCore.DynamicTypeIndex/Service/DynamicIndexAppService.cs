@@ -3,7 +3,9 @@ using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto;
 using Newtonsoft.Json;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,6 +16,10 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
         public const string DefaultTableNameTemplate = "{0}_DIndex";
         public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName)
         {
+            if (typeName.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
 
             var config = await FreeSqlSession.Select<DynamicIndexConfigDataIndex, ContentItemIndex>()
                 .InnerJoin<ContentItemIndex>((di, ci) => di.DocumentId == ci.DocumentId && ci.Latest)
@@ -51,11 +57,15 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
         {
 
             var typeDef = ContentDefinitionManager.GetTypeDefinition(typeName);
+            if (typeDef is null)
+            {
+                return null;
+            }
             var fields = new List<DynamicIndexFieldItem>();
 
-            fields.AddDbField<int>("Id", isSystem: true, isPrimaryKey: true, isIdentity: true, isNullable: false);
-            fields.AddDbField<int>("DocumentId", isSystem: true);
-            fields.AddDbField<string>("ContentItemId", 26, true);
+            fields.AddDbField<int>("Id", isSystem: true, isPrimaryKey: true, isIdentity: true, isNullable: false,addToTableIndex:true);
+            fields.AddDbField<int>("DocumentId", isSystem: true, addToTableIndex: true);
+            fields.AddDbField<string>("ContentItemId", 26, true, addToTableIndex: true);
 
             foreach (var part in typeDef.Parts)
             {
@@ -66,6 +76,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             }
             return fields;
         }
+
+
 
         [NonDynamicMethod]
         public DynamicIndexConfigModel ToConfigModel(DynamicIndexConfigDataIndex storedConfig)

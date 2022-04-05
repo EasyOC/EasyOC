@@ -9,7 +9,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
     public class DynamicIndexFieldItem
     {
         public string Name { get; internal set; }
-        public bool IsSystem { get; set; }
         public bool EnableCalculation { get; set; }
         public string JSExpression { get; set; }
         public DbFiledOption DbFieldOption { get; set; }
@@ -19,6 +18,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
     public class DbFiledOption
     {
         public string Name { get; set; }
+        public bool IsSystem { get; set; }
+        public bool Disabled { get; set; }
         public string CsTypeName { get; set; }
         /// <summary>
         /// Length less 0 means Unlimited
@@ -28,6 +29,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
         public bool IsNullable { get; set; }
         public bool IsIdentity { get; internal set; }
         public bool IsPrimaryKey { get; internal set; }
+        public bool AddToTableIndex { get; internal set; }
     }
 
     public class ContentFieldOption

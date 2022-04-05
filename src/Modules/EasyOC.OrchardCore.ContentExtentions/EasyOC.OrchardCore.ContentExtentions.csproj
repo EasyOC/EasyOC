@@ -25,9 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SQLIndex\" />
-  </ItemGroup>
 
 </Project>
 

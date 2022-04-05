@@ -26,12 +26,16 @@ namespace EasyOC
                 }
             }
             else return string.Empty;
-        } 
+        }
         public static ListType GetPageList<ListType, T>(this PageReqest input, ListType list, out int total)
               where ListType : IEnumerable<T>
 
         {
             total = list.Count();
+            if (input.PageSize <= 0)
+            {
+                return (ListType)list;
+            }
             return (ListType)list.Skip(input.GetStartIndex()).Take(input.PageSize);
         }
 

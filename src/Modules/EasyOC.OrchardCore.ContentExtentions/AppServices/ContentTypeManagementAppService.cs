@@ -54,7 +54,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                 })
                 .WhereIf(input.Stereotype.HasValue && !onlyStereoTypeNone,
                     x => input.Stereotype.Value.ToDescriptionOrString().Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase))
-                .WhereIf(onlyStereoTypeNone, x => x.Stereotype == String.Empty);
+                .WhereIf(onlyStereoTypeNone, x => x.Stereotype.IsNullOrWhiteSpace())
+                .ToList();
 
             return result.ToPagedResult(input);
         }
