@@ -21,11 +21,11 @@
     <PackageManagement Include="NJsonSchema" Version="10.5.2" />
     <PackageManagement Include="NSwag.AspNetCore" Version="13.13.2" />
     <PackageManagement Include="EasyOC.DynamicWebApi" Version="1.1.2" />
-    <PackageManagement Include="FreeSql" Version="3.0.100" />
-    <PackageManagement Include="FreeSql.Provider.MySql" Version="3.0.100"  />
-    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="3.0.100"  />
-    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="3.0.100"  />
-    <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="3.0.100" />
+    <PackageManagement Include="FreeSql" Version="3.2.301" />
+    <PackageManagement Include="FreeSql.Provider.MySql" Version="3.2.301"  />
+    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="3.2.301"  />
+    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="3.2.301"  />
+    <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="3.2.301" />
     <PackageManagement Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
 
   </ItemGroup> 

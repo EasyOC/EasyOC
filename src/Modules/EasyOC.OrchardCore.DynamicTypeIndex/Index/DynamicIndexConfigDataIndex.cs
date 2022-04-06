@@ -48,7 +48,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Index
                                    && contentItem.Has<DynamicIndexConfigSetting>())
                 .Map(menu =>
                 {
-                    var menuPart = menu.ContentItem.As<DynamicIndexConfigSetting>();
+                    var menuPart = menu.As<DynamicIndexConfigSetting>();
 
                     if (menuPart != null)
                     {

@@ -1,23 +1,22 @@
 ﻿using OrchardCore.ContentManagement.Metadata.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YesSql.Sql;
 using YesSql.Sql.Schema;
 
-namespace EasyOC.OrchardCore.DynamicTypeIndex.Extentions
+namespace YesSql.Sql
 {
     public static class SchemaExtentions
     {
+        public static string GetIndexTableName(this ISchemaBuilder builder, string tableName)
+        {
+            return builder.TablePrefix + tableName;
+        }
         public static ISchemaBuilder CreateMapIndexTable(this ISchemaBuilder builder,
-            ContentTypeDefinition contentType,
-            Action<ICreateTableCommand> table, string collection)
+            string indexName,
+            Action<ICreateTableCommand> table, string collection = "")
         {
             try
             {
-                var indexName = contentType.Name;
+
                 var tableName = GetIndexTable(indexName, collection);
 
                 builder.CreateTable(tableName, (createTable) =>

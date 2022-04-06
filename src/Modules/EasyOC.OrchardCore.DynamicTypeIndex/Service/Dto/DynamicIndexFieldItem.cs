@@ -34,12 +34,14 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
 
     public class ContentFieldOption
     {
+        public bool IsSelfField { get; set; }
         public string FieldName { get; set; }
         public string ValuePath { get; set; }
         public string ValueFullPath { get; set; }
         public string PartName { get; set; }
         public string FieldType { get; set; }
         public IEnumerable<string> DependsOn { get; set; } = new List<string>();
+        public string DisplayName { get; internal set; }
     }
 
 }

@@ -40,7 +40,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             return item;
         }
 
-
         public static DynamicIndexFieldItem ToDynamicIndexField
                     (this ContentPartFieldDefinition field,
                          ContentTypePartDefinition part
@@ -49,14 +48,16 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             var isTypeSelf = part.IsTypeSelfPart();
             var fieldPath = $"{part.Name}.{field.Name}";
             var valuePath = field.FieldDefinition.GetFiledValuePath();
+
             var item = new DynamicIndexFieldItem
             {
                 Name = field.Name,
-
                 ContentFieldOption = new ContentFieldOption
                 {
-
+                    IsSelfField = isTypeSelf,
+                    DisplayName = field.DisplayName(),
                     FieldName = isTypeSelf ? field.Name : fieldPath,
+                    FieldType = field.FieldDefinition.Name,
                     ValuePath = valuePath,
                     PartName = part.Name,
                     ValueFullPath = $"{fieldPath}.{valuePath}",
@@ -74,6 +75,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             dbOption.Name = isTypeSelf ? field.Name : $"{field.PartDefinition.Name}_{field.Name}";
             dbOption.IsNullable = true;
             dbOption.IsSystem = false;
+
+
             ///TODO: 可以考虑使用必填检查将字段设置为必填，但如果通过UI将非必填改为必填会出现空值列无法设置为不可为空
             ///暂不处理
             switch (field.FieldDefinition.Name)
@@ -95,7 +98,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 case nameof(TimeField):
                     dbOption.CsTypeName = typeof(DateTime).FullName;
                     break;
-
                 case nameof(ContentPickerField):
                 case nameof(UserPickerField):
                     dbOption.CsTypeName = typeof(string).FullName;

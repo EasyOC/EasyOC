@@ -48,7 +48,7 @@ namespace System
                 return fsql;
             }
         }
-    
+
 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, string providerName, string connectionString, string tablePrefix = default)
         {
@@ -158,10 +158,7 @@ namespace System
                                    Console.WriteLine(result);
                                    if (logger != null)
                                    {
-                                       if (logger.IsEnabled(LogLevel.Debug))
-                                       {
-                                           logger.LogDebug(result);
-                                       }
+                                       logger.LogDebug(result);
                                    }
                                })
                                .Build();

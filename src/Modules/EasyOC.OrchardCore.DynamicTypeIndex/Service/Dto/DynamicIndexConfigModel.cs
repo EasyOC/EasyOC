@@ -13,12 +13,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
         public string TableName { get; set; }
         public bool Enabled { get; set; }
 
-        public DynamicIndexConfigContent ConfigDataOptions { get; set; }
-    }
-
-    public class DynamicIndexConfigContent
-    {
         public List<DynamicIndexFieldItem> Fields { get; set; } = new List<DynamicIndexFieldItem>();
-        //Other properties...
     }
+ 
 }
