@@ -4,8 +4,13 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Service\Template.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
+    <PackageReference Include="DotNetCore.Natasha.CSharp.All" Version="4.0.0-alpha.1" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
 

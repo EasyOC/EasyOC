@@ -17,6 +17,7 @@ using OrchardCore.Shells.Database.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using YesSql;
 using YesSql.Sql;
@@ -77,7 +78,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 //}
                 schemaBuilder.DropTable(model.TableName);
                 //schemaBuilder.Transaction.Commit();
-                await Notifier.AddAsync(NotifyType.Warning, H["索引表{0}，已删除重建", indexTableName]);
+                await Notifier.AddAsync(NotifyType.Warning, H["The index table {0}，has been dropped .", indexTableName]);
             }
 
             #region 更新表，因为数据不会丢失，可以通过重建索引拿回数据
@@ -147,6 +148,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             schemaBuilder.Transaction.Commit();
         }
 
+        [HttpGet]
         public async Task<bool> RebuildIndexData(string typeName)
         {
             var model = await GetDynamicIndexConfigAsync(typeName);
@@ -195,7 +197,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                                 valueToken = jdoc.SelectToken(fConfig.Name);
                                 if (valueToken != null)
                                 {
-
                                     switch (valueToken.Type)
                                     {
                                         case JTokenType.Integer:
@@ -219,7 +220,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                                         default:
                                             break;
                                     }
-
                                 }
                             }
                         }
@@ -229,7 +229,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                     var freeItems = FreeSqlSession.InsertDict(freeModels).AsTable(indexTableName);
                     totalRows += freeItems.ExecuteAffrows();
                     page++;
-                    take100 = await docs.Take(page * 100).ListAsync();
+                    take100 = await docs.Skip(page * 100).Take(100).ListAsync();
                 }
                 catch (Exception ex)
                 {
@@ -265,6 +265,78 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
         }
 
 
+        public async Task<string> GetTypeStrFromTypeName(string typeName)
+        {
+            var config = await GetDynamicIndexConfigAsync(typeName);
+            var indexCols = config.Fields.Where(x => !x.DbFieldOption.Disabled && x.DbFieldOption.AddToTableIndex).Select(x => x.DbFieldOption.Name).ToList();
+            var INDEX_NAMES = new[] { "DocumentId", "ContentItemId" }.ToList();
+            if (indexCols.Any())
+            {
+                INDEX_NAMES.AddRange(indexCols);
+            }
+            var fileds = new List<string>();
+            foreach (var item in config.Fields.Where(x => !x.DbFieldOption.Disabled))
+            {
+                var restAttr = new List<string>();
+
+                #region Field Attrubutes
+                if (item.DbFieldOption.IsPrimaryKey)
+                {
+                    restAttr.Add("IsPrimary = true");
+                }
+                if (item.DbFieldOption.IsIdentity)
+                {
+                    restAttr.Add("IsIdentity = true");
+                }
+                if (item.DbFieldOption.IsNullable)
+                {
+                    restAttr.Add("IsNullable = true");
+                }
+                if (item.DbFieldOption.Length > 0)
+                {
+                    restAttr.Add("StringLength = " + item.DbFieldOption.Length);
+                }
+                var restAttrText = "";
+                if (restAttr.Count > 0)
+                {
+                    restAttrText = "," + restAttr.JoinAsString(",");
+                }
+                #endregion
+
+                fileds.Add($@"
+                [Column(Name = ""{item.DbFieldOption.Name}""{restAttrText})]
+                public {item.DbFieldOption.CsTypeName} {item.DbFieldOption.Name} {{ get; set; }} 
+                ");
+            }
+
+            var FIELDS = fileds.JoinAsString("\r\n");
+
+            var className = config.TableName.Replace("_", String.Empty);
+            var template = $@"
+using EasyOC.Core.Indexs;
+using FreeSql.DataAnnotations;
+namespace EasyOC.DynamicTypeIndex.IndexModels
+{{
+    [EOCIndex(""IDX_{{tablename}}_DocumentId"",""{ string.Join(",", INDEX_NAMES)}"")]
+    [EOCTable(Name = ""{config.TableName}"")]
+    public class {className} : FreeSqlDocumentIndex
+    {{
+        [Column(StringLength = 26)]
+        public string ContentItemId {{ get; set; }}
+        {FIELDS}
+    }}
+}}
+";
+            //根据脚本创建动态类
+            AssemblyCSharpBuilder oop = new AssemblyCSharpBuilder();
+
+            //这里就算你添加100个类，最终编译的时候都会在一个程序集中
+            oop.Add(template);
+            Assembly asm = oop.GetAssembly();
+            FreeSqlSession.CodeFirst.SyncStructure(asm.GetType("EasyOC.DynamicTypeIndex.IndexModels." + className));
+
+            return template;
+        }
 
         [NonDynamicMethod]
         public DynamicIndexConfigModel GetDefaultConfig(string typeName)

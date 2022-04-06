@@ -15,7 +15,6 @@
     <PackageManagement Include="NodaTime"  Version="3.0.9"/> 
     <PackageManagement Include="RestSharp" Version="106.13.0" />
     <PackageManagement Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.14.0" />
-    <!--<PackageManagement Include="Volo.Abp.Core" Version="5.0.0-beta.3" />-->
     <PackageManagement Include="HtmlSanitizer" Version="6.0.430-beta" />
     <PackageManagement Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageManagement Include="NJsonSchema" Version="10.5.2" />
