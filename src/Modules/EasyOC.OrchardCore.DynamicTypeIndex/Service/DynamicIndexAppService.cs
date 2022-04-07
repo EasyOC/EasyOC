@@ -25,7 +25,7 @@ using YesSql.Sql.Schema;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex
 {
-    public class DynamicIndexAppService : AppServiceBase
+    public class DynamicIndexAppService : AppServiceBase, IDynamicIndexAppService
     {
         public const string DefaultTableNameTemplate = "{0}_DIndex";
 
@@ -148,99 +148,96 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             schemaBuilder.Transaction.Commit();
         }
 
-        [HttpGet]
-        public async Task<bool> RebuildIndexData(string typeName)
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="typeName">类型名称</param>
+        /// <param name="syncStruct">同步表结构</param>
+        /// <returns></returns>
+        public async Task<string> GetIndexClassString(string typeName, bool syncStruct = false)
         {
-            var model = await GetDynamicIndexConfigAsync(typeName);
-            return await RebuildIndexData(model);
+            var config = await GetDynamicIndexConfigAsync(typeName);
+            return GetIndexClassString(config, syncStruct);
         }
 
-
-        [NonDynamicMethod]
-        public async Task<bool> RebuildIndexData(DynamicIndexConfigModel model)
+        private string GetIndexClassString(DynamicIndexConfigModel config, bool syncStruct = false)
         {
-            var shellConfig = ShellScope.Current.ServiceProvider.GetRequiredService<IShellConfiguration>();
-            var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
-            var docs = YesSession.Query<ContentItem, ContentItemIndex>()
-               .Where(x => x.Latest && x.ContentType == model.TypeName)
-               .OrderBy(x => x.Id);
-
-            var indexTableName = dbOptions.TablePrefix ?? "" + model.TableName;
-            var take100 = await docs.Take(100).ListAsync();
-            int page = 1;
-            var freeModels = new List<Dictionary<string, object>>();
-            var totalRows = 0;
-            while (take100.Any())
+            var indexCols = config.Fields.
+                Where(x => !x.DbFieldOption.Disabled && x.DbFieldOption.AddToTableIndex)
+                .Select(x => x.DbFieldOption.Name).ToList();
+            var INDEX_NAMES = new[] { "DocumentId", "ContentItemId" }.ToList();
+            if (indexCols.Any())
             {
-                try
-                {
-                    foreach (var doc in take100)
-                    {
-                        var jdoc = doc.Content as JObject;
-                        var dmodel = new Dictionary<string, object>();
-                        dmodel["ContentItemId"] = doc.ContentItemId;
-                        dmodel["DocumentId"] = doc.Id;
-                        foreach (var fConfig in model.Fields)
-                        {
-                            JToken valueToken;
-                            if (!fConfig.ContentFieldOption.ValueFullPath.IsNullOrWhiteSpace())
-                            {
-                                valueToken = jdoc.SelectToken(fConfig.ContentFieldOption.ValueFullPath);
-                                if (valueToken != null)
-                                {
-                                    dmodel[fConfig.DbFieldOption.Name] = valueToken
-                                        .GetOCFieldValue(fConfig.ContentFieldOption.FieldName);
-                                }
-                            }
-                            else
-                            {
-                                valueToken = jdoc.SelectToken(fConfig.Name);
-                                if (valueToken != null)
-                                {
-                                    switch (valueToken.Type)
-                                    {
-                                        case JTokenType.Integer:
-                                            dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<int?>();
-                                            break;
-                                        case JTokenType.Float:
-                                            dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<float?>();
-                                            break;
-                                        case JTokenType.String:
-                                            dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<string>();
-                                            break;
-                                        case JTokenType.Boolean:
-                                            dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<bool?>();
-                                            break;
-                                        case JTokenType.Date:
-                                            dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<DateTime?>();
-                                            break;
-                                        case JTokenType.TimeSpan:
-                                            dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<TimeSpan?>();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }
-                        }
+                INDEX_NAMES.AddRange(indexCols);
+            }
+            var fileds = new List<string>();
+            foreach (var item in config.Fields.Where(x => !x.DbFieldOption.Disabled))
+            {
+                var restAttr = new List<string>();
 
-                        freeModels.Add(dmodel);
-                    }
-                    var freeItems = FreeSqlSession.InsertDict(freeModels).AsTable(indexTableName);
-                    totalRows += freeItems.ExecuteAffrows();
-                    page++;
-                    take100 = await docs.Skip(page * 100).Take(100).ListAsync();
-                }
-                catch (Exception ex)
+                #region Field Attributes
+                if (item.DbFieldOption.IsPrimaryKey)
                 {
-
-                    throw;
+                    restAttr.Add("IsPrimary = true");
                 }
+                if (item.DbFieldOption.IsIdentity)
+                {
+                    restAttr.Add("IsIdentity = true");
+                }
+                if (item.DbFieldOption.IsNullable)
+                {
+                    restAttr.Add("IsNullable = true");
+                }
+                if (item.DbFieldOption.Length != 0)
+                {
+                    restAttr.Add("StringLength = " + item.DbFieldOption.Length);
+                }
+                var restAttrText = "";
+                if (restAttr.Count > 0)
+                {
+                    restAttrText = "," + restAttr.JoinAsString(",");
+                }
+                #endregion
+
+                fileds.Add($@"
+                [Column(Name = ""{item.DbFieldOption.Name}""{restAttrText})]
+                public {item.DbFieldOption.CsTypeName} {item.DbFieldOption.Name.Replace("_", string.Empty)} {{ get; set; }} 
+                ");
             }
 
-            return true;
-        }
+            var FIELDS = fileds.JoinAsString("\r\n");
 
+            var className = config.TableName.Replace("_", string.Empty);
+            var template = $@"
+using EasyOC.Core.Indexs;
+using FreeSql.DataAnnotations;
+namespace EasyOC.DynamicTypeIndex.IndexModels
+{{
+    [EOCIndex(""IDX_{{tablename}}_DocumentId"",""{ string.Join(",", INDEX_NAMES)}"")]
+    [EOCTable(Name = ""{config.TableName}"")]
+    public class {className} : FreeSqlDocumentIndex
+    {{
+        [Column(StringLength = 26)]
+        public string ContentItemId {{ get; set; }}
+        {FIELDS}
+    }}
+}}
+";
+            if (syncStruct)
+            {
+                //Create dynamic classes from the script
+                AssemblyCSharpBuilder oop = new AssemblyCSharpBuilder();
+                //Even if you add 100 classes, they will all be compiled in one assembly
+                oop.Add(template);
+                Assembly asm = oop.GetAssembly();
+                //Sync Table Structure
+                FreeSqlSession.CodeFirst.SyncStructure(asm.GetType("EasyOC.DynamicTypeIndex.IndexModels." + className));
+            }
+
+
+            return template;
+        }
 
         [HttpPost]
         public async Task<DynamicIndexConfigModel> UpdateDynamicIndexAsync([FromBody] DynamicIndexConfigModel model)
@@ -265,79 +262,103 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
         }
 
 
-        public async Task<string> GetTypeStrFromTypeName(string typeName)
+        [HttpGet]
+        public async Task<bool> RebuildIndexData(string typeName)
         {
-            var config = await GetDynamicIndexConfigAsync(typeName);
-            var indexCols = config.Fields.Where(x => !x.DbFieldOption.Disabled && x.DbFieldOption.AddToTableIndex).Select(x => x.DbFieldOption.Name).ToList();
-            var INDEX_NAMES = new[] { "DocumentId", "ContentItemId" }.ToList();
-            if (indexCols.Any())
-            {
-                INDEX_NAMES.AddRange(indexCols);
-            }
-            var fileds = new List<string>();
-            foreach (var item in config.Fields.Where(x => !x.DbFieldOption.Disabled))
-            {
-                var restAttr = new List<string>();
-
-                #region Field Attrubutes
-                if (item.DbFieldOption.IsPrimaryKey)
-                {
-                    restAttr.Add("IsPrimary = true");
-                }
-                if (item.DbFieldOption.IsIdentity)
-                {
-                    restAttr.Add("IsIdentity = true");
-                }
-                if (item.DbFieldOption.IsNullable)
-                {
-                    restAttr.Add("IsNullable = true");
-                }
-                if (item.DbFieldOption.Length > 0)
-                {
-                    restAttr.Add("StringLength = " + item.DbFieldOption.Length);
-                }
-                var restAttrText = "";
-                if (restAttr.Count > 0)
-                {
-                    restAttrText = "," + restAttr.JoinAsString(",");
-                }
-                #endregion
-
-                fileds.Add($@"
-                [Column(Name = ""{item.DbFieldOption.Name}""{restAttrText})]
-                public {item.DbFieldOption.CsTypeName} {item.DbFieldOption.Name} {{ get; set; }} 
-                ");
-            }
-
-            var FIELDS = fileds.JoinAsString("\r\n");
-
-            var className = config.TableName.Replace("_", String.Empty);
-            var template = $@"
-using EasyOC.Core.Indexs;
-using FreeSql.DataAnnotations;
-namespace EasyOC.DynamicTypeIndex.IndexModels
-{{
-    [EOCIndex(""IDX_{{tablename}}_DocumentId"",""{ string.Join(",", INDEX_NAMES)}"")]
-    [EOCTable(Name = ""{config.TableName}"")]
-    public class {className} : FreeSqlDocumentIndex
-    {{
-        [Column(StringLength = 26)]
-        public string ContentItemId {{ get; set; }}
-        {FIELDS}
-    }}
-}}
-";
-            //根据脚本创建动态类
-            AssemblyCSharpBuilder oop = new AssemblyCSharpBuilder();
-
-            //这里就算你添加100个类，最终编译的时候都会在一个程序集中
-            oop.Add(template);
-            Assembly asm = oop.GetAssembly();
-            FreeSqlSession.CodeFirst.SyncStructure(asm.GetType("EasyOC.DynamicTypeIndex.IndexModels." + className));
-
-            return template;
+            var model = await GetDynamicIndexConfigAsync(typeName);
+            return await RebuildIndexData(model);
         }
 
+        [NonDynamicMethod]
+        public async Task<bool> RebuildIndexData(DynamicIndexConfigModel model)
+        {
+            var shellConfig = ShellScope.Current.ServiceProvider.GetRequiredService<IShellConfiguration>();
+            var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
+            var docs = YesSession.Query<ContentItem, ContentItemIndex>()
+               .Where(x => x.Latest && x.ContentType == model.TypeName)
+               .OrderBy(x => x.Id);
+
+            var indexTableName = dbOptions.TablePrefix ?? "" + model.TableName;
+            var take100 = await docs.Take(100).ListAsync();
+            int page = 1;
+            var freeModels = new List<Dictionary<string, object>>();
+            var totalRows = 0;
+            while (take100.Any())
+            {
+                foreach (var doc in take100)
+                {
+                    var jdoc = doc.Content as JObject;
+                    var dmodel = new Dictionary<string, object>();
+                    dmodel["ContentItemId"] = doc.ContentItemId;
+                    dmodel["DocumentId"] = doc.Id;
+                    foreach (var fConfig in model.Fields)
+                    {
+                        JToken valueToken;
+                        if (!fConfig.ContentFieldOption.ValueFullPath.IsNullOrWhiteSpace())
+                        {
+                            valueToken = jdoc.SelectToken(fConfig.ContentFieldOption.ValueFullPath);
+                            if (valueToken != null)
+                            {
+                                dmodel[fConfig.DbFieldOption.Name] = valueToken
+                                    .GetOCFieldValue(fConfig.ContentFieldOption.FieldName);
+                            }
+                        }
+                        else
+                        {
+                            valueToken = jdoc.SelectToken(fConfig.Name);
+                            if (valueToken != null)
+                            {
+                                switch (valueToken.Type)
+                                {
+                                    case JTokenType.Integer:
+                                        dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<int?>();
+                                        break;
+                                    case JTokenType.Float:
+                                        dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<float?>();
+                                        break;
+                                    case JTokenType.String:
+                                        dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<string>();
+                                        break;
+                                    case JTokenType.Boolean:
+                                        dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<bool?>();
+                                        break;
+                                    case JTokenType.Date:
+                                        dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<DateTime?>();
+                                        break;
+                                    case JTokenType.TimeSpan:
+                                        dmodel[fConfig.DbFieldOption.Name] = valueToken.Value<TimeSpan?>();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    freeModels.Add(dmodel);
+                }
+                // Specifies the collection of data dictionary objects to insert
+                var freeItems = FreeSqlSession.InsertDict(freeModels)
+                    .AsTable(indexTableName); //Specify the name of the table to be inserted
+                totalRows += freeItems.ExecuteAffrows();//Batch Inserting databases
+                page++;
+                take100 = await docs.Skip(page * 100).Take(100).ListAsync();
+            }
+
+            return true;
+        }
+
+
+
+
+
+
+        private List<DynamicIndexFieldItem> Merge(List<DynamicIndexFieldItem> stored, List<DynamicIndexFieldItem> newFields)
+        {
+            return newFields;
+        }
+
+        private string[] ExceptFields = new[] { "GeoPointField" };
         [NonDynamicMethod]
         public DynamicIndexConfigModel GetDefaultConfig(string typeName)
         {
@@ -379,7 +400,6 @@ namespace EasyOC.DynamicTypeIndex.IndexModels
             return fields;
         }
 
-        private string[] ExceptFields = new[] { "GeoPointField" };
 
 
         [NonDynamicMethod]
@@ -411,12 +431,6 @@ namespace EasyOC.DynamicTypeIndex.IndexModels
                 config.Fields = newConfigFields;
             }
             return config;
-        }
-
-
-        private List<DynamicIndexFieldItem> Merge(List<DynamicIndexFieldItem> stored, List<DynamicIndexFieldItem> newFields)
-        {
-            return newFields;
         }
 
 

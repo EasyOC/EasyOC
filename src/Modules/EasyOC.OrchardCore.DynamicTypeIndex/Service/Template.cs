@@ -4,17 +4,17 @@ using FreeSql.DataAnnotations;
 namespace EasyOC.DynamicTypeIndex.IndexModels
 {
     [EOCIndex("IDX_{tablename}_DocumentId", "DocumentId,ContentItemId")]
-    [Table(Name = "Customer_DIndex")]
+    [EOCTable(Name = "Customer_DIndex")]
     public class CustomerDIndex : FreeSqlDocumentIndex
     {
         [Column(StringLength = 26)]
         public string ContentItemId { get; set; }
 
-        [Column(Name = "Name", IsNullable = true)]
+        [Column(Name = "Name", IsNullable = true, StringLength = -1)]
         public System.String Name { get; set; }
 
 
-        [Column(Name = "CustNum", IsNullable = true)]
+        [Column(Name = "CustNum", IsNullable = true, StringLength = -1)]
         public System.String CustNum { get; set; }
 
 
@@ -38,27 +38,27 @@ namespace EasyOC.DynamicTypeIndex.IndexModels
         public System.String SalesOwner { get; set; }
 
 
-        [Column(Name = "AddressPart_CountryName", IsNullable = true)]
+        [Column(Name = "AddressPart_CountryName", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_CountryName { get; set; }
 
 
-        [Column(Name = "AddressPart_Province", IsNullable = true)]
+        [Column(Name = "AddressPart_Province", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_Province { get; set; }
 
 
-        [Column(Name = "AddressPart_City", IsNullable = true)]
+        [Column(Name = "AddressPart_City", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_City { get; set; }
 
 
-        [Column(Name = "AddressPart_PostalCode", IsNullable = true)]
+        [Column(Name = "AddressPart_PostalCode", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_PostalCode { get; set; }
 
 
-        [Column(Name = "AddressPart_Details", IsNullable = true)]
+        [Column(Name = "AddressPart_Details", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_Details { get; set; }
 
 
-        [Column(Name = "AddressPart_Name", IsNullable = true)]
+        [Column(Name = "AddressPart_Name", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_Name { get; set; }
 
     }

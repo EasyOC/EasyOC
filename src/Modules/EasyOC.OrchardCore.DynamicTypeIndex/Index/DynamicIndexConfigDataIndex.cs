@@ -15,7 +15,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Index
         public TextField ConfigData { get; set; }
 
     }
-    
+
     [AutoMap(typeof(DynamicIndexConfigSetting), ReverseMap = true)]
     [EOCIndex("IDX_{tablename}_DocumentId",
      "TypeName,TableName")]
@@ -25,7 +25,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Index
         [Column(StringLength = 26)]
         public string ContentItemId { get; set; }
         public string TypeName { get; set; }
-         
+
         public string TableName { get; set; }
         //public bool Enabled { get; set; }
         [Column(StringLength = -1)]
@@ -47,14 +47,14 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Index
                  .When(
                     contentItem => contentItem.ContentType == nameof(DynamicIndexConfigSetting)
                                    && contentItem.Has<DynamicIndexConfigSetting>())
-                .Map(menu =>
+                .Map(contentItem =>
                 {
-                    var menuPart = menu.As<DynamicIndexConfigSetting>();
+                    var part = contentItem.As<DynamicIndexConfigSetting>();
 
-                    if (menuPart != null)
+                    if (part != null)
                     {
-                        var partIndex = _mapper.Map<DynamicIndexConfigDataIndex>(menuPart);
-
+                        var partIndex = _mapper.Map<DynamicIndexConfigDataIndex>(part);
+                        partIndex.ContentItemId = contentItem.ContentItemId;
                         return partIndex;
                     }
                     return null;

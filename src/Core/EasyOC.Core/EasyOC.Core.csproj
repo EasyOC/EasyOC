@@ -14,8 +14,6 @@
   <ItemGroup>
     <Compile Remove="AutofacModule.cs" />
     <Compile Remove="Extensions\FreeSqlProviderFactory.cs" />
-    <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeItemMetadataAttribute.cs" />
-    <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeTypeAttribute.cs" />
     <Compile Remove="RunAs.cs" />
   </ItemGroup>
 
