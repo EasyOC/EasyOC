@@ -1,6 +1,6 @@
 ﻿using GraphQL.Types;
 
-namespace OrchardCore.Apis.GraphQL.Types
+namespace EasyOC.GraphQL.Abstractions.Types
 {
     public abstract class MutationFieldType : FieldType
     {

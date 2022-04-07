@@ -3,7 +3,7 @@ using GraphQL.Types;
 using GraphQL.Types.Relay;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 
-namespace EasyOC.OrchardCore.OpenApi.GraphQL
+namespace EaysOC.GraphQL.Queries
 {
     public class ContentItemConnectionType : ConnectionType<ContentItemType>
     {

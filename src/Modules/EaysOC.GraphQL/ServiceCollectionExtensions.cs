@@ -10,7 +10,7 @@ namespace OrchardCore.ContentManagement.GraphQL
     {
         public static IServiceCollection AddContentMutationGraphQL(this IServiceCollection services)
         {
-            services.AddSingleton<ISchemaBuilder, CreateContentItemMutationBuilder>();
+            //services.AddSingleton<ISchemaBuilder, CreateContentItemMutationBuilder>();
             services.AddTransient<CreateContentItemInputType>();
 
             services.AddGraphMutationType<CreateContentItemMutation>();
@@ -18,7 +18,13 @@ namespace OrchardCore.ContentManagement.GraphQL
 
             services.AddTransient<DeletionStatusObjectGraphType>();
             services.AddTransient<CreateContentItemInputType>();
-            services.AddSingleton<ISchemaBuilder, CreateContentItemMutationBuilder>();
+            //services.AddSingleton<ISchemaBuilder, CreateContentItemMutationBuilder>();
+            return services;
+        }
+
+        public static IServiceCollection AddLuceneQueryTotalGraphQL(this IServiceCollection services)
+        {
+
             return services;
         }
     }

@@ -1,8 +1,8 @@
+using EasyOC.GraphQL.Abstractions.Types;
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using OrchardCore.Apis.GraphQL.Types;
 
 namespace OrchardCore.ContentManagement.GraphQL.Mutations
 {

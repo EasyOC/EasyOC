@@ -1,4 +1,4 @@
-﻿using EasyOC.OrchardCore.OpenApi.GraphQL.Types;
+﻿using EaysOC.GraphQL.Queries.Types;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,14 +16,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
 
-namespace EasyOC.OrchardCore.OpenApi.GraphQL
+namespace EaysOC.GraphQL.Queries
 {
-    public class EOCLuceneQueryFieldTypeProvider : ISchemaBuilder
+    public class LuceneQueryFieldTypeProvider : ISchemaBuilder
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger<EOCLuceneQueryFieldTypeProvider> _logger;
+        private readonly ILogger<LuceneQueryFieldTypeProvider> _logger;
 
-        public EOCLuceneQueryFieldTypeProvider(IHttpContextAccessor httpContextAccessor, ILogger<EOCLuceneQueryFieldTypeProvider> logger)
+        public LuceneQueryFieldTypeProvider(IHttpContextAccessor httpContextAccessor, ILogger<LuceneQueryFieldTypeProvider> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -43,7 +43,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
 
             foreach (var query in queries.OfType<LuceneQuery>())
             {
-                if (String.IsNullOrWhiteSpace(query.Schema))
+                if (string.IsNullOrWhiteSpace(query.Schema))
                     continue;
 
                 var name = query.Name;
@@ -51,6 +51,11 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                 try
                 {
                     var querySchema = JObject.Parse(query.Schema);
+                    if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString()
+                        .Equals("true", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
                     if (!querySchema.ContainsKey("type"))
                     {
                         _logger.LogError("The Query '{Name}' schema is invalid, the 'type' property was not found.", name);
@@ -58,33 +63,23 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                     }
                     var type = querySchema["type"].ToString();
                     FieldType fieldType;
-                    if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var fieldTypeName = querySchema["fieldTypeName"]?.ToString() ?? query.Name;
-                        if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var contentType = type.Remove(0, 12);
-                            fieldType = BuildTotalContentTypeFieldType(schema, contentType, query, fieldTypeName);
-                        }
-                        else
-                        {
-                            fieldType = BuildTotalSchemaBasedFieldType(query, querySchema, fieldTypeName);
-                        }
+                    var fieldTypeName = querySchema["fieldTypeName"]?.ToString() ?? query.Name;
 
-                        if (fieldType != null)
-                        {
-                            if (schema.Query.HasField(fieldType.Name))
-                            {
-                                var existsField = schema.Query.GetField(fieldType.Name);
-                                existsField = fieldType;
-                            }
-                            else
-                            {
-                                schema.Query.AddField(fieldType);
-                            }
-                        }
+                    if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var contentType = type.Remove(0, 12);
+                        fieldType = BuildContentTypeFieldType(schema, contentType, query, fieldTypeName);
+                    }
+                    else
+                    {
+                        fieldType = BuildSchemaBasedFieldType(query, querySchema, fieldTypeName);
                     }
 
+
+                    if (fieldType != null && !schema.Query.HasField(fieldType.Name))
+                    {
+                        schema.Query.AddField(fieldType);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -93,6 +88,117 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
             }
         }
 
+        private FieldType BuildSchemaBasedFieldType(LuceneQuery query, JToken querySchema, string fieldTypeName)
+        {
+            var properties = querySchema["properties"];
+            if (properties == null)
+            {
+                return null;
+            }
+
+            var typetype = new ObjectGraphType<JObject>
+            {
+                Name = fieldTypeName
+            };
+
+            foreach (JProperty child in properties.Children())
+            {
+                var name = child.Name;
+                var nameLower = name.Replace('.', '_');
+                var type = child.Value["type"].ToString();
+                var description = child.Value["description"]?.ToString();
+
+                if (type == "string")
+                {
+                    var field = typetype.Field(
+                        typeof(StringGraphType),
+                        nameLower,
+                        description: description,
+                        resolve: context =>
+                        {
+                            var source = context.Source;
+                            return source[context.FieldDefinition.Metadata["Name"].ToString()].ToObject<string>();
+                        });
+                    field.Metadata.Add("Name", name);
+                }
+                else if (type == "integer")
+                {
+                    var field = typetype.Field(
+                        typeof(IntGraphType),
+                        nameLower,
+                        description: description,
+                        resolve: context =>
+                        {
+                            var source = context.Source;
+                            return source[context.FieldDefinition.Metadata["Name"].ToString()].ToObject<int>();
+                        });
+                    field.Metadata.Add("Name", name);
+                }
+            }
+
+            var fieldType = new FieldType
+            {
+                Arguments = new QueryArguments(
+                    new QueryArgument<StringGraphType> { Name = "parameters" }
+                ),
+
+                Name = fieldTypeName,
+                Description = "Represents the " + query.Source + " Query : " + query.Name,
+                ResolvedType = new ListGraphType(typetype),
+                Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
+                {
+                    var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                    var iquery = await queryManager.GetQueryAsync(query.Name);
+
+                    var parameters = context.GetArgument<string>("parameters");
+
+                    var queryParameters = parameters != null ?
+                        JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
+                        : new Dictionary<string, object>();
+
+                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters) as LuceneQueryResults;
+                    return result.Items;
+                }),
+                Type = typeof(ListGraphType<ObjectGraphType<JObject>>)
+            };
+
+            return fieldType;
+        }
+
+        private FieldType BuildContentTypeFieldType(ISchema schema, string contentType, LuceneQuery query, string fieldTypeName)
+        {
+            var typetype = schema.Query.Fields.OfType<ContentItemsFieldType>().FirstOrDefault(x => x.Name == contentType);
+            if (typetype == null)
+            {
+                return null;
+            }
+
+            var fieldType = new FieldType
+            {
+                Arguments = new QueryArguments(
+                        new QueryArgument<StringGraphType> { Name = "parameters" }),
+
+                Name = fieldTypeName,
+                Description = "Represents the " + query.Source + " Query : " + query.Name,
+                ResolvedType = typetype.ResolvedType,
+                Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
+                {
+                    var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                    var iquery = await queryManager.GetQueryAsync(query.Name);
+
+                    var parameters = context.GetArgument<string>("parameters");
+
+                    var queryParameters = parameters != null ?
+                        JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
+                        : new Dictionary<string, object>();
+                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters) as LuceneQueryResults;
+                    return result.Items;
+                }),
+                Type = typetype.Type
+            };
+
+            return fieldType;
+        }
         private FieldType BuildTotalSchemaBasedFieldType(LuceneQuery query, JToken querySchema, string fieldTypeName)
         {
             var properties = querySchema["properties"];
@@ -178,7 +284,7 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
                         : new Dictionary<string, object>();
 
-                    var result = (await queryManager.ExecuteQueryAsync(iquery, queryParameters)) as LuceneQueryResults;
+                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters) as LuceneQueryResults;
                     return result;
                 }),
                 Type = totalType.GetType()

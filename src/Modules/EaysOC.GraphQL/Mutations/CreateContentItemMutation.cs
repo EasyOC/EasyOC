@@ -1,9 +1,9 @@
-﻿using GraphQL.Resolvers;
+﻿using EasyOC.GraphQL.Abstractions.Mutations;
+using EasyOC.GraphQL.Abstractions.Types;
+using GraphQL.Resolvers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
-using OrchardCore.Apis.GraphQL.Mutations;
-using OrchardCore.Apis.GraphQL.Types;
 using OrchardCore.ContentManagement.Display;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using OrchardCore.Modules;
