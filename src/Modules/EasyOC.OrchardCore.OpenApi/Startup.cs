@@ -46,7 +46,7 @@ namespace EasyOC.OrchardCore.OpenApi
             //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
             //services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
-            services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
+            //services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
             //services.AddContentMutationGraphQL();
 

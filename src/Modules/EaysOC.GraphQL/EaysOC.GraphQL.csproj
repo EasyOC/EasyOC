@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
 
@@ -6,6 +6,13 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mutations\CreateOrUpdateContentItemMutationBuilder.cs" />
+    <Compile Remove="Queries\ContentItemConnectionType.cs" />
+    <Compile Remove="Queries\SqlQueryFieldTypeProvider.cs" />
+    <Compile Remove="ServiceCollectionExtensions.cs" />
+  </ItemGroup>
 
  
 
@@ -16,12 +23,16 @@
     <PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement.Display" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
+
   </ItemGroup>
 
  
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyOC.Apis.GraphQL.Abstractions\EasyOC.Apis.GraphQL.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+    <ProjectReference Include="..\EasyOC.GraphQL.Abstractions\EasyOC.GraphQL.Abstractions.csproj" />
   </ItemGroup> 
 </Project>
 
