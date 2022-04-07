@@ -1,7 +1,6 @@
 ﻿using EasyOC.GraphQL.Abstractions.Types;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
-using OrchardCore.Apis.GraphQL.Queries;
 
 namespace EasyOC.GraphQL.Abstractions
 {
