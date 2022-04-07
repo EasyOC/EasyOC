@@ -80,6 +80,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.FreeSqlI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.DynamicTypeIndex", "src\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj", "{BB2E7C19-CF43-4727-AB6F-88434E4F57CA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.GraphQL.Abstractions", "src\Modules\EasyOC.GraphQL.Abstractions\EasyOC.GraphQL.Abstractions.csproj", "{14B75A05-A161-4529-943D-7EEFFE9C5BC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,10 @@ Global
 		{BB2E7C19-CF43-4727-AB6F-88434E4F57CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB2E7C19-CF43-4727-AB6F-88434E4F57CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB2E7C19-CF43-4727-AB6F-88434E4F57CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14B75A05-A161-4529-943D-7EEFFE9C5BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14B75A05-A161-4529-943D-7EEFFE9C5BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14B75A05-A161-4529-943D-7EEFFE9C5BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14B75A05-A161-4529-943D-7EEFFE9C5BC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +192,7 @@ Global
 		{B4D70E06-785B-4869-A61E-05682E322834} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{A24CAC99-AD4D-49E0-ADB2-B19939DE892A} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{BB2E7C19-CF43-4727-AB6F-88434E4F57CA} = {5A30262C-639E-4734-AB2A-97425C5A1478}
+		{14B75A05-A161-4529-943D-7EEFFE9C5BC2} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}
