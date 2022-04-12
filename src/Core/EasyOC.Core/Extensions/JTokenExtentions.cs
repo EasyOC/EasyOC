@@ -84,7 +84,7 @@ namespace Newtonsoft.Json.Linq
                 case nameof(UserPickerField):
                     return jToken.Value<string>();
                 case nameof(BooleanField):
-                    return jToken.Value<bool>();
+                    return jToken.Value<bool?>();
                 case nameof(NumericField):
                     return jToken.Value<decimal?>();
                 case nameof(DateTimeField):

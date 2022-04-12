@@ -4,8 +4,8 @@
     <!-- OrchardCore 的全局依赖版本-->
     <OrchardCoreVersion>1.3.0-preview-16733</OrchardCoreVersion>
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-  </PropertyGroup>
-  <PropertyGroup>
+    <FreeSqlVersion>3.2.302</FreeSqlVersion>
+    
     <!-- Special case - this property is used by a DotNetCliToolReference -->
     <DotNetXunitVersion>2.3.0</DotNetXunitVersion>
   </PropertyGroup>
@@ -19,11 +19,11 @@
     <PackageManagement Include="NJsonSchema" Version="10.5.2" />
     <PackageManagement Include="NSwag.AspNetCore" Version="13.13.2" />
     <PackageManagement Include="EasyOC.DynamicWebApi" Version="1.1.2" />
-    <PackageManagement Include="FreeSql" Version="3.2.301" />
-    <PackageManagement Include="FreeSql.Provider.MySql" Version="3.2.301"  />
-    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="3.2.301"  />
-    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="3.2.301"  />
-    <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="3.2.301" />
+    <PackageManagement Include="FreeSql" Version="$(FreeSqlVersion)" />
+    <PackageManagement Include="FreeSql.Provider.MySql" Version="$(FreeSqlVersion)"  />
+    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="$(FreeSqlVersion)"  />
+    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="$(FreeSqlVersion)"  />
+    <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="$(FreeSqlVersion)" />
     <PackageManagement Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
 
   </ItemGroup> 

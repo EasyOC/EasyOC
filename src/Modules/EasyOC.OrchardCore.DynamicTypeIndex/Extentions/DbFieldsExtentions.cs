@@ -1,10 +1,10 @@
-﻿using EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto;
-using TextField = OrchardCore.ContentFields.Fields.TextField;
+﻿using TextField = OrchardCore.ContentFields.Fields.TextField;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement.Metadata.Models;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex
 {
@@ -16,25 +16,24 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                bool isNullable = false,
                bool isIdentity = false,
                bool isPrimaryKey = false,
-               bool addToTableIndex = false
+               bool isIndex = false
             )
         {
             var item = new DynamicIndexFieldItem
             {
-                DbFieldOption = new DbFiledOption
-                {
-                    Name = columnName,
-                    IsSystem = isSystem,
-                    AddToTableIndex = addToTableIndex,
-                    IsIdentity = isIdentity,
-                    IsPrimaryKey = isPrimaryKey,
-                    IsNullable = isNullable,
-                    CsTypeName = typeof(T).FullName,
-                }
+
+                Name = columnName,
+                IsSystem = isSystem,
+                IsDefaultIndex = isIndex,
+                IsIdentity = isIdentity,
+                IsPrimaryKey = isPrimaryKey,
+                IsNullable = isNullable,
+                CsTypeName = typeof(T).FullName,
+
             };
             if (length != 0)
             {
-                item.DbFieldOption.Length = length;
+                item.Length = length;
             }
             list.Add(item);
             return item;
@@ -49,9 +48,9 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             var fieldPath = $"{part.Name}.{field.Name}";
             var valuePath = field.FieldDefinition.GetFiledValuePath();
 
-            var item = new DynamicIndexFieldItem
+
+            var item = new DynamicIndexFieldItem()
             {
-                Name = field.Name,
                 ContentFieldOption = new ContentFieldOption
                 {
                     IsSelfField = isTypeSelf,
@@ -62,16 +61,16 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                     PartName = part.Name,
                     ValueFullPath = $"{fieldPath}.{valuePath}",
                 },
-                DbFieldOption = field.ToDbFiledOption(isTypeSelf)
+
             };
+            item.FillDbFiledOption(field, isTypeSelf);
 
             return item;
         }
 
 
-        public static DbFiledOption ToDbFiledOption(this ContentPartFieldDefinition field, bool isTypeSelf = false)
+        public static void FillDbFiledOption(this DbFiledOption dbOption, ContentPartFieldDefinition field, bool isTypeSelf = false)
         {
-            var dbOption = new DbFiledOption();
             dbOption.Name = isTypeSelf ? field.Name : $"{field.PartDefinition.Name}_{field.Name}";
             dbOption.IsNullable = true;
             dbOption.IsSystem = false;
@@ -106,7 +105,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 default:
                     break;
             }
-            return dbOption;
+            //return dbOption;
         }
 
         public static bool IsTypeSelfPart(this ContentTypePartDefinition part)

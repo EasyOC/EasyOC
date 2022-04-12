@@ -13,6 +13,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Index
         public TextField TypeName { get; set; }
         public TextField TableName { get; set; }
         public TextField ConfigData { get; set; }
+        public TextField EntityInfo { get; set; }
 
     }
 

@@ -13,6 +13,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton(new AssemblyCSharpBuilder());
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IDataMigration, DynamicIndexDataMigration>();
             services.AddScoped<IDynamicIndexAppService, DynamicIndexAppService>();

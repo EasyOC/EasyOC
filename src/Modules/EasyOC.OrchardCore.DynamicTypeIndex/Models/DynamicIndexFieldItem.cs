@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
+namespace EasyOC.OrchardCore.DynamicTypeIndex.Models
 {
-    public class DynamicIndexFieldItem
+    public class DynamicIndexFieldItem : DbFiledOption
     {
-        public string Name { get; internal set; }
         public bool EnableCalculation { get; set; }
         public string JSExpression { get; set; }
-        public DbFiledOption DbFieldOption { get; set; }
         public ContentFieldOption ContentFieldOption { get; set; }
     }
 
     public class DbFiledOption
     {
+
         public string Name { get; set; }
         public bool IsSystem { get; set; }
         public bool Disabled { get; set; }
@@ -27,9 +22,9 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
         /// </summary>
         public int Length { get; set; }
         public bool IsNullable { get; set; }
-        public bool IsIdentity { get; internal set; }
-        public bool IsPrimaryKey { get; internal set; }
-        public bool AddToTableIndex { get; internal set; }
+        public bool IsIdentity { get; set; }
+        public bool IsPrimaryKey { get; set; }
+        public bool IsDefaultIndex { get; set; }
     }
 
     public class ContentFieldOption
@@ -41,7 +36,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service.Dto
         public string PartName { get; set; }
         public string FieldType { get; set; }
         public IEnumerable<string> DependsOn { get; set; } = new List<string>();
-        public string DisplayName { get; internal set; }
+        public string DisplayName { get; set; }
     }
 
 }
