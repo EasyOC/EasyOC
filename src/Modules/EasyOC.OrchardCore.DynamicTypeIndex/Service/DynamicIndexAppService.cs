@@ -136,8 +136,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 #endregion
 
                 fileds.Add($@"
-                [Column(Name = ""{item.Name}""{restAttrText})]
-                public {item.CsTypeName} {item.Name.Replace("_", string.Empty)} {{ get; set; }} 
+        [Column(Name = ""{item.Name}""{restAttrText})]
+        public {item.CsTypeName} {item.Name.Replace("_", string.Empty)} {{ get; set; }} 
                 ");
             }
 
@@ -156,7 +156,7 @@ namespace {entityInfo.NameSpace}
     {{
         [Column(StringLength = 26)]
         public string ContentItemId {{ get; set; }}
-        {FIELDS}
+{FIELDS}
     }}
 }}
 ";
