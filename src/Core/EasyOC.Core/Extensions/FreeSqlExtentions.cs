@@ -181,7 +181,7 @@ namespace System
                 }
                 if (!string.IsNullOrEmpty(tablePrefix))
                 {
-                    tableName = string.Format("{0}_{1}", tablePrefix, tableName); //表名前缀
+                    tableName = string.Format("{0}{1}", tablePrefix, tableName); //表名前缀
                 }
                 e.ModifyResult.Name = tableName;
             };

@@ -1,7 +1,10 @@
-﻿using EasyOC.OrchardCore.DynamicTypeIndex.Index;
+﻿using EasyOC.OrchardCore.ContentExtentions.Handlers;
+using EasyOC.OrchardCore.DynamicTypeIndex.Handlers;
+using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using YesSql.Indexes;
@@ -20,7 +23,10 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             services.AddContentPart<DynamicIndexConfigSetting>();
             //.AddHandler<VbenMenuHandler>()
             services.AddSingleton<IIndexProvider, DynamicIndexConfigDataIndexProvider>();
-            services.AddScoped<IDynamicIndexTableBuilder, DynamicIndexTableBuilder>();
+            //services.AddScoped<IDynamicIndexTableBuilder, DynamicIndexTableBuilder>();
+            services.AddScoped<IContentHandler, DynamicIndexTableHandler>();
+            services.AddScoped<IBatchImportEventHandler, DynamicIndexTableHandler>();
+
 
             NatashaInitializer.InitializeAndPreheating();
 

@@ -41,14 +41,13 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
         {
             context.For<VbenMenuPartIndex>()
                  .When(contentItem => contentItem.Has<VbenMenu>())
-                .Map(menu =>
-            {
-                var menuPart = menu.ContentItem.As<VbenMenu>();
-
-                if (menuPart != null)
+                 .Map(menu =>
                 {
-                    try
+                    var menuPart = menu.ContentItem.As<VbenMenu>();
+
+                    if (menuPart != null)
                     {
+
                         var menuPartIndex = _mapper.Map<VbenMenuPartIndex>(menuPart);
                         menuPartIndex.ContentItemId = menu.ContentItemId;
                         menuPartIndex.Published = menu.Published;
@@ -58,15 +57,10 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
                             menuPartIndex.RoutePath = menuPartIndex.RoutePath.ToLower();
                         }
                         return menuPartIndex;
-                    }
-                    catch (System.Exception)
-                    {
 
-                        throw;
                     }
-                }
-                return null;
-            });
+                    return null;
+                });
         }
     }
 

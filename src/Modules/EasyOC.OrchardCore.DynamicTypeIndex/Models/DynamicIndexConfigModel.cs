@@ -11,7 +11,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Models
     {
         public string ContentItemId { get; set; }
         public string TypeName { get; set; }
-        public string TableName { get; set; }
+        public string TableName { get; set; } 
+        public bool IndexAllVersion { get; set; }
         public DynamicIndexEntityInfo EntityInfo { get; set; } = new DynamicIndexEntityInfo();
         public List<DynamicIndexFieldItem> Fields { get; set; } = new List<DynamicIndexFieldItem>();
     }

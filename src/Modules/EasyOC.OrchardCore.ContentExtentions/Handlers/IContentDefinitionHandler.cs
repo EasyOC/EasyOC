@@ -13,7 +13,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.Handlers
         Task<bool> BeforeDeleteTypeDefinition(ContentTypeDefinitionRecord record);
         Task<bool> BeforeStorePartDefinition(ContentPartDefinition contentPartDefinition);
         Task<bool> BeforeStoreTypeDefinition(ContentTypeDefinition contentTypeDefinition);
-
         Task<bool> BeforeDeletePartDefinition(ContentPartDefinitionRecord record, IEnumerable<ContentTypeDefinition> typesWithPart);
         Task AfterDeletePartDefinition(ContentPartDefinitionRecord record, IEnumerable<ContentTypeDefinition> typesWithPart);
     }

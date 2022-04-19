@@ -45,7 +45,6 @@ namespace EasyOC.OrchardCore.OpenApi
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
 
             services.AddScoped<IUserClaimsProvider, UserTokenLifeTimeClaimsProvider>();
-
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

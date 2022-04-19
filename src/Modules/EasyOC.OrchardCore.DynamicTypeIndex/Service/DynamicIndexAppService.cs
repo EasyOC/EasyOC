@@ -51,6 +51,16 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
 
         }
+        public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName)
+        {
+            var config = await GetDynamicIndexConfigAsync(typeName);
+            if (config == null)
+            {
+                config = GetDefaultConfig(typeName);
+            }
+            return config;
+        }
+        
         public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName)
         {
             if (typeName.IsNullOrWhiteSpace())
@@ -64,14 +74,13 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                             .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
                             .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
                             .FirstOrDefaultAsync();
-                    if (contentItem == null)
+                    if (contentItem != null)
                     {
-                        return GetDefaultConfig(typeName);
-
+                        return ToConfigModel(contentItem);
                     }
                     else
                     {
-                        return ToConfigModel(contentItem);
+                        return null;
                     }
                     //var configPkg = new DynamicIndexCachePakage()
                     //{
@@ -214,6 +223,10 @@ namespace {entityInfo.NameSpace}
         public async Task<int> RebuildIndexData(string typeName)
         {
             var model = await GetDynamicIndexConfigAsync(typeName);
+            if (model == null)
+            {
+                await Notifier.ErrorAsync(H["DynamicIndex Config :{0} is not found", typeName]);
+            }
             return await RebuildIndexData(model);
         }
 

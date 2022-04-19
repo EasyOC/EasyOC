@@ -13,8 +13,7 @@ using System;
 
 namespace EasyOC.OrchardCore.ContentExtentions
 {
-    [RequireFeatures("OrchardCore.ContentFields",
-        "OrchardCore.ContentPreview", "EasyOC.OrchardCore.ContentExtentions", "OrchardCore.Contents")]
+    [RequireFeatures("OrchardCore.Contents")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
@@ -22,7 +21,9 @@ namespace EasyOC.OrchardCore.ContentExtentions
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
             services.Replace(ServiceDescriptor.Scoped<IContentManager, EOCDefaultContentManager>());
-            services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
+            services.AddScoped<IBatchImportEventHandler, BatchImportEventHandlerBase>();
+            //修改类型定义事件处理声明
+            //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
             services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
 
         }

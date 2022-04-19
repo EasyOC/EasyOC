@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DynamicIndexTableBuilder.cs" />
+    <Compile Remove="IDynamicIndexTableBuilder.cs" />
     <Compile Remove="Service\Template.cs" />
   </ItemGroup>
 
