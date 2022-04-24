@@ -43,24 +43,29 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
 
 
 
-        private Task UpdateIndexAsync(UserContextBase context, Action<ContentItem> action)
+        private async Task UpdateIndexAsync(UserContextBase context, Action<ContentItem> action)
         {
             var user = context.User as User;
             var contentItem = user.As<ContentItem>("UserProfileInternal");
+            if (contentItem == null)
+            {
+                return;
+            }
             var userSimpleData = _mapper.Map<UserDetailsDto>(user);
             userSimpleData.Properties = null;
             var jContent = contentItem.Content as JObject;
 
             try
             {
-                jContent["UserProfile"] = contentItem.Content["UserProfileInternal"];
+
+                jContent["UserProfile"] = contentItem.Content["UserProfileInternal"] as JObject;
                 jContent.Remove("UserProfileInternal");
                 jContent["UserProfile"]["OwnerUser"] = JObject.FromObject(new
                 {
                     UserIds = new string[] { user.UserId },
                     UserNames = new string[] { user.UserName }
                 });
-                jContent["UserProfile"]["User"] = JObject.FromObject(userSimpleData);  
+                jContent["UserProfile"]["User"] = JObject.FromObject(userSimpleData);
             }
             catch (Exception e)
             {
@@ -73,7 +78,6 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             contentItem.Latest = true;
             contentItem.Published = true;
             action?.Invoke(contentItem);
-            return Task.CompletedTask;
         }
         public override async Task CreatedAsync(UserCreateContext context)
         {
