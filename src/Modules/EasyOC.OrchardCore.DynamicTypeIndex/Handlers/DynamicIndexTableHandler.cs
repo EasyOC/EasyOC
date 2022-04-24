@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OrchardCore.DisplayManagement.Notify;
 using Microsoft.AspNetCore.Mvc.Localization;
+using OrchardCore.ContentManagement;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
 {
@@ -61,15 +62,38 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
 
         }
 
-
+        public override async Task UpdatedAsync(UpdateContentContext context)
+        {
+            await UpdateIndex(context);
+        }
         public override async Task PublishedAsync(PublishContentContext context)
+        {
+            //await UpdateIndex(context);
+        }
+
+        private async Task UpdateIndex(ContentContextBase context)
         {
             var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(context.ContentItem.ContentType);
             if (config != null)
             {
                 var dictModel = context.ContentItem.ToDictModel(config);
-                await _fsql.InsertOrUpdateDict(dictModel).WherePrimary("DocumentId")
-                     .ExecuteAffrowsAsync();
+
+                try
+                {
+
+                    var sql =  _fsql.InsertOrUpdateDict(dictModel).AsTable(config.TableName).WherePrimary("DocumentId").ToSql();
+                    Console.WriteLine(sql);
+                    await _fsql.Ado.ExecuteNonQueryAsync(sql);
+                    //var count = await _fsql.InsertOrUpdateDict(dictModel).AsTable(config.TableName).WherePrimary("DocumentId")
+                    // .ExecuteAffrowsAsync();
+                    //Console.WriteLine(count);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                
             }
         }
     }

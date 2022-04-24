@@ -210,10 +210,10 @@ namespace {entityInfo.NameSpace}
                 }
                 return null;
             }
-
+            await RebuildIndexData(model);
             await ContentManager.PublishAsync(doc);
             model.ContentItemId = doc.ContentItemId;
-            await RebuildIndexData(model);
+         
             _cachedTypeConfigurations[model.TypeName] = Task.FromResult(model);
             return model;
         }
