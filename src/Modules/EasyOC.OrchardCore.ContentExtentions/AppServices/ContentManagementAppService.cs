@@ -18,21 +18,14 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
     public class ContentManagementAppService : AppServiceBase
     {
 
-        private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        private readonly IContentManager _contentManager;
-
-        public ContentManagementAppService(IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
-        {
-            _contentManager = contentManager;
-            _contentDefinitionManager = contentDefinitionManager;
-        }
 
         private static readonly JsonMergeSettings UpdateJsonMergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
 
+
         public async Task<bool> DeleteAsync(string contentItemId)
         {
-            var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
+            var contentItem = await ContentManager.GetAsync(contentItemId, VersionOptions.Latest);
 
             if (contentItem == null)
             {
@@ -45,7 +38,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                 throw new AppFriendlyException(HttpStatusCode.Unauthorized);
             }
 
-            await _contentManager.RemoveAsync(contentItem);
+            await ContentManager.RemoveAsync(contentItem);
 
             return true;
 
@@ -58,23 +51,23 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 throw new AppFriendlyException("invaild property: contentType", StatusCodes.Status400BadRequest);
             }
-            var typeDef = _contentDefinitionManager.GetTypeDefinition(model.ContentType);
+            var typeDef = ContentDefinitionManager.GetTypeDefinition(model.ContentType);
             if (typeDef == null)
             {
                 throw new AppFriendlyException($"invaild property: contentType ,'{model.ContentType}' is not found "
                     , StatusCodes.Status400BadRequest);
             }
-            var contentItem = await _contentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
+            var contentItem = await ContentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
             if (contentItem == null)
             {
                 if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
                 {
                     throw new AppFriendlyException(HttpStatusCode.Unauthorized);
                 }
-                var newContentItem = await _contentManager.NewAsync(model.ContentType);
+                var newContentItem = await ContentManager.NewAsync(model.ContentType);
                 newContentItem.Merge(MergeFromSimpleData(newContentItem, model, typeDef));
 
-                var result = await _contentManager.UpdateValidateAndCreateAsync(newContentItem, VersionOptions.Draft);
+                var result = await ContentManager.UpdateValidateAndCreateAsync(newContentItem, VersionOptions.Draft);
 
                 if (!result.Succeeded)
                 {
@@ -90,8 +83,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                 }
                 contentItem.Merge(MergeFromSimpleData(contentItem, model, typeDef), UpdateJsonMergeSettings);
 
-                await _contentManager.UpdateAsync(contentItem);
-                var result = await _contentManager.ValidateAsync(contentItem);
+                await ContentManager.UpdateAsync(contentItem);
+                var result = await ContentManager.ValidateAsync(contentItem);
 
                 if (!result.Succeeded)
                 {
@@ -101,11 +94,11 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
             if (!draft)
             {
-                await _contentManager.PublishAsync(contentItem);
+                await ContentManager.PublishAsync(contentItem);
             }
             else
             {
-                await _contentManager.SaveDraftAsync(contentItem);
+                await ContentManager.SaveDraftAsync(contentItem);
             }
 
             return contentItem.ContentItemId;
@@ -138,13 +131,19 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 foreach (var item in selfPart.PartDefinition.Fields)
                 {
-                    var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
-                    if (fieldPath != null)
+                    var valuePath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
+                    if (valuePath != null)
                     {
                         if (jObject.ContainsKey(item.Name.ToCamelCase()))
                         {
-                            contentItem.Content[contentItem.ContentType][item.Name][fieldPath] = jObject[(item.Name.ToCamelCase())];
-
+                            if (item.FieldDefinition.Name == "ContentPickerField"|| item.FieldDefinition.Name == "ContentPickerField")
+                            {
+                                contentItem.Content[contentItem.ContentType][item.Name][valuePath] = jObject.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToPascalCase()}");
+                            }
+                            else
+                            {
+                                contentItem.Content[contentItem.ContentType][item.Name][valuePath] = jObject[(item.Name.ToCamelCase())];
+                            }
                         }
                     }
                 }
@@ -160,11 +159,19 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                 var partObj = new JObject(partData);
                 foreach (var item in part.PartDefinition.Fields)
                 {
-                    var fieldPath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
-                    if (fieldPath != null && partObj.ContainsKey(item.Name.ToCamelCase()))
+                    var valuePath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
+                    if (valuePath != null && partObj.ContainsKey(item.Name.ToCamelCase()))
                     {
-                        contentItem.Content[part.Name][item.Name][fieldPath] =
-                               partObj[item.Name.ToCamelCase()];
+                        if (item.FieldDefinition.Name == "ContentPickerField" || item.FieldDefinition.Name == "ContentPickerField")
+                        {
+                            contentItem.Content[contentItem.ContentType][item.Name][valuePath] =
+                                partObj.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToPascalCase()}");
+                        }
+                        else
+                        {
+                            contentItem.Content[part.Name][item.Name][valuePath] =
+                                   partObj[item.Name.ToCamelCase()];
+                        }
 
                     }
 
@@ -173,5 +180,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
             return contentItem;
         }
+       
     }
 }

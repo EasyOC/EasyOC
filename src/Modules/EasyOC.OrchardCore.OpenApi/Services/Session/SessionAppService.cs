@@ -1,5 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Indexs;
 using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -45,11 +46,24 @@ namespace EasyOC.OrchardCore.OpenApi.Services.Session
             var user = await CurrentUserAsync;
             var userDetails = user as User;
             var userPermissions = new List<string>();
-            var allMenus = YesSession.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentType == "VbenMenu" && x.Published && x.Latest);
-             
-           
+            var menuNames = userDetails.UserClaims.Where(x => x.ClaimType == "VbenMenu").Select(x => x.ClaimValue).ToList();
+            //var allMenus = YesSession.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentType == "VbenMenu" && x.Published && x.Latest)
+            //    .With<VbenMenuPartIndex>(x => menuNames.Contains(x.MenuName))
+            //    .ListAsync();
+            //userDetails.UserClaims.Where(x => x.ClaimType == "VbenMenu").ToList().ForEach(x =>
+            //{
+            //    var permission = x.ClaimValue;
+            //    if (allMenus..StartsWith("Menu"))
+            //    {
+            //        userPermissions.Add(permission);
+            //    }
+            //});
 
-            return userPermissions;
+            //Fsql.Select<ContentItemIndex, VbenMenuPartIndex>().InnerJoin((c, v) =>.).ToList(x => x.t2);
+
+            return menuNames;
+
+            //return allMenus.to;
         }
 
     }

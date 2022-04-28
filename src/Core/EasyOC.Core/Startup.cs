@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Modules;
+using OrchardCore.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +24,6 @@ namespace EasyOC.Core
     public class Startup : StartupBase
     {
         private readonly IShellConfiguration _shellConfiguration;
-
         public Startup(IShellConfiguration shellConfiguration)
         {
             _shellConfiguration = shellConfiguration;
@@ -36,6 +37,7 @@ namespace EasyOC.Core
             //    a.GetReferencedAssemblies().Any(x => x.FullName.StartsWith(nameof(AutoMapper))))
             //);
             services.AddAutoMapper(this.GetType().Assembly);
+
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
             {
@@ -47,17 +49,23 @@ namespace EasyOC.Core
                 options.OperationFilter<SwaggerOperationIdFilter>();
                 options.OperationFilter<SwaggerOperationFilter>();
                 options.CustomDefaultSchemaIdSelector();
-                var serviceProvider = ShellScope.Current.ServiceProvider;
-                var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
-                var request = httpContextAccessor.HttpContext.Request;
-                var tenantSettings = ShellScope.Context.Settings;
-                //var baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
-                var baseUrl = _shellConfiguration["AuthServer:Authority"].EnsureEndsWith('/');
-                var uriKind = UriKind.RelativeOrAbsolute;
+                var serviceProvider = ShellScope.Current.ServiceProvider; 
+
+                var siteService = ShellScope.Current.ServiceProvider.GetRequiredService<ISiteService>();
+
+                var site = siteService.GetSiteSettingsAsync().GetAwaiter().GetResult();
+                var baseUrl = site.BaseUrl;
+
+                //var baseUrl = _shellConfiguration["AuthServer:Authority"].EnsureEndsWith('/');
                 if (string.IsNullOrEmpty(baseUrl))
                 {
                     baseUrl = "/";
+                    //var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                    //var request = httpContextAccessor.HttpContext.Request;
+                    //var tenantSettings = ShellScope.Context.Settings; 
+                    //baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
                 }
+                baseUrl = baseUrl.EnsureEndsWith('/');
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
 
@@ -76,9 +84,8 @@ namespace EasyOC.Core
                                     { "roles", "Roles" },
                                     { "api", "Api" },
                                 },
-                            AuthorizationUrl = new Uri($"{baseUrl}connect/authorize", uriKind),
-                            TokenUrl = new Uri($"{baseUrl}connect/token", uriKind),
-
+                            AuthorizationUrl = new Uri($"{baseUrl}connect/authorize", UriKind.RelativeOrAbsolute),
+                            TokenUrl = new Uri($"{baseUrl}connect/token", UriKind.RelativeOrAbsolute),
                         },
                     }
                 });
@@ -150,10 +157,14 @@ namespace EasyOC.Core
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
             app.UseSwaggerUI(options =>
             {
-
-                options.OAuthClientId(_shellConfiguration["AuthServer:SwaggerClientId"]);
-                options.OAuthClientSecret(_shellConfiguration["AuthServer:SwaggerClientSecret"]);
-                options.OAuth2RedirectUrl(_shellConfiguration["AuthServer:SwaggerOAuth2RedirectUrl"]);
+                var serviceProvider = app.ApplicationServices;
+                var env = serviceProvider.GetRequiredService<IHostEnvironment>();
+                if (env.IsDevelopment())
+                {
+                    options.OAuthClientId(_shellConfiguration["AuthServer:SwaggerClientId"]);
+                    options.OAuthClientSecret(_shellConfiguration["AuthServer:SwaggerClientSecret"]);
+                    options.OAuth2RedirectUrl(_shellConfiguration["AuthServer:SwaggerOAuth2RedirectUrl"]);
+                }
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
                 options.OAuthScopes("openid", "profile", "roles", "api");
 
