@@ -21,7 +21,7 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
         public string RealName { get; set; }
         public string EmployeCode { get; set; }
         public string FirstName { get; set; }
-        public string LastName { get; set; } 
+        public string LastName { get; set; }
         public string Gender { get; set; }
         public string NickName { get; set; }
         public string Department { get; set; }
@@ -40,13 +40,18 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
         {
             context.For<UserProfileIndex>().Map(user =>
             {
-                var profileIndex = _mapper.Map<UserProfileIndex>(user);
+                //var profileIndex = _mapper.Map<UserProfileIndex>(user);
+                var profileIndex = new UserProfileIndex
+                {
+                    UserId = user.UserId,
+                    UserName = user.UserName,
+                };
+
                 var profiles = user.As<ContentItem>("UserProfileInternal");
 
                 if (profiles != null)
                 {
                     profileIndex = _mapper.Map(profiles, profileIndex);
-
                     var userProfile = profiles.As<UserProfilePart>();
                     profileIndex = _mapper.Map(userProfile, profileIndex);
 
