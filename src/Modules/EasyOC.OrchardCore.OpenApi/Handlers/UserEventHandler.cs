@@ -54,7 +54,6 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             var userSimpleData = _mapper.Map<UserDetailsDto>(user);
             userSimpleData.Properties = null;
             var jContent = contentItem.Content as JObject;
-
             try
             {
 
@@ -66,6 +65,9 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
                     UserNames = new string[] { user.UserName }
                 });
                 jContent["UserProfile"]["User"] = JObject.FromObject(userSimpleData);
+                jContent["UserProfile"]["UserName"] = JObject.FromObject(new { Text = user.UserName });
+                jContent["UserProfile"]["Email"] = JObject.FromObject(new { Text = user.Email });
+                jContent["UserProfile"]["UserId"] = JObject.FromObject(new { Text = user.UserId });
             }
             catch (Exception e)
             {
