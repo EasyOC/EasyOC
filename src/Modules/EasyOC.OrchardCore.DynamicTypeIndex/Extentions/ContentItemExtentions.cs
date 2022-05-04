@@ -12,9 +12,9 @@ namespace EasyOC
         {
             var jdoc = doc.Content as JObject;
             var dmodel = new Dictionary<string, object>();
-            dmodel.Add("ContentItemId", doc.ContentItemId);
+            dmodel.Add("Id", doc.Id);
             dmodel.Add("DocumentId", doc.Id);
-            dmodel.Add("Id", null);
+            dmodel.Add("ContentItemId", doc.ContentItemId);
 
             foreach (var fConfig in config.Fields)
             {

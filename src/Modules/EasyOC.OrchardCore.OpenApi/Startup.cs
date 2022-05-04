@@ -32,16 +32,16 @@ namespace EasyOC.OrchardCore.OpenApi
         {
             services.AddAutoMapper(this.GetType().Assembly);
             //services.AddSingleton<IIndexProvider, CustomUserSettingsIndexProvider>();
-            services.AddSingleton<IIndexProvider, VbenMenuPartIndexProvider>();
-            services.AddContentPart<VbenMenu>().AddHandler<VbenMenuHandler>();
+            //services.AddSingleton<IIndexProvider, VbenMenuPartIndexProvider>();
+            //services.AddContentPart<VbenMenu>().AddHandler<VbenMenuHandler>();
 
             services.AddScoped<IRolesAppService, RolesAppService>();
             services.AddScoped<IUsersAppService, UsersAppService>();
-            services.AddScoped<IDataMigration, UserProfileMigrations>();
+            //services.AddScoped<IDataMigration, UserProfileMigrations>();
             services.AddScoped<IDataMigration, VbenMenuMigrations>();
 
             //services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
-            services.AddScoped<IUserEventHandler, UserEventHandler>();
+            services.AddScoped<IUserEventHandler, EOCUserEventHandler>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
 

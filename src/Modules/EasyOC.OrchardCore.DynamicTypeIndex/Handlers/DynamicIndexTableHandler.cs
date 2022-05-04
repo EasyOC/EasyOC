@@ -62,13 +62,13 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
 
         }
 
+        //public override async Task PublishedAsync(PublishContentContext context)
+        //{
+        //    await UpdateIndex(context);
+        //}
         public override async Task UpdatedAsync(UpdateContentContext context)
         {
             await UpdateIndex(context);
-        }
-        public override async Task PublishedAsync(PublishContentContext context)
-        {
-            //await UpdateIndex(context);
         }
 
         private async Task UpdateIndex(ContentContextBase context)
@@ -77,23 +77,16 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
             if (config != null)
             {
                 var dictModel = context.ContentItem.ToDictModel(config);
+                //await _fsql.Delete<object>().AsTable(config.TableName)
+                //               .Where(context.ContentItem.Id)
+                //               .ExecuteAffrowsAsync();
 
-                try
-                {
+                var count = await _fsql.InsertOrUpdateDict(dictModel)
+                                       .AsTable(config.TableName)
+                                       .WherePrimary("Id")
+                                       .ExecuteAffrowsAsync();
+                Console.WriteLine(count);
 
-                    var sql =  _fsql.InsertOrUpdateDict(dictModel).AsTable(config.TableName).WherePrimary("DocumentId").ToSql();
-                    Console.WriteLine(sql);
-                    await _fsql.Ado.ExecuteNonQueryAsync(sql);
-                    //var count = await _fsql.InsertOrUpdateDict(dictModel).AsTable(config.TableName).WherePrimary("DocumentId")
-                    // .ExecuteAffrowsAsync();
-                    //Console.WriteLine(count);
-                }
-                catch (Exception e)
-                {
-
-                }
-
-                
             }
         }
     }
