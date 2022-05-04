@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
@@ -14,6 +14,7 @@
     <Compile Remove="GraphQL\ContentItemConnectionType.cs" />
     <Compile Remove="GraphQL\SqlQueryFieldTypeProvider.cs" />
     <Compile Remove="Indexs\CustomUserSettingsIndexProvider.cs" />
+    <Compile Remove="Indexs\UserProfileIndex.cs" />
     <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
     <Compile Remove="Services\GraphqlAppService.cs" />
   </ItemGroup>
@@ -38,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,8 +14,7 @@
   <ItemGroup>
     <Compile Remove="AutofacModule.cs" />
     <Compile Remove="Extensions\FreeSqlProviderFactory.cs" />
-    <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeItemMetadataAttribute.cs" />
-    <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeTypeAttribute.cs" />
+    <Compile Remove="Extensions\OCExtentions\ContentExtensions.cs" />
     <Compile Remove="RunAs.cs" />
   </ItemGroup>
 
@@ -57,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\OCExtentions\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		
@@ -8,12 +8,7 @@
 	<ItemGroup>
 	  <Compile Remove="Scripting\ExcelMethodsProvider.cs" />
 	  <Compile Remove="Workflow\UploadExcelTask.cs" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-		
-	</ItemGroup>
+	</ItemGroup> 
 
 	<ItemGroup>
 		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />

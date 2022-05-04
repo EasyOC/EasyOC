@@ -24,8 +24,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
         public async Task<int> CreateAsync()
         {
             //Use FreeSql
-            //create or update table
-            // auto create or update index
+            //create or update table , auto create or update index
             _freeSql.CodeFirst.SyncStructure<VbenMenuPartIndex>();
             SchemaBuilder.CreateForeignKey<VbenMenuPartIndex>();
 

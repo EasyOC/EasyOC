@@ -9,7 +9,9 @@ namespace EasyOC.CMS.WebHost
     public class Program
     {
         public static Task Main(string[] args)
-            => BuildWebHost(args).RunAsync();
+        {
+            return BuildWebHost(args).RunAsync();
+        }
 
         public static IHost BuildWebHost(string[] args) =>
            Host.CreateDefaultBuilder(args)

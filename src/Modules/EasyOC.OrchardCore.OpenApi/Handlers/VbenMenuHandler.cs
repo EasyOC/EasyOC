@@ -14,7 +14,7 @@ using YesSql;
 
 namespace EasyOC.OrchardCore.OpenApi.Handlers
 {
-    public class VbenMenuHandler : ContentPartHandler<VbenMenuPart>
+    public class VbenMenuHandler : ContentPartHandler<VbenMenu>
     {
         private readonly IFreeSql _freeSql;
         private readonly INotifier _notifier;
@@ -27,7 +27,7 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             H = h;
         }
 
-        public override async Task PublishingAsync(PublishContentContext context, VbenMenuPart instance)
+        public override async Task PublishingAsync(PublishContentContext context, VbenMenu instance)
         {
             var validateResult = await CheckRoutePath(instance);
             if (validateResult.Any())
@@ -39,7 +39,7 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             await base.PublishingAsync(context, instance);
         }
 
-        public override async Task ValidatingAsync(ValidateContentContext context, VbenMenuPart instance)
+        public override async Task ValidatingAsync(ValidateContentContext context, VbenMenu instance)
         {
             var existsMenu = await CheckRoutePath(instance);
             if (existsMenu.Any())
@@ -49,9 +49,9 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             }
             await base.ValidatingAsync(context, instance);
         }
-        private async Task<List<string>> CheckRoutePath(VbenMenuPart context)
+        private async Task<List<string>> CheckRoutePath(VbenMenu context)
         {
-            var part = context.ContentItem.As<VbenMenuPart>();
+            var part = context.ContentItem.As<VbenMenu>();
             if (part.ContentItem.Latest && part.RoutePath is not null)
             {
                 var parentId = part.ParentMenu.ContentItemIds.FirstOrDefault();
