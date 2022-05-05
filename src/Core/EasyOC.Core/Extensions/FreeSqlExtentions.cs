@@ -39,11 +39,14 @@ namespace System
             var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
             var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
             return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
+
             //if (targetDbType == DataType.Sqlite)
             //{
-            //    var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
-            //    var fsql = serviceProvider.GetFreeSql(targetDbType, sqliteConnectionString, dbOptions.TablePrefix);
-            //    return fsql;
+            //    //在Sqlite 中使用 Yessql 的 ConnectionFactory
+            //    return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
+            //    //var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
+            //    //var fsql = serviceProvider.GetFreeSql(targetDbType, sqliteConnectionString, dbOptions.TablePrefix);
+            //    //return fsql;
             //}
             //else
             //{
@@ -182,7 +185,7 @@ namespace System
                           }
                       })
                       .Build();
-
+            
             fsql.Aop.ConfigEntity += (s, e) =>
             {
 

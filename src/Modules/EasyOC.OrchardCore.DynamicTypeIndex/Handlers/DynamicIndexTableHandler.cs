@@ -7,6 +7,8 @@ using System.Linq;
 using OrchardCore.DisplayManagement.Notify;
 using Microsoft.AspNetCore.Mvc.Localization;
 using OrchardCore.ContentManagement;
+using YesSql;
+using Microsoft.Extensions.Logging;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
 {
@@ -15,14 +17,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
         private readonly IDynamicIndexAppService _dynamicIndexAppService;
         private readonly IFreeSql _fsql;
         private readonly INotifier notifier;
+        private readonly ILogger _logger;
         private readonly IHtmlLocalizer H;
+        private readonly ISession _session;
         public virtual int DefaultPageSize { get; set; } = 100;
-        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql, INotifier notifier, IHtmlLocalizer<DynamicIndexTableHandler> localizer)
+        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql, INotifier notifier,
+            IHtmlLocalizer<DynamicIndexTableHandler> localizer, ISession session,
+            ILogger<DynamicIndexTableHandler> logger)
         {
+
             _dynamicIndexAppService = dynamicIndexAppService;
             _fsql = fsql;
             this.notifier = notifier;
             this.H = localizer;
+            _session = session;
+            _logger = logger;
         }
 
         public Task BeforeImportAsync(IEnumerable<ImportContentContext> contentItems)
@@ -51,7 +60,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                     {
                         var dictList = penddingUpdateList.ToDictModel(config);
                         totalUpdated[typeName] += await _fsql.InsertOrUpdateDict(dictList)
-                                                            .WherePrimary("DocumentId")
+                                                            .WithTransaction(_session.CurrentTransaction)
+                                                            .WherePrimary("Id")
                                                             .ExecuteAffrowsAsync();
                         pageIndex++;
                         penddingUpdateList = contentList.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
@@ -76,13 +86,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
             var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(context.ContentItem.ContentType);
             if (config != null)
             {
-                var dictModel = context.ContentItem.ToDictModel(config);
+                try
+                {
+                    var dictModel = context.ContentItem.ToDictModel(config);
 
-                var count = await _fsql.InsertOrUpdateDict(dictModel)
-                                       .AsTable(config.TableName)
-                                       .WherePrimary("Id")
-                                       .ExecuteAffrowsAsync();
-                Console.WriteLine(count);
+                    await _fsql.InsertOrUpdateDict(dictModel)
+                                          .WithTransaction(_session.CurrentTransaction)
+                                          .AsTable(config.TableName)
+                                          .WherePrimary("Id")
+                                          .ExecuteAffrowsAsync();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("索引更新失败,{0}" + e.InnerException);
+                }
+
 
             }
         }

@@ -56,11 +56,11 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             {
                 return;
             }
-            userProfileContent.ContentType = "UserProfile";
+            userProfileContent.ContentType = nameof(UserProfile);
             var contentItem = await _contentManager.CloneAsync(userProfileContent); 
             contentItem.Remove("UserProfileInternal");
             //ContentPart must be registered manually
-            contentItem.Alter<UserProfile>("UserProfile", profilePart =>
+            contentItem.Alter<UserProfile>(nameof(UserProfile), profilePart =>
             {
                 profilePart.UserName.Text = user.UserName;
                 profilePart.Email.Text = user.Email;
