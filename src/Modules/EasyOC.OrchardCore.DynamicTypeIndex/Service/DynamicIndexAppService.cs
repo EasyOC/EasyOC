@@ -213,8 +213,6 @@ namespace {entityInfo.NameSpace}
             if (sucessed)
             {
                 model.ContentItemId = doc.ContentItemId;
-                //avoid locking the table
-                await YesSession.SaveChangesAsync();
                 await RebuildIndexData(model);
                 _cachedTypeConfigurations[model.TypeName] = Task.FromResult(model);
                 return model;
