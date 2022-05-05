@@ -31,7 +31,7 @@ namespace EasyOC.Core.Application
         public IServiceProvider CurrentServiceProvider { get; }
         public AppServiceBase()
         {
-            CurrentServiceProvider = ShellScope.Current.ServiceProvider;
+            CurrentServiceProvider = ShellScope.Services;
             LazyServiceProvider = new EasyOCLazyServiceProvider(CurrentServiceProvider);
         }
 

@@ -77,9 +77,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
             if (config != null)
             {
                 var dictModel = context.ContentItem.ToDictModel(config);
-                //await _fsql.Delete<object>().AsTable(config.TableName)
-                //               .Where(context.ContentItem.Id)
-                //               .ExecuteAffrowsAsync();
 
                 var count = await _fsql.InsertOrUpdateDict(dictModel)
                                        .AsTable(config.TableName)

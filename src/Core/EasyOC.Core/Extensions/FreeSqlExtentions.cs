@@ -14,6 +14,8 @@ using OrchardCore.Environment.Shell;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Shells.Database.Configuration;
+using YesSql;
+
 namespace System
 {
     public static class FreeSqlExtentions
@@ -36,17 +38,18 @@ namespace System
             var shellConfig = serviceProvider.GetRequiredService<IShellConfiguration>();
             var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
             var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
-            if (targetDbType == DataType.Sqlite)
-            {
-                var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
-                var fsql = serviceProvider.GetFreeSql(targetDbType, sqliteConnectionString, dbOptions.TablePrefix);
-                return fsql;
-            }
-            else
-            {
-                var fsql = serviceProvider.GetFreeSql(targetDbType, dbOptions.ConnectionString, dbOptions.TablePrefix);
-                return fsql;
-            }
+            return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
+            //if (targetDbType == DataType.Sqlite)
+            //{
+            //    var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
+            //    var fsql = serviceProvider.GetFreeSql(targetDbType, sqliteConnectionString, dbOptions.TablePrefix);
+            //    return fsql;
+            //}
+            //else
+            //{
+            //    var fsql = serviceProvider.GetFreeSql(targetDbType, dbOptions.ConnectionString, dbOptions.TablePrefix);
+            //    return fsql;
+            //}
         }
 
 
@@ -129,39 +132,56 @@ namespace System
             throw new ArgumentException("未识别 或 FreeSql 尚未支持的数据库类型:" + providerName);
         }
 
-
-        public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, DataType dataType, string connectionString, string tablePrefix = default)
+        public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, DataType dataType,
+            string connectionString = null,
+            string tablePrefix = default
+            )
         {
             var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
-            var fsql = new FreeSqlBuilder().UseConnectionString(dataType, connectionString)
-                               .UseMonitorCommand(executing =>
-                               {
-                                   executing.CommandTimeout = 6000;
+            var fsqlBuilder = new FreeSqlBuilder();
 
-                               }, executed: (cmd, traceLog) =>
-                               {
-                                   var logStr = new StringBuilder();
-                                   if (cmd.Parameters.Count > 0)
-                                   {
-                                       logStr.AppendLine($"--Parameters: \r\ndeclare ");
-                                       var tempArray = new List<string>();
-                                       foreach (DbParameter item in cmd.Parameters)
-                                       {
-                                           tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
-                                       }
-                                       logStr.AppendLine(string.Join(",\r\n", tempArray));
-                                   }
+            if (connectionString.IsNullOrEmpty())
+            {
+                fsqlBuilder = fsqlBuilder.UseConnectionFactory(dataType, () =>
+                  {
+                      var yessSession = ShellScope.Services.GetRequiredService<ISession>();
+                      var conn = yessSession.CreateConnectionAsync().GetAwaiter().GetResult();
+                      return conn;
+                  });
+            }
+            else
+            {
+                fsqlBuilder = fsqlBuilder.UseConnectionString(dataType, connectionString);
+            }
 
-                                   logStr.AppendLine($"\n{traceLog}\r\n");
+            var fsql = fsqlBuilder.UseMonitorCommand(executing =>
+                      {
+                          executing.CommandTimeout = 6000;
 
-                                   var result = logStr.ToString();
-                                   Console.WriteLine(result);
-                                   if (logger != null)
-                                   {
-                                       logger.LogDebug(result);
-                                   }
-                               })
-                               .Build();
+                      }, executed: (cmd, traceLog) =>
+                      {
+                          var logStr = new StringBuilder();
+                          if (cmd.Parameters.Count > 0)
+                          {
+                              logStr.AppendLine($"--Parameters: \r\ndeclare ");
+                              var tempArray = new List<string>();
+                              foreach (DbParameter item in cmd.Parameters)
+                              {
+                                  tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
+                              }
+                              logStr.AppendLine(string.Join(",\r\n", tempArray));
+                          }
+
+                          logStr.AppendLine($"\n{traceLog}\r\n");
+
+                          var result = logStr.ToString();
+                          Console.WriteLine(result);
+                          if (logger != null)
+                          {
+                              logger.LogDebug(result);
+                          }
+                      })
+                      .Build();
 
             fsql.Aop.ConfigEntity += (s, e) =>
             {

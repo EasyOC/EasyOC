@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Indexing.SQL;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
@@ -55,34 +57,25 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
                 return;
             }
             userProfileContent.ContentType = "UserProfile";
-            var contentItem = await _contentManager.CloneAsync(userProfileContent);
-
-            var jContent = contentItem.Content as JObject;
-
-            jContent["UserProfile"] = contentItem.Content["UserProfileInternal"] as JObject;
-            jContent.Remove("UserProfileInternal");
-            jContent["UserProfile"]["OwnerUser"] = JObject.FromObject(new
+            var contentItem = await _contentManager.CloneAsync(userProfileContent); 
+            contentItem.Remove("UserProfileInternal");
+            //ContentPart must be registered manually
+            contentItem.Alter<UserProfile>("UserProfile", profilePart =>
             {
-                UserIds = new string[] { user.UserId },
-                UserNames = new string[] { user.UserName }
+                profilePart.UserName.Text = user.UserName;
+                profilePart.Email.Text = user.Email;
+                profilePart.UserId.Text = user.UserId;
+                profilePart.OwnerUser.UserIds = new string[] { user.UserId };
+
+                // The following code does not work
+                //profilePart.GetOrCreate<TextField>("UserId").Text = user.UserId; 
+
             });
-            //jContent["UserProfile"]["User"] = JObject.FromObject(userSimpleData);
-
-            jContent["UserProfile"]["UserName"] = JObject.FromObject(new { Text = user.UserName });
-            jContent["UserProfile"]["Email"] = JObject.FromObject(new { Text = user.Email });
-            jContent["UserProfile"]["UserId"] = JObject.FromObject(new { Text = user.UserId });
-            contentItem.Owner = user.UserId;
-            //使用 UserProfileInternal 更新 UserProfile
-
-            contentItem.ContentType = "UserProfile";
-
-
-            var existsContent = await _session.Query<ContentItem, UserPickerFieldIndex>
-                                                         (x => x.SelectedUserId == user.UserId && x.Published && x.Latest)
-                                        .FirstOrDefaultAsync(_contentManager);
             
+            contentItem.Owner = user.UserId;
+            contentItem.ContentItemId = user.UserId;
+            var existsContent = await _contentManager.GetAsync(user.UserId);
             var isCreate = existsContent == null;
-
             if (!isCreate)
             {
                 contentItem = existsContent.Merge(contentItem, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
@@ -94,7 +87,6 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
                 Notifier = notifier,
                 HtmlLocalizer = htmlLocalizer
             });
-            await _session.SaveChangesAsync();
 
         }
         public override async Task CreatedAsync(UserCreateContext context)
