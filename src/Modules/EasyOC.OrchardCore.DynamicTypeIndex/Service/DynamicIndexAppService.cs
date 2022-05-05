@@ -258,6 +258,7 @@ namespace {entityInfo.NameSpace}
                 var freeModels = take100.ToDictModel(model);
                 // Specifies the collection of data dictionary objects to insert
                 var freeItems = Fsql.InsertOrUpdateDict(freeModels)
+                    .WithTransaction(YesSession.CurrentTransaction)
                      .AsTable(indexTableName)//Specify the name of the table to be inserted
                      .WherePrimary("Id");
                 totalRows += await freeItems.ExecuteAffrowsAsync();//Batch Inserting databases
