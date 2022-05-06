@@ -29,6 +29,7 @@ namespace OrchardCore.ContentManagement
 
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentManagerSession _contentManagerSession;
+        private readonly IHandlerExctuter _handlerExctuter;
         public EOCDefaultContentManager(
             IContentDefinitionManager contentDefinitionManager,
             IContentManagerSession contentManagerSession,
@@ -36,7 +37,7 @@ namespace OrchardCore.ContentManagement
             ISession session,
             IContentItemIdGenerator idGenerator,
             ILogger<EOCDefaultContentManager> logger,
-            IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers) :
+            IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers, IHandlerExctuter<EOCDefaultContentManager> handlerExctuter) :
             base(contentDefinitionManager, contentManagerSession, handlers, session, idGenerator, logger, clock)
         {
             _contentDefinitionManager = contentDefinitionManager;
@@ -45,6 +46,7 @@ namespace OrchardCore.ContentManagement
             _logger = logger;
             _clock = clock;
             _batchImportEventHandlers = batchImportEventHandlers;
+            _handlerExctuter = handlerExctuter;
         }
 
 
@@ -105,7 +107,7 @@ namespace OrchardCore.ContentManagement
                         // The version does not exist in the current database.
                         var context = new ImportContentContext(importingItem);
 
-                        await Handlers.InvokeAsync((handler, context) => handler.ImportingAsync(context), context, _logger);
+                        await _handlerExctuter.InvokeAsync(Handlers, (handler, context) => handler.ImportingAsync(context), context);
 
                         var evictionVersions = versionsThatMaybeEvicted.Where(x => String.Equals(x.ContentItemId, importingItem.ContentItemId, StringComparison.OrdinalIgnoreCase));
                         var result = await base.CreateContentItemVersionAsync(importingItem);
@@ -121,7 +123,8 @@ namespace OrchardCore.ContentManagement
 
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
-                        await ReversedHandlers.InvokeAsync((handler, context) => handler.ImportedAsync(context), context, _logger);
+                        await _handlerExctuter.InvokeAsync(ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
+
                     }
                     else
                     {
@@ -156,7 +159,7 @@ namespace OrchardCore.ContentManagement
                         // Handlers are only fired if the import is going ahead.
                         var context = new ImportContentContext(importingItem, originalVersion);
 
-                        await Handlers.InvokeAsync((handler, context) => handler.ImportingAsync(context), context, _logger);
+                        await _handlerExctuter.InvokeAsync(Handlers, (handler, context) => handler.ImportingAsync(context), context);
 
                         var evictionVersions = versionsThatMaybeEvicted.Where(x => String.Equals(x.ContentItemId, importingItem.ContentItemId, StringComparison.OrdinalIgnoreCase));
                         var result = await UpdateContentItemVersionAsync(originalVersion, importingItem);
@@ -172,7 +175,8 @@ namespace OrchardCore.ContentManagement
 
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
-                        await ReversedHandlers.InvokeAsync((handler, context) => handler.ImportedAsync(context), context, _logger);
+
+                        await _handlerExctuter.InvokeAsync(ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
                     }
                 }
 
