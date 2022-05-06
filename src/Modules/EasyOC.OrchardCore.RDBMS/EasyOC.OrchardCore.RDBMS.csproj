@@ -3,6 +3,11 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="OrchardCoreIndexModels\**" />
+    <EmbeddedResource Remove="OrchardCoreIndexModels\**" />
+    <None Remove="OrchardCoreIndexModels\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="Services\ContentMappingAppService.cs" />
   </ItemGroup>
 

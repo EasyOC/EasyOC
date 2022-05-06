@@ -48,16 +48,17 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
 
 
 
-        private async Task UpdateIndexAsync(UserContextBase context, Action<ContentItem> action = null)
+        private async Task UpdateIndexAsync(UserContextBase context)
         {
             var user = context.User as User;
-            var userProfileContent = user.As<ContentItem>("UserProfileInternal");
-            if (userProfileContent == null)
+            var internalProfile = user.As<ContentItem>("UserProfileInternal");
+            if (internalProfile == null && internalProfile.Content.UserProfilePart != null)
             {
                 return;
             }
-            userProfileContent.ContentType = nameof(UserProfile);
-            var contentItem = await _contentManager.CloneAsync(userProfileContent); 
+            var contentItem = await _contentManager.NewAsync(nameof(UserProfile));
+
+            contentItem.Content["UserProfilePart"] = (internalProfile.Content.UserProfilePart as JObject).DeepClone();
             contentItem.Remove("UserProfileInternal");
             //ContentPart must be registered manually
             contentItem.Alter<UserProfile>(nameof(UserProfile), profilePart =>
@@ -67,21 +68,17 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
                 profilePart.UserId.Text = user.UserId;
                 profilePart.OwnerUser.UserIds = new string[] { user.UserId };
 
-                // The following code does not work
-                //profilePart.GetOrCreate<TextField>("UserId").Text = user.UserId; 
-
             });
-            
+
             contentItem.Owner = user.UserId;
-            contentItem.ContentItemId = user.UserId;
-            var existsContent = await _contentManager.GetAsync(user.UserId);
+            var existsContent = await ((EOCDefaultContentManager)_contentManager).GetAsync(user.UserId, VersionOptions.DraftRequired);
             var isCreate = existsContent == null;
             if (!isCreate)
             {
                 contentItem = existsContent.Merge(contentItem, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
             }
+            contentItem.ContentItemId = user.UserId;
 
-            action?.Invoke(contentItem);
             await _contentManager.CreateOrUpdateAndPublishAsync(contentItem, isCreate, new PublishOptions
             {
                 Notifier = notifier,

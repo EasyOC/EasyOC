@@ -10,6 +10,19 @@
   "tags": [],
   "steps": [
     {
+      "name": "Feature",
+      "enable": [ 
+        "EasyOC.OrchardCore.VueElementUI",
+        "EasyOC.OrchardCore.Excel",
+        "EasyOC.OrchardCore.DynamicTypeIndex",
+        "EasyOC.OrchardCore.OpenApi",
+        "EasyOC.OrchardCore.RDBMS",
+        "EasyOC.OrchardCore.ContentExtentions",
+        "EasyOC.OrchardCore.WorkflowPlus",
+        "Lombiq.HelpfulExtensions.CodeGeneration"
+      ]
+    },
+    {
       "name": "ContentDefinition",
       "ContentTypes": [
         {
@@ -54,7 +67,7 @@
                 },
                 "GraphQLContentTypePartSettings": {},
                 "TitlePartSettings": {
-                  "Pattern": "{{ContentItem.Content.UserProfile.OwnerUser.UserNames[0]}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】"
+                  "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】"
                 },
                 "ContentIndexSettings": {}
               }
@@ -1067,83 +1080,6 @@
           "Name": "crmCustomers",
           "Source": "Lucene",
           "Schema": "{\r\n  \"type\":\"contentItem/Customer\" ,\r\n  \"hasTotal\": true\r\n}"
-        },
-        {
-          "Template": "SELECT DisplayText FROM ContentItemIndex where contentType='SCMDileveryOrder' and published =1\r\nand DisplayText in ({{ids}}) ",
-          "ReturnDocuments": false,
-          "Name": "SCMQueryExistsedOrderIds",
-          "Source": "Sql",
-          "Schema": "{\r\n\"DisplayText\":\"string\"\r\n}"
-        },
-        {
-          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Appointment' and Published = true",
-          "ReturnDocuments": true,
-          "Name": "AllAppointments",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM ContentItemIndex where ContentType = 'Employee' and Published = true and Latest = true",
-          "ReturnDocuments": true,
-          "Name": "AllEmployees",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId \r\nFROM AppointmentIndex\r\nWHERE AppointmentIndex.ContentItemId IN\r\n  (SELECT ContentItemId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})) \r\nAND StartDate BETWEEN '{{ startDate }}' AND '{{ endDate }}'\r\nORDER BY StartDate ASC",
-          "ReturnDocuments": true,
-          "Name": "AppointmentsForCalendarsForDate",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Employee' and TermContentItemId in ({{calendarIds}})",
-          "ReturnDocuments": true,
-          "Name": "EmployeesForCalendars",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM TaxonomyIndex where ContentType = 'Appointment' and TermContentItemId in ({{calendarIds}})",
-          "ReturnDocuments": true,
-          "Name": "AppointmentForCalendars",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT * FROM HackathonItemsIndex where Owner = '{{owner}}'",
-          "ReturnDocuments": false,
-          "Name": "GetOwner",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='{{type}}'",
-          "ReturnDocuments": true,
-          "Name": "GetItemsForHackathon",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT * FROM HackathonUsersIndex where TeamContentItemId = '{{teamContentItemId}}'",
-          "ReturnDocuments": false,
-          "Name": "GetHackersForTeam",
-          "Source": "Sql",
-          "Schema": "null"
-        },
-        {
-          "Template": "SELECT * FROM HackathonItemsIndex where ContentType ='ScoreEntry' and TeamContentItemId = '{{teamContentItemId}}' and Owner = '{{owner}}'",
-          "ReturnDocuments": false,
-          "Name": "GetScoreEntry",
-          "Source": "Sql",
-          "Schema": null
-        },
-        {
-          "Template": "SELECT DocumentId FROM HackathonItemsIndex where ContentType ='Team' and ContentItemId = '{{teamContentItemId}}'",
-          "ReturnDocuments": true,
-          "Name": "GetTeam",
-          "Source": "Sql",
-          "Schema": null
         }
       ]
     },

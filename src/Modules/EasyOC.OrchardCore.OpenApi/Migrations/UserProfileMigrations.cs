@@ -15,16 +15,14 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
     public class UserProfileMigrations : DataMigration
     {
         private readonly IRecipeMigrator _recipeMigrator;
-        private readonly IFreeSql _freeSql;
         private readonly ILogger _logger;
         private readonly IEnumerable<IUserEventHandler> Handlers;
         private readonly ISession _session;
 
-        public UserProfileMigrations(IRecipeMigrator recipeMigrator, IFreeSql freeSql, IEnumerable<IUserEventHandler> handlers,
+        public UserProfileMigrations(IRecipeMigrator recipeMigrator,IEnumerable<IUserEventHandler> handlers,
             ILogger<UserProfileMigrations> logger, ISession session)
         {
             _recipeMigrator = recipeMigrator;
-            _freeSql = freeSql;
             Handlers = handlers;
             _logger = logger;
             _session = session;
@@ -37,7 +35,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
             foreach (var user in users)
             {
                 var context = new UserCreateContext(user);
-                //出发事件：为已存在用户创建索引
+                //触发事件：为已存在用户创建索引
                 await Handlers.InvokeAsync((handler, context) => handler.CreatedAsync(context), context, _logger);
             } 
             return 1;

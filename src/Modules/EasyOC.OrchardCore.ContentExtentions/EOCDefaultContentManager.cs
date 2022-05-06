@@ -1,8 +1,10 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.Handlers;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement.CompiledQueries;
 using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.ContentManagement.Metadata;
+using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.Modules;
 using System;
@@ -17,13 +19,16 @@ namespace OrchardCore.ContentManagement
 {
     public class EOCDefaultContentManager : DefaultContentManager
     {
-        private const int ImportBatchSize = 500; 
-  
+        private const int ImportBatchSize = 500;
+
         private readonly ISession _session;
         private readonly ILogger _logger;
- 
+
         private readonly IClock _clock;
         private readonly IEnumerable<IBatchImportEventHandler> _batchImportEventHandlers;
+
+        private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentManagerSession _contentManagerSession;
         public EOCDefaultContentManager(
             IContentDefinitionManager contentDefinitionManager,
             IContentManagerSession contentManagerSession,
@@ -33,8 +38,10 @@ namespace OrchardCore.ContentManagement
             ILogger<EOCDefaultContentManager> logger,
             IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers) :
             base(contentDefinitionManager, contentManagerSession, handlers, session, idGenerator, logger, clock)
-        { 
-            _session = session; 
+        {
+            _contentDefinitionManager = contentDefinitionManager;
+            _contentManagerSession = contentManagerSession;
+            _session = session;
             _logger = logger;
             _clock = clock;
             _batchImportEventHandlers = batchImportEventHandlers;
@@ -178,5 +185,91 @@ namespace OrchardCore.ContentManagement
 
         }
 
+
+
+
+        public new async Task<ContentItem> GetAsync(string contentItemId, VersionOptions options)
+        {
+            if (String.IsNullOrEmpty(contentItemId))
+            {
+                return null;
+            }
+
+            ContentItem contentItem = null;
+
+            if (options.IsLatest)
+            {
+                contentItem = await _session
+                    .Query<ContentItem, ContentItemIndex>()
+                    .Where(x => x.ContentItemId == contentItemId && x.Latest == true)
+                    .FirstOrDefaultAsync();
+            }
+            else if (options.IsDraft && !options.IsDraftRequired)
+            {
+                contentItem = await _session
+                    .Query<ContentItem, ContentItemIndex>()
+                    .Where(x =>
+                        x.ContentItemId == contentItemId &&
+                        x.Published == false &&
+                        x.Latest == true)
+                    .FirstOrDefaultAsync();
+            }
+            else if (options.IsDraft || options.IsDraftRequired)
+            {
+                // Loaded whatever is the latest as it will be cloned
+                contentItem = await _session
+                    .Query<ContentItem, ContentItemIndex>()
+                    .Where(x =>
+                        x.ContentItemId == contentItemId &&
+                        x.Latest == true)
+                    .FirstOrDefaultAsync();
+            }
+            else if (options.IsPublished)
+            {
+                // If the published version is requested and is already loaded, we can
+                // return it right away
+                if (_contentManagerSession.RecallPublishedItemId(contentItemId, out contentItem))
+                {
+                    return contentItem;
+                }
+
+                contentItem = await _session.ExecuteQuery(new PublishedContentItemById(contentItemId)).FirstOrDefaultAsync();
+            }
+
+            if (contentItem == null)
+            {
+                return null;
+            }
+
+            contentItem = await LoadAsync(contentItem);
+
+            if (options.IsDraftRequired)
+            {
+                // When draft is required and latest is published a new version is added
+                if (contentItem.Published)
+                {
+                    // We save the previous version further because this call might do a session query.
+                    var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+
+                    // Check if not versionable, meaning we use only one version
+                    if (!(contentTypeDefinition?.GetSettings<ContentTypeSettings>().Versionable ?? true))
+                    {
+                        contentItem.Published = false;
+                    }
+                    else
+                    {
+                        // Save the previous version
+                        _session.Save(contentItem, checkConcurrency: true);
+
+                        contentItem = await BuildNewVersionAsync(contentItem);
+                    }
+                }
+
+                // Save the new version
+                _session.Save(contentItem, checkConcurrency: true);
+            }
+
+            return contentItem;
+        }
     }
 }
