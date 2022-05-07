@@ -32,7 +32,7 @@ namespace EasyOC.OrchardCore.Excel.Services
         public List<object> Evaluate(string script, object data)
         {
 
-            var result = JSEngine
+            var result = JsEngine
                    .Execute("var excelTable = " + JsonSerializer.Serialize(data) + ";")
                    .Evaluate(script)?.ToObject();
             if (result != null)
