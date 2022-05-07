@@ -17,19 +17,15 @@ using YesSql.Services;
 
 namespace OrchardCore.ContentManagement
 {
-    public class EOCDefaultContentManager : DefaultContentManager
+    public class EOCDefaultContentManager : IContentManager
     {
         private const int ImportBatchSize = 500;
 
         private readonly ISession _session;
         private readonly ILogger _logger;
-
-        private readonly IClock _clock;
         private readonly IEnumerable<IBatchImportEventHandler> _batchImportEventHandlers;
-
-        private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IContentManagerSession _contentManagerSession;
         private readonly IHandlerExctuter _handlerExctuter;
+        private readonly DefaultContentManager _defaultContentManager;
         public EOCDefaultContentManager(
             IContentDefinitionManager contentDefinitionManager,
             IContentManagerSession contentManagerSession,
@@ -37,20 +33,22 @@ namespace OrchardCore.ContentManagement
             ISession session,
             IContentItemIdGenerator idGenerator,
             ILogger<EOCDefaultContentManager> logger,
-            IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers, IHandlerExctuter<EOCDefaultContentManager> handlerExctuter) :
-            base(contentDefinitionManager, contentManagerSession, handlers, session, idGenerator, logger, clock)
+            ILogger<DefaultContentManager> defaultlogger,
+            IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers, IHandlerExctuter<EOCDefaultContentManager> handlerExctuter)
+
         {
-            _contentDefinitionManager = contentDefinitionManager;
-            _contentManagerSession = contentManagerSession;
+
+            _defaultContentManager = new DefaultContentManager(contentDefinitionManager,
+                contentManagerSession, handlers, session,
+                idGenerator, defaultlogger, clock);
             _session = session;
             _logger = logger;
-            _clock = clock;
             _batchImportEventHandlers = batchImportEventHandlers;
             _handlerExctuter = handlerExctuter;
         }
 
 
-        public new async Task ImportAsync(IEnumerable<ContentItem> contentItems)
+        public async Task ImportAsync(IEnumerable<ContentItem> contentItems)
         {
             var contentList = contentItems.Select(x => new ImportContentContext(x)).ToList();
             await _batchImportEventHandlers.InvokeAsync((handler, list) => handler.BeforeImportAsync(list), contentList, _logger);
@@ -107,10 +105,10 @@ namespace OrchardCore.ContentManagement
                         // The version does not exist in the current database.
                         var context = new ImportContentContext(importingItem);
 
-                        await _handlerExctuter.InvokeAsync(Handlers, (handler, context) => handler.ImportingAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers, (handler, context) => handler.ImportingAsync(context), context);
 
                         var evictionVersions = versionsThatMaybeEvicted.Where(x => String.Equals(x.ContentItemId, importingItem.ContentItemId, StringComparison.OrdinalIgnoreCase));
-                        var result = await base.CreateContentItemVersionAsync(importingItem);
+                        var result = await _defaultContentManager.CreateContentItemVersionAsync(importingItem);
                         if (!result.Succeeded)
                         {
                             if (_logger.IsEnabled(LogLevel.Error))
@@ -123,7 +121,7 @@ namespace OrchardCore.ContentManagement
 
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
-                        await _handlerExctuter.InvokeAsync(ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
 
                     }
                     else
@@ -159,7 +157,7 @@ namespace OrchardCore.ContentManagement
                         // Handlers are only fired if the import is going ahead.
                         var context = new ImportContentContext(importingItem, originalVersion);
 
-                        await _handlerExctuter.InvokeAsync(Handlers, (handler, context) => handler.ImportingAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers, (handler, context) => handler.ImportingAsync(context), context);
 
                         var evictionVersions = versionsThatMaybeEvicted.Where(x => String.Equals(x.ContentItemId, importingItem.ContentItemId, StringComparison.OrdinalIgnoreCase));
                         var result = await UpdateContentItemVersionAsync(originalVersion, importingItem);
@@ -176,7 +174,7 @@ namespace OrchardCore.ContentManagement
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
 
-                        await _handlerExctuter.InvokeAsync(ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
                     }
                 }
 
@@ -187,93 +185,100 @@ namespace OrchardCore.ContentManagement
             await _batchImportEventHandlers.InvokeAsync((handler, list) => handler.AfterImportAsync(list), contentList, _logger);
 
 
+        } 
+        public Task<ContentItem> GetAsync(string contentItemId, VersionOptions options)
+        {
+            return _defaultContentManager.GetAsync(contentItemId, options);
         }
 
-
-
-
-        public new async Task<ContentItem> GetAsync(string contentItemId, VersionOptions options)
+        public Task<ContentItem> NewAsync(string contentType)
         {
-            if (String.IsNullOrEmpty(contentItemId))
-            {
-                return null;
-            }
+            return _defaultContentManager.NewAsync(contentType);
+        }
 
-            ContentItem contentItem = null;
+        public Task UpdateAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.UpdateAsync(contentItem);
+        }
 
-            if (options.IsLatest)
-            {
-                contentItem = await _session
-                    .Query<ContentItem, ContentItemIndex>()
-                    .Where(x => x.ContentItemId == contentItemId && x.Latest == true)
-                    .FirstOrDefaultAsync();
-            }
-            else if (options.IsDraft && !options.IsDraftRequired)
-            {
-                contentItem = await _session
-                    .Query<ContentItem, ContentItemIndex>()
-                    .Where(x =>
-                        x.ContentItemId == contentItemId &&
-                        x.Published == false &&
-                        x.Latest == true)
-                    .FirstOrDefaultAsync();
-            }
-            else if (options.IsDraft || options.IsDraftRequired)
-            {
-                // Loaded whatever is the latest as it will be cloned
-                contentItem = await _session
-                    .Query<ContentItem, ContentItemIndex>()
-                    .Where(x =>
-                        x.ContentItemId == contentItemId &&
-                        x.Latest == true)
-                    .FirstOrDefaultAsync();
-            }
-            else if (options.IsPublished)
-            {
-                // If the published version is requested and is already loaded, we can
-                // return it right away
-                if (_contentManagerSession.RecallPublishedItemId(contentItemId, out contentItem))
-                {
-                    return contentItem;
-                }
+        public Task CreateAsync(ContentItem contentItem, VersionOptions options)
+        {
+            return _defaultContentManager.CreateAsync(contentItem, options);
+        }
 
-                contentItem = await _session.ExecuteQuery(new PublishedContentItemById(contentItemId)).FirstOrDefaultAsync();
-            }
+        public Task<ContentValidateResult> CreateContentItemVersionAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.CreateContentItemVersionAsync(contentItem);
+        }
 
-            if (contentItem == null)
-            {
-                return null;
-            }
+        public Task<ContentValidateResult> UpdateContentItemVersionAsync(ContentItem updatingVersion, ContentItem updatedVersion)
+        {
+            return _defaultContentManager.UpdateContentItemVersionAsync(updatingVersion, updatedVersion);
+        }
 
-            contentItem = await LoadAsync(contentItem);
+        public Task<ContentValidateResult> ValidateAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.ValidateAsync(contentItem);
+        }
 
-            if (options.IsDraftRequired)
-            {
-                // When draft is required and latest is published a new version is added
-                if (contentItem.Published)
-                {
-                    // We save the previous version further because this call might do a session query.
-                    var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+        public Task<ContentValidateResult> RestoreAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.RestoreAsync(contentItem);
+        }
 
-                    // Check if not versionable, meaning we use only one version
-                    if (!(contentTypeDefinition?.GetSettings<ContentTypeSettings>().Versionable ?? true))
-                    {
-                        contentItem.Published = false;
-                    }
-                    else
-                    {
-                        // Save the previous version
-                        _session.Save(contentItem, checkConcurrency: true);
+        public Task<ContentItem> GetAsync(string id)
+        {
+            return _defaultContentManager.GetAsync(id);
+        }
 
-                        contentItem = await BuildNewVersionAsync(contentItem);
-                    }
-                }
+        public Task<IEnumerable<ContentItem>> GetAsync(IEnumerable<string> contentItemIds, bool latest = false)
+        {
+            return _defaultContentManager.GetAsync(contentItemIds, latest);
+        }
 
-                // Save the new version
-                _session.Save(contentItem, checkConcurrency: true);
-            }
+        public Task<ContentItem> GetVersionAsync(string contentItemVersionId)
+        {
+            return _defaultContentManager.GetVersionAsync(contentItemVersionId);
+        }
 
-            return contentItem;
+        public Task<ContentItem> LoadAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.LoadAsync(contentItem);
+        }
+
+        public Task RemoveAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.RemoveAsync(contentItem);
+        }
+
+        public Task DiscardDraftAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.DiscardDraftAsync(contentItem);
+        }
+
+        public Task SaveDraftAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.SaveDraftAsync(contentItem);
+        }
+
+        public Task PublishAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.PublishAsync(contentItem);
+        }
+
+        public Task UnpublishAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.UnpublishAsync(contentItem);
+        }
+
+        public Task<TAspect> PopulateAspectAsync<TAspect>(IContent content, TAspect aspect)
+        {
+            return _defaultContentManager.PopulateAspectAsync(content, aspect);
+        }
+
+        public Task<ContentItem> CloneAsync(ContentItem contentItem)
+        {
+            return _defaultContentManager.CloneAsync(contentItem);
         }
     }
 }

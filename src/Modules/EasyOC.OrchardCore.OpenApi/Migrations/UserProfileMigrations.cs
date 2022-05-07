@@ -29,14 +29,14 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
         }
 
         public async Task<int> CreateAsync()
-        {
+        { 
             //查找尚未创建索引的数据
             var users = await _session.Query<User, UserIndex>().ListAsync();
             foreach (var user in users)
             {
-                var context = new UserCreateContext(user);
+                var context = new UserUpdateContext(user);
                 //触发事件：为已存在用户创建索引
-                await Handlers.InvokeAsync((handler, context) => handler.CreatedAsync(context), context, _logger);
+                await Handlers.InvokeAsync((handler, context) => handler.UpdatedAsync(context), context, _logger);
             } 
             return 1;
         }

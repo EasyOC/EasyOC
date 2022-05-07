@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace EasyOC.Core.Application
 {
-    [DynamicWebApi, Authorize(AuthenticationSchemes = "Api,Cookie"), IgnoreAntiforgeryToken, AllowAnonymous]
+    [DynamicWebApi, Authorize(AuthenticationSchemes = "Api"), IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServiceBase : IAppServcieBase, IDynamicWebApi
     {
         public IServiceProvider CurrentServiceProvider { get; }

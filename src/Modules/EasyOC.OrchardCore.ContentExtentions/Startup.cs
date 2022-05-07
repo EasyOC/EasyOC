@@ -23,7 +23,7 @@ namespace EasyOC.OrchardCore.ContentExtentions
             //修改类型定义事件处理声明
             //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
             services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
-            services.AddScoped(typeof(IHandlerExctuter), typeof(HandlerExctuterBase<>));
+            services.AddScoped(typeof(IHandlerExctuter<>), typeof(HandlerExctuterBase<>));
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

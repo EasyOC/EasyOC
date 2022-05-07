@@ -11,15 +11,14 @@
   "steps": [
     {
       "name": "Feature",
-      "enable": [ 
+      "enable": [
         "EasyOC.OrchardCore.VueElementUI",
         "EasyOC.OrchardCore.Excel",
         "EasyOC.OrchardCore.DynamicTypeIndex",
         "EasyOC.OrchardCore.OpenApi",
         "EasyOC.OrchardCore.RDBMS",
         "EasyOC.OrchardCore.ContentExtentions",
-        "EasyOC.OrchardCore.WorkflowPlus",
-        "Lombiq.HelpfulExtensions.CodeGeneration"
+        "EasyOC.OrchardCore.WorkflowPlus"
       ]
     },
     {

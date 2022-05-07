@@ -71,7 +71,7 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             });
 
             contentItem.Owner = user.UserId;
-            var existsContent = await ((EOCDefaultContentManager)_contentManager).GetAsync(user.UserId, VersionOptions.DraftRequired);
+            var existsContent = await _contentManager.GetAsync(user.UserId, VersionOptions.DraftRequired);
             var isCreate = existsContent == null;
             if (!isCreate)
             {
