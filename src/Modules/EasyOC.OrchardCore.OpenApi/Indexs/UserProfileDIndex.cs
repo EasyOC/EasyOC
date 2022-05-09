@@ -7,7 +7,7 @@ using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 // 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace EasyOC.OrchardCore.OpenApi.Indexs
 {
-    [EOCIndex("IDX_{tablename}_DocumentId", "ContentItemId")]
+    [EOCIndex("IDX_{tablename}_DocumentId", "ContentItemId,DocumentId")]
     [EOCTable(Name = "UserProfile_DIndex")]
     public class UserProfileDIndex : DIndexBase
     {
