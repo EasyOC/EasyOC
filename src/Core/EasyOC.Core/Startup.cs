@@ -49,7 +49,7 @@ namespace EasyOC.Core
                 options.OperationFilter<SwaggerOperationIdFilter>();
                 options.OperationFilter<SwaggerOperationFilter>();
                 options.CustomDefaultSchemaIdSelector();
-                var serviceProvider = ShellScope.Current.ServiceProvider; 
+                var serviceProvider = ShellScope.Current.ServiceProvider;
 
                 var siteService = ShellScope.Current.ServiceProvider.GetRequiredService<ISiteService>();
 
@@ -62,7 +62,7 @@ namespace EasyOC.Core
                     baseUrl = "/";
                     //var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
                     //var request = httpContextAccessor.HttpContext.Request;
-                    //var tenantSettings = ShellScope.Context.Settings; 
+                    //var tenantSettings = ShellScope.Context.Settings;
                     //baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
                 }
                 baseUrl = baseUrl.EnsureEndsWith('/');
@@ -82,7 +82,8 @@ namespace EasyOC.Core
                                     { "openid", "OpenID" },
                                     { "profile", "Profile" },
                                     { "roles", "Roles" },
-                                    { "api", "Api" },
+                                    { "offline_access", "offline_access" },
+                                    // { "api", "Api" },
                                 },
                             AuthorizationUrl = new Uri($"{baseUrl}connect/authorize", UriKind.RelativeOrAbsolute),
                             TokenUrl = new Uri($"{baseUrl}connect/token", UriKind.RelativeOrAbsolute),

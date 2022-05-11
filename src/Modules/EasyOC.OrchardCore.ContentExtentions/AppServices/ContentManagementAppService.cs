@@ -92,7 +92,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     }
                     throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
                 }
-              
+
                 contentItem = newContentItem;
             }
             else
@@ -171,7 +171,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                         #region FirstValue
                         if (valueToken != null)
                         {
-                            var token = new JObject { [valuePath] = new JArray(new string[] { valueToken.Value<string>() }) };
+                            var token = new JObject { [valuePath] = new JArray(new [] { valueToken.Value<string>() }) };
                             contentItem.Content[contentItem.ContentType][item.Name] = token;
                         }
                         #endregion
