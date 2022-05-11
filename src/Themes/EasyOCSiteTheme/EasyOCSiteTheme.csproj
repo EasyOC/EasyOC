@@ -8,9 +8,9 @@
     <EmbeddedResource Remove="Views\Layout.liquid" />
   </ItemGroup>
 
-   <ItemGroup> 
+   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup> 
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />
@@ -18,12 +18,7 @@
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
-    
-  </ItemGroup> 
-
-  <ItemGroup>
-    <Content Include="Views\OrchardCore.Users\Account\_ViewImports.cshtml" />
-  </ItemGroup> 
+    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />
+  </ItemGroup>
 
 </Project>

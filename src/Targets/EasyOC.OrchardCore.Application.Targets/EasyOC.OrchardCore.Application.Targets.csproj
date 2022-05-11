@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj" />
     <!--<ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" />-->
     <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" />
+    <ProjectReference Include="..\..\Themes\EasyOCSiteTheme\EasyOCSiteTheme.csproj" />
     <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" />
 
 	</ItemGroup>
