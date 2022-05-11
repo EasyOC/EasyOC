@@ -1,5 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Indexs;
 using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.OpenApi.Services.Session
 {
     [EOCAuthorization]
-    public class SessionAppService : AppServcieBase
+    public class SessionAppService : AppServiceBase
     {
         private readonly IRolesAppService _rolesAppService;
         private readonly RoleManager<IRole> _roleManager;
@@ -40,16 +41,43 @@ namespace EasyOC.OrchardCore.OpenApi.Services.Session
             return ObjectMapper.Map<UserDetailsDto>(user);
         }
 
+
+        /// <summary>
+        /// 返回菜单和权限
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<string>> MenusAsync()
         {
-            var user = await CurrentUserAsync;
-            var userDetails = user as User;
+            var user = await UserManager.FindByNameAsync(HttpContextAccessor.HttpContext.User.Identity.Name) as User;
+
             var userPermissions = new List<string>();
-            var allMenus = YesSession.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentType == "VbenMenu" && x.Published && x.Latest);
-             
-           
+            foreach (var role in user.RoleNames)
+            {
+                var rolePermissions = await _rolesAppService.GetRoleDetailsAsync(role);
+                userPermissions = userPermissions.Union(rolePermissions.Permissions).ToList();
+                
+                 //rolePermissions.VbenMenuIds;
+            }
+
+            
+            //var menuNames = user.UserClaims.Where(x => x.ClaimType == "VbenMenu").Select(x => x.ClaimValue).ToList();
+            //var allMenus = YesSession.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentType == "VbenMenu" && x.Published && x.Latest)
+            //    .With<VbenMenuPartIndex>(x => menuNames.Contains(x.MenuName))
+            //    .ListAsync();
+            //userDetails.UserClaims.Where(x => x.ClaimType == "VbenMenu").ToList().ForEach(x =>
+            //{
+            //    var permission = x.ClaimValue;
+            //    if (allMenus..StartsWith("Menu"))
+            //    {
+            //        userPermissions.Add(permission);
+            //    }
+            //});
+
+            //Fsql.Select<ContentItemIndex, VbenMenuPartIndex>().InnerJoin((c, v) =>.).ToList(x => x.t2);
 
             return userPermissions;
+
+            //return allMenus.to;
         }
 
     }

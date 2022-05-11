@@ -13,23 +13,15 @@
       "name": "Feature",
       "enable": [
         "Application.Default",
-        "EasyOC.Core",
-        "EasyOC.OrchardCore.VueElementUI",
         "OrchardCore.Liquid",
         "OrchardCore.Settings",
         "OrchardCore.Contents",
         "OrchardCore.ContentTypes",
         "OrchardCore.Shortcodes",
         "OrchardCore.ContentFields",
-        "EasyOC.OrchardCore.Excel",
-        "EasyOC.OrchardCore.OpenApi",
-        "EasyOC.OrchardCore.RDBMS",
-        "EasyOC.OrchardCore.ContentExtentions",
         "OrchardCore.Queries",
         "OrchardCore.Queries.Sql",
-        "EasyOC.OrchardCore.WorkflowPlus",
         "OrchardCore.Resources",
-        "Lombiq.HelpfulExtensions.CodeGeneration",
         "OrchardCore.Autoroute",
         "OrchardCore.Flows",
         "OrchardCore.Title",
@@ -113,7 +105,10 @@
         "SafeMode",
         "TheAdmin",
         "TheBlogTheme",
-        "TheTheme"
+        "TheTheme",
+        "EasyOCTheme",
+        "EasyOC.Core",
+        "Lombiq.HelpfulExtensions.CodeGeneration"
       ]
     },
     {
@@ -158,7 +153,6 @@
       "name": "OpenIdApplication",
       "DisplayName": "SwaggerClient",
       "ClientId": "SwaggerClient",
-      "ClientSecret": "123123",
       "ConsentType": "implicit",
       "AllowAuthorizationCodeFlow": true,
       "AllowLogoutEndpoint": false,

@@ -33,7 +33,7 @@ using Permissions = OrchardCore.Users.Permissions;
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
     [EOCAuthorization(OCPermissions.View_Users)]
-    public class UsersAppService : AppServcieBase, IUsersAppService
+    public class UsersAppService : AppServiceBase, IUsersAppService
     {
         private readonly UserManager<IUser> _userManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -66,10 +66,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             {
                 throw new UnauthorizedAccessException();
             }
-            var users = FreeSqlSession.Select<UserIndex, UserProfileIndex>()
-                 .LeftJoin((ui, up) => ui.DocumentId == up.DocumentId)
+            var users = Fsql.Select<UserIndex, UserProfileDIndex>()
+                 .LeftJoin((ui, up) => ui.UserId == up.UserId)
                  .Where((u, up) => u.IsEnabled)
-                 .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
+                 .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.UserProfilePartDepartment == input.DepartmentId)
                  ;
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {

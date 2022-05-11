@@ -6,24 +6,15 @@ using OrchardCore.Entities;
 using YesSql.Indexes;
 namespace EasyOC.OrchardCore.OpenApi.Indexs
 {
-    [AutoMap(typeof(VbenMenuPart), ReverseMap = true)]
+    [AutoMap(typeof(VbenMenu), ReverseMap = true)]
     [EOCIndex("IDX_{tablename}_DocumentId",
         "ContentItemId,Published,Latest,MenuName,RoutePath,Component,MenuType")]
     [EOCTable]
     public class VbenMenuPartIndex : FreeSqlDocumentIndex
     {
         public string ContentItemId { get; set; }
-
-        /// <summary>
-        /// Whether this content item is published.
-        /// </summary>
         public bool Published { get; set; }
-
-        /// <summary>
-        /// Whether this content item is latest.
-        /// </summary>
         public bool Latest { get; set; }
-
         public string MenuName { get; set; }
         public int OrderNo { get; set; }
         public string RoutePath { get; set; }
@@ -49,25 +40,26 @@ namespace EasyOC.OrchardCore.OpenApi.Indexs
         public override void Describe(DescribeContext<ContentItem> context)
         {
             context.For<VbenMenuPartIndex>()
-                 .When(contentItem => contentItem.Has<VbenMenuPart>())
-                .Map(menu =>
-            {
-                var menuPart = menu.ContentItem.As<VbenMenuPart>();
-
-                if (menuPart != null)
+                 .When(contentItem => contentItem.Has<VbenMenu>())
+                 .Map(menu =>
                 {
-                    var menuPartIndex = _mapper.Map<VbenMenuPartIndex>(menuPart);
-                    menuPartIndex.ContentItemId = menu.ContentItemId;
-                    menuPartIndex.Published = menu.Published;
-                    menuPartIndex.Latest = menu.Latest;
-                    if (menuPartIndex.RoutePath is not null)
+                    var menuPart = menu.As<VbenMenu>();
+
+                    if (menuPart != null)
                     {
-                        menuPartIndex.RoutePath = menuPartIndex.RoutePath.ToLower();
+                        var menuPartIndex = _mapper.Map<VbenMenuPartIndex>(menuPart);
+                        menuPartIndex.ContentItemId = menu.ContentItemId;
+                        menuPartIndex.Published = menu.Published;
+                        menuPartIndex.Latest = menu.Latest;
+                        if (menuPartIndex.RoutePath is not null)
+                        {
+                            menuPartIndex.RoutePath = menuPartIndex.RoutePath.ToLower();
+                        }
+                        return menuPartIndex;
+
                     }
-                    return menuPartIndex;
-                }
-                return null;
-            });
+                    return null;
+                });
         }
     }
 

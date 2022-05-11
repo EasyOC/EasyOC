@@ -10,6 +10,18 @@
   "tags": [],
   "steps": [
     {
+      "name": "Feature",
+      "enable": [
+        "EasyOC.OrchardCore.VueElementUI",
+        "EasyOC.OrchardCore.Excel",
+        "EasyOC.OrchardCore.DynamicTypeIndex",
+        "EasyOC.OrchardCore.OpenApi",
+        "EasyOC.OrchardCore.RDBMS",
+        "EasyOC.OrchardCore.ContentExtentions",
+        "EasyOC.OrchardCore.WorkflowPlus"
+      ]
+    },
+    {
       "name": "ContentDefinition",
       "ContentTypes": [
         {
@@ -54,7 +66,7 @@
                 },
                 "GraphQLContentTypePartSettings": {},
                 "TitlePartSettings": {
-                  "Pattern": "{{ContentItem.Content.UserProfile.OwnerUser.UserNames[0]}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】"
+                  "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】"
                 },
                 "ContentIndexSettings": {}
               }
@@ -165,8 +177,8 @@
           },
           "ContentTypePartDefinitionRecords": [
             {
-              "PartName": "VbenMenuPart",
-              "Name": "VbenMenuPart",
+              "PartName": "VbenMenu",
+              "Name": "VbenMenu",
               "Settings": {
                 "ContentTypePartSettings": {
                   "Position": "1"
@@ -672,7 +684,7 @@
           ]
         },
         {
-          "Name": "VbenMenuPart",
+          "Name": "VbenMenu",
           "Settings": {},
           "ContentPartFieldDefinitionRecords": [
             {
@@ -756,7 +768,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "Status",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -766,7 +778,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "IsExt",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -776,7 +788,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "Keepalive",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -786,7 +798,7 @@
               }
             },
             {
-              "FieldName": "BooleanField",
+              "FieldName": "TextField",
               "Name": "Show",
               "Settings": {
                 "ContentPartFieldSettings": {
@@ -801,16 +813,6 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "菜单类型",
-                  "Position": "1"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "ExtentionData",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "扩展信息",
                   "Position": "1"
                 }
               }
@@ -1077,13 +1079,6 @@
           "Name": "crmCustomers",
           "Source": "Lucene",
           "Schema": "{\r\n  \"type\":\"contentItem/Customer\" ,\r\n  \"hasTotal\": true\r\n}"
-        },
-        {
-          "Template": "SELECT DisplayText FROM ContentItemIndex where contentType='SCMDileveryOrder' and published =1\r\nand DisplayText in ({{ids}}) ",
-          "ReturnDocuments": false,
-          "Name": "SCMQueryExistsedOrderIds",
-          "Source": "Sql",
-          "Schema": "{\r\n\"DisplayText\":\"string\"\r\n}"
         }
       ]
     },

@@ -20,7 +20,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 if (this.ContainsKey("contentItemId"))
                 {
-                    return this["contentItemId"].ToString();
+                    return this["contentItemId"]?.ToString();
                 }
                 return null;
 
@@ -36,7 +36,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 if (this.ContainsKey("contentItemVersionId"))
                 {
-                    return this["contentItemVersionId"].ToString();
+                    return this["contentItemVersionId"]?.ToString();
                 }
                 return null;
             }
@@ -51,7 +51,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 if (this.ContainsKey("contentType"))
                 {
-                    return this["contentType"].ToString();
+                    return this["contentType"]?.ToString();
                 }
                 return null;
 
@@ -103,7 +103,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 if (this.ContainsKey("displayText"))
                 {
-                    return this["displayText"].ToString();
+                    return this["displayText"]?.ToString();
                 }
                 else
                 {

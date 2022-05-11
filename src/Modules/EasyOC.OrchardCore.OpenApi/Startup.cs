@@ -32,26 +32,20 @@ namespace EasyOC.OrchardCore.OpenApi
         {
             services.AddAutoMapper(this.GetType().Assembly);
             //services.AddSingleton<IIndexProvider, CustomUserSettingsIndexProvider>();
-            services.AddSingleton<IIndexProvider, VbenMenuPartIndexProvider>();
-            services.AddContentPart<VbenMenuPart>().AddHandler<VbenMenuHandler>();
+            //services.AddSingleton<IIndexProvider, VbenMenuPartIndexProvider>();
+            //services.AddContentPart<VbenMenu>().AddHandler<VbenMenuHandler>();
+            services.AddContentPart<UserProfile>();
 
             services.AddScoped<IRolesAppService, RolesAppService>();
             services.AddScoped<IUsersAppService, UsersAppService>();
-            services.AddScoped<IDataMigration, UserProfileMigrations>();
+            //services.AddScoped<IDataMigration, UserProfileMigrations>();
             services.AddScoped<IDataMigration, VbenMenuMigrations>();
-
             //services.AddSingleton<IIndexProvider, UserProfileIndexProvider>();
-            //services.AddSingleton<IIndexProvider, UserTextFieldIndexProvider>();
-            services.AddScoped<IUserEventHandler, UserEventHandler>();
-            //services.AddObjectGraphType<TotalQueryResults, TotalQueryResultObjectType>();
+            services.AddScoped<IUserEventHandler, EOCUserEventHandler>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
-            //services.Replace(ServiceDescriptor.Singleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>());
-            services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();
-            //services.AddContentMutationGraphQL();
 
             services.AddScoped<IUserClaimsProvider, UserTokenLifeTimeClaimsProvider>();
-
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
@@ -63,5 +57,5 @@ namespace EasyOC.OrchardCore.OpenApi
                 defaults: new { controller = "Home", action = "Index", id = "" }
             );
         }
-    }     
+    }
 }

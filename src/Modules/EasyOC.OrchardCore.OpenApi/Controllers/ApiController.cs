@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EasyOC.OrchardCore.ContentExtentions.AppServices;
+using EasyOC.OrchardCore.ContentExtentions.Models;
+using EasyOC.OrchardCore.OpenApi.Indexs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
+using OrchardCore.ContentManagement.Records;
 using OrchardCore.Lucene;
 using OrchardCore.Queries;
 using System;
-using System.Threading.Tasks;
-using SqlQuery = OrchardCore.Queries.Sql.SqlQuery;
-using EasyOC;
 using System.Collections.Generic;
-using OrchardCore.ContentManagement.Records;
-using EasyOC.OrchardCore.OpenApi.Model;
-using EasyOC.OrchardCore.OpenApi.Indexs;
-using OrchardCore.ContentManagement;
 using System.Linq;
+using System.Threading.Tasks;
 using YesSql;
 using YesSql.Services;
-using EasyOC.OrchardCore.ContentExtentions.AppServices;
+using SqlQuery = OrchardCore.Queries.Sql.SqlQuery;
 
 namespace EasyOC.OrchardCore.OpenApi.Controllers
 {
@@ -73,7 +72,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
             var result = await _queryManager.ExecuteQueryAsync(query, parameters);
             var resultItems = result.Items.Select(x => (ContentItem)x).ToArray();
             var contentPickerItems = new Dictionary<string, ContentItemIndex>();
-            var userPickerItems = new Dictionary<string, UserProfileIndex>();
+            var userPickerItems = new Dictionary<string, UserProfileDIndex>();
             ///处理ContentPicker 和 UserPicker 相关信息
             if (fields.Any(x => x.FieldType == "UserPickerField" || x.FieldType == "ContentPickerField"))
             {
@@ -123,7 +122,10 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
 
         }
 
-        private void FillRelationItemIds(List<ContentExtentions.Models.ContentFieldsMappingDto> fields, IEnumerable<ContentItem> results, Dictionary<string, ContentItemIndex> contentPickerItems, Dictionary<string, UserProfileIndex> userPickerItems)
+        private void FillRelationItemIds(List<ContentFieldsMappingDto> fields,
+            IEnumerable<ContentItem> results,
+            Dictionary<string, ContentItemIndex> contentPickerItems,
+            Dictionary<string, UserProfileDIndex> userPickerItems)
         {
             foreach (var contentItem in results)
             {

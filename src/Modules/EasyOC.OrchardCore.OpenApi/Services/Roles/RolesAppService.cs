@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
-    public class RolesAppService : AppServcieBase, IRolesAppService
+    public class RolesAppService : AppServiceBase, IRolesAppService
     {
         private readonly RoleManager<IRole> _roleManager;
         private readonly IRoleService _roleService;
@@ -210,7 +210,6 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             return installedPermissions;
         }
-        [NonDynamicMethod]
         public async Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync()
         {
             var installedPermissions = await GetInstalledPermissionsAsync();

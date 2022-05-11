@@ -1,18 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		
+
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <Compile Remove="Scripting\ExcelMethodsProvider.cs" />
 	  <Compile Remove="Workflow\UploadExcelTask.cs" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-		
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,9 +26,8 @@
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
 		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
-	</ItemGroup> 
+	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Recipes\" />
 		<Folder Include="Scripting\" />
 	</ItemGroup>
 

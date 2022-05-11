@@ -20,7 +20,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.Excel.Services
 {
     [DynamicWebApi]
-    public class ExcelAppService : AppServcieBase, IDynamicWebApi, IExcelAppService
+    public class ExcelAppService : AppServiceBase, IDynamicWebApi, IExcelAppService
     {
         private readonly IContentManager _contentManager;
 
@@ -32,7 +32,7 @@ namespace EasyOC.OrchardCore.Excel.Services
         public List<object> Evaluate(string script, object data)
         {
 
-            var result = JSEngine
+            var result = JsEngine
                    .Execute("var excelTable = " + JsonSerializer.Serialize(data) + ";")
                    .Evaluate(script)?.ToObject();
             if (result != null)

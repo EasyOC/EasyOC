@@ -1,19 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup> 
+	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
- 
-	<!--<ItemGroup >-->
-	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
+	<ItemGroup  >
 		<PackageReference Include="OrchardCore.Autoroute" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
-		<!--<PackageReference Include="StatCan.OrchardCore.VueForms" Version="$(StatCanVersion)" />-->
-
-	</ItemGroup> 
+	</ItemGroup>
 </Project>
 
 

@@ -29,7 +29,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.RDBMS.Services
 {
     //[EOCAuthorization(OCPermissions.EditContentTypes)]
-    public class RDBMSAppService : AppServcieBase, IRDBMSAppService
+    public class RDBMSAppService : AppServiceBase, IRDBMSAppService
     {
         private readonly IMapper mapper;
         private readonly IContentManager _contentManager;
