@@ -159,7 +159,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             {
                 foreach (var item in selfPart.PartDefinition.Fields)
                 {
-                    var valuePath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
+                    var valuePath = item.FieldDefinition.GetFiledValuePath();
                     if (valuePath == null || !jObject.ContainsKey(item.Name.ToCamelCase()))
                     {
                         continue;
@@ -214,7 +214,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                 var partObj = new JObject(partData);
                 foreach (var item in part.PartDefinition.Fields)
                 {
-                    var valuePath = ContentTypeManagementAppService.GetFiledValuePath(item.FieldDefinition.Name);
+                    var valuePath = item.FieldDefinition.GetFiledValuePath();
                     if (valuePath == null || !partObj.ContainsKey(item.Name.ToCamelCase()))
                     {
                         continue;

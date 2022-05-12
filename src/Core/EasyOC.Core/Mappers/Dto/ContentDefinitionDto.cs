@@ -23,7 +23,7 @@ namespace EasyOC
     {
         public ContentPartDefinitionDto PartDefinition { get; set; }
         public string DisplayName { get; set; }
-        public string Description { get; internal set; }
+        public string Description { get;  set; }
     }
     //[AutoMap(typeof(ContentPartDefinition))]
     /// <summary>
@@ -33,7 +33,7 @@ namespace EasyOC
     {
         public IEnumerable<ContentPartFieldDefinitionDto> Fields { get; set; }
         public string DisplayName { get; set; }
-        public string Description { get; internal set; }
+        public string Description { get;  set; }
     }
 
     //[AutoMap(typeof(ContentPartFieldDefinition))]
@@ -41,7 +41,7 @@ namespace EasyOC
     {
         public ContentFieldDefinitionDto FieldDefinition { get; set; }
         public string DisplayName { get; set; }
-        public string Description { get; internal set; }
+        public string Description { get; set; }
     }
 
     //[AutoMap(typeof(ContentFieldDefinition))]

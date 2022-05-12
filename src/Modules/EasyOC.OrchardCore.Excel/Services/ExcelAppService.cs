@@ -28,7 +28,7 @@ namespace EasyOC.OrchardCore.Excel.Services
         {
             _contentManager = contentManager;
         }
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public List<object> Evaluate(string script, object data)
         {
 
@@ -44,7 +44,7 @@ namespace EasyOC.OrchardCore.Excel.Services
             return null;
         }
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public DataTable GetExcelDataFromConfigFromStream(Stream stream, string rowFilterExpression = "")
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -139,7 +139,7 @@ namespace EasyOC.OrchardCore.Excel.Services
                 return Evaluate(settings.FieldsMappingConfig.Text, data);
             }
         }
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<ContentItemDto> GetExcelSettingsAsync(string displayText)
         {
             var contentItem = await YesSession.Query<ContentItem, ContentItemIndex>()
