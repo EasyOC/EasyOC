@@ -30,7 +30,7 @@ namespace EasyOC.DynamicWebApi
                 return false;
             }
 
-            if (ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<NonDynamicWebApiAttribute>(typeInfo) != null)
+            if (ReflectionHelper.GetSingleAttributeOrDefaultByFullSearch<IgnoreWebApiAttribute>(typeInfo) != null)
             {
                 return false;
             }

@@ -181,7 +181,7 @@ namespace EasyOC.DynamicWebApi
         private bool CheckNoMapMethod(ActionModel action)
         {
             bool isExist = false;
-            var noMapMethod = ReflectionHelper.GetSingleAttributeOrDefault<NonDynamicMethodAttribute>(action.ActionMethod);
+            var noMapMethod = ReflectionHelper.GetSingleAttributeOrDefault<IgnoreWebApiMethodAttribute>(action.ActionMethod);
 
             if (noMapMethod != null)
             {
@@ -216,7 +216,7 @@ namespace EasyOC.DynamicWebApi
         private void ConfigureSelector(string areaName, string controllerName, ActionModel action)
         {
 
-            var nonAttr = ReflectionHelper.GetSingleAttributeOrDefault<NonDynamicWebApiAttribute>(action.ActionMethod);
+            var nonAttr = ReflectionHelper.GetSingleAttributeOrDefault<IgnoreWebApiAttribute>(action.ActionMethod);
 
             if (nonAttr != null)
             {

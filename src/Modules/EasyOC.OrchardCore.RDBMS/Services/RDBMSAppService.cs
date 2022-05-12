@@ -67,7 +67,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         }
 
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId)
         {
             var connectionObject = await GetConnectionConfigAsync(connectionConfigId);

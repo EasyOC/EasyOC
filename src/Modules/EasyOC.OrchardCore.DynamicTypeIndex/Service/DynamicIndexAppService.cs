@@ -166,7 +166,7 @@ namespace {entityInfo.NameSpace}
 
             return entityInfo;
         }
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public Type SyncTableStructAsync(DynamicIndexEntityInfo entityInfo)
         {
             //Create dynamic classes from the script
@@ -235,7 +235,7 @@ namespace {entityInfo.NameSpace}
             return await RebuildIndexData(model);
         }
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<int> RebuildIndexData(DynamicIndexConfigModel model)
         {
             var docs = YesSession.Query<ContentItem, ContentItemIndex>()
@@ -268,7 +268,7 @@ namespace {entityInfo.NameSpace}
         }
 
         private string[] ExceptFields = new[] { "GeoPointField", "MediaField" };
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public DynamicIndexConfigModel GetDefaultConfig(string typeName)
         {
             var config = new DynamicIndexConfigModel()
@@ -305,7 +305,7 @@ namespace {entityInfo.NameSpace}
 
 
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public DynamicIndexConfigModel ToConfigModel(ContentItem storedConfig)
         {
             var part = storedConfig.As<DynamicIndexConfigSetting>();

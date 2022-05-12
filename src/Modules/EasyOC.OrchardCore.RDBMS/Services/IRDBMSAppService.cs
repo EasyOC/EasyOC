@@ -16,7 +16,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         Task<IEnumerable<DbTableInfoDto>> GetAllTablesAsync(QueryTablesDto queryTablesDto);
         JObject GetTableInfo(RDBMSMappingConfigViewModel config);
         Task<DbTableInfoDto> GetTableDetailsAsync(string connectionConfigId, string tableName);
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId);
     }
 }
