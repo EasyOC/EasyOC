@@ -1,4 +1,5 @@
-﻿using EasyOC.Core.Application;
+﻿using AngleSharp.Common;
+using EasyOC.Core.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,15 +26,16 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
     {
         private static readonly JsonMergeSettings UpdateJsonMergeSettings =
             new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
+
         private readonly IEnumerable<IContentHandler> _contentHandlers;
         private readonly IEnumerable<IContentDisplayHandler> _handlers;
 
-        public ContentManagementAppService(IEnumerable<IContentHandler> contentHandlers, IEnumerable<IContentDisplayHandler> handlers)
+        public ContentManagementAppService(IEnumerable<IContentHandler> contentHandlers,
+            IEnumerable<IContentDisplayHandler> handlers)
         {
             _contentHandlers = contentHandlers;
             _handlers = handlers;
         }
-
 
 
         public async Task<bool> DeleteAsync(string contentItemId)
@@ -55,7 +57,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             return true;
         }
 
-        public async Task<string> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
+        public async Task<object> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
         {
             // It is really important to keep the proper method calls order with the ContentManager
             // so that all event handlers gets triggered in the right sequence.
@@ -90,6 +92,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     {
                         await Notifier.ErrorAsync(H[error.ErrorMessage, error.MemberNames]);
                     }
+
                     throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
                 }
 
@@ -113,9 +116,9 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     {
                         await Notifier.ErrorAsync(H[error.ErrorMessage, error.MemberNames]);
                     }
+
                     throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
                 }
-
             }
 
             if (!draft)
@@ -127,7 +130,14 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                 await ContentManager.SaveDraftAsync(contentItem);
             }
 
-            return contentItem.ContentItemId;
+            return new
+            {
+                Id = contentItem.Id,
+                Latest = contentItem.Latest,
+                Published = contentItem.Published,
+                ContentItemId = contentItem.ContentItemId,
+                ContentItemVersionId = contentItem.ContentItemVersionId,
+            };
         }
 
         public static ContentItem MergeFromSimpleData(ContentItem contentItem, ContentModel model,
@@ -168,13 +178,17 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     if (item.FieldDefinition.Name is "ContentPickerField")
                     {
                         var valueToken = jObject.SelectToken($"{item.Name.ToCamelCase()}.firstValue");
+
                         #region FirstValue
+
                         if (valueToken != null)
                         {
-                            var token = new JObject { [valuePath] = new JArray(new [] { valueToken.Value<string>() }) };
+                            var token = new JObject { [valuePath] = new JArray(new[] { valueToken.Value<string>() }) };
                             contentItem.Content[contentItem.ContentType][item.Name] = token;
                         }
+
                         #endregion
+
                         else
                         {
                             valueToken = jObject.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToCamelCase()}");
@@ -184,7 +198,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                                 contentItem.Content[contentItem.ContentType][item.Name] = token;
                             }
                         }
-
                     }
                     //else if (item.FieldDefinition.Name is "UserPickerField")
                     //{
@@ -235,6 +248,5 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
             return contentItem;
         }
-
     }
 }

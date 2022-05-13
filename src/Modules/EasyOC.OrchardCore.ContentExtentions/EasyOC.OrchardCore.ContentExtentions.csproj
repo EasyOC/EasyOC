@@ -7,6 +7,7 @@
     <Compile Remove="Models\ContentDefSettings.cs" />
     <Compile Remove="Models\ContentTypeApiModel.cs" />
     <Compile Remove="AppServices\Dtos\GetTypeDefinitionInput.cs" />
+    <Compile Remove="GraphQL\Types\EOCContentItemsFieldType.cs" />
   </ItemGroup> 
 
   <!--<ItemGroup>

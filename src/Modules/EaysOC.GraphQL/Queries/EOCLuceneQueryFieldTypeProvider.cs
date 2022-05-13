@@ -76,7 +76,7 @@ namespace EaysOC.GraphQL.Queries
                             if (schema.Query.HasField(fieldType.Name))
                             {
                                 var existsField = schema.Query.GetField(fieldType.Name);
-                                existsField = fieldType;
+                                // existsField = fieldType;
                             }
                             else
                             {

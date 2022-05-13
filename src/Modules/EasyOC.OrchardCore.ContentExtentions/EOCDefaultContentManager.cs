@@ -26,6 +26,7 @@ namespace OrchardCore.ContentManagement
         private readonly IEnumerable<IBatchImportEventHandler> _batchImportEventHandlers;
         private readonly IHandlerExctuter _handlerExctuter;
         private readonly DefaultContentManager _defaultContentManager;
+
         public EOCDefaultContentManager(
             IContentDefinitionManager contentDefinitionManager,
             IContentManagerSession contentManagerSession,
@@ -34,10 +35,10 @@ namespace OrchardCore.ContentManagement
             IContentItemIdGenerator idGenerator,
             ILogger<EOCDefaultContentManager> logger,
             ILogger<DefaultContentManager> defaultlogger,
-            IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers, IHandlerExctuter<EOCDefaultContentManager> handlerExctuter)
+            IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers,
+            IHandlerExctuter<EOCDefaultContentManager> handlerExctuter)
 
         {
-
             _defaultContentManager = new DefaultContentManager(contentDefinitionManager,
                 contentManagerSession, handlers, session,
                 idGenerator, defaultlogger, clock);
@@ -47,11 +48,14 @@ namespace OrchardCore.ContentManagement
             _handlerExctuter = handlerExctuter;
         }
 
+        public IEnumerable<IContentHandler> Handlers => _defaultContentManager.Handlers;
+        public IEnumerable<IContentHandler> ReversedHandlers => _defaultContentManager.ReversedHandlers;
 
         public async Task ImportAsync(IEnumerable<ContentItem> contentItems)
         {
             var contentList = contentItems.Select(x => new ImportContentContext(x)).ToList();
-            await _batchImportEventHandlers.InvokeAsync((handler, list) => handler.BeforeImportAsync(list), contentList, _logger);
+            await _batchImportEventHandlers.InvokeAsync((handler, list) => handler.BeforeImportAsync(list), contentList,
+                _logger);
 
             var skip = 0;
 
@@ -63,8 +67,8 @@ namespace OrchardCore.ContentManagement
             {
                 // Preload all the versions for this batch from the database.
                 var versionIds = batchedContentItems
-                     .Where(x => !String.IsNullOrEmpty(x.ContentItemVersionId))
-                     .Select(x => x.ContentItemVersionId);
+                    .Where(x => !String.IsNullOrEmpty(x.ContentItemVersionId))
+                    .Select(x => x.ContentItemVersionId);
 
                 var itemIds = batchedContentItems
                     .Where(x => !String.IsNullOrEmpty(x.ContentItemId))
@@ -76,7 +80,8 @@ namespace OrchardCore.ContentManagement
                         (x.Latest || x.Published || x.ContentItemVersionId.IsIn(versionIds)))
                     .ListAsync();
 
-                var versionsToUpdate = existingContentItems.Where(c => versionIds.Any(v => String.Equals(v, c.ContentItemVersionId, StringComparison.OrdinalIgnoreCase)));
+                var versionsToUpdate = existingContentItems.Where(c =>
+                    versionIds.Any(v => String.Equals(v, c.ContentItemVersionId, StringComparison.OrdinalIgnoreCase)));
                 var versionsThatMaybeEvicted = existingContentItems.Except(versionsToUpdate);
 
                 foreach (var version in existingContentItems)
@@ -91,13 +96,15 @@ namespace OrchardCore.ContentManagement
                     {
                         if (importedVersionIds.Contains(importingItem.ContentItemVersionId))
                         {
-                            _logger.LogInformation("Duplicate content item version id '{ContentItemVersionId}' skipped", importingItem.ContentItemVersionId);
+                            _logger.LogInformation("Duplicate content item version id '{ContentItemVersionId}' skipped",
+                                importingItem.ContentItemVersionId);
                             continue;
                         }
 
                         importedVersionIds.Add(importingItem.ContentItemVersionId);
 
-                        originalVersion = versionsToUpdate.FirstOrDefault(x => String.Equals(x.ContentItemVersionId, importingItem.ContentItemVersionId, StringComparison.OrdinalIgnoreCase));
+                        originalVersion = versionsToUpdate.FirstOrDefault(x => String.Equals(x.ContentItemVersionId,
+                            importingItem.ContentItemVersionId, StringComparison.OrdinalIgnoreCase));
                     }
 
                     if (originalVersion == null)
@@ -105,15 +112,20 @@ namespace OrchardCore.ContentManagement
                         // The version does not exist in the current database.
                         var context = new ImportContentContext(importingItem);
 
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers, (handler, context) => handler.ImportingAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers,
+                            (handler, context) => handler.ImportingAsync(context), context);
 
-                        var evictionVersions = versionsThatMaybeEvicted.Where(x => String.Equals(x.ContentItemId, importingItem.ContentItemId, StringComparison.OrdinalIgnoreCase));
+                        var evictionVersions = versionsThatMaybeEvicted.Where(x =>
+                            String.Equals(x.ContentItemId, importingItem.ContentItemId,
+                                StringComparison.OrdinalIgnoreCase));
                         var result = await _defaultContentManager.CreateContentItemVersionAsync(importingItem);
                         if (!result.Succeeded)
                         {
                             if (_logger.IsEnabled(LogLevel.Error))
                             {
-                                _logger.LogError("Error importing content item version id '{ContentItemVersionId}' : '{Errors}'", importingItem?.ContentItemVersionId, string.Join(", ", result.Errors));
+                                _logger.LogError(
+                                    "Error importing content item version id '{ContentItemVersionId}' : '{Errors}'",
+                                    importingItem?.ContentItemVersionId, string.Join(", ", result.Errors));
                             }
 
                             throw new ValidationException(string.Join(", ", result.Errors));
@@ -121,8 +133,8 @@ namespace OrchardCore.ContentManagement
 
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
-
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers,
+                            (handler, context) => handler.ImportedAsync(context), context);
                     }
                     else
                     {
@@ -150,22 +162,28 @@ namespace OrchardCore.ContentManagement
 
                         if (JToken.DeepEquals(jImporting, jOriginal))
                         {
-                            _logger.LogInformation("Importing '{ContentItemVersionId}' skipped as it is unchanged", importingItem.ContentItemVersionId);
+                            _logger.LogInformation("Importing '{ContentItemVersionId}' skipped as it is unchanged",
+                                importingItem.ContentItemVersionId);
                             continue;
                         }
 
                         // Handlers are only fired if the import is going ahead.
                         var context = new ImportContentContext(importingItem, originalVersion);
 
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers, (handler, context) => handler.ImportingAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers,
+                            (handler, context) => handler.ImportingAsync(context), context);
 
-                        var evictionVersions = versionsThatMaybeEvicted.Where(x => String.Equals(x.ContentItemId, importingItem.ContentItemId, StringComparison.OrdinalIgnoreCase));
+                        var evictionVersions = versionsThatMaybeEvicted.Where(x =>
+                            String.Equals(x.ContentItemId, importingItem.ContentItemId,
+                                StringComparison.OrdinalIgnoreCase));
                         var result = await UpdateContentItemVersionAsync(originalVersion, importingItem);
                         if (!result.Succeeded)
                         {
                             if (_logger.IsEnabled(LogLevel.Error))
                             {
-                                _logger.LogError("Error importing content item version id '{ContentItemVersionId}' : '{Errors}'", importingItem.ContentItemVersionId, string.Join(", ", result.Errors));
+                                _logger.LogError(
+                                    "Error importing content item version id '{ContentItemVersionId}' : '{Errors}'",
+                                    importingItem.ContentItemVersionId, string.Join(", ", result.Errors));
                             }
 
                             throw new ValidationException(string.Join(", ", result.Errors));
@@ -174,7 +192,8 @@ namespace OrchardCore.ContentManagement
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
 
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers, (handler, context) => handler.ImportedAsync(context), context);
+                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers,
+                            (handler, context) => handler.ImportedAsync(context), context);
                     }
                 }
 
@@ -182,10 +201,10 @@ namespace OrchardCore.ContentManagement
                 batchedContentItems = contentItems.Skip(skip).Take(ImportBatchSize);
             }
 
-            await _batchImportEventHandlers.InvokeAsync((handler, list) => handler.AfterImportAsync(list), contentList, _logger);
+            await _batchImportEventHandlers.InvokeAsync((handler, list) => handler.AfterImportAsync(list), contentList,
+                _logger);
+        }
 
-
-        } 
         public Task<ContentItem> GetAsync(string contentItemId, VersionOptions options)
         {
             return _defaultContentManager.GetAsync(contentItemId, options);
@@ -211,7 +230,8 @@ namespace OrchardCore.ContentManagement
             return _defaultContentManager.CreateContentItemVersionAsync(contentItem);
         }
 
-        public Task<ContentValidateResult> UpdateContentItemVersionAsync(ContentItem updatingVersion, ContentItem updatedVersion)
+        public Task<ContentValidateResult> UpdateContentItemVersionAsync(ContentItem updatingVersion,
+            ContentItem updatedVersion)
         {
             return _defaultContentManager.UpdateContentItemVersionAsync(updatingVersion, updatedVersion);
         }
@@ -261,9 +281,43 @@ namespace OrchardCore.ContentManagement
             return _defaultContentManager.SaveDraftAsync(contentItem);
         }
 
-        public Task PublishAsync(ContentItem contentItem)
+        public async Task PublishAsync(ContentItem contentItem)
         {
-            return _defaultContentManager.PublishAsync(contentItem);
+            if (contentItem.Published)
+            {
+                return;
+            }
+
+            // Create a context for the item and it's previous published record
+            // Because of this query the content item will need to be re-enlisted
+            // to be saved.
+            var previous = await _session
+                .Query<ContentItem, ContentItemIndex>(x =>
+                    x.ContentItemId == contentItem.ContentItemId && x.Published)
+                .FirstOrDefaultAsync();
+
+            var context = new PublishContentContext(contentItem, previous);
+
+            // invoke handlers to acquire state, or at least establish lazy loading callbacks
+            await _handlerExctuter.InvokeAsync(Handlers, (handler, context1) =>
+                handler.PublishingAsync(context1), context);
+
+            if (context.Cancel)
+            {
+                return;
+            }
+
+            if (previous != null)
+            {
+                _session.Save(previous, checkConcurrency: true);
+                previous.Latest = previous.Published = false;
+            }
+
+            contentItem.Published = true;
+            _session.Save(contentItem, checkConcurrency: true);
+
+            await _handlerExctuter.InvokeAsync(ReversedHandlers,
+                (handler, context1) => handler.PublishedAsync(context1), context);
         }
 
         public Task UnpublishAsync(ContentItem contentItem)
