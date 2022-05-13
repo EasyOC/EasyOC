@@ -42,6 +42,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
         private readonly IOptions<GraphQLContentOptions> _contentOptionsAccessor;
         private readonly IOptions<GraphQLSettings> _settingsAccessor;
         private readonly IStringLocalizer S;
+
         static EOCContentTypeQuery()
         {
             ContentItemProperties = new List<string>();
@@ -51,6 +52,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
                 ContentItemProperties.Add(property.Name);
             }
         }
+
         public EOCContentTypeQuery(IHttpContextAccessor httpContextAccessor,
             IOptions<GraphQLContentOptions> contentOptionsAccessor,
             IOptions<GraphQLSettings> settingsAccessor,
@@ -62,7 +64,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
             S = localizer;
 
             _defaultNumberOfItems = settingsAccessor.Value.DefaultNumberOfResults;
-
         }
 
         public Task<string> GetIdentifierAsync()

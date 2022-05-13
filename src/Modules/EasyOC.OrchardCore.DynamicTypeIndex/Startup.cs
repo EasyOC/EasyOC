@@ -27,9 +27,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             services.AddScoped<IContentHandler, DynamicIndexTableHandler>();
             services.AddScoped<IBatchImportEventHandler, DynamicIndexTableHandler>();
 
-
-            NatashaInitializer.InitializeAndPreheating();
-
         }
     }
 }
