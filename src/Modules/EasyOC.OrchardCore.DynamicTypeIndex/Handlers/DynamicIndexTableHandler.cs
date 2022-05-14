@@ -2,6 +2,7 @@
 using OrchardCore.ContentManagement.Handlers;
 using System.Threading.Tasks;
 using EasyOC.OrchardCore.ContentExtentions.Handlers;
+using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using System.Collections.Generic;
 using System.Linq;
 using OrchardCore.DisplayManagement.Notify;

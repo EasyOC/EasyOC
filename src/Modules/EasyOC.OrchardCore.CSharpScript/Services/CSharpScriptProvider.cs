@@ -5,75 +5,76 @@ using EasyOC;
 using Natasha.CSharp;
 using System.Threading.Tasks;
 
-namespace EasyOC.OrchardCore.CSharp.Services;
-
-public class CSharpScriptProvider : ICSharpScriptProvider
+namespace EasyOC.OrchardCore.CSharpScript.Services
 {
-    private static bool _initState = false;
-    private readonly Dictionary<string, Type> _types;
-    private AssemblyCSharpBuilder _builder;
-
-    public CSharpScriptProvider()
+    public class CSharpScriptProvider : ICSharpScriptProvider
     {
-        _types = new Dictionary<string, Type>();
-    }
+        private static bool _initState = false;
+        private readonly Dictionary<string, Type> _types;
+        private AssemblyCSharpBuilder _builder;
 
-    public virtual async Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(bool useGlobalSharedBuilder = true)
-    {
-        if (!_initState)
+        public CSharpScriptProvider()
         {
-            await NatashaInitializer.InitializeAndPreheating();
-            _initState = true;
+            _types = new Dictionary<string, Type>();
         }
 
-        if (useGlobalSharedBuilder)
+        public virtual async Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(bool useGlobalSharedBuilder = true)
         {
-            return _builder ??= new AssemblyCSharpBuilder();
-        }
-        else
-        {
-            return new AssemblyCSharpBuilder();
-        }
-    }
+            if (!_initState)
+            {
+                await NatashaInitializer.InitializeAndPreheating();
+                _initState = true;
+            }
 
-    public virtual Type GetType(string fullTypeName)
-    {
-        return _types.ContainsKey(fullTypeName) ? _types[fullTypeName] : null;
-    }
-
-    public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts)
-    {
-        if (_types.ContainsKey(fullName))
-        {
-            return _types[fullName];
+            if (useGlobalSharedBuilder)
+            {
+                return _builder ??= new AssemblyCSharpBuilder();
+            }
+            else
+            {
+                return new AssemblyCSharpBuilder();
+            }
         }
-        else
+
+        public virtual Type GetType(string fullTypeName)
+        {
+            return _types.ContainsKey(fullTypeName) ? _types[fullTypeName] : null;
+        }
+
+        public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts)
+        {
+            if (_types.ContainsKey(fullName))
+            {
+                return _types[fullName];
+            }
+            else
+            {
+                var builder = await GetAssemblyCSharpBuilderAsync();
+                builder.Add(cSharpScripts);
+                var asm = builder.GetAssembly();
+                var type = asm.GetType(fullName);
+                _types.Add(fullName, type);
+                return type;
+            }
+        }
+
+        public virtual async Task<Type> CreateTypeAsync(string fullName, string cSharpScripts)
         {
             var builder = await GetAssemblyCSharpBuilderAsync();
             builder.Add(cSharpScripts);
             var asm = builder.GetAssembly();
             var type = asm.GetType(fullName);
-            _types.Add(fullName, type);
+
+            if (_types.ContainsKey(fullName))
+            {
+                _types[fullName] = type;
+            }
+            else
+            {
+                _types.Add(fullName, type);
+            }
+
             return type;
         }
-    }
-
-    public virtual async Task<Type> CreateTypeAsync(string fullName, string cSharpScripts)
-    {
-        var builder = await GetAssemblyCSharpBuilderAsync();
-        builder.Add(cSharpScripts);
-        var asm = builder.GetAssembly();
-        var type = asm.GetType(fullName);
-
-        if (_types.ContainsKey(fullName))
-        {
-            _types[fullName] = type;
-        }
-        else
-        {
-            _types.Add(fullName, type);
-        }
-
-        return type;
     }
 }

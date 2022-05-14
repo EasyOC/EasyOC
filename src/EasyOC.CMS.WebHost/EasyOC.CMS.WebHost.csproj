@@ -23,14 +23,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Condition="'$(RazorRuntimeCompilation)' == 'true'" />
   </ItemGroup>
 
-  <ItemGroup >
-    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Targets\EasyOC.OrchardCore.Application.Targets\EasyOC.OrchardCore.Application.Targets.csproj" />
+    <ProjectReference Include="..\Targets\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
+  </ItemGroup>
   <Import Project="..\EasyOC.Build\Commons.targets" />
 
 </Project>

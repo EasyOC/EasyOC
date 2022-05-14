@@ -1,6 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
-using EasyOC.OrchardCore.CSharp.Services;
+using EasyOC.OrchardCore.CSharpScript.Services;
 using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +8,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Environment.Shell.Configuration;
@@ -21,14 +19,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using YesSql;
-using YesSql.Sql;
-using YesSql.Sql.Schema;
 
-namespace EasyOC.OrchardCore.DynamicTypeIndex
+namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
 {
     public class DynamicIndexAppService : AppServiceBase, IDynamicIndexAppService
     {
@@ -158,7 +152,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             entityInfo.NameSpace = "EasyOC.DynamicTypeIndex.IndexModels";
 
             var template = $@"
-using EasyOC.Core.Indexs;
+using EasyOC.Core.Indexes;
 using FreeSql.DataAnnotations;
 using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 // 此代码由程序生成，复制到代码文件后请更新命名空间，
@@ -183,8 +177,8 @@ namespace {entityInfo.NameSpace}
         public async Task<Type> SyncTableStructAsync(DynamicIndexEntityInfo entityInfo)
         {
             //Create dynamic classes from the script
-
-            var type = await _cSharpScriptProvider.CreateTypeAsync(entityInfo.FullName,
+            var type = await _cSharpScriptProvider
+                .CreateTypeAsync(entityInfo.FullName,
                 entityInfo.EntityContent);
 
             //Sync Table Structure
@@ -197,7 +191,7 @@ namespace {entityInfo.NameSpace}
         public async Task<DynamicIndexConfigModel> UpdateDynamicIndexAsync(DynamicIndexConfigModel model)
         {
             FillEntityInfo(model);
-            SyncTableStructAsync(model.EntityInfo);
+            await SyncTableStructAsync(model.EntityInfo);
             var doc = await YesSession.Query<ContentItem, ContentItemIndex>()
                 .Where(x => x.Latest & x.Published)
                 .With<DynamicIndexConfigDataIndex>()

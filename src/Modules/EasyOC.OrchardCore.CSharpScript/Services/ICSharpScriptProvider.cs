@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyOC.OrchardCore.CSharp.Services;
+namespace EasyOC.OrchardCore.CSharpScript.Services;
 
 public interface ICSharpScriptProvider
 {

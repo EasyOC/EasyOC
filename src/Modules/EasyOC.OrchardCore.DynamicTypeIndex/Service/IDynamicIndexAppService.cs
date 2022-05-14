@@ -1,12 +1,10 @@
-﻿using EasyOC.OrchardCore.DynamicTypeIndex.Index;
-using EasyOC.OrchardCore.DynamicTypeIndex.Models;
+﻿using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using Microsoft.AspNetCore.Mvc;
 using OrchardCore.ContentManagement;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyOC.OrchardCore.DynamicTypeIndex
+namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
 {
     public interface IDynamicIndexAppService
     {

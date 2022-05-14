@@ -1,12 +1,12 @@
-using EasyOC.OrchardCore.CSharp.Services;
+using EasyOC.OrchardCore.CSharpScript.Services;
 using System;
-using Fluid;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Modules;
+// ReSharper disable Mvc.ControllerNotResolved Mvc.AreaNotResolved
 
-namespace EasyOC.OrchardCore.CSharp
+namespace EasyOC.OrchardCore.CSharpScript
 {
     public class Startup : StartupBase
     {
@@ -20,7 +20,7 @@ namespace EasyOC.OrchardCore.CSharp
         {
             routes.MapAreaControllerRoute(
                 name: "Home",
-                areaName: "EasyOC.OrchardCore.CSharp",
+                areaName: "EasyOC.OrchardCore.CSharpScript",
                 pattern: "Home/Index",
                 defaults: new { controller = "Home", action = "Index" }
             );

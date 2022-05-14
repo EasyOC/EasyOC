@@ -68,7 +68,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
             }
             var fields = _contentManagementAppService.GetFields(typeName);
             //执行并获取结果
-            ///TODO: 全部导出，需要移除分页参数
+            //TODO: 全部导出，需要移除分页参数
             var result = await _queryManager.ExecuteQueryAsync(query, parameters);
             var resultItems = result.Items.Select(x => (ContentItem)x).ToArray();
             var contentPickerItems = new Dictionary<string, ContentItemIndex>();
@@ -79,7 +79,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
                 //填充关联的 内容项或用户ID
                 FillRelationItemIds(fields, resultItems, contentPickerItems, userPickerItems);
 
-                //获取ID 后 需要统一从数据库查询 
+                //获取ID 后 需要统一从数据库查询
                 var contentItems = await _session.QueryIndex<ContentItemIndex>().Where(x => x.ContentItemId.IsIn(contentPickerItems.Keys)).ListAsync();
                 //var contentItems = await _session.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentItemId.IsIn(contentPickerItems.Keys)).ListAsync();
                 foreach (var item in contentItems)
@@ -129,7 +129,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
         {
             foreach (var contentItem in results)
             {
-                ///TODO: 参考 OrchardCore相关源码 LuceneQuerySource.ExecuteQueryAsync， \OrchardCore\src\OrchardCore.Modules\OrchardCore.Lucene\Services\LuceneQuerySource.cs  
+                //TODO: 参考 OrchardCore相关源码 LuceneQuerySource.ExecuteQueryAsync， \OrchardCore\src\OrchardCore.Modules\OrchardCore.Lucene\Services\LuceneQuerySource.cs
                 var contentJson = (JObject)contentItem.Content;
                 foreach (var field in fields.Where(x => x.FieldType == "UserPickerField" || x.FieldType == "ContentPickerField"))
                 {
