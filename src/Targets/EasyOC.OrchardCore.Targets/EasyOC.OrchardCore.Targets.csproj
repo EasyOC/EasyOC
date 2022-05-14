@@ -1,5 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!--
+    When a package is not directly referenced, e.g only through the reference of this bundle package,
+    the files in its build folder are not evaluated on building if this folder is marked as private.
+    This can be defined by using the 'PrivateAssets' attribute.
+
+    Here, only project references are used but when packing the bundle they become package references,
+    and with the same 'PrivateAssets' attribute.
+    
+    
+    当一个包没有被直接引用时，例如仅通过该捆绑包的引用，
+    如果此文件夹被标记为专用，则其生成文件夹中的文件不会在生成时进行评估。
+    这可以通过使用“PrivateAssets”属性来定义。
+    在这里，只使用项目引用，但打包包时，它们会成为包引用，
+    并具有相同的“私有资产”属性。
+  -->
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Application.Targets" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
@@ -62,7 +77,6 @@
     <PackageReference Include="OrchardCore.Scripting" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Settings" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Setup" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Shortcodes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Spatial" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Taxonomies" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
@@ -83,8 +97,9 @@
     <PackageReference Include="TheBlogTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="TheComingSoonTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="TheTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-  </ItemGroup> 
+  </ItemGroup>
   <ItemGroup>
+    <!--    <PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.GitHub" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.Microsoft.Authentication" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.ReCaptcha" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->

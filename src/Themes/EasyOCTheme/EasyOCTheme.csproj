@@ -24,6 +24,13 @@
 
   <ItemGroup>
     <Content Include="Views\OrchardCore.Users\Account\_ViewImports.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Duplicate.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Edit.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\EditProperties.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Index.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\RenderActivity.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\Workflow\Details.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\Workflow\Index.cshtml" />
   </ItemGroup> 
 
 </Project>
