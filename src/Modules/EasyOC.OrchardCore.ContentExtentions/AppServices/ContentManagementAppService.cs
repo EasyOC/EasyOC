@@ -124,10 +124,13 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             if (!draft)
             {
                 await ContentManager.PublishAsync(contentItem);
+                await Notifier.SuccessAsync(H["发布成功！"]);
             }
             else
             {
                 await ContentManager.SaveDraftAsync(contentItem);
+                await Notifier.SuccessAsync(H["已保存草稿"]);
+
             }
 
             return new
