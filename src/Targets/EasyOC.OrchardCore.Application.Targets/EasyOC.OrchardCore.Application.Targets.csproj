@@ -17,7 +17,7 @@
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />
+<!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
     <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Themes\EasyOCSiteTheme\EasyOCSiteTheme.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" PrivateAssets="none" />
