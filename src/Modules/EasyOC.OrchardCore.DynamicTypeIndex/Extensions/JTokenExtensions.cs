@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using OrchardCore.ContentFields.Fields;
 using System;
 using System.Collections.Generic;
@@ -73,16 +74,18 @@ namespace Newtonsoft.Json.Linq
             return value;
         }
 
-        public static object GetOCFieldValue(this JToken jToken, string OcFieldDefName)
+        public static object GetOCFieldValue(this JToken jToken,ContentFieldOption config)
         {
-            switch (OcFieldDefName)
+
+            switch (config.FieldType)
             {
                 case nameof(TextField):
                 case nameof(LinkField):
                 case nameof(HtmlField):
+                    return jToken.Value<string>();
                 case nameof(ContentPickerField):
                 case nameof(UserPickerField):
-                    return jToken.Value<string>();
+                    return jToken.First?.Value<string>();
                 case nameof(BooleanField):
                     return jToken.Value<bool?>();
                 case nameof(NumericField):

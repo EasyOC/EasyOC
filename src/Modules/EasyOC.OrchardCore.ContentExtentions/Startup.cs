@@ -20,6 +20,8 @@ namespace EasyOC.OrchardCore.ContentExtentions
             services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
             services.Replace(ServiceDescriptor.Scoped<IContentManager, EOCDefaultContentManager>());
             services.AddScoped<IBatchImportEventHandler, BatchImportEventHandlerBase>();
+
+            
             //修改类型定义事件处理声明
             //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
             services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyOC.Core.Indexs
+namespace EasyOC.Core.Indexes
 {
     //
     // 摘要:
@@ -19,7 +19,7 @@ namespace EasyOC.Core.Indexs
     //   fields:
     //     索引字段，为属性名以逗号分隔，如：Create_time ASC, Title ASC
     public class EOCIndexAttribute : IndexAttribute
-    { 
+    {
         public string Collection { get; set; } = string.Empty;
         /// <summary>
         ///  索引设置，如：[Index("{tablename}_idx_01", "name")]
@@ -54,6 +54,6 @@ namespace EasyOC.Core.Indexs
                 return string.Empty;
             }
         }
-        
+
     }
 }

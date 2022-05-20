@@ -2,11 +2,11 @@
 using OrchardCore.ContentManagement;
 using YesSql.Indexes;
 
-namespace EasyOC.Core.Indexs
+namespace EasyOC.Core.Indexes
 {
-    public class IndexProviderBase<T, Part> : IndexProvider<Part>
+    public class IndexProviderBase<T, TPart> : IndexProvider<TPart>
         where T : IndexBaseModel, new()
-        where Part : ContentPart
+        where TPart : ContentPart
     {
         protected readonly IMapper Mapper;
 
@@ -19,7 +19,7 @@ namespace EasyOC.Core.Indexs
         /// </summary>
         /// <param name="partItem"></param>
         /// <returns></returns>
-        public virtual T GetMapIndex(Part partItem)
+        public virtual T GetMapIndex(TPart partItem)
         {
             var partModel = partItem;
             if (partModel == null)
@@ -35,7 +35,7 @@ namespace EasyOC.Core.Indexs
                 return Mapper.Map(partModel, partIndex);
             }
         }
-        public override void Describe(DescribeContext<Part> context)
+        public override void Describe(DescribeContext<TPart> context)
         {
             context.For<T>().Map(contentItem =>
             {

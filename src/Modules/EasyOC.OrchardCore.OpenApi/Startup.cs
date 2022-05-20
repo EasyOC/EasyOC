@@ -31,7 +31,7 @@ namespace EasyOC.OrchardCore.OpenApi
 
             services.AddScoped<IRolesAppService, RolesAppService>();
             services.AddScoped<IUsersAppService, UsersAppService>();
-            services.AddScoped<IDataMigration, VbenMenuMigrations>();
+            // services.AddScoped<IDataMigration, VbenMenuMigrations>();
             services.AddScoped<IUserEventHandler, EOCUserEventHandler>();
             services.AddObjectGraphType<UserPickerField, UserPickerFieldQueryObjectType>();
             services.AddSingleton<ISchemaBuilder, UserInfoQueryFieldTypeProvider>();

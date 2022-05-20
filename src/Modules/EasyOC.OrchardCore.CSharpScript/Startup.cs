@@ -12,6 +12,7 @@ namespace EasyOC.OrchardCore.CSharpScript
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            NatashaInitializer.InitializeAndPreheating();
             services.AddSingleton<ICSharpScriptProvider, CSharpScriptProvider>();
         }
 

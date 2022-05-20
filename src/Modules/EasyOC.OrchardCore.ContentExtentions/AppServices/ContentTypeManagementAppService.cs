@@ -13,6 +13,7 @@ using OrchardCore.Contents;
 using OrchardCore.Contents.Models;
 using OrchardCore.Lucene;
 using OrchardCore.Queries;
+using OrchardCore.Queries.Sql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,10 +89,20 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 
 
         [EOCAuthorization(OCPermissions.EditContentTypes)]
-        public async Task<IEnumerable<QueryDefDto>> ListLuceneQueriesAsync()
+        public async Task<IEnumerable<QueryDefDto>> ListAllQueriesAsync()
         {
-            var queries = (await _queryManager.ListQueriesAsync()).OfType<LuceneQuery>();
-            return ObjectMapper.Map<IEnumerable<QueryDefDto>>(queries);
+            var queries = await _queryManager.ListQueriesAsync();
+            var result = queries.Select(x =>
+            {
+                var queryDef = ObjectMapper.Map<QueryDefDto>(x);
+                var schema = JObject.Parse(x.Schema);
+                if (schema.ContainsKey("hasTotal") && schema["hasTotal"] != null)
+                {
+                    queryDef.HasTotal = schema["hasTotal"].Value<bool>();
+                }
+                return queryDef;
+            });
+            return result;
         }
 
         public async Task<EditViewContentDefinitionDto> GetTypeDefinitionForEdit(string name)

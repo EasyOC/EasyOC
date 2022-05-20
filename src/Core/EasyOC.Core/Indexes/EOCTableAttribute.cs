@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyOC.Core.Indexs
+namespace EasyOC.Core.Indexes
 {
     public class EOCTableAttribute : TableAttribute
     {

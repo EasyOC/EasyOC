@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Indexs;
+﻿using EasyOC.Core.Indexes;
 using FreeSql.DataAnnotations;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex.Index

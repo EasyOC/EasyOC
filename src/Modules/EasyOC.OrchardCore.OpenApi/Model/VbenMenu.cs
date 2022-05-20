@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using System;
@@ -21,7 +21,7 @@ namespace EasyOC.OrchardCore.OpenApi.Model
         public TextField Component { get; set; }
         public BooleanField IsExt { get; set; }
         public BooleanField Keepalive { get; set; }
-        public ContentPickerField ParentMenu { get; set; } 
+        public ContentPickerField ParentMenu { get; set; }
         public BooleanField Show { get; set; }
         public TextField MenuType { get; set; }
         public TextField ExtentionData { get; set; }

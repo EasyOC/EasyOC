@@ -1,6 +1,6 @@
 ﻿using YesSql.Indexes;
 
-namespace EasyOC.Core.Indexs
+namespace EasyOC.Core.Indexes
 {
     public class IndexBaseModel : MapIndex
     {

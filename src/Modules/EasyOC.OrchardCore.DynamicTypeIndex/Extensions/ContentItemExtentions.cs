@@ -29,8 +29,16 @@ namespace EasyOC
                     valueToken = jdoc.SelectToken(fConfig.ContentFieldOption.ValueFullPath);
                     if (valueToken != null)
                     {
-                        dmodel.Add(valueKey,
-                                valueToken.GetOCFieldValue(fConfig.ContentFieldOption.FieldName));
+                        try
+                        {
+                            dmodel.Add(valueKey,
+                                valueToken.GetOCFieldValue(fConfig.ContentFieldOption));
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
                     }
                 }
                 else

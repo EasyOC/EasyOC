@@ -1,6 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -55,11 +55,11 @@ namespace EasyOC.OrchardCore.OpenApi.Services.Session
             {
                 var rolePermissions = await _rolesAppService.GetRoleDetailsAsync(role);
                 userPermissions = userPermissions.Union(rolePermissions.Permissions).ToList();
-                
+
                  //rolePermissions.VbenMenuIds;
             }
 
-            
+
             //var menuNames = user.UserClaims.Where(x => x.ClaimType == "VbenMenu").Select(x => x.ClaimValue).ToList();
             //var allMenus = YesSession.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentType == "VbenMenu" && x.Published && x.Latest)
             //    .With<VbenMenuPartIndex>(x => menuNames.Contains(x.MenuName))

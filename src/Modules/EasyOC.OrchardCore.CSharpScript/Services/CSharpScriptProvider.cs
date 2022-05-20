@@ -10,21 +10,17 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
     public class CSharpScriptProvider : ICSharpScriptProvider
     {
         private static bool _initState = false;
-        private readonly Dictionary<string, Type> _types;
+        private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
         private AssemblyCSharpBuilder _builder;
 
-        public CSharpScriptProvider()
+        public virtual async Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
+            bool useGlobalSharedBuilder = true)
         {
-            _types = new Dictionary<string, Type>();
-        }
-
-        public virtual async Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(bool useGlobalSharedBuilder = true)
-        {
-            if (!_initState)
-            {
-                await NatashaInitializer.InitializeAndPreheating();
-                _initState = true;
-            }
+            // if (!_initState)
+            // {
+            //     _initState = true;
+            //     await NatashaInitializer.InitializeAndPreheating();
+            // }
 
             if (useGlobalSharedBuilder)
             {
@@ -41,7 +37,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             return _types.ContainsKey(fullTypeName) ? _types[fullTypeName] : null;
         }
 
-        public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts)
+        public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,HashSet<string>? usings = default)
         {
             if (_types.ContainsKey(fullName))
             {
@@ -50,7 +46,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             else
             {
                 var builder = await GetAssemblyCSharpBuilderAsync();
-                builder.Add(cSharpScripts);
+                builder.Add(cSharpScripts,usings);
                 var asm = builder.GetAssembly();
                 var type = asm.GetType(fullName);
                 _types.Add(fullName, type);
@@ -58,23 +54,34 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             }
         }
 
-        public virtual async Task<Type> CreateTypeAsync(string fullName, string cSharpScripts)
+        public virtual async Task<Type> CreateTypeAsync(string fullName, string cSharpScripts,
+            HashSet<string>? usings = default)
         {
-            var builder = await GetAssemblyCSharpBuilderAsync();
-            builder.Add(cSharpScripts);
-            var asm = builder.GetAssembly();
-            var type = asm.GetType(fullName);
-
-            if (_types.ContainsKey(fullName))
+            try
             {
-                _types[fullName] = type;
-            }
-            else
-            {
-                _types.Add(fullName, type);
-            }
 
-            return type;
+
+                var builder = await GetAssemblyCSharpBuilderAsync();
+                builder.Add(cSharpScripts, usings);
+                var asm = builder.GetAssembly();
+                var type = asm.GetType(fullName);
+
+                if (_types.ContainsKey(fullName))
+                {
+                    _types[fullName] = type;
+                }
+                else
+                {
+                    _types.Add(fullName, type);
+                }
+
+                return type;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

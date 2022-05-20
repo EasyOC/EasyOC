@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Indexs;
+﻿using EasyOC.Core.Indexes;
 using FreeSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -88,7 +88,7 @@ namespace System
                 logger.LogDebug(e.Log);
             };
 
-            //按照需要添加其他数据库的引用 
+            //按照需要添加其他数据库的引用
             ib.Register(ibKey,
                 () => serviceProvider.GetFreeSql(dataType, connectionString, tablePrefix));
             return ib.Get(ibKey);
@@ -185,7 +185,7 @@ namespace System
                           }
                       })
                       .Build();
-            
+
             fsql.Aop.ConfigEntity += (s, e) =>
             {
 

@@ -1,6 +1,7 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.AppServices;
 using EasyOC.OrchardCore.ContentExtentions.Models;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;

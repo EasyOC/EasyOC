@@ -1,7 +1,8 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using FreeSql.Internal.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -250,7 +251,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     }
                 }
             }
-            #endregion 
+            #endregion
         }
 
 

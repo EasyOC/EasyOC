@@ -1,14 +1,13 @@
-﻿using TextField = OrchardCore.ContentFields.Fields.TextField;
+﻿using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement.Metadata.Models;
-using System.Collections.Generic;
 using System;
-using System.Linq;
-using EasyOC.OrchardCore.DynamicTypeIndex.Models;
+using System.Collections.Generic;
+using TextField = OrchardCore.ContentFields.Fields.TextField;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex
 {
-    public static class DbFieldsExtentions
+    public static class DbFieldsExtensions
     {
         public static DynamicIndexFieldItem AddDbField<T>
             (this List<DynamicIndexFieldItem> list,
