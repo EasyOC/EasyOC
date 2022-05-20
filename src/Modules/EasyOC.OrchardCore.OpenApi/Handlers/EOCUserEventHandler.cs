@@ -52,24 +52,14 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
         {
             var user = context.User as User;
             var internalProfile = user.As<ContentItem>("UserProfileInternal");
-            if (internalProfile == null && internalProfile.Content.UserProfilePart != null)
+            if (internalProfile == null || internalProfile.Content.UserProfilePart == null)
             {
                 return;
             }
+      
             var contentItem = await _contentManager.NewAsync(nameof(UserProfile));
-
-            contentItem.Content["UserProfilePart"] = (internalProfile.Content.UserProfilePart as JObject).DeepClone();
-            contentItem.Remove("UserProfileInternal");
-            //ContentPart must be registered manually
-            contentItem.Alter<UserProfile>(nameof(UserProfile), profilePart =>
-            {
-                profilePart.UserName.Text = user.UserName;
-                profilePart.Email.Text = user.Email;
-                profilePart.UserId.Text = user.UserId;
-                profilePart.OwnerUser.UserIds = new string[] { user.UserId };
-
-            });
-
+        
+            
             contentItem.Owner = user.UserId;
             var existsContent = await _contentManager.GetAsync(user.UserId, VersionOptions.DraftRequired);
             var isCreate = existsContent == null;

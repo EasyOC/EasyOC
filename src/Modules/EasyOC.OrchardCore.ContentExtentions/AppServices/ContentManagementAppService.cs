@@ -25,7 +25,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
     public class ContentManagementAppService : AppServiceBase
     {
         private static readonly JsonMergeSettings UpdateJsonMergeSettings =
-            new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
+            new JsonMergeSettings {MergeArrayHandling = MergeArrayHandling.Replace};
 
         private readonly IEnumerable<IContentHandler> _contentHandlers;
         private readonly IEnumerable<IContentDisplayHandler> _handlers;
@@ -124,10 +124,12 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             if (!draft)
             {
                 await ContentManager.PublishAsync(contentItem);
+                await Notifier.SuccessAsync(H["发布成功！"]);
             }
             else
             {
                 await ContentManager.SaveDraftAsync(contentItem);
+                await Notifier.SuccessAsync(H["已保存草稿"]);
             }
 
             return new
@@ -181,9 +183,9 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 
                         #region FirstValue
 
-                        if (valueToken != null)
+                        if (valueToken != null && valueToken.Value<string>() != null)
                         {
-                            var token = new JObject { [valuePath] = new JArray(new[] { valueToken.Value<string>() }) };
+                            var token = new JObject {[valuePath] = new JArray(new[] {valueToken.Value<string>()})};
                             contentItem.Content[contentItem.ContentType][item.Name] = token;
                         }
 
@@ -192,7 +194,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                         else
                         {
                             valueToken = jObject.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToCamelCase()}");
-                            var token = new JObject { [valuePath] = valueToken };
+                            var token = new JObject {[valuePath] = valueToken};
                             if (token.Type == JTokenType.Array)
                             {
                                 contentItem.Content[contentItem.ContentType][item.Name] = token;
@@ -209,7 +211,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     //}
                     else
                     {
-                        var token = new JObject { [valuePath] = jObject[(item.Name.ToCamelCase())] };
+                        var token = new JObject {[valuePath] = jObject[(item.Name.ToCamelCase())]};
                         contentItem.Content[contentItem.ContentType][item.Name] = token;
                     }
                 }
@@ -240,7 +242,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
                     }
                     else
                     {
-                        var token = new JObject { [valuePath] = partObj[item.Name.ToCamelCase()] };
+                        var token = new JObject {[valuePath] = partObj[item.Name.ToCamelCase()]};
                         contentItem.Content[part.Name][item.Name][valuePath] = token;
                     }
                 }
