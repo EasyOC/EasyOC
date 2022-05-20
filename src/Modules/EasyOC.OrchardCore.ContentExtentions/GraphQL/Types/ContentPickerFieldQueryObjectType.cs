@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using System;
+using GraphQL.Types;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
@@ -22,7 +23,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL.Types
                 {
                     if (x.Source.ContentItemIds != null)
                     {
-
                         return x.Source?.ContentItemIds.FirstOrDefault();
                     }
                     else
@@ -53,10 +53,17 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL.Types
                 .ResolveAsync(async x =>
                 {
                     var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
-                    if (x.Source.ContentItemIds.Any())
+                    if (x.Source.ContentItemIds != null && x.Source.ContentItemIds.Any())
                     {
-                        return await contentItemLoader.LoadAsync(x.Source.ContentItemIds.FirstOrDefault());
+                        var firstValue = x.Source.ContentItemIds.FirstOrDefault(x => x != null);
+                        if (firstValue != null)
+                        {
+                            var result = await contentItemLoader.LoadAsync(firstValue);
+                            return result;
+                        }
+                      
                     }
+
                     return null;
                 });
 
