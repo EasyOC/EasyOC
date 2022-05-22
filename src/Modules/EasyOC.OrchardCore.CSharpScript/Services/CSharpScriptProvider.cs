@@ -32,7 +32,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             }
         }
 
-        public virtual Type GetType(string fullTypeName)
+        public virtual Type GetIndexType(string fullTypeName)
         {
             return _types.ContainsKey(fullTypeName) ? _types[fullTypeName] : null;
         }
@@ -59,8 +59,6 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
         {
             try
             {
-
-
                 var builder = await GetAssemblyCSharpBuilderAsync();
                 builder.Add(cSharpScripts, usings);
                 var asm = builder.GetAssembly();

@@ -98,18 +98,18 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
         {
             var entityInfo = config.EntityInfo;
 
-            if (config.TypeName.Contains('.'))
-            {
-                var typeFullName = DefaultNamespace.Split('.').ToList();
-                typeFullName.AddRange(config.TypeName.Split('.'));
-                entityInfo.NameSpace = string.Join('.', typeFullName.Take(typeFullName.Count - 1).ToArray());
-                entityInfo.EntityName = string.Format(DefaultEntityNameTemplate, string.Join('.', typeFullName.Last()));
-            }
-            else
-            {
-                entityInfo.NameSpace = DefaultNamespace;
-                entityInfo.EntityName = string.Format(DefaultEntityNameTemplate, config.TypeName);
-            }
+            // if (config.TypeName.Contains('.'))
+            // {
+            //     var typeFullName = DefaultNamespace.Split('.').ToList();
+            //     typeFullName.AddRange(config.TypeName.Split('.'));
+            //     entityInfo.NameSpace = string.Join('.', typeFullName.Take(typeFullName.Count - 1).ToArray());
+            //     entityInfo.EntityName = string.Format(DefaultEntityNameTemplate, string.Join('.', typeFullName.Last()));
+            // }
+            // else
+            // {
+            entityInfo.NameSpace = DefaultNamespace;
+            entityInfo.EntityName = string.Format(DefaultEntityNameTemplate, config.TypeName);
+            // }
 
 
             var indexCols = config.Fields.Where(x => !x.Disabled && x.IsDefaultIndex)
@@ -196,7 +196,7 @@ namespace {entityInfo.NameSpace}
             var type = await _cSharpScriptProvider
                 .CreateTypeAsync(entityInfo.FullName,
                     entityInfo.EntityContent
-                    );
+                );
 
             //Sync Table Structure
             Fsql.CodeFirst.SyncStructure(type);
@@ -378,6 +378,42 @@ namespace {entityInfo.NameSpace}
                 default:
                     return csTypeName;
             }
+        }
+
+        [IgnoreWebApiMethod]
+        public async Task<AssemblyCSharpBuilder> GetIndexAssemblyBuilder(bool withOutCache = false)
+        {
+            var docs = await YesSession.Query<ContentItem, ContentItemIndex>()
+                .Where(x => x.Latest & x.Published)
+                .With<DynamicIndexConfigDataIndex>()
+                .Where(x => true)
+                .ListAsync();
+
+            var typeDefs = new List<string>();
+            var typesDict = new Dictionary<string, Type>();
+            foreach (var config in docs)
+            {
+                var model = ToConfigModel(config);
+                typesDict.Add(model.EntityInfo.FullName, null);
+                typeDefs.Add(model.EntityInfo.EntityContent);
+            }
+
+            var builder = await _cSharpScriptProvider.GetAssemblyCSharpBuilderAsync(withOutCache);
+            builder.Compiler.Domain = DomainManagement.Random;
+            HashSet<string> usings = new HashSet<string>();
+            usings.Add("using EasyOC.Core.Indexes;");
+            usings.Add("using FreeSql.DataAnnotations;");
+            usings.Add("using EasyOC.OrchardCore.DynamicTypeIndex.Index;");
+            builder.Add(string.Join("\r\n", typeDefs), usings);
+            // var asm = builder.GetAssembly();
+            // foreach (var key in typesDict.Keys)
+            // {
+            //     var type = builder.GetTypeFromFullName(key);
+            //     typesDict[key] = type;
+            // }
+
+
+            return builder;
         }
     }
 }

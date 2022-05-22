@@ -7,7 +7,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services;
 public interface ICSharpScriptProvider
 {
     Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(bool useGlobalSharedBuilder = true);
-
-    Task<Type> CreateTypeAsync(string fullName, string cSharpScripts,HashSet<string>? usings = default);
-    Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,HashSet<string>? usings = default);
+    Type GetIndexType(string fullTypeName);
+    Task<Type> CreateTypeAsync(string fullName, string cSharpScripts, HashSet<string>? usings = default);
+    Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts, HashSet<string>? usings = default);
 }

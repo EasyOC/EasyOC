@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages" />
     <Folder Include="wwwroot\" />
     <Folder Include="Localization\" />
   </ItemGroup>
