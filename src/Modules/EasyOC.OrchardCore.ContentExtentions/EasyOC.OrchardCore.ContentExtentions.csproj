@@ -30,6 +30,9 @@
   <ItemGroup>
     <PackageReference Include="OrchardCore.Queries" Version="1.4.0-preview-16838" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers" />
+  </ItemGroup>
 
 </Project>
 

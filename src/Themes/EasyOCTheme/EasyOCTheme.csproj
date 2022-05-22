@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <EmbeddedResource Remove="Views\Layout.liquid" />
+    <EmbeddedResource Update="Views\OrchardCore.ContentTypes\Admin\Create.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Remove="Views\OrchardCore.ContentTypes\**" />
   </ItemGroup>
 
    <ItemGroup> 
@@ -32,5 +36,5 @@
     <Content Include="Views\OrchardCore.Workflows\Workflow\Details.cshtml" />
     <Content Include="Views\OrchardCore.Workflows\Workflow\Index.cshtml" />
   </ItemGroup> 
-
+ 
 </Project>

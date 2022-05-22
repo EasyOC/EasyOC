@@ -13,7 +13,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
         private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
         private AssemblyCSharpBuilder _builder;
 
-        public virtual async Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
+        public virtual Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
             bool useGlobalSharedBuilder = true)
         {
             // if (!_initState)
@@ -24,11 +24,11 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
 
             if (useGlobalSharedBuilder)
             {
-                return _builder ??= new AssemblyCSharpBuilder();
+                return Task.FromResult(_builder ??= new AssemblyCSharpBuilder());
             }
             else
             {
-                return new AssemblyCSharpBuilder();
+                return Task.FromResult(new AssemblyCSharpBuilder());
             }
         }
 

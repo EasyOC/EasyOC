@@ -6,6 +6,6 @@
     Website = "https://orchardcore.net",
     Version = "0.0.1",
     Description = "EaysOC GraphQL Extentions",
-    Dependencies = new[] { "EasyOC.Core" },
+    Dependencies = new[] { "EasyOC.Core","OrchardCore.Apis.GraphQL" },
     Category = "Content Management"
 )]

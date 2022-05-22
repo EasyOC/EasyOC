@@ -1,7 +1,6 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.AppServices;
 using EasyOC.OrchardCore.ContentExtentions.Models;
 using EasyOC.OrchardCore.OpenApi.Indexes;
-using EasyOC.OrchardCore.OpenApi.Indexes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -74,7 +73,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
             var resultItems = result.Items.Select(x => (ContentItem)x).ToArray();
             var contentPickerItems = new Dictionary<string, ContentItemIndex>();
             var userPickerItems = new Dictionary<string, UserProfileDIndex>();
-            ///处理ContentPicker 和 UserPicker 相关信息
+            //处理ContentPicker 和 UserPicker 相关信息
             if (fields.Any(x => x.FieldType == "UserPickerField" || x.FieldType == "ContentPickerField"))
             {
                 //填充关联的 内容项或用户ID
@@ -89,7 +88,7 @@ namespace EasyOC.OrchardCore.OpenApi.Controllers
                 }
             }
 
-            ///TODO: 遍历 导出 Excel
+            //TODO: 遍历 导出 Excel
             foreach (var item in resultItems)
             {
                 var contentJson = (JObject)item.Content;

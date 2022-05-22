@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Application.Targets" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+
     <!--
       When adding a reference to this list, please keep it ordered alphabetically, and set PrivateAssets="none"
     -->
@@ -34,7 +35,8 @@
     <PackageReference Include="OrchardCore.ContentLocalization" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.ContentPreview" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+
+
     <PackageReference Include="OrchardCore.Cors" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.CustomSettings" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.DataProtection.Azure" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
@@ -87,7 +89,8 @@
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Widgets" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.XmlRpc" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <!--    <PackageReference Include="OrchardCore.XmlRpc" Version="$(OrchardCoreVersion)" PrivateAssets="none" />-->
+
     <PackageReference Include="TheAdmin" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <!--
       When adding a reference to this list, please keep it ordered alphabetically, and set PrivateAssets="none"
@@ -108,6 +111,9 @@
     <!--    <PackageReference Include="OrchardCore.Google" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.Seo" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.Twitter" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
+
+    <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <!--    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" PrivateAssets="none"/>-->
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="OrchardCore.Translations.All"/>

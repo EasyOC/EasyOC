@@ -75,8 +75,8 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
             dbOption.IsSystem = false;
 
 
-            ///TODO: 可以考虑使用必填检查将字段设置为必填，但如果通过UI将非必填改为必填会出现空值列无法设置为不可为空
-            ///暂不处理
+            //TODO: 可以考虑使用必填检查将字段设置为必填，但如果通过UI将非必填改为必填会出现空值列无法设置为不可为空
+            //暂不处理
             switch (field.FieldDefinition.Name)
             {
                 case nameof(TextField):
