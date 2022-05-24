@@ -1,17 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using Fluid;
-using Fluid.Values;
 using Microsoft.Extensions.Options;
 using Natasha.CSharp;
-using Natasha.Error;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
-using OrchardCore.Data;
-using OrchardCore.Liquid;
 using OrchardCore.Queries;
 using System;
 using YesSql;
@@ -20,23 +14,17 @@ namespace EasyOC.OrchardCore.FreeSql.Queries
 {
     public class FreeSqlQuerySource : IQuerySource
     {
-        private readonly ILiquidTemplateManager _liquidTemplateManager;
-        private readonly IDbConnectionAccessor _dbConnectionAccessor;
         private readonly ISession _session;
-        private readonly TemplateOptions _templateOptions;
         private readonly IDynamicIndexAppService _dynamicIndexAppService;
+        private readonly IFreeSql _freeSql;
 
         public FreeSqlQuerySource(
-            ILiquidTemplateManager liquidTemplateManager,
-            IDbConnectionAccessor dbConnectionAccessor,
             ISession session,
-            IOptions<TemplateOptions> templateOptions, IDynamicIndexAppService dynamicIndexAppService)
+            IOptions<TemplateOptions> templateOptions, IDynamicIndexAppService dynamicIndexAppService, IFreeSql freeSql)
         {
-            _liquidTemplateManager = liquidTemplateManager;
-            _dbConnectionAccessor = dbConnectionAccessor;
             _session = session;
             _dynamicIndexAppService = dynamicIndexAppService;
-            _templateOptions = templateOptions.Value;
+            _freeSql = freeSql;
         }
 
         public string Name => "FreeSql";
@@ -56,23 +44,28 @@ namespace EasyOC.OrchardCore.FreeSql.Queries
             {
                 return null;
             }
+            // 使用Liquid 模板生成FreeSql查询
+            // var tokenizedQuery = await _liquidTemplateManager.RenderStringAsync(freeSqlQuery.Template,
+            //     NullEncoder.Default,
+            //     parameters.Select(x =>
+            //         new KeyValuePair<string, FluidValue>(x.Key, FluidValue.Create(x.Value, _templateOptions))));
 
-            var tokenizedQuery = await _liquidTemplateManager.RenderStringAsync(freeSqlQuery.Template,
-                NullEncoder.Default,
-                parameters.Select(x =>
-                    new KeyValuePair<string, FluidValue>(x.Key, FluidValue.Create(x.Value, _templateOptions))));
-
-            var dialect = _session.Store.Configuration.SqlDialect;
             try
             {
-                var scripts = $"  var params=parameters;\r\n{tokenizedQuery}";
+                var scripts = $"  var params=parameters;\r\n{freeSqlQuery.Template}";
                 var builder = await _dynamicIndexAppService.GetIndexAssemblyBuilder();
+
                 //编译查询
                 var funcDelegate = FastMethodOperator.UseCompiler(builder)
+                    .Using("OrchardCore.ContentManagement.Records")
                     .Param<IDictionary<string, object>>(nameof(parameters))
                     .Body(scripts)
-                    .Compile<Func<IDictionary<string, object>, FreeSqlQueryResults>>();
-                sqlQueryResults = funcDelegate.Invoke(parameters);
+                    .Compile<Func<IFreeSql, IDictionary<string, object>, FreeSqlQueryResults>>();
+
+                sqlQueryResults = funcDelegate.Invoke(_freeSql, parameters);
+                //Sample Codes
+                // var fquery = _freeSql.Select<ContentItemIndex>();
+                // var result = new FreeSqlQueryResults { TotalCount = fquery.Count(), Items = fquery.ToList() };
             }
             catch (Exception e)
             {

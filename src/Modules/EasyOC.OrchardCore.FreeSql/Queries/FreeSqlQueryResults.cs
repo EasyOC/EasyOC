@@ -6,5 +6,5 @@ namespace EasyOC.OrchardCore.FreeSql.Queries;
 public class FreeSqlQueryResults: IQueryResults
 {
     public IEnumerable<object> Items { get; set; }
-    public  int TotalCount { get; set; }
+    public  long TotalCount { get; set; }
 }

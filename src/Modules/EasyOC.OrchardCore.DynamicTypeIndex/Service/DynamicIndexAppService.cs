@@ -399,12 +399,13 @@ namespace {entityInfo.NameSpace}
             }
 
             var builder = await _cSharpScriptProvider.GetAssemblyCSharpBuilderAsync(withOutCache);
-            builder.Compiler.Domain = DomainManagement.Random;
+
             HashSet<string> usings = new HashSet<string>();
-            usings.Add("using EasyOC.Core.Indexes;");
-            usings.Add("using FreeSql.DataAnnotations;");
-            usings.Add("using EasyOC.OrchardCore.DynamicTypeIndex.Index;");
-            builder.Add(string.Join("\r\n", typeDefs), usings);
+            usings.Add("EasyOC.Core.Indexes");
+            usings.Add("FreeSql.DataAnnotations");
+            usings.Add("EasyOC.OrchardCore.DynamicTypeIndex.Index");
+            builder.Domain.UsingRecorder.Using(usings);
+            builder.Add(string.Join("\r\n", typeDefs));
             // var asm = builder.GetAssembly();
             // foreach (var key in typesDict.Keys)
             // {

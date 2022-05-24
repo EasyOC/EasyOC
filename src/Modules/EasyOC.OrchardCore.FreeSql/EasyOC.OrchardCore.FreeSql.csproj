@@ -31,4 +31,9 @@
     <Content Include="Views\_ViewImports.cshtml" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Compile Remove="Queries\TestCodes.cs" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <RootNamespace>EasyOC.OrchardCore.CSharp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +9,7 @@
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="DotNetCore.Natasha.CSharp.All" Version="4.0.0-alpha.1" />
+    <PackageReference Include="DotNetCore.Natasha.CSharp" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
