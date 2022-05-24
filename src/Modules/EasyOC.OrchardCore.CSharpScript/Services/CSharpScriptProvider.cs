@@ -32,12 +32,13 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             }
         }
 
-        public virtual Type GetType(string fullTypeName)
+        public virtual Type GetIndexType(string fullTypeName)
         {
             return _types.ContainsKey(fullTypeName) ? _types[fullTypeName] : null;
         }
 
-        public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,HashSet<string>? usings = default)
+        public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,
+            HashSet<string>? usings = default)
         {
             if (_types.ContainsKey(fullName))
             {
@@ -46,7 +47,9 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             else
             {
                 var builder = await GetAssemblyCSharpBuilderAsync();
-                builder.Add(cSharpScripts,usings);
+                builder.Domain = DomainManagement.CurrentDomain;
+                builder.Domain.UsingRecorder.Using(usings);
+                builder.Add(cSharpScripts);
                 var asm = builder.GetAssembly();
                 var type = asm.GetType(fullName);
                 _types.Add(fullName, type);
@@ -54,15 +57,24 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             }
         }
 
+        /// <summary>
+        /// 添加类型
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <param name="cSharpScripts"></param>
+        /// <param name="usings"> 只包含命名空间，不含 using  xxx.xxx.xxx ；
+        ///如： System.Text</param>
+        /// <returns></returns>
         public virtual async Task<Type> CreateTypeAsync(string fullName, string cSharpScripts,
             HashSet<string>? usings = default)
         {
             try
             {
-
-
                 var builder = await GetAssemblyCSharpBuilderAsync();
-                builder.Add(cSharpScripts, usings);
+                //只包含命名空间，不含 using  xxx.xxx.xxx ；
+                //如： System.Text
+                builder.Domain.UsingRecorder.Using(usings); // 全局引用
+                builder.Add(cSharpScripts);
                 var asm = builder.GetAssembly();
                 var type = asm.GetType(fullName);
 

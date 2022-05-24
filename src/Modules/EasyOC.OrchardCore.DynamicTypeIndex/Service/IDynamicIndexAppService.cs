@@ -16,5 +16,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
         Task<Type> SyncTableStructAsync(DynamicIndexEntityInfo entityInfo);
         DynamicIndexConfigModel ToConfigModel(ContentItem storedConfig);
         Task<DynamicIndexConfigModel> UpdateDynamicIndexAsync([FromBody] DynamicIndexConfigModel model);
+
+        Task<AssemblyCSharpBuilder> GetIndexAssemblyBuilder(bool withOutCache = false);
     }
 }
