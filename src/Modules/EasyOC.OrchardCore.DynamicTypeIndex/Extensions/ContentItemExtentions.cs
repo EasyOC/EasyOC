@@ -10,11 +10,15 @@ namespace EasyOC
     {
         public static Dictionary<string, object> ToDictModel(this ContentItem doc, DynamicIndexConfigModel config, bool useUnderline = true)
         {
-            var jdoc = doc.Content as JObject;
-            var dmodel = new Dictionary<string, object>();
-            dmodel.Add("Id", doc.Id);
-            dmodel.Add("DocumentId", doc.Id);
-            dmodel.Add("ContentItemId", doc.ContentItemId);
+            var docContent = doc.Content as JObject;
+            var dictModel = new Dictionary<string, object>();
+            dictModel.Add("Id", doc.Id);
+            dictModel.Add("DocumentId", doc.Id);
+            dictModel.Add("ContentItemVersionId", doc.ContentItemVersionId);
+            dictModel.Add("ContentItemId", doc.ContentItemId);
+            dictModel.Add("Published", doc.Published);
+            dictModel.Add("Latest", doc.Latest);
+            dictModel.Add("DisplayText", doc.DisplayText);
 
             foreach (var fConfig in config.Fields)
             {
@@ -24,14 +28,14 @@ namespace EasyOC
                     valueKey = valueKey.Replace("_", String.Empty);
                 }
                 JToken valueToken;
-                if (!fConfig.ContentFieldOption.ValueFullPath.IsNullOrWhiteSpace())
+                if (!fConfig.ContentFieldOption.ValuePath.IsNullOrWhiteSpace())
                 {
-                    valueToken = jdoc.SelectToken(fConfig.ContentFieldOption.ValueFullPath);
+                    valueToken = docContent.SelectToken(fConfig.ContentFieldOption.ValueFullPath);
                     if (valueToken != null)
                     {
                         try
                         {
-                            dmodel.Add(valueKey,
+                            dictModel.Add(valueKey,
                                 valueToken.GetOCFieldValue(fConfig.ContentFieldOption));
                         }
                         catch (Exception e)
@@ -43,7 +47,7 @@ namespace EasyOC
                 }
                 else
                 {
-                    valueToken = jdoc.SelectToken(fConfig.Name);
+                    valueToken = docContent.SelectToken(fConfig.Name);
                     if (valueToken != null)
                     {
                         object value = null;
@@ -70,11 +74,11 @@ namespace EasyOC
                             default:
                                 break;
                         }
-                        dmodel.Add(valueKey, value);
+                        dictModel.Add(valueKey, value);
                     }
                 }
             }
-            return dmodel;
+            return dictModel;
         }
 
 

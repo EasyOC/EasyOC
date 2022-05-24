@@ -9,18 +9,13 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
 {
     public class CSharpScriptProvider : ICSharpScriptProvider
     {
-        private static bool _initState = false;
         private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
         private AssemblyCSharpBuilder _builder;
 
         public virtual Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
             bool useGlobalSharedBuilder = true)
         {
-            // if (!_initState)
-            // {
-            //     _initState = true;
-            //     await NatashaInitializer.InitializeAndPreheating();
-            // }
+            NatashaInitializer.Preheating();
 
             if (useGlobalSharedBuilder)
             {
@@ -38,7 +33,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
         }
 
         public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,
-            HashSet<string>? usings = default)
+            IEnumerable<string> usings = default)
         {
             if (_types.ContainsKey(fullName))
             {
@@ -48,7 +43,8 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
             {
                 var builder = await GetAssemblyCSharpBuilderAsync();
                 builder.Domain = DomainManagement.CurrentDomain;
-                builder.Domain.UsingRecorder.Using(usings);
+                if (usings != null)
+                    builder.Domain.UsingRecorder.Using(usings);
                 builder.Add(cSharpScripts);
                 var asm = builder.GetAssembly();
                 var type = asm.GetType(fullName);
@@ -66,14 +62,17 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
         ///如： System.Text</param>
         /// <returns></returns>
         public virtual async Task<Type> CreateTypeAsync(string fullName, string cSharpScripts,
-            HashSet<string>? usings = default)
+            IEnumerable<string> usings = default)
         {
             try
             {
-                var builder = await GetAssemblyCSharpBuilderAsync();
+                var builder = await GetAssemblyCSharpBuilderAsync(false);
                 //只包含命名空间，不含 using  xxx.xxx.xxx ；
                 //如： System.Text
-                builder.Domain.UsingRecorder.Using(usings); // 全局引用
+                if (usings != null)
+                {
+                    builder.Domain.UsingRecorder.Using(usings);// 全局引用
+                }
                 builder.Add(cSharpScripts);
                 var asm = builder.GetAssembly();
                 var type = asm.GetType(fullName);

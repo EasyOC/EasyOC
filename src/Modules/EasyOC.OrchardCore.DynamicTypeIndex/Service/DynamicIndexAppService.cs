@@ -50,7 +50,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             _cSharpScriptProvider = cSharpScriptProvider;
             //_cachedTypeConfigurations = _memoryCache.GetOrCreate("CachedTypeConfigurations", entry => new ConcurrentDictionary<string, DynamicIndexCachePakage>());
             _cachedTypeConfigurations = memoryCache.GetOrCreate("CachedTypeConfigurations",
-                entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
+            entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
         }
 
         public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName)
@@ -76,21 +76,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             }
 
             var pkg = _cachedTypeConfigurations.GetOrAdd(typeName,
-                async (key) =>
+            async (key) =>
+            {
+                var contentItem = await YesSession
+                    .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
+                    .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
+                    .FirstOrDefaultAsync();
+                if (contentItem != null)
                 {
-                    var contentItem = await YesSession
-                        .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
-                        .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
-                        .FirstOrDefaultAsync();
-                    if (contentItem != null)
-                    {
-                        return ToConfigModel(contentItem);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                });
+                    return ToConfigModel(contentItem);
+                }
+                else
+                {
+                    return null;
+                }
+            });
             return pkg;
         }
 
@@ -114,7 +114,10 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
 
             var indexCols = config.Fields.Where(x => !x.Disabled && x.IsDefaultIndex)
                 .Select(x => x.Name).ToList();
-            var indexNames = new List<string>() { "ContentItemId", "DocumentId" };
+            var indexNames = new List<string>()
+            {
+                "ContentItemId", "DocumentId", "Published", "Latest"
+            };
             if (indexCols.Any())
             {
                 indexNames.AddRange(indexCols);
@@ -126,7 +129,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
                 var restAttr = new List<string>();
 
                 #region Field Attributes
-
                 if (item.IsPrimaryKey)
                 {
                     restAttr.Add("IsPrimary = true");
@@ -152,7 +154,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
                 {
                     restAttrText = "," + restAttr.JoinAsString(",");
                 }
-
                 #endregion
 
                 fields.Add($@"
@@ -162,10 +163,11 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             }
 
 
+            // ReSharper disable once StringLiteralTypo
             var template = $@"
-//using EasyOC.Core.Indexes;
-//using FreeSql.DataAnnotations;
-//using EasyOC.OrchardCore.DynamicTypeIndex.Index;
+using EasyOC.Core.Indexes;
+using FreeSql.DataAnnotations;
+using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 // 此代码由程序生成，复制到代码文件后请更新命名空间，
 // 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace {entityInfo.NameSpace}
@@ -174,6 +176,7 @@ namespace {entityInfo.NameSpace}
     [EOCTable(Name = ""{config.TableName}"")]
     public class {entityInfo.EntityName} : DIndexBase
     {{
+
 {fields.JoinAsString(string.Empty)}
     }}
 }}
@@ -187,15 +190,18 @@ namespace {entityInfo.NameSpace}
         [IgnoreWebApiMethod]
         public async Task<Type> SyncTableStructAsync(DynamicIndexEntityInfo entityInfo)
         {
-            HashSet<string> usings = new HashSet<string>();
-            usings.Add("using EasyOC.Core.Indexes;");
-            usings.Add("using FreeSql.DataAnnotations;");
-            usings.Add("using EasyOC.OrchardCore.DynamicTypeIndex.Index;");
+            IEnumerable<string> usings = new List<string>();
+            // {
+            //     "EasyOC.Core.Indexes",
+            //     "FreeSql.DataAnnotations",
+            //     "EasyOC.OrchardCore.DynamicTypeIndex.Index"
+            // };
 
             //Create dynamic classes from the script
             var type = await _cSharpScriptProvider
                 .CreateTypeAsync(entityInfo.FullName,
-                    entityInfo.EntityContent
+                entityInfo.EntityContent,
+                usings
                 );
 
             //Sync Table Structure
@@ -223,17 +229,33 @@ namespace {entityInfo.NameSpace}
 
             doc.Alter<DynamicIndexConfigSetting>(part =>
             {
-                part.TableName = new TextField { Text = model.TableName };
-                part.TypeName = new TextField { Text = model.TypeName };
-                part.ConfigData = new TextField { Text = JsonConvert.SerializeObject(model.Fields) };
-                part.EntityInfo = new TextField { Text = JsonConvert.SerializeObject(model.EntityInfo) };
+                part.TableName = new TextField
+                {
+                    Text = model.TableName
+                };
+                part.TypeName = new TextField
+                {
+                    Text = model.TypeName
+                };
+                part.ConfigData = new TextField
+                {
+                    Text = JsonConvert.SerializeObject(model.Fields)
+                };
+                part.EntityInfo = new TextField
+                {
+                    Text = JsonConvert.SerializeObject(model.EntityInfo)
+                };
             });
             var sucessed = await ContentManager.CreateOrUpdateAndPublishAsync(doc, isCreate,
-                new PublishOptions { HtmlLocalizer = H, Notifier = Notifier });
+            new PublishOptions
+            {
+                HtmlLocalizer = H, Notifier = Notifier
+            });
 
             if (sucessed)
             {
                 model.ContentItemId = doc.ContentItemId;
+                await YesSession.SaveChangesAsync();
                 await RebuildIndexData(model);
                 _cachedTypeConfigurations[model.TypeName] = Task.FromResult(model);
                 return model;
@@ -264,42 +286,44 @@ namespace {entityInfo.NameSpace}
                 .Where(x => x.Latest && x.Published && x.ContentType == model.TypeName)
                 .OrderBy(x => x.Id);
 
-            var take100 = await docs.Take(100).ListAsync();
             var indexTableName = model.TableName;
             int page = 1;
             var totalRows = 0;
 
-            //Fsql.Delete<object>()
-            //       .AsTable(indexTableName)
-            //       .Where("1=1")
-            //       .ExecuteAffrows();
-            var contentItems = take100 as ContentItem[] ?? take100.ToArray();
-            while (contentItems.Any())
+
+            var take100 = await docs.Take(100).ListAsync();
+
+
+
+
+            while (take100.Any())
             {
-                try
+                Fsql.Transaction(() =>
                 {
-                    var freeModels = contentItems.ToDictModel(model);
+                    var pendingIds = take100.Select(x => x.ContentItemId);
+                    Fsql.Delete<DIndexBase>()
+                        .AsTable(indexTableName)
+                        .Where(x => pendingIds.Contains(x.ContentItemId))
+                        .ExecuteAffrows();
+                    var freeModels = take100.ToDictModel(model);
                     // Specifies the collection of data dictionary objects to insert
                     var freeItems = Fsql.InsertOrUpdateDict(freeModels)
-                        .WithTransaction(YesSession.CurrentTransaction)
-                        .AsTable(indexTableName) //Specify the name of the table to be inserted
+                        .AsTable(indexTableName)//Specify the name of the table to be inserted
                         .WherePrimary("Id");
-                    totalRows += await freeItems.ExecuteAffrowsAsync(); //Batch Inserting databases
+                    totalRows += freeItems.ExecuteAffrows();//Batch Inserting databases
                     page++;
-                    take100 = await docs.Skip(page * 100).Take(100).ListAsync();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                    take100 = docs.Skip(page * 100).Take(100).ListAsync().GetAwaiter().GetResult();
+                });
             }
 
 
             return totalRows;
         }
 
-        private string[] ExceptFields = new[] { "GeoPointField", "MediaField" };
+        private string[] ExceptFields = new[]
+        {
+            "GeoPointField", "MediaField"
+        };
 
         [IgnoreWebApiMethod]
         public DynamicIndexConfigModel GetDefaultConfig(string typeName)

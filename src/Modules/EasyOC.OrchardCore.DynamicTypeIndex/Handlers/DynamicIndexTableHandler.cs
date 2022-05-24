@@ -50,22 +50,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                 var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(typeName);
                 if (config != null)
                 {
-                    var contentList = contentItems.Where(x => x.ContentItem.ContentType == typeName)
+                    var contentQuery = contentItems.Where(x => x.ContentItem.ContentType == typeName)
                         .Select(x => x.ContentItem);
-                    var penddingUpdateList = contentList.Take(DefaultPageSize);
+                    var penddingUpdateList = contentQuery.Take(DefaultPageSize);
 
                     var pageIndex = 0;
                     totalUpdated[typeName] = 0;
 
-                    while (penddingUpdateList.Count() > 0)
+                    while (penddingUpdateList.Any())
                     {
                         var dictList = penddingUpdateList.ToDictModel(config);
                         totalUpdated[typeName] += await _fsql.InsertOrUpdateDict(dictList)
-                                                            .WithTransaction(_session.CurrentTransaction)
-                                                            .WherePrimary("Id")
-                                                            .ExecuteAffrowsAsync();
+                            .WherePrimary("Id")
+                            .ExecuteAffrowsAsync();
                         pageIndex++;
-                        penddingUpdateList = contentList.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
+                        penddingUpdateList = contentQuery.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
                     }
                     await notifier.SuccessAsync(H["{0} 更新成功，更新数量：{1}.", typeName, totalUpdated[typeName]]);
                 }
@@ -90,16 +89,15 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                 try
                 {
                     var dictModel = context.ContentItem.ToDictModel(config);
-
                     await _fsql.InsertOrUpdateDict(dictModel)
-                                          .WithTransaction(_session.CurrentTransaction)
-                                          .AsTable(config.TableName)
-                                          .WherePrimary("Id")
-                                          .ExecuteAffrowsAsync();
+                        .AsTable(config.TableName)
+                        .WherePrimary("Id")
+                        .ExecuteAffrowsAsync();
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError("索引更新失败,{0}" + e.InnerException);
+                    _logger.LogError("索引更新失败,{0}" + e.Message);
+                    throw;
                 }
 
 

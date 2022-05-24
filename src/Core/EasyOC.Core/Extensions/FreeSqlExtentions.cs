@@ -145,7 +145,7 @@ namespace System
 
             if (connectionString.IsNullOrEmpty())
             {
-                fsqlBuilder = fsqlBuilder.UseConnectionFactory(dataType, () =>
+                fsqlBuilder = fsqlBuilder.UseConnectionFactory( dataType, () =>
                   {
                       var yessSession = ShellScope.Services.GetRequiredService<ISession>();
                       var conn = yessSession.CreateConnectionAsync().GetAwaiter().GetResult();
@@ -157,12 +157,9 @@ namespace System
                 fsqlBuilder = fsqlBuilder.UseConnectionString(dataType, connectionString);
             }
 
-            var fsql = fsqlBuilder.UseMonitorCommand(executing =>
+            var fsql = fsqlBuilder.UseMonitorCommand(cmd =>
                       {
-                          executing.CommandTimeout = 6000;
-
-                      }, executed: (cmd, traceLog) =>
-                      {
+                          cmd.CommandTimeout = 6000;
                           var logStr = new StringBuilder();
                           if (cmd.Parameters.Count > 0)
                           {
@@ -174,6 +171,16 @@ namespace System
                               }
                               logStr.AppendLine(string.Join(",\r\n", tempArray));
                           }
+                          var result = logStr.ToString();
+                          Console.WriteLine(result);
+                          if (logger != null)
+                          {
+                              logger.LogDebug(result);
+                          }
+
+                      }, executed: (cmd, traceLog) =>
+                      {
+                          var logStr = new StringBuilder();
 
                           logStr.AppendLine($"\n{traceLog}\r\n");
 

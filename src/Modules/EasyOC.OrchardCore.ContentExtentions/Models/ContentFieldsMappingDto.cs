@@ -29,12 +29,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.Models
         public string FieldNameCamelCase => FieldName.ToCamelCase();
         public string DisplayName { get; set; }
         public string PartDisplayName { get; set; }
-
-        public string GraphqlValuePath
-        {
-            get;
-            set;
-        }
+        // public GraphqlFieldOptions GraphqlFieldOptions { get; set; }
+        public string GraphqlValuePath  { get; set; }
 
         public string PartName { get; set; }
         public JObject FieldSettings { get; set; }
@@ -44,4 +40,11 @@ namespace EasyOC.OrchardCore.ContentExtentions.Models
         public string LastValueKey { get; set; }
         public bool IsBasic { get; set; }
     }
+
+    // public class GraphqlFieldOptions
+    // {
+    //     public string ValuePath { get; set; }
+    //     public string ArrayValuePath { get; set; }
+    //     public string DisplayValuePath { get; set; }
+    // }
 }
