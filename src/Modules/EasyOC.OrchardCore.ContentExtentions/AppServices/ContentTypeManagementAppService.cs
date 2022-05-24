@@ -57,8 +57,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                     return listItem;
                 })
                 .WhereIf(input.Stereotype.HasValue && !onlyStereoTypeNone,
-                    x => input.Stereotype.Value.ToDescriptionOrString()
-                        .Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase))
+                x => input.Stereotype.Value.ToDescriptionOrString()
+                    .Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase))
                 .WhereIf(onlyStereoTypeNone, x => x.Stereotype.IsNullOrWhiteSpace())
                 .ToList();
 
@@ -217,22 +217,30 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                         fieldModel.KeyPath = fieldModel.KeyPath.TrimEnd('.');
                     }
 
-                    string path;
+                    string fieldName;
 
                     if (fieldModel.IsSelf)
                     {
-                        path = $"{fieldModel.FieldName.ToCamelCase()}";
+                        //model.filedName
+                        fieldName = $"{fieldModel.FieldName.ToCamelCase()}";
                     }
                     else
                     {
-                        path = $"{fieldModel.PartName.ToCamelCase()}.{fieldModel.FieldName.ToCamelCase()}";
+                        //model.partName.filedName
+                        fieldName = $"{fieldModel.PartName.ToCamelCase()}.{fieldModel.FieldName.ToCamelCase()}";
                     }
 
                     var gpValuePath = field.FieldDefinition.GetGraphqlValuePath();
 
                     if (gpValuePath is not null)
                     {
-                        fieldModel.GraphqlValuePath = $"{path}.{gpValuePath}";
+                        //model.filedName.contentItemIds.firstValue
+                        //model.partName.filedName.contentItemIds.firstValue
+                        fieldModel.GraphqlValuePath = $"{fieldName}.{gpValuePath}";
+                    }
+                    else
+                    {
+                        fieldModel.GraphqlValuePath = fieldName;
                     }
 
                     fields.Add(fieldModel);
