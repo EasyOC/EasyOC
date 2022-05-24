@@ -34,10 +34,10 @@ namespace EasyOC
             return valuePath;
         }
 
-        public static string GetGraphqlValuePath(string fieldName)
+        public static string GetGraphqlValuePath(string fieldTypeName)
         {
             string valuePath;
-            switch (fieldName)
+            switch (fieldTypeName)
             {
                 case "ContentPickerField":
                     valuePath = "contentItemIds.firstValue";

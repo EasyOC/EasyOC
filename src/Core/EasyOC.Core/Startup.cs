@@ -82,7 +82,7 @@ namespace EasyOC.Core
                                     { "openid", "OpenID" },
                                     { "profile", "Profile" },
                                     { "roles", "Roles" },
-                                    { "offline_access", "offline_access" },
+                                    { "offline_access", "offline access" },
                                     // { "api", "Api" },
                                 },
                             AuthorizationUrl = new Uri($"{baseUrl}connect/authorize", UriKind.RelativeOrAbsolute),
@@ -167,7 +167,7 @@ namespace EasyOC.Core
                     options.OAuth2RedirectUrl(_shellConfiguration["AuthServer:SwaggerOAuth2RedirectUrl"]);
                 }
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
-                options.OAuthScopes("openid", "profile", "roles", "api");
+                options.OAuthScopes("openid", "profile", "roles", "api","offline_access");
 
             });
         }
