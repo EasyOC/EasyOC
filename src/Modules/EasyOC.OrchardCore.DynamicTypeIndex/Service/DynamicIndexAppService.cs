@@ -35,7 +35,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
         private readonly IStore _store;
         private readonly IShellConfiguration _shellConfiguration;
 
-        private string GetDynamicIndexTableName(string typeName)
+        public string GetDynamicIndexTableName(string typeName)
         {
             var shellConfig = ShellScope.Current.ServiceProvider.GetRequiredService<IShellConfiguration>();
             var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();

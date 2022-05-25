@@ -4,7 +4,7 @@
 
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +13,7 @@
     <Compile Remove="Queries\LuceneQueryFieldTypeProvider.cs" />
     <Compile Remove="Queries\SqlQueryFieldTypeProvider.cs" />
     <Compile Remove="ServiceCollectionExtensions.cs" />
+    <Compile Remove="Queries\Types\ContentTypePickerGraphType.cs" />
   </ItemGroup>
 
  
@@ -34,6 +35,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
     <ProjectReference Include="..\EasyOC.GraphQL.Abstractions\EasyOC.GraphQL.Abstractions.csproj" />
+    <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" />
   </ItemGroup> 
 </Project>
 

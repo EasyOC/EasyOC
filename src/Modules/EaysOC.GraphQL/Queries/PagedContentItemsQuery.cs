@@ -1,17 +1,22 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.GraphQL.Types;
+using EasyOC.OrchardCore.DynamicTypeIndex.Service;
+using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.Model;
-using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OrchardCore.Apis.GraphQL;
+using OrchardCore.Apis.GraphQL.Resolvers;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.GraphQL.Queries.Types;
+using OrchardCore.ContentManagement.Metadata;
+using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.Indexing;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using YesSql;
 
@@ -24,10 +29,10 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
         private readonly IFreeSql _freesql;
 
         public PagedContentItemsQuery(IHttpContextAccessor httpContextAccessor,
-            IStringLocalizer<ContentItemByVersionQuery> localizer, IFreeSql freesql)
+            IStringLocalizer<ContentItemByVersionQuery> localizer, IFreeSql freesql
+        )
         {
             _httpContextAccessor = httpContextAccessor;
-
             S = localizer;
             _freesql = freesql;
         }
@@ -36,54 +41,151 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
 
         public Task BuildAsync(ISchema schema)
         {
-            var totalType = new ObjectGraphType<PagedContentItems>
+            try
             {
-                Name = "PagedContentItems"
-            };
-            var items = totalType.Field(typetype.Type, "items",
-            resolve: context =>
-            {
-                return context.Source?.Items ?? Array.Empty<object>();
-            });
-            items.ResolvedType = typetype.ResolvedType;
-            totalType.Field<IntGraphType>("total",
-            resolve: context =>
-            {
-                return context.Source?.Total ?? 0;
-            });
-            var field = new FieldType
-            {
-                Name = "items",
-                Description = S["Content items are instances of content types, just like objects are instances of classes."],
-                Type = typeof(ContentItemInterface),
-                Arguments = new QueryArguments(
-                new QueryArgument<StringGraphType>
+                var typeType = new PagedContentItemsType();
+                var field = new FieldType()
                 {
-                    Name = "DynamicFilter", Description = S["dynamicFilterInfo"]
-                }
-                ),
-                Resolver = new AsyncFieldResolver<PagedContentItems>(ResolveAsync)
-            };
-            field.schema.Query.AddField(field);
-
+                    Name = "ContentItems",
+                    Description = S["Content items are instances of content types, just like objects are instances of classes."],
+                    Resolver = new LockedAsyncFieldResolver<TotalQueryResults>(ResolveAsync),
+                    Type = typeType.GetType(),
+                    ResolvedType = typeType,
+                    Arguments = new QueryArguments(
+                    new QueryArgument<IntGraphType>
+                    {
+                        Name = "page", Description = "The page number", DefaultValue = 1
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "published", Description = "The published status filter", DefaultValue = true
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "latest", Description = "The latest version status filter", DefaultValue = true
+                    },
+                    new QueryArgument<IntGraphType>()
+                    {
+                        Name = "pageSize", Description = "The page size", DefaultValue = 10
+                    },
+                    new QueryArgument<StringGraphType>()
+                    {
+                        Name = "dynamicFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#api", DefaultValue = ""
+                    },
+                    new QueryArgument<DynamicOrderByInput>()
+                    {
+                        Name = "orderBy", Description = "The order by info."
+                    }, GetContentTypePickerArgument()
+                    )
+                };
+                schema.Query.AddField(field);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            // schema.RegisterType<PagedContentItemsType>();
             return Task.CompletedTask;
+
+            // schema.RegisterType<DynamicOrderByInput>();
         }
 
-        private async Task<PagedContentItems> ResolveAsync(ResolveFieldContext context)
+        private async Task<TotalQueryResults> ResolveAsync(ResolveFieldContext context)
         {
-            var dynamicFilterInfoStr = context.GetArgument<string>("dynamicFilterInfo");
-            var dynamicFilterInfo = JsonConvert.DeserializeObject<DynamicFilterInfo>(dynamicFilterInfoStr);
-            var contentManager = _httpContextAccessor?.HttpContext?.RequestServices.GetService<IContentManager>();
-            var prepareQuery = _freesql.Select<DocumentIndex>()
-                .WhereDynamicFilter(dynamicFilterInfo);
-            var totalCount = await prepareQuery.CountAsync();
-            var ids = await prepareQuery.ToListAsync(x => x.ContentItemId);
-            var contentItem = await contentManager?.GetAsync(ids);
-            var contentItemInterface = new PagedContentItems
+            var contentType = context.GetArgument<string>("contentType");
+            if (string.IsNullOrEmpty(contentType))
             {
-                Items = contentItem, TotalItems = totalCount
+                return null;
+            }
+
+
+            var published = context.GetArgument<bool?>("published") ?? true;
+            var latest = context.GetArgument<bool?>("latest") ?? true;
+            var prepareQuery = _freesql.Select<ContentItemIndex>()
+                .Where(x => x.ContentType == contentType)
+                .Where(x => x.Published == published)
+                .Where(x => x.Latest == latest);
+
+            var serviceProvider = _httpContextAccessor?.HttpContext?.RequestServices;
+            var dynamicIndexAppService = serviceProvider.GetRequiredService<IDynamicIndexAppService>();
+            var dIndexConfig = await dynamicIndexAppService.GetDynamicIndexConfigAsync(contentType);
+            if (dIndexConfig != null)
+            {
+                prepareQuery = prepareQuery.LeftJoin($"{dIndexConfig.TableName} b on a.Id=b.Id");
+            }
+            var dynamicFilterInfoStr = context.GetArgument<string>("dynamicFilter");
+            if (!string.IsNullOrEmpty(dynamicFilterInfoStr))
+            {
+                var dynamicFilterInfo = JsonConvert.DeserializeObject<DynamicFilterInfo>(dynamicFilterInfoStr);
+                if (dynamicFilterInfo != null)
+                {
+                    prepareQuery = prepareQuery.WhereDynamicFilter(dynamicFilterInfo);
+                }
+            }
+
+            //如果 排序不为空
+            if (context.HasPopulatedArgument("orderBy"))
+            {
+                var orderByArguments = JObject.FromObject(context.Arguments["orderBy"]);
+                if (orderByArguments != null)
+                {
+                    var orderByField = orderByArguments["field"].Value<string>();
+                    var orderByDirection = orderByArguments["direction"].Value<string>();
+                    if (orderByField != null && orderByDirection != null)
+                    {
+                        prepareQuery = prepareQuery.OrderByPropertyName(orderByField, orderByDirection != "1");
+                    }
+                }
+            }
+            var page = context.GetArgument<int?>("page") ?? 1;
+            var pageSize = context.GetArgument<int?>("pageSize") ?? 10;
+            var ids = await prepareQuery
+                .Count(out var totalCount)
+                .Page(page, pageSize)
+                .ToListAsync(x => x.ContentItemId);
+
+            if (!ids.Any())
+            {
+                return null;
+            }
+            var contentManager = serviceProvider.GetService<IContentManager>();
+
+            var contentItem = await contentManager?.GetAsync(ids, latest)!;
+            var queryResults = new TotalQueryResults
+            {
+                Items = contentItem, Total = Convert.ToInt32(totalCount)
             };
-            return contentItemInterface;
+            return queryResults;
+        }
+        private QueryArgument GetContentTypePickerArgument()
+        {
+            var definitionManager = _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IContentDefinitionManager>();
+            var pickerType = new EnumerationGraphType()
+            {
+                Name = "ContentTypePicker",
+
+            };
+            var contentTypes = definitionManager.LoadTypeDefinitions()
+                .Select(x =>
+                {
+                    var stereotype = x.Settings.ToObject<ContentTypeSettings>().Stereotype;
+                    return new
+                    {
+                        x.DisplayName, x.Name, Stereotype = stereotype
+                    };
+                }
+                )
+                .OrderBy(x => x.Stereotype);
+            foreach (var typeDef in contentTypes)
+            {
+                pickerType.AddValue(typeDef.Name, typeDef.DisplayName, typeDef.Name, deprecationReason: typeDef.Stereotype);
+            }
+            return new QueryArgument<NonNullGraphType<EnumerationGraphType>>()
+            {
+                Name = "contentType", Description = "picker content type", ResolvedType = new NonNullGraphType(pickerType)
+            };
+
         }
     }
 }

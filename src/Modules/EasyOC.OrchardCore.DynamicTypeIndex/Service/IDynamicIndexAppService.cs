@@ -8,6 +8,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
 {
     public interface IDynamicIndexAppService
     {
+        string GetDynamicIndexTableName(string typeName);
         DynamicIndexConfigModel GetDefaultConfig(string typeName);
         Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName);
         Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName);

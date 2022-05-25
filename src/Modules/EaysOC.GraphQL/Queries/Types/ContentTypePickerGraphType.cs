@@ -1,19 +1,37 @@
-﻿using GraphQL.Types;
+﻿using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
+using GraphQL.Types;
+using Microsoft.Extensions.DependencyInjection;
+using OrchardCore.ContentManagement.Metadata;
+using OrchardCore.ContentManagement.Metadata.Settings;
+using OrchardCore.Environment.Shell.Scope;
+using System.Linq;
 
 namespace EaysOC.GraphQL.Queries.Types
 {
-    public class ContentTypePickerInput:EnumerationGraphType
+    public class ContentTypePickerGraphType : NonNullGraphType<EnumerationGraphType>
     {
-        public PublicationStatusGraphType()
+        public ContentTypePickerGraphType()
         {
-            Name = "Status";
-            Description = "publication status";
-            AddValue("PUBLISHEDORLATEST", "published or latest version content item",
-            PublicationStatusEnum.PublishedOrLatest);
-            AddValue("PUBLISHED", "published content item version", PublicationStatusEnum.Published);
-            AddValue("DRAFT", "draft content item version", PublicationStatusEnum.Draft);
-            AddValue("LATEST", "the latest version, either published or draft", PublicationStatusEnum.Latest);
-            AddValue("ALL", "all historical versions", PublicationStatusEnum.All);
+            var pickerType= new EnumerationGraphType();
+            var contentTypes = contentDefinitionManager.LoadTypeDefinitions()
+                .Select(x =>
+                {
+                    var stereotype = x.Settings.ToObject<ContentTypeSettings>().Stereotype;
+                    return new
+                    {
+                        x.DisplayName, x.Name, Stereotype = stereotype
+                    };
+                }
+                )
+                .OrderBy(x => x.Stereotype);
+            foreach (var typeDef in contentTypes)
+            {
+                pickerType.AddValue(typeDef.Name, typeDef.DisplayName, typeDef.Name, deprecationReason: typeDef.Stereotype);
+            }
+
+            Name = "ContentType";
+            Description = "Picker a contentType";
+            ResolvedType = pickerType;
         }
     }
 }

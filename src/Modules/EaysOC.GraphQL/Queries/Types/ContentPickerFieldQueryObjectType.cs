@@ -25,10 +25,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL.Types
                     {
                         return x.Source?.ContentItemIds.FirstOrDefault();
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 });
 
             Field<ListGraphType<StringGraphType>, IEnumerable<string>>()
@@ -61,7 +58,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL.Types
                             var result = await contentItemLoader.LoadAsync(firstValue);
                             return result;
                         }
-                      
+
                     }
 
                     return null;
