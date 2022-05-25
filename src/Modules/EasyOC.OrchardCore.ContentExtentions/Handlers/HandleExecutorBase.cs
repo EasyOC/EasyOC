@@ -9,13 +9,13 @@ using YesSql;
 
 namespace EasyOC.OrchardCore.ContentExtentions.Handlers
 {
-    public class HandlerExctuterBase<TriggerClass> : IHandlerExctuter<TriggerClass> where TriggerClass : class
+    public class HandleExecutorBase<TCorrelationType> : IHandleExecutor<TCorrelationType> where TCorrelationType : class
     {
         private readonly INotifier _notifier;
         private readonly ILogger _logger;
         private readonly ISession _session;
         private readonly IHtmlLocalizer H;
-        public HandlerExctuterBase(INotifier notifier, ILogger<TriggerClass> logger, IHtmlLocalizer<TriggerClass> h, ISession session)
+        public HandleExecutorBase(INotifier notifier, ILogger<TCorrelationType> logger, IHtmlLocalizer<TCorrelationType> h, ISession session)
         {
             _notifier = notifier;
             _logger = logger;

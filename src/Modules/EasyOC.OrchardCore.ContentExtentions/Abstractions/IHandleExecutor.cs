@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.ContentExtentions.Handlers
 {
-    public interface IHandlerExctuter
+    public interface IHandleExecutor
     {
         IEnumerable<TResult> Invoke<TEvents, T1, TResult>(IEnumerable<TEvents> events, Func<TEvents, T1, TResult> dispatch, T1 arg1);
         void Invoke<TEvents, T1>(IEnumerable<TEvents> events, Action<TEvents, T1> dispatch, T1 arg1);
@@ -21,8 +21,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.Handlers
         Task<IEnumerable<TResult>> InvokeAsync<TEvents, TResult>(IEnumerable<TEvents> events, Func<TEvents, Task<TResult>> dispatch);
         Task InvokeAsync<TEvents>(IEnumerable<TEvents> events, Func<TEvents, Task> dispatch);
     };
-    public interface IHandlerExctuter<TriggerClass> : IHandlerExctuter
-        where TriggerClass : class
+    public interface IHandleExecutor<TCorrelationType> : IHandleExecutor
+        where TCorrelationType : class
     {
 
     }

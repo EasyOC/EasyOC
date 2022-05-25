@@ -24,7 +24,7 @@ namespace OrchardCore.ContentManagement
         private readonly ISession _session;
         private readonly ILogger _logger;
         private readonly IEnumerable<IBatchImportEventHandler> _batchImportEventHandlers;
-        private readonly IHandlerExctuter _handlerExctuter;
+        private readonly IHandleExecutor _handleExecutor;
         private readonly DefaultContentManager _defaultContentManager;
 
         public EOCDefaultContentManager(
@@ -36,7 +36,7 @@ namespace OrchardCore.ContentManagement
             ILogger<EOCDefaultContentManager> logger,
             ILogger<DefaultContentManager> defaultlogger,
             IClock clock, IEnumerable<IBatchImportEventHandler> batchImportEventHandlers,
-            IHandlerExctuter<EOCDefaultContentManager> handlerExctuter)
+            IHandleExecutor<EOCDefaultContentManager> handleExecutor)
 
         {
             _defaultContentManager = new DefaultContentManager(contentDefinitionManager,
@@ -45,7 +45,7 @@ namespace OrchardCore.ContentManagement
             _session = session;
             _logger = logger;
             _batchImportEventHandlers = batchImportEventHandlers;
-            _handlerExctuter = handlerExctuter;
+            _handleExecutor = handleExecutor;
         }
 
         public IEnumerable<IContentHandler> Handlers => _defaultContentManager.Handlers;
@@ -112,7 +112,7 @@ namespace OrchardCore.ContentManagement
                         // The version does not exist in the current database.
                         var context = new ImportContentContext(importingItem);
 
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers,
+                        await _handleExecutor.InvokeAsync(_defaultContentManager.Handlers,
                             (handler, context) => handler.ImportingAsync(context), context);
 
                         var evictionVersions = versionsThatMaybeEvicted.Where(x =>
@@ -133,7 +133,7 @@ namespace OrchardCore.ContentManagement
 
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers,
+                        await _handleExecutor.InvokeAsync(_defaultContentManager.ReversedHandlers,
                             (handler, context) => handler.ImportedAsync(context), context);
                     }
                     else
@@ -170,7 +170,7 @@ namespace OrchardCore.ContentManagement
                         // Handlers are only fired if the import is going ahead.
                         var context = new ImportContentContext(importingItem, originalVersion);
 
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.Handlers,
+                        await _handleExecutor.InvokeAsync(_defaultContentManager.Handlers,
                             (handler, context) => handler.ImportingAsync(context), context);
 
                         var evictionVersions = versionsThatMaybeEvicted.Where(x =>
@@ -192,7 +192,7 @@ namespace OrchardCore.ContentManagement
                         // Imported handlers will only be fired if the validation has been successful.
                         // Consumers should implement validated handlers to alter the success of that operation.
 
-                        await _handlerExctuter.InvokeAsync(_defaultContentManager.ReversedHandlers,
+                        await _handleExecutor.InvokeAsync(_defaultContentManager.ReversedHandlers,
                             (handler, context) => handler.ImportedAsync(context), context);
                     }
                 }
@@ -299,7 +299,7 @@ namespace OrchardCore.ContentManagement
             var context = new PublishContentContext(contentItem, previous);
 
             // invoke handlers to acquire state, or at least establish lazy loading callbacks
-            await _handlerExctuter.InvokeAsync(Handlers, (handler, context1) =>
+            await _handleExecutor.InvokeAsync(Handlers, (handler, context1) =>
                 handler.PublishingAsync(context1), context);
 
             if (context.Cancel)
@@ -316,7 +316,7 @@ namespace OrchardCore.ContentManagement
             contentItem.Published = true;
             _session.Save(contentItem, checkConcurrency: true);
 
-            await _handlerExctuter.InvokeAsync(ReversedHandlers,
+            await _handleExecutor.InvokeAsync(ReversedHandlers,
                 (handler, context1) => handler.PublishedAsync(context1), context);
         }
 

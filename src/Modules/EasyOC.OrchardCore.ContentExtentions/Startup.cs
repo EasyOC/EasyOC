@@ -21,11 +21,11 @@ namespace EasyOC.OrchardCore.ContentExtentions
             services.Replace(ServiceDescriptor.Scoped<IContentManager, EOCDefaultContentManager>());
             services.AddScoped<IBatchImportEventHandler, BatchImportEventHandlerBase>();
 
-            
+
             //修改类型定义事件处理声明
             //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
             services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
-            services.AddScoped(typeof(IHandlerExctuter<>), typeof(HandlerExctuterBase<>));
+            services.AddScoped(typeof(IHandleExecutor<>), typeof(HandleExecutorBase<>));
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
