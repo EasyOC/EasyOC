@@ -29,6 +29,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
         public const string DefaultTableNameTemplate = "{0}DIndex_{1}";
         public const string DefaultEntityNameTemplate = "{0}DIndex";
         public const string DefaultNamespace = "EasyOC.DynamicTypeIndex.IndexModels";
+        private readonly Dictionary<string, Type> _typesCache = new Dictionary<string, Type>();
 
         private readonly ICSharpScriptProvider _cSharpScriptProvider;
         private readonly ConcurrentDictionary<string, Task<DynamicIndexConfigModel>> _cachedTypeConfigurations;
@@ -68,13 +69,48 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             return config;
         }
 
-        public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName)
+        [IgnoreWebApiMethod]
+        public async Task<Type> GetDynamicIndexTypeAsync(string typeFullName, bool withCache = true)
+        {
+            var config = await GetDynamicIndexConfigAsync(typeFullName);
+            if (config == null)
+            {
+                return null;
+            }
+            if (withCache)
+            {
+                if (_typesCache.ContainsKey(typeFullName))
+                {
+                    return _typesCache[typeFullName];
+                }
+            }
+            var indexType = await GetDynamicIndexTypeAsync(config.EntityInfo);
+            _typesCache[typeFullName] = indexType;
+            return indexType;
+        }
+
+        [IgnoreWebApiMethod]
+        public async Task<Type> GetDynamicIndexTypeAsync(DynamicIndexEntityInfo entityInfo)
+        {
+            IEnumerable<string> usings = new List<string>()
+            {
+                "EasyOC.Core.Indexes", "FreeSql.DataAnnotations", "EasyOC.OrchardCore.DynamicTypeIndex.Index"
+            };
+
+            //Create dynamic classes from the script
+            var type = await _cSharpScriptProvider
+                .CreateTypeAsync(entityInfo.FullName,
+                entityInfo.EntityContent,
+                usings
+                );
+            return type;
+        }
+        public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = false)
         {
             if (typeName.IsNullOrWhiteSpace())
             {
                 return null;
             }
-
             var pkg = _cachedTypeConfigurations.GetOrAdd(typeName,
             async (key) =>
             {
@@ -86,11 +122,9 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
                 {
                     return ToConfigModel(contentItem);
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             });
+
             return pkg;
         }
 
@@ -158,7 +192,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
 
                 fields.Add($@"
         [Column(Name = ""{item.Name}""{restAttrText})]
-        public {convertTypeName(item.CsTypeName)} {item.Name.Replace("_", string.Empty)} {{ get; set; }}
+        public {ConvertTypeName(item.CsTypeName)} {item.Name.Replace("_", string.Empty)} {{ get; set; }}
                 ");
             }
 
@@ -190,20 +224,7 @@ namespace {entityInfo.NameSpace}
         [IgnoreWebApiMethod]
         public async Task<Type> SyncTableStructAsync(DynamicIndexEntityInfo entityInfo)
         {
-            IEnumerable<string> usings = new List<string>();
-            // {
-            //     "EasyOC.Core.Indexes",
-            //     "FreeSql.DataAnnotations",
-            //     "EasyOC.OrchardCore.DynamicTypeIndex.Index"
-            // };
-
-            //Create dynamic classes from the script
-            var type = await _cSharpScriptProvider
-                .CreateTypeAsync(entityInfo.FullName,
-                entityInfo.EntityContent,
-                usings
-                );
-
+            var type = await GetDynamicIndexTypeAsync(entityInfo);
             //Sync Table Structure
             Fsql.CodeFirst.SyncStructure(type);
             return type;
@@ -387,7 +408,7 @@ namespace {entityInfo.NameSpace}
             return config;
         }
 
-        private string convertTypeName(string csTypeName)
+        private string ConvertTypeName(string csTypeName)
         {
             switch (csTypeName)
             {

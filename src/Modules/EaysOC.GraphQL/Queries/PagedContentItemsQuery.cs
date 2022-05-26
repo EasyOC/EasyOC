@@ -1,6 +1,8 @@
-﻿using EasyOC.OrchardCore.ContentExtentions.GraphQL.Types;
+﻿using FreeSql.Internal.Model;
+using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
+using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
@@ -102,18 +104,26 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
 
             var published = context.GetArgument<bool?>("published") ?? true;
             var latest = context.GetArgument<bool?>("latest") ?? true;
-            var prepareQuery = _freesql.Select<ContentItemIndex>()
-                .Where(x => x.ContentType == contentType)
-                .Where(x => x.Published == published)
-                .Where(x => x.Latest == latest);
-
             var serviceProvider = _httpContextAccessor?.HttpContext?.RequestServices;
             var dynamicIndexAppService = serviceProvider.GetRequiredService<IDynamicIndexAppService>();
             var dIndexConfig = await dynamicIndexAppService.GetDynamicIndexConfigAsync(contentType);
-            if (dIndexConfig != null)
+            if (dIndexConfig == null)
             {
-                prepareQuery = prepareQuery.LeftJoin($"{dIndexConfig.TableName} b on a.Id=b.Id");
+                return null;
             }
+            var prepareQuery = _freesql.Select<ContentItemIndex, DIndexBase>()
+                .LeftJoin((a, b) => a.ContentItemId == b.ContentItemId)
+                .Where((a, b) =>
+                    a.ContentType == contentType &&
+                    a.Published == published &&
+                    a.Latest == latest
+                );
+
+            var indexType = await dynamicIndexAppService.GetDynamicIndexTypeAsync(dIndexConfig.EntityInfo);
+
+            var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
+            joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
+
             var dynamicFilterInfoStr = context.GetArgument<string>("dynamicFilter");
             if (!string.IsNullOrEmpty(dynamicFilterInfoStr))
             {
@@ -143,7 +153,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
             var ids = await prepareQuery
                 .Count(out var totalCount)
                 .Page(page, pageSize)
-                .ToListAsync(x => x.ContentItemId);
+                .ToListAsync((x, b) => x.ContentItemId);
 
             if (!ids.Any())
             {
@@ -187,5 +197,11 @@ namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
             };
 
         }
+        //
+        // private string ToDbColumnName(,string name)
+        // {
+        //     if(dIndexConfig.Fields.Any(x=>x.FillDbFiledOption()))
+        //     return name.ToLower();
+        // }
     }
 }
