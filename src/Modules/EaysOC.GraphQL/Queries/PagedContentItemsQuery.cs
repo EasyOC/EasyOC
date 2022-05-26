@@ -1,5 +1,4 @@
-﻿using EasyOC.OrchardCore.ContentExtentions.GraphQL;
-using EasyOC.OrchardCore.DynamicTypeIndex.Index;
+﻿using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
