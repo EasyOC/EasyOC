@@ -17,19 +17,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
         {
             NatashaInitializer.Preheating();
 
-            if (useGlobalSharedBuilder)
-            {
-                return Task.FromResult(_builder ??= new AssemblyCSharpBuilder());
-            }
-            else
-            {
-                return Task.FromResult(new AssemblyCSharpBuilder());
-            }
-        }
-
-        public virtual Type GetIndexType(string fullTypeName)
-        {
-            return _types.ContainsKey(fullTypeName) ? _types[fullTypeName] : null;
+            return Task.FromResult(new AssemblyCSharpBuilder());
         }
 
         public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,
@@ -75,6 +63,7 @@ namespace EasyOC.OrchardCore.CSharpScript.Services
                 }
                 builder.Add(cSharpScripts);
                 var asm = builder.GetAssembly();
+
                 var type = asm.GetType(fullName);
 
                 if (_types.ContainsKey(fullName))

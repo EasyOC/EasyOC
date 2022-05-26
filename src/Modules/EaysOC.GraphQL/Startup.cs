@@ -1,7 +1,5 @@
 ﻿using EasyOC;
 using EasyOC.GraphQL.Abstractions;
-using EasyOC.OrchardCore.ContentExtentions.GraphQL;
-using EasyOC.OrchardCore.ContentExtentions.GraphQL.Types;
 using EaysOC.GraphQL.Queries;
 using EaysOC.GraphQL.Queries.Types;
 using Microsoft.Extensions.DependencyInjection;

@@ -10,7 +10,9 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
     {
         string GetDynamicIndexTableName(string typeName);
         DynamicIndexConfigModel GetDefaultConfig(string typeName);
-        Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName);
+        Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = true);
+        Task<Type> GetDynamicIndexTypeAsync(DynamicIndexEntityInfo entityInfo);
+        Task<Type> GetDynamicIndexTypeAsync(string typeFullName, bool withCache = true);
         Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName);
         Task<int> RebuildIndexData(DynamicIndexConfigModel model);
         Task<int> RebuildIndexData(string typeName);

@@ -18,18 +18,14 @@ using YesSql;
 
 namespace System
 {
-    public static class FreeSqlExtentions
+    public static class FreeSqlExtensions
     {
         static IdleBus<IFreeSql> ib = new IdleBus<IFreeSql>(TimeSpan.FromMinutes(10));
         //static Dictionary<string, Func<IFreeSql>> dicPool = new Dictionary<string, Func<IFreeSql>>();
 
         public static IServiceCollection AddFreeSql(this IServiceCollection services)
         {
-
-            return services.AddSingleton(serviceProvider =>
-            {
-                return ShellScope.Current.ServiceProvider.GetFreeSql();
-            });
+            return services.AddSingleton(serviceProvider => serviceProvider.GetFreeSql());
         }
 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider)
@@ -40,19 +36,6 @@ namespace System
             var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
             return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
 
-            //if (targetDbType == DataType.Sqlite)
-            //{
-            //    //在Sqlite 中使用 Yessql 的 ConnectionFactory
-            //    return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
-            //    //var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
-            //    //var fsql = serviceProvider.GetFreeSql(targetDbType, sqliteConnectionString, dbOptions.TablePrefix);
-            //    //return fsql;
-            //}
-            //else
-            //{
-            //    var fsql = serviceProvider.GetFreeSql(targetDbType, dbOptions.ConnectionString, dbOptions.TablePrefix);
-            //    return fsql;
-            //}
         }
 
 
@@ -90,7 +73,7 @@ namespace System
 
             //按照需要添加其他数据库的引用
             ib.Register(ibKey,
-                () => serviceProvider.GetFreeSql(dataType, connectionString, tablePrefix));
+            () => serviceProvider.GetFreeSql(dataType, connectionString, tablePrefix));
             return ib.Get(ibKey);
         }
 
@@ -138,19 +121,19 @@ namespace System
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider, DataType dataType,
             string connectionString = null,
             string tablePrefix = default
-            )
+        )
         {
             var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
             var fsqlBuilder = new FreeSqlBuilder();
 
             if (connectionString.IsNullOrEmpty())
             {
-                fsqlBuilder = fsqlBuilder.UseConnectionFactory( dataType, () =>
-                  {
-                      var yessSession = ShellScope.Services.GetRequiredService<ISession>();
-                      var conn = yessSession.CreateConnectionAsync().GetAwaiter().GetResult();
-                      return conn;
-                  });
+                fsqlBuilder = fsqlBuilder.UseConnectionFactory(dataType, () =>
+                {
+                    var yessSession = ShellScope.Services.GetRequiredService<ISession>();
+                    var conn = yessSession.CreateConnectionAsync().GetAwaiter().GetResult();
+                    return conn;
+                });
             }
             else
             {
@@ -158,40 +141,38 @@ namespace System
             }
 
             var fsql = fsqlBuilder.UseMonitorCommand(cmd =>
-                      {
-                          cmd.CommandTimeout = 6000;
-                          var logStr = new StringBuilder();
-                          if (cmd.Parameters.Count > 0)
-                          {
-                              logStr.AppendLine($"--Parameters: \r\ndeclare ");
-                              var tempArray = new List<string>();
-                              foreach (DbParameter item in cmd.Parameters)
-                              {
-                                  tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
-                              }
-                              logStr.AppendLine(string.Join(",\r\n", tempArray));
-                          }
-                          var result = logStr.ToString();
-                          Console.WriteLine(result);
-                          if (logger != null)
-                          {
-                              logger.LogDebug(result);
-                          }
+                {
+                    cmd.CommandTimeout = 6000;
+                    var logStr = new StringBuilder();
+                    if (cmd.Parameters.Count > 0)
+                    {
+                        logStr.AppendLine($"--Parameters: \r\ndeclare ");
+                        var tempArray = new List<string>();
+                        foreach (DbParameter item in cmd.Parameters)
+                        {
+                            tempArray.Add($"\t{item.ParameterName} {item.SourceColumn}='{item.Value}'");
+                        }
+                        logStr.AppendLine(string.Join(",\r\n", tempArray));
+                    }
+                    var result = logStr.ToString();
+                    Console.WriteLine(result);
+                    if (logger != null)
+                    {
+                        logger.LogDebug(result);
+                    }
 
-                      }, executed: (cmd, traceLog) =>
-                      {
-                          var logStr = new StringBuilder();
-
-                          logStr.AppendLine($"\n{traceLog}\r\n");
-
-                          var result = logStr.ToString();
-                          Console.WriteLine(result);
-                          if (logger != null)
-                          {
-                              logger.LogDebug(result);
-                          }
-                      })
-                      .Build();
+                }, executed: (cmd, traceLog) =>
+                {
+                    var logStr = new StringBuilder();
+                    logStr.AppendLine($"\n{traceLog}\r\n");
+                    var result = logStr.ToString();
+                    Console.WriteLine(result);
+                    if (logger != null)
+                    {
+                        logger.LogDebug(result);
+                    }
+                })
+                .Build();
 
             fsql.Aop.ConfigEntity += (s, e) =>
             {
@@ -211,7 +192,7 @@ namespace System
                 }
                 if (!string.IsNullOrEmpty(tablePrefix))
                 {
-                    tableName = string.Format("{0}{1}", tablePrefix, tableName); //表名前缀
+                    tableName = string.Format("{0}{1}", tablePrefix, tableName);//表名前缀
                 }
                 e.ModifyResult.Name = tableName;
             };
@@ -221,6 +202,3 @@ namespace System
 
     }
 }
-
-
-
