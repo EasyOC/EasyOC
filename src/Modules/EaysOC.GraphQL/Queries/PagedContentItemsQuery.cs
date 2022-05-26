@@ -1,4 +1,4 @@
-﻿using FreeSql.Internal.Model;
+﻿using EasyOC.OrchardCore.ContentExtentions.GraphQL;
 using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
@@ -16,13 +16,11 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
-using OrchardCore.Indexing;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using YesSql;
 
-namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
+namespace EaysOC.GraphQL.Queries
 {
     public class PagedContentItemsQuery : ISchemaBuilder
     {

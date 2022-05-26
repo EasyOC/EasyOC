@@ -6,11 +6,9 @@ using Microsoft.Extensions.Localization;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
-using OrchardCore.ContentManagement.Records;
 using System.Threading.Tasks;
-using YesSql;
 
-namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
+namespace EaysOC.GraphQL.Queries
 {
     public class ContentItemByVersionQuery : ISchemaBuilder
     {

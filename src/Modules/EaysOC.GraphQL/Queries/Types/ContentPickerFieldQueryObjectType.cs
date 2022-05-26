@@ -1,5 +1,4 @@
-﻿using System;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
@@ -7,9 +6,8 @@ using OrchardCore.ContentManagement.GraphQL;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace EasyOC.OrchardCore.ContentExtentions.GraphQL.Types
+namespace EaysOC.GraphQL.Queries.Types
 {
     public class ContentPickerFieldQueryObjectType : ObjectGraphType<ContentPickerField>
     {
