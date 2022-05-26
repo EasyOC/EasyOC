@@ -95,7 +95,7 @@ namespace Newtonsoft.Json.Linq
                 case nameof(DateField):
                     return jToken.Value<DateTime?>();
                 case nameof(TimeField):
-                    return jToken.Value<string?>();
+                    return jToken.Value<TimeSpan?>();
 
 
             }

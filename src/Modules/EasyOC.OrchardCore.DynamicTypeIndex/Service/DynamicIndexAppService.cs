@@ -61,10 +61,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             {
                 config = GetDefaultConfig(typeName);
             }
-            else
-            {
-                FillEntityInfo(config);
-            }
+            FillEntityInfo(config);
 
             return config;
         }
