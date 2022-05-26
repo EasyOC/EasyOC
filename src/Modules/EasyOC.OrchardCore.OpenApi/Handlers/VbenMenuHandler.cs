@@ -1,72 +1,63 @@
-﻿using EasyOC.OrchardCore.OpenApi.Indexs;
-using EasyOC.OrchardCore.OpenApi.Model;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.Extensions.Localization;
-using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Handlers;
-using OrchardCore.DisplayManagement.Notify;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YesSql;
+﻿using EasyOC.Core.Indexes;
+using FreeSql.DataAnnotations;
+using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 
+// 此代码由程序生成，复制到代码文件后请更新命名空间，
+// 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace EasyOC.OrchardCore.OpenApi.Handlers
 {
-    public class VbenMenuHandler : ContentPartHandler<VbenMenu>
+    [EOCIndex("IDX_{tablename}_DocumentId","ContentItemId,DocumentId")]
+    [EOCTable(Name = "DIndex_VbenMenu")]
+    public class DIndexVbenMenu : DIndexBase
     {
-        private readonly IFreeSql _freeSql;
-        private readonly INotifier _notifier;
-        private readonly IHtmlLocalizer H;
-        public VbenMenuHandler(IFreeSql freeSql, INotifier notifier,
-            IHtmlLocalizer<VbenMenuHandler> h)
-        {
-            _freeSql = freeSql;
-            _notifier = notifier;
-            H = h;
-        }
 
-        public override async Task PublishingAsync(PublishContentContext context, VbenMenu instance)
-        {
-            var validateResult = await CheckRoutePath(instance);
-            if (validateResult.Any())
-            {
-                await _notifier.ErrorAsync(H["The RoutePath is duplicated with ：{0}", validateResult.JoinAsString(",")]);
-                context.Cancel = true;
-                return;
-            }
-            await base.PublishingAsync(context, instance);
-        }
+        [Column(Name = "MenuName",IsNullable = true,StringLength = -1)]
+        public string MenuName { get; set; }
 
-        public override async Task ValidatingAsync(ValidateContentContext context, VbenMenu instance)
-        {
-            var existsMenu = await CheckRoutePath(instance);
-            if (existsMenu.Any())
-            {
-                context.Fail($"The RoutePath is duplicated with ：{existsMenu.FirstOrDefault()}", "MenuName");
-                return;
-            }
-            await base.ValidatingAsync(context, instance);
-        }
-        private async Task<List<string>> CheckRoutePath(VbenMenu context)
-        {
-            var part = context.ContentItem.As<VbenMenu>();
-            if (part.ContentItem.Latest && part.RoutePath is not null)
-            {
-                var parentId = part.ParentMenu.ContentItemIds.FirstOrDefault();
-                var existsMenu = await _freeSql.Select<VbenMenuPartIndex>().Where(x => x.Published && x.Latest
-                                  //limit in same parent
-                                  && parentId == x.ParentMenu && part.RoutePath.Text.ToLower() == x.RoutePath
-                                  && part.ContentItem.ContentItemId != x.ContentItemId)
-                                    .ToListAsync(x => x.MenuName);
+        [Column(Name = "ParentMenu",IsNullable = true,StringLength = 26)]
+        public string ParentMenu { get; set; }
 
-                return existsMenu;
-            }
-            else
-            {
-                return default;
-            }
-        }
+        [Column(Name = "OrderNo",IsNullable = true)]
+        public decimal OrderNo { get; set; }
+
+        [Column(Name = "Icon",IsNullable = true,StringLength = -1)]
+        public string Icon { get; set; }
+
+        [Column(Name = "RoutePath",IsNullable = true,StringLength = -1)]
+        public string RoutePath { get; set; }
+
+        [Column(Name = "Component",IsNullable = true,StringLength = -1)]
+        public string Component { get; set; }
+
+        [Column(Name = "Permission",IsNullable = true,StringLength = -1)]
+        public string Permission { get; set; }
+
+        [Column(Name = "Status",IsNullable = true,StringLength = -1)]
+        public string Status { get; set; }
+
+        [Column(Name = "IsExt",IsNullable = true,StringLength = -1)]
+        public string IsExt { get; set; }
+
+        [Column(Name = "Show",IsNullable = true,StringLength = -1)]
+        public string Show { get; set; }
+
+        [Column(Name = "MenuType",IsNullable = true,StringLength = -1)]
+        public string MenuType { get; set; }
+
+        [Column(Name = "Meta",IsNullable = true,StringLength = -1)]
+        public string Meta { get; set; }
+
+        [Column(Name = "ComponentType",IsNullable = true)]
+        public decimal ComponentType { get; set; }
+
+        [Column(Name = "SchemaId",IsNullable = true,StringLength = -1)]
+        public string SchemaId { get; set; }
+
+        [Column(Name = "redirect",IsNullable = true,StringLength = -1)]
+        public string redirect { get; set; }
+
+        [Column(Name = "KeepAlive",IsNullable = true,StringLength = -1)]
+        public string KeepAlive { get; set; }
+
     }
 }

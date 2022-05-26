@@ -5,6 +5,7 @@ using OrchardCore.Modules;
 using OrchardCore.Navigation;
 using OrchardCore.Security.Permissions;
 using System;
+// ReSharper disable All
 
 namespace JZSoft.OrchardCore.Amis
 {

@@ -31,7 +31,7 @@ namespace EasyOC.Core.Application
         public IServiceProvider CurrentServiceProvider { get; }
         public AppServiceBase()
         {
-            CurrentServiceProvider = ShellScope.Current.ServiceProvider;
+            CurrentServiceProvider = ShellScope.Services;
             LazyServiceProvider = new EasyOCLazyServiceProvider(CurrentServiceProvider);
         }
 
@@ -43,7 +43,13 @@ namespace EasyOC.Core.Application
         protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
-        protected ClaimsPrincipal HttpUser => HttpContextAccessor.HttpContext.User;
+        protected ClaimsPrincipal HttpUser
+        {
+            get
+            {
+                return HttpContextAccessor.HttpContext?.User;
+            }
+        }
 
         protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetRequiredService<IAuthorizationService>();
 
@@ -75,7 +81,7 @@ namespace EasyOC.Core.Application
 
         protected IScriptingManager ScriptingManager => LazyServiceProvider.LazyGetRequiredService<IScriptingManager>();
 
-        protected JavaScriptScope JSScope =>
+        protected JavaScriptScope JsScope =>
             LazyServiceProvider.LazyGetService<JavaScriptScope>((provider) =>
             {
                 var engine = ScriptingManager.GetScriptingEngine("js");
@@ -83,7 +89,7 @@ namespace EasyOC.Core.Application
                 var jsScope = scope as JavaScriptScope;
                 return jsScope;
             });
-        protected Engine JSEngine => JSScope.Engine;
+        protected Engine JsEngine => JsScope.Engine;
 
 
         protected UserManager<IUser> UserManager => LazyServiceProvider.LazyGetRequiredService<UserManager<IUser>>();
@@ -93,8 +99,8 @@ namespace EasyOC.Core.Application
 
         protected IContentDefinitionManager ContentDefinitionManager => LazyServiceProvider.LazyGetRequiredService<IContentDefinitionManager>();
 
-        
-        
+
+
     }
 }
 

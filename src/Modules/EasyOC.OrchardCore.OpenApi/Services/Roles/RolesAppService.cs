@@ -180,7 +180,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
         }
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
         {
             var installedPermissions = new Dictionary<string, IEnumerable<Permission>>();
@@ -216,7 +216,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             return ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions);
         }
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions)
         {
             // Create a fake user to check the actual permissions. If the role is anonymous

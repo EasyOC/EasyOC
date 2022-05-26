@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <Import Project="..\EasyOC.Build\Commons.props" />
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
-    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
-  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFrameworks>$(CommonTargetFrameworks)</TargetFrameworks>
-    <TargetFramework>$(CommonTargetFrameworks)</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>612,618</WarningsNotAsErrors>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RazorRuntimeCompilation>false</RazorRuntimeCompilation>
   </PropertyGroup>
+  <!-- Watcher include and excludes -->
   <ItemGroup>
+    <Watch Include="**\*.cs" Exclude="Recipes\**;Assets\**;node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages" />
     <Folder Include="wwwroot\" />
     <Folder Include="Localization\" />
   </ItemGroup>
-  <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
-    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
-  </ItemGroup>
+
   <ItemGroup>
-    <!--<ProjectReference Include="..\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj" />-->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Condition="'$(RazorRuntimeCompilation)' == 'true'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Targets\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" />
     <ProjectReference Include="..\Targets\EasyOC.OrchardCore.Application.Targets\EasyOC.OrchardCore.Application.Targets.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
   <Import Project="..\EasyOC.Build\Commons.targets" />
 

@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <EmbeddedResource Remove="Views\Layout.liquid" />
+    <EmbeddedResource Update="Views\OrchardCore.ContentTypes\Admin\Create.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Remove="Views\OrchardCore.ContentTypes\**" />
   </ItemGroup>
 
    <ItemGroup> 
@@ -18,6 +22,19 @@
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-  </ItemGroup>
+    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+    
+  </ItemGroup> 
 
+  <ItemGroup>
+    <Content Include="Views\OrchardCore.Users\Account\_ViewImports.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Duplicate.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Edit.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\EditProperties.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Index.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\WorkflowType\RenderActivity.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\Workflow\Details.cshtml" />
+    <Content Include="Views\OrchardCore.Workflows\Workflow\Index.cshtml" />
+  </ItemGroup> 
+ 
 </Project>

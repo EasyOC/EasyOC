@@ -1,6 +1,6 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -41,12 +41,26 @@ namespace EasyOC.OrchardCore.OpenApi.Services.Session
             return ObjectMapper.Map<UserDetailsDto>(user);
         }
 
+
+        /// <summary>
+        /// 返回菜单和权限
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<string>> MenusAsync()
         {
-            var user = await CurrentUserAsync;
-            var userDetails = user as User;
+            var user = await UserManager.FindByNameAsync(HttpContextAccessor.HttpContext.User.Identity.Name) as User;
+
             var userPermissions = new List<string>();
-            var menuNames = userDetails.UserClaims.Where(x => x.ClaimType == "VbenMenu").Select(x => x.ClaimValue).ToList();
+            foreach (var role in user.RoleNames)
+            {
+                var rolePermissions = await _rolesAppService.GetRoleDetailsAsync(role);
+                userPermissions = userPermissions.Union(rolePermissions.Permissions).ToList();
+
+                 //rolePermissions.VbenMenuIds;
+            }
+
+
+            //var menuNames = user.UserClaims.Where(x => x.ClaimType == "VbenMenu").Select(x => x.ClaimValue).ToList();
             //var allMenus = YesSession.Query<ContentItem, ContentItemIndex>().Where(x => x.ContentType == "VbenMenu" && x.Published && x.Latest)
             //    .With<VbenMenuPartIndex>(x => menuNames.Contains(x.MenuName))
             //    .ListAsync();
@@ -61,7 +75,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services.Session
 
             //Fsql.Select<ContentItemIndex, VbenMenuPartIndex>().InnerJoin((c, v) =>.).ToList(x => x.t2);
 
-            return menuNames;
+            return userPermissions;
 
             //return allMenus.to;
         }

@@ -6,6 +6,8 @@
   <ItemGroup>
     <Compile Remove="Models\ContentDefSettings.cs" />
     <Compile Remove="Models\ContentTypeApiModel.cs" />
+    <Compile Remove="AppServices\Dtos\GetTypeDefinitionInput.cs" />
+    <Compile Remove="GraphQL\Types\EOCContentItemsFieldType.cs" />
   </ItemGroup> 
 
   <!--<ItemGroup>
@@ -24,6 +26,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Queries" Version="1.4.0-preview-16838" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers" />
   </ItemGroup>
 
 </Project>

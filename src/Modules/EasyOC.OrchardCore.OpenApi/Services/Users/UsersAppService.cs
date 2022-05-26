@@ -1,7 +1,7 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using FreeSql.Internal.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -148,7 +148,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             return new PagedResult<UserListItemDto>(count, result);
         }
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         private async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
         {
             var contentDefs = GetUserSettingsTypeDefinitions();
@@ -250,7 +250,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     }
                 }
             }
-            #endregion 
+            #endregion
         }
 
 
@@ -464,13 +464,13 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         }
 
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions()
             => _contentDefinitionManager
                 .ListTypeDefinitions()
                 .Where(x => x.GetSettings<ContentTypeSettings>().Stereotype == "CustomUserSettings");
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<ContentItem> GetUserSettingsAsync(User user, string settingsTypeName)
         {
             JToken property;

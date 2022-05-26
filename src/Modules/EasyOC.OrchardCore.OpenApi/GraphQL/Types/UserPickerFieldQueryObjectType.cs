@@ -22,6 +22,20 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL.Types
         public UserPickerFieldQueryObjectType()
         {
             Name = nameof(UserPickerField);
+            Field<StringGraphType>()
+                .Name("firstValue")
+                .Description("The first userId in the user picker field.")
+                .Resolve(x =>
+                {
+                    if (x.Source.UserIds != null)
+                    {
+                        return x.Source?.UserIds.FirstOrDefault();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                });
 
             Field<ListGraphType<StringGraphType>, IEnumerable<string>>()
                 .Name("userIds")
@@ -37,21 +51,38 @@ namespace EasyOC.OrchardCore.OpenApi.GraphQL.Types
                 .Description("the userName")
                 .PagingArguments()
                 .Resolve(x =>
-               {
-                   return x.Source.GetUserNames();
-               });
+                {
+                    return x.Source.GetUserNames();
+                });
+            Field<ContentItemInterface, ContentItem>()
+                .Name("firstUserProfiles")
+                .Description("The first UserProfiles in the user picker field.")
+                .ResolveAsync(async x =>
+                {
+                    if (x.Source.UserIds == null || !x.Source.UserIds.Any())
+                    {
+                        return null;
+                    }
 
+                    var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
+                    var profile = await contentItemLoader.LoadAsync(x.Source.UserIds.FirstOrDefault());
+                    return profile;
+                });
             Field<ListGraphType<ContentItemInterface>, ContentItem[]>()
-             .Name("UserProfiles")
-             .Description("the user profiles")
-             .PagingArguments()
-               .ResolveAsync(async x =>
-             {
-                 var userIds = x.Source.UserIds;
-                 var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
-                 var items = await contentItemLoader.LoadAsync(x.Page(x.Source.UserIds));
-                 return items.Where(item => item != null).ToArray();
-             });
+                .Name("UserProfiles")
+                .Description("the user profiles")
+                .PagingArguments()
+                .ResolveAsync(async x =>
+                {
+                    if (x.Source.UserIds == null || !x.Source.UserIds.Any())
+                    {
+                        return null;
+                    }
+                    var userIds = x.Source.UserIds;
+                    var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
+                    var items = await contentItemLoader.LoadAsync(x.Page(userIds));
+                    return items.Where(item => item != null).ToArray();
+                });
         }
     }
 }

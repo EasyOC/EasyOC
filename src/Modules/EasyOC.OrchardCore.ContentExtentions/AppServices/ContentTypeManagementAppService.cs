@@ -1,4 +1,5 @@
 ﻿using EasyOC.Core.Application;
+using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
 using EasyOC.OrchardCore.ContentExtentions.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,10 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Contents;
+using OrchardCore.Contents.Models;
 using OrchardCore.Lucene;
 using OrchardCore.Queries;
+using OrchardCore.Queries.Sql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +29,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         private readonly IQueryManager _queryManager;
 
 
-        public ContentTypeManagementAppService(IContentDefinitionManager contentDefinitionManager, IQueryManager queryManager)
+        public ContentTypeManagementAppService(IContentDefinitionManager contentDefinitionManager,
+            IQueryManager queryManager)
         {
             _contentDefinitionManager = contentDefinitionManager;
             _queryManager = queryManager;
@@ -42,8 +46,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             var onlyStereoTypeNone = input?.Stereotype == Stereotype.OnlyEmpty;
             var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
                 .WhereIf(!string.IsNullOrEmpty(input.Filter), x
-                 => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
-                    || x.DisplayName.Contains(input.Filter, StringComparison.OrdinalIgnoreCase))
+                    => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
+                       || x.DisplayName.Contains(input.Filter, StringComparison.OrdinalIgnoreCase))
                 .Select(x =>
                 {
                     var listItem = new ContentTypeListItemDto();
@@ -53,7 +57,8 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                     return listItem;
                 })
                 .WhereIf(input.Stereotype.HasValue && !onlyStereoTypeNone,
-                    x => input.Stereotype.Value.ToDescriptionOrString().Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase))
+                x => input.Stereotype.Value.ToDescriptionOrString()
+                    .Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase))
                 .WhereIf(onlyStereoTypeNone, x => x.Stereotype.IsNullOrWhiteSpace())
                 .ToList();
 
@@ -62,13 +67,13 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 
         public PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input)
         {
-
             return _contentDefinitionManager.ListPartDefinitions()
                 .Select(x => x.ToDto(false))
                 .WhereIf(input.Filter.IsNullOrWhiteSpace(), x
-                => x.DisplayName.Contains(input.Filter) || x.Description.Contains(input.Filter))
+                    => x.DisplayName.Contains(input.Filter) || x.Description.Contains(input.Filter))
                 .ToPagedResult(input);
         }
+
         public ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false)
         {
             var part = _contentDefinitionManager.LoadPartDefinition(name);
@@ -84,11 +89,45 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 
 
         [EOCAuthorization(OCPermissions.EditContentTypes)]
-        public async Task<IEnumerable<QueryDefDto>> ListLuceneQueriesAsync()
+        public async Task<IEnumerable<QueryDefDto>> ListAllQueriesAsync()
         {
-            var queries = (await _queryManager.ListQueriesAsync()).OfType<LuceneQuery>();
-            return ObjectMapper.Map<IEnumerable<QueryDefDto>>(queries);
+            var queries = await _queryManager.ListQueriesAsync();
+            var result = queries.Select(x =>
+            {
+                var queryDef = ObjectMapper.Map<QueryDefDto>(x);
+                var schema = JObject.Parse(x.Schema);
+                if (schema.ContainsKey("hasTotal") && schema["hasTotal"] != null)
+                {
+                    queryDef.HasTotal = schema["hasTotal"].Value<bool>();
+                }
+                return queryDef;
+            });
+            return result;
         }
+
+        public async Task<EditViewContentDefinitionDto> GetTypeDefinitionForEdit(string name)
+        {
+            var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
+            var typDto = new EditViewContentDefinitionDto
+            {
+                Settings = typeDefinition.GetSettings<ContentTypeSettings>(),
+                FullTextOption = typeDefinition.GetSettings<FullTextAspectSettings>(),
+                Name = typeDefinition.Name,
+                DisplayName = typeDefinition.DisplayName,
+                Fields = GetFields(typeDefinition)
+            };
+
+            return typDto;
+        }
+
+        [EOCAuthorization(OCPermissions.EditContentTypes)]
+        public async Task<object> CreateTypeDefinition(CreateTypeDefinitionInput input)
+        {
+            return null;
+
+            // var typeDefinition = _contentDefinitionManager.DeletePartDefinition(name);
+        }
+
         /// <summary>
         /// 获取指定类型的字段清单
         /// </summary>
@@ -97,78 +136,118 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         public List<ContentFieldsMappingDto> GetFields(string typeName)
         {
             var typeDef = _contentDefinitionManager.GetTypeDefinition(typeName);
+            return GetFields(typeDef);
+        }
+
+
+        [IgnoreWebApiMethod]
+        public List<ContentFieldsMappingDto> GetFields(ContentTypeDefinition typeDef)
+        {
             var fields = new List<ContentFieldsMappingDto>();
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["ID"].Value, FieldName = "ContentItemId", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["版本号"].Value, FieldName = "ContentItemVersionId", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["内容类型"].Value, FieldName = "ContentType", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["标题"].Value, FieldName = "DisplayText", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["最新版"].Value, FieldName = "Latest", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["已发布"].Value, FieldName = "Published", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["归属人"].Value, FieldName = "Owner", IsContentItemProperty = true });
-            fields.Add(new ContentFieldsMappingDto { DisplayName = S["作者"].Value, FieldName = "Author", IsContentItemProperty = true });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["ID"].Value, FieldName = "ContentItemId", IsSelf = true, IsBasic = true,
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["版本号"].Value, FieldName = "ContentItemVersionId", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["内容类型"].Value, FieldName = "ContentType", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["标题"].Value, FieldName = "DisplayText", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["最新版"].Value, FieldName = "Latest", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["已发布"].Value, FieldName = "Published", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["归属人"].Value, FieldName = "Owner", IsSelf = true, IsBasic = true
+            });
+            fields.Add(new ContentFieldsMappingDto
+            {
+                DisplayName = S["作者"].Value, FieldName = "Author", IsSelf = true, IsBasic = true
+            });
             foreach (var item in fields)
             {
                 item.LastValueKey = item.KeyPath = item.FieldName;
             }
+
             foreach (var part in typeDef.Parts)
             {
                 foreach (var field in part.PartDefinition.Fields)
                 {
-                    var lastKey = GetFiledValuePath(field.FieldDefinition.Name);
-                    fields.Add(new ContentFieldsMappingDto
+                    var lastKey = field.FieldDefinition.GetFiledValuePath();
+                    var fieldModel = new ContentFieldsMappingDto
                     {
                         DisplayName = S[field.DisplayName()].Value,
                         Description = field.Description(),
                         FieldName = field.Name,
                         PartName = part.Name,
+                        IsSelf = part.Name == typeDef.Name,
                         PartDisplayName = part.DisplayName(),
                         KeyPath = $"{part.Name}.{field.Name}.{lastKey}",
                         LastValueKey = lastKey,
                         FieldSettings = field.Settings,
-                        FieldType = field.FieldDefinition.Name
-                    });
+                        FieldType = field.FieldDefinition.Name,
+                        IsBasic = false
+                    };
+                    if (fieldModel.KeyPath.EndsWith('.'))
+                    {
+                        fieldModel.KeyPath = fieldModel.KeyPath.TrimEnd('.');
+                    }
+
+                    string fieldName;
+
+                    if (fieldModel.IsSelf)
+                    {
+                        //model.filedName
+                        fieldName = $"{fieldModel.FieldName.ToCamelCase()}";
+                    }
+                    else
+                    {
+                        //model.partName.filedName
+                        fieldName = $"{fieldModel.PartName.ToCamelCase()}.{fieldModel.FieldName.ToCamelCase()}";
+                    }
+
+                    var gpValuePath = field.FieldDefinition.GetGraphqlValuePath();
+
+                    if (gpValuePath is not null)
+                    {
+                        //model.filedName.contentItemIds.firstValue
+                        //model.partName.filedName.contentItemIds.firstValue
+                        fieldModel.GraphqlValuePath = $"{fieldName}.{gpValuePath}";
+                    }
+                    else
+                    {
+                        fieldModel.GraphqlValuePath = fieldName;
+                    }
+
+                    fields.Add(fieldModel);
                 }
-
             }
-
 
             return fields;
         }
-
-        public static string GetFiledValuePath(string fieldName)
-        {
-            string valuePath;
-            switch (fieldName)
-            {
-                case "TextField":
-                    valuePath = "Text";
-                    break;
-                case "BooleanField":
-                case "DateField":
-                case "TimeField":
-                case "DateTimefield":
-                case "NumericField":
-                    valuePath = "Value";
-                    break;
-                case "ContentPickerField":
-                    valuePath = "ContentItemIds";
-                    break;
-                case "UserPickerField":
-                    valuePath = "UserIds";
-                    break;
-                default:
-                    return null;
-            }
-            return valuePath;
-        }
-
-
-
     }
 }
-
-
-

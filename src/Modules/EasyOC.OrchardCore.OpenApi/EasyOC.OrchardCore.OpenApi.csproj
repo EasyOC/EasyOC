@@ -8,6 +8,8 @@
     <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="ViewModels\**" />
+    <Compile Remove="Migrations\VbenMenuMigrations.cs" />
+    <Compile Remove="Model\VbenMenu.cs" />
   </ItemGroup>
 
   <ItemGroup>

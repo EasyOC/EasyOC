@@ -6,6 +6,6 @@
     Website = "https://orchardcore.net",
     Version = "0.0.1",
     Description = "EasyOC.OrchardCore.DynamicTypeIndex",
-    Dependencies =new[] { "EasyOC.OrchardCore.ContentExtentions"},
+    Dependencies =new[] { "EasyOC.OrchardCore.ContentExtentions","EasyOC.OrchardCore.CSharpScript"},
     Category = "Content Management"
 )]

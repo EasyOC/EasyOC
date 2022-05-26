@@ -23,7 +23,8 @@ namespace EaysOC.GraphQL.Queries
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<EOCLuceneQueryFieldTypeProvider> _logger;
 
-        public EOCLuceneQueryFieldTypeProvider(IHttpContextAccessor httpContextAccessor, ILogger<EOCLuceneQueryFieldTypeProvider> logger)
+        public EOCLuceneQueryFieldTypeProvider(IHttpContextAccessor httpContextAccessor,
+            ILogger<EOCLuceneQueryFieldTypeProvider> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -53,38 +54,35 @@ namespace EaysOC.GraphQL.Queries
                     var querySchema = JObject.Parse(query.Schema);
                     if (!querySchema.ContainsKey("type"))
                     {
-                        _logger.LogError("The Query '{Name}' schema is invalid, the 'type' property was not found.", name);
+                        _logger.LogError("The Query '{Name}' schema is invalid, the 'type' property was not found.",
+                            name);
                         continue;
                     }
+
                     var type = querySchema["type"].ToString();
-                    FieldType fieldType;
-                    if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
+
+
+                    if (querySchema.ContainsKey("hasTotal") && querySchema["hasTotal"].ToString()
+                            .Equals("true", StringComparison.OrdinalIgnoreCase))
                     {
                         var fieldTypeName = querySchema["fieldTypeName"]?.ToString() ?? query.Name;
-                        if (query.ReturnContentItems && type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
+                        FieldType fieldType = schema.Query.GetField(fieldTypeName);
+                        if (fieldType == null)
+                        {
+                            continue;
+                        }
+
+                        if (query.ReturnContentItems &&
+                            type.StartsWith("ContentItem/", StringComparison.OrdinalIgnoreCase))
                         {
                             var contentType = type.Remove(0, 12);
-                            fieldType = BuildTotalContentTypeFieldType(schema, contentType, query, fieldTypeName);
+                            BuildTotalContentTypeFieldType(fieldType, schema, contentType, query, fieldTypeName);
                         }
                         else
                         {
-                            fieldType = BuildTotalSchemaBasedFieldType(query, querySchema, fieldTypeName);
-                        }
-
-                        if (fieldType != null)
-                        {
-                            if (schema.Query.HasField(fieldType.Name))
-                            {
-                                var existsField = schema.Query.GetField(fieldType.Name);
-                                existsField = fieldType;
-                            }
-                            else
-                            {
-                                schema.Query.AddField(fieldType);
-                            }
+                            BuildTotalSchemaBasedFieldType(fieldType, query, querySchema, fieldTypeName);
                         }
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -93,22 +91,18 @@ namespace EaysOC.GraphQL.Queries
             }
         }
 
-        private FieldType BuildTotalSchemaBasedFieldType(LuceneQuery query, JToken querySchema, string fieldTypeName)
+        private FieldType BuildTotalSchemaBasedFieldType(FieldType fieldType, LuceneQuery query, JToken querySchema,
+            string fieldTypeName)
         {
             var properties = querySchema["properties"];
             if (properties == null)
             {
                 return null;
             }
-            var totalType = new ObjectGraphType<TotalQueryResults>()
-            {
-                Name = fieldTypeName
-            };
 
-            var typetype = new ObjectGraphType<JObject>
-            {
-                Name = fieldTypeName
-            };
+            var totalType = new ObjectGraphType<TotalQueryResults>() { Name = fieldTypeName };
+
+            var typetype = new ObjectGraphType<JObject> { Name = fieldTypeName };
             var listType = new ListGraphType(typetype);
 
             totalType.Field(listType.GetType(), "items",
@@ -117,10 +111,10 @@ namespace EaysOC.GraphQL.Queries
                     return context.Source?.Items;
                 });
             var total = totalType.Field<IntGraphType>("total",
-                         resolve: context =>
-                         {
-                             return context.Source?.Total;
-                         });
+                resolve: context =>
+                {
+                    return context.Source?.Total;
+                });
 
 
             foreach (JProperty child in properties.Children())
@@ -158,94 +152,82 @@ namespace EaysOC.GraphQL.Queries
                 }
             }
 
-            var fieldType = new FieldType
+            fieldType.Arguments = new QueryArguments(
+                new QueryArgument<StringGraphType> { Name = "parameters" }
+            );
+            fieldType.Name = fieldTypeName;
+            fieldType.Description = "Represents the " + query.Source + " Query : " + query.Name;
+            fieldType.ResolvedType = totalType;
+            fieldType.Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
             {
-                Arguments = new QueryArguments(
-                    new QueryArgument<StringGraphType> { Name = "parameters" }
-                ),
+                var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                var iquery = await queryManager.GetQueryAsync(query.Name);
 
-                Name = fieldTypeName,
-                Description = "Represents the " + query.Source + " Query : " + query.Name,
-                ResolvedType = totalType,
-                Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
-                {
-                    var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
-                    var iquery = await queryManager.GetQueryAsync(query.Name);
+                var parameters = context.GetArgument<string>("parameters");
 
-                    var parameters = context.GetArgument<string>("parameters");
+                var queryParameters = parameters != null
+                    ? JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
+                    : new Dictionary<string, object>();
 
-                    var queryParameters = parameters != null ?
-                        JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
-                        : new Dictionary<string, object>();
-
-                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters) as LuceneQueryResults;
-                    return result;
-                }),
-                Type = totalType.GetType()
-            };
+                var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters) as LuceneQueryResults;
+                return result;
+            });
+            fieldType.Type = totalType.GetType();
 
             return fieldType;
         }
 
 
-        private FieldType BuildTotalContentTypeFieldType(ISchema schema, string contentType, LuceneQuery query, string fieldTypeName)
+        private FieldType BuildTotalContentTypeFieldType(FieldType fieldType, ISchema schema, string contentType,
+            LuceneQuery query, string fieldTypeName)
         {
-            var typetype = schema.Query.Fields.OfType<ContentItemsFieldType>().FirstOrDefault(x => x.Name == contentType);
+            var typetype = schema.Query.Fields.OfType<ContentItemsFieldType>()
+                .FirstOrDefault(x => x.Name == contentType);
             if (typetype == null)
             {
                 return null;
             }
 
-            var totalType = new ObjectGraphType<TotalQueryResults>
-            {
-                Name = fieldTypeName
-            };
+            var totalType = new ObjectGraphType<TotalQueryResults> { Name = fieldTypeName };
 
             var items = totalType.Field(typetype.Type, "items",
-                         resolve: context =>
-                         {
-                             return context.Source?.Items ?? Array.Empty<object>();
-                         });
+                resolve: context =>
+                {
+                    return context.Source?.Items ?? Array.Empty<object>();
+                });
             items.ResolvedType = typetype.ResolvedType;
             totalType.Field<IntGraphType>("total",
-                        resolve: context =>
-                        {
-                            return context.Source?.Total ?? 0;
-                        });
-
-            var fieldType = new FieldType
-            {
-                Arguments = new QueryArguments(
-                        new QueryArgument<StringGraphType> { Name = "parameters" }),
-
-                Name = fieldTypeName,
-                Description = "Represents the " + query.Source + " Query : " + query.Name,
-                ResolvedType = totalType,
-                Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
+                resolve: context =>
                 {
-                    var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
-                    var iquery = await queryManager.GetQueryAsync(query.Name);
+                    return context.Source?.Total ?? 0;
+                });
 
-                    var parameters = context.GetArgument<string>("parameters");
+            fieldType.Arguments = new QueryArguments(
+                new QueryArgument<StringGraphType> { Name = "parameters" });
 
-                    var queryParameters = parameters != null ?
-                        JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
-                        : new Dictionary<string, object>();
-                    var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters);
+            fieldType.Name = fieldTypeName;
+            fieldType.Description = "Represents the " + query.Source + " Query : " + query.Name;
+            fieldType.ResolvedType = totalType;
+            fieldType.Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
+            {
+                var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                var iquery = await queryManager.GetQueryAsync(query.Name);
 
-                    return new TotalQueryResults
-                    {
-                        Total = (result as LuceneQueryResults)?.Count,
-                        Items = result?.Items ?? Array.Empty<object>()
-                    };
-                }),
-                Type = totalType.GetType()
-            };
+                var parameters = context.GetArgument<string>("parameters");
+
+                var queryParameters = parameters != null
+                    ? JsonConvert.DeserializeObject<Dictionary<string, object>>(parameters)
+                    : new Dictionary<string, object>();
+                var result = await queryManager.ExecuteQueryAsync(iquery, queryParameters);
+
+                return new TotalQueryResults
+                {
+                    Total = (result as LuceneQueryResults)?.Count, Items = result?.Items ?? Array.Empty<object>()
+                };
+            });
+            fieldType.Type = totalType.GetType();
 
             return fieldType;
         }
-
-
     }
-
 }

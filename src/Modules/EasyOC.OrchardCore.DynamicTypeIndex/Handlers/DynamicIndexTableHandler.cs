@@ -2,11 +2,14 @@
 using OrchardCore.ContentManagement.Handlers;
 using System.Threading.Tasks;
 using EasyOC.OrchardCore.ContentExtentions.Handlers;
+using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using System.Collections.Generic;
 using System.Linq;
 using OrchardCore.DisplayManagement.Notify;
 using Microsoft.AspNetCore.Mvc.Localization;
 using OrchardCore.ContentManagement;
+using YesSql;
+using Microsoft.Extensions.Logging;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
 {
@@ -15,14 +18,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
         private readonly IDynamicIndexAppService _dynamicIndexAppService;
         private readonly IFreeSql _fsql;
         private readonly INotifier notifier;
+        private readonly ILogger _logger;
         private readonly IHtmlLocalizer H;
+        private readonly ISession _session;
         public virtual int DefaultPageSize { get; set; } = 100;
-        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql, INotifier notifier, IHtmlLocalizer<DynamicIndexTableHandler> localizer)
+        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql, INotifier notifier,
+            IHtmlLocalizer<DynamicIndexTableHandler> localizer, ISession session,
+            ILogger<DynamicIndexTableHandler> logger)
         {
+
             _dynamicIndexAppService = dynamicIndexAppService;
             _fsql = fsql;
             this.notifier = notifier;
             this.H = localizer;
+            _session = session;
+            _logger = logger;
         }
 
         public Task BeforeImportAsync(IEnumerable<ImportContentContext> contentItems)
@@ -40,21 +50,21 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                 var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(typeName);
                 if (config != null)
                 {
-                    var contentList = contentItems.Where(x => x.ContentItem.ContentType == typeName)
+                    var contentQuery = contentItems.Where(x => x.ContentItem.ContentType == typeName)
                         .Select(x => x.ContentItem);
-                    var penddingUpdateList = contentList.Take(DefaultPageSize);
+                    var penddingUpdateList = contentQuery.Take(DefaultPageSize);
 
                     var pageIndex = 0;
                     totalUpdated[typeName] = 0;
 
-                    while (penddingUpdateList.Count() > 0)
+                    while (penddingUpdateList.Any())
                     {
                         var dictList = penddingUpdateList.ToDictModel(config);
                         totalUpdated[typeName] += await _fsql.InsertOrUpdateDict(dictList)
-                                                            .WherePrimary("DocumentId")
-                                                            .ExecuteAffrowsAsync();
+                            .WherePrimary("Id")
+                            .ExecuteAffrowsAsync();
                         pageIndex++;
-                        penddingUpdateList = contentList.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
+                        penddingUpdateList = contentQuery.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
                     }
                     await notifier.SuccessAsync(H["{0} 更新成功，更新数量：{1}.", typeName, totalUpdated[typeName]]);
                 }
@@ -76,16 +86,20 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
             var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(context.ContentItem.ContentType);
             if (config != null)
             {
-                var dictModel = context.ContentItem.ToDictModel(config);
-                //await _fsql.Delete<object>().AsTable(config.TableName)
-                //               .Where(context.ContentItem.Id)
-                //               .ExecuteAffrowsAsync();
+                try
+                {
+                    var dictModel = context.ContentItem.ToDictModel(config);
+                    await _fsql.InsertOrUpdateDict(dictModel)
+                        .AsTable(config.TableName)
+                        .WherePrimary("Id")
+                        .ExecuteAffrowsAsync();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("索引更新失败,{0}" + e.Message);
+                    throw;
+                }
 
-                var count = await _fsql.InsertOrUpdateDict(dictModel)
-                                       .AsTable(config.TableName)
-                                       .WherePrimary("Id")
-                                       .ExecuteAffrowsAsync();
-                Console.WriteLine(count);
 
             }
         }

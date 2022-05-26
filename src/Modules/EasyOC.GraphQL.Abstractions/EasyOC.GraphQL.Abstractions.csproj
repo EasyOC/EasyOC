@@ -1,14 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-
-
-
   <ItemGroup >
     <PackageReference Include="OrchardCore.Apis.GraphQL.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement.Abstractions" Version="$(OrchardCoreVersion)" />

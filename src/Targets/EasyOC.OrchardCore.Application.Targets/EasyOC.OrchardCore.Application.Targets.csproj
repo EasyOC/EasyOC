@@ -1,19 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-
+<!--
+  当一个包没有被直接引用时，例如仅通过该捆绑包的引用，
+  如果此文件夹被标记为专用，则其生成文件夹中的文件不会在生成时进行评估。
+  这可以通过使用“PrivateAssets”属性来定义。
+  在这里，只使用项目引用，但打包包时，它们会成为包引用，
+  并具有相同的“私有资产”属性。
+-->
 	<ItemGroup>
-    <!--<ProjectReference Include="..\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj" />--> 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" /> 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" /> 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" /> 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" />
-    <ProjectReference Include="..\..\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj" />
-    <!--<ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" />-->
-    <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" />
-    <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" />
+    <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
+
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" PrivateAssets="none" />
+<!--    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" PrivateAssets="none" />-->
+    <ProjectReference Include="..\..\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj" PrivateAssets="none" />
+<!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
+    <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Themes\EasyOCSiteTheme\EasyOCSiteTheme.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" PrivateAssets="none" />
 
 	</ItemGroup>
 
