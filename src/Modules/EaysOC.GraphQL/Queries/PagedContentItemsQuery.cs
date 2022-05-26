@@ -4,7 +4,8 @@ using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
 using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
+using YesSql;
+using MSHttp=Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -23,11 +24,11 @@ namespace EaysOC.GraphQL.Queries
 {
     public class PagedContentItemsQuery : ISchemaBuilder
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly MSHttp.IHttpContextAccessor _httpContextAccessor;
         private readonly IStringLocalizer S;
         private readonly IFreeSql _freesql;
 
-        public PagedContentItemsQuery(IHttpContextAccessor httpContextAccessor,
+        public PagedContentItemsQuery(MSHttp.IHttpContextAccessor httpContextAccessor,
             IStringLocalizer<ContentItemByVersionQuery> localizer, IFreeSql freesql
         )
         {
@@ -40,51 +41,43 @@ namespace EaysOC.GraphQL.Queries
 
         public Task BuildAsync(ISchema schema)
         {
-            try
+            var typeType = new PagedContentItemsType();
+            var field = new FieldType()
             {
-                var typeType = new PagedContentItemsType();
-                var field = new FieldType()
+                Name = "ContentItems",
+                Description = S["Content items are instances of content types, just like objects are instances of classes."],
+                Resolver = new LockedAsyncFieldResolver<TotalQueryResults>(ResolveAsync),
+                Type = typeType.GetType(),
+                ResolvedType = typeType,
+                Arguments = new QueryArguments(
+                new QueryArgument<IntGraphType>
                 {
-                    Name = "ContentItems",
-                    Description = S["Content items are instances of content types, just like objects are instances of classes."],
-                    Resolver = new LockedAsyncFieldResolver<TotalQueryResults>(ResolveAsync),
-                    Type = typeType.GetType(),
-                    ResolvedType = typeType,
-                    Arguments = new QueryArguments(
-                    new QueryArgument<IntGraphType>
-                    {
-                        Name = "page", Description = "The page number", DefaultValue = 1
-                    },
-                    new QueryArgument<BooleanGraphType>
-                    {
-                        Name = "published", Description = "The published status filter", DefaultValue = true
-                    },
-                    new QueryArgument<BooleanGraphType>
-                    {
-                        Name = "latest", Description = "The latest version status filter", DefaultValue = true
-                    },
-                    new QueryArgument<IntGraphType>()
-                    {
-                        Name = "pageSize", Description = "The page size", DefaultValue = 10
-                    },
-                    new QueryArgument<StringGraphType>()
-                    {
-                        Name = "dynamicFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#api", DefaultValue = ""
-                    },
-                    new QueryArgument<DynamicOrderByInput>()
-                    {
-                        Name = "orderBy", Description = "The order by info."
-                    }, GetContentTypePickerArgument()
-                    )
-                };
-                schema.Query.AddField(field);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            // schema.RegisterType<PagedContentItemsType>();
+                    Name = "page", Description = "The page number", DefaultValue = 1
+                },
+                new QueryArgument<BooleanGraphType>
+                {
+                    Name = "published", Description = "The published status filter", DefaultValue = true
+                },
+                new QueryArgument<BooleanGraphType>
+                {
+                    Name = "latest", Description = "The latest version status filter", DefaultValue = true
+                },
+                new QueryArgument<IntGraphType>()
+                {
+                    Name = "pageSize", Description = "The page size", DefaultValue = 10
+                },
+                new QueryArgument<DynamicFilterInput>()
+                {
+                    Name = "dynamicFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#%E7%89%B9%E5%88%AB%E4%BB%8B%E7%BB%8D-wheredynamicfilter", DefaultValue = ""
+                },
+                new QueryArgument<DynamicOrderByInput>()
+                {
+                    Name = "orderBy", Description = "The order by info."
+                }, GetContentTypePickerArgument()
+                )
+            };
+            schema.Query.AddField(field);
+            schema.RegisterType<DynamicFilterInput>();
             return Task.CompletedTask;
 
             // schema.RegisterType<DynamicOrderByInput>();
@@ -101,7 +94,8 @@ namespace EaysOC.GraphQL.Queries
 
             var published = context.GetArgument<bool?>("published") ?? true;
             var latest = context.GetArgument<bool?>("latest") ?? true;
-            var serviceProvider = _httpContextAccessor?.HttpContext?.RequestServices;
+            var graphContext = (GraphQLContext)context.UserContext;
+            var serviceProvider = graphContext.ServiceProvider;
             var dynamicIndexAppService = serviceProvider.GetRequiredService<IDynamicIndexAppService>();
             var dIndexConfig = await dynamicIndexAppService.GetDynamicIndexConfigAsync(contentType);
             if (dIndexConfig == null)
@@ -121,14 +115,10 @@ namespace EaysOC.GraphQL.Queries
             var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
             joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
 
-            var dynamicFilterInfoStr = context.GetArgument<string>("dynamicFilter");
-            if (!string.IsNullOrEmpty(dynamicFilterInfoStr))
+            var filterInfo = context.GetArgument<DynamicFilterInfo>("dynamicFilter");
+            if (filterInfo is not null)
             {
-                var dynamicFilterInfo = JsonConvert.DeserializeObject<DynamicFilterInfo>(dynamicFilterInfoStr);
-                if (dynamicFilterInfo != null)
-                {
-                    prepareQuery = prepareQuery.WhereDynamicFilter(dynamicFilterInfo);
-                }
+                prepareQuery = prepareQuery.WhereDynamicFilter(filterInfo);
             }
 
             //如果 排序不为空
@@ -157,7 +147,8 @@ namespace EaysOC.GraphQL.Queries
                 return null;
             }
             var contentManager = serviceProvider.GetService<IContentManager>();
-
+            var session = graphContext.ServiceProvider.GetService<ISession>();
+            session.Query<ContentItem>();
             var contentItem = await contentManager?.GetAsync(ids, latest)!;
             var queryResults = new TotalQueryResults
             {
