@@ -40,19 +40,6 @@ namespace System
             var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
             return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
 
-            //if (targetDbType == DataType.Sqlite)
-            //{
-            //    //在Sqlite 中使用 Yessql 的 ConnectionFactory
-            //    return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
-            //    //var sqliteConnectionString = GetSqliteConnectionString(serviceProvider);
-            //    //var fsql = serviceProvider.GetFreeSql(targetDbType, sqliteConnectionString, dbOptions.TablePrefix);
-            //    //return fsql;
-            //}
-            //else
-            //{
-            //    var fsql = serviceProvider.GetFreeSql(targetDbType, dbOptions.ConnectionString, dbOptions.TablePrefix);
-            //    return fsql;
-            //}
         }
 
 
@@ -181,9 +168,7 @@ namespace System
                       }, executed: (cmd, traceLog) =>
                       {
                           var logStr = new StringBuilder();
-
                           logStr.AppendLine($"\n{traceLog}\r\n");
-
                           var result = logStr.ToString();
                           Console.WriteLine(result);
                           if (logger != null)
