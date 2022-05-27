@@ -189,7 +189,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
 
                 fields.Add($@"
         [Column(Name = ""{item.Name}""{restAttrText})]
-        public {ConvertTypeName(item.CsTypeName)} {item.Name.Replace("_", string.Empty)} {{ get; set; }}
+        public {ConvertTypeName(item.CsTypeName)} {item.GetCsFieldName()} {{ get; set; }}
                 ");
             }
 

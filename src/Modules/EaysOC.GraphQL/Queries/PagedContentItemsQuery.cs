@@ -1,4 +1,5 @@
-﻿using EasyOC.OrchardCore.DynamicTypeIndex.Index;
+﻿using EasyOC.OrchardCore.DynamicTypeIndex;
+using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
@@ -219,7 +220,7 @@ namespace EaysOC.GraphQL.Queries
                 {
                     if (!colConfig.ContentFieldOption.IsSelfField)
                     {
-                        return colConfig.Name;
+                        return colConfig.GetCsFieldName();
                     }
                 }
                 return name;

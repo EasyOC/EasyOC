@@ -15,7 +15,8 @@ namespace EaysOC.GraphQL.Queries.Types
         {
             Name = "DynamicFilterInput";
             Field<IdGraphType>("Value", resolve: context => context.Source.Value);
-            Field<StringGraphType>("Field", resolve: context => context.Source.Field);
+            Field<StringGraphType>("Field", description: "partName.fieldName ，参照Graphql 执行结果返回格式",
+            resolve: context => context.Source.Field);
             Field<ListGraphType<DynamicFilterInput>>("Filters", resolve: context => context.Source.Filters);
             Field<DynamicFilterOperatorGraphType>("Operator",
             resolve: context => context.Source?.Operator);
