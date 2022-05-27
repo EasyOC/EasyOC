@@ -1,4 +1,5 @@
 ﻿using EasyOC.OrchardCore.DynamicTypeIndex.Index;
+using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
@@ -42,11 +43,6 @@ namespace EaysOC.GraphQL.Queries
 
         public Task BuildAsync(ISchema schema)
         {
-
-            // var mediaField=    schema.Query.Fields.OfType<MediaFieldQueryObjectType>()
-            //     .FirstOrDefault();
-            // mediaField.Fields.fo
-
             var typeType = new PagedContentItemsType();
             var field = new FieldType()
             {
@@ -120,11 +116,14 @@ namespace EaysOC.GraphQL.Queries
 
             var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
             joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
-
-            var filterInfo = context.GetArgument<DynamicFilterInfo>("dynamicFilter");
-            if (filterInfo is not null)
+            if (context.HasPopulatedArgument("dynamicFilter"))
             {
-                prepareQuery = prepareQuery.WhereDynamicFilter(filterInfo);
+                var filterInfo = context.GetArgument<DynamicFilterInfo>("dynamicFilter");
+                if (filterInfo is not null)
+                {
+                    filterInfo = ReplaceFieldName(filterInfo, dIndexConfig);
+                    prepareQuery = prepareQuery.WhereDynamicFilter(filterInfo);
+                }
             }
 
             //如果 排序不为空
@@ -133,8 +132,10 @@ namespace EaysOC.GraphQL.Queries
                 var orderByArguments = JObject.FromObject(context.Arguments["orderBy"]);
                 if (orderByArguments != null)
                 {
+
                     var orderByField = orderByArguments["field"].Value<string>();
                     var orderByDirection = orderByArguments["direction"].Value<string>();
+                    orderByField = FieldNameToDbColumnName(orderByField, dIndexConfig);
                     if (orderByField != null && orderByDirection != null)
                     {
                         prepareQuery = prepareQuery.OrderByPropertyName(orderByField, orderByDirection != "1");
@@ -191,11 +192,68 @@ namespace EaysOC.GraphQL.Queries
             };
 
         }
-        //
-        // private string ToDbColumnName(,string name)
-        // {
-        //     if(dIndexConfig.Fields.Any(x=>x.FillDbFiledOption()))
-        //     return name.ToLower();
-        // }
+
+        private string FieldNameToDbColumnName(string name, DynamicIndexConfigModel dIndexConfig)
+        {
+            try
+            {
+                var colConfig = dIndexConfig.Fields
+                    .Where(x => x.ContentFieldOption != null)
+                    .FirstOrDefault(
+                    x =>
+                    {
+                        if (x.ContentFieldOption.FieldName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return true;
+                        }
+                        if (x.ContentFieldOption.FieldType == "ContentItemPickerField")
+                        {
+                            if (name.Equals($"{x.ContentFieldOption.FieldName}.firstValue", StringComparison.OrdinalIgnoreCase))
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+                if (colConfig is not null)
+                {
+                    if (!colConfig.ContentFieldOption.IsSelfField)
+                    {
+                        return colConfig.Name;
+                    }
+                }
+                return name;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        private DynamicFilterInfo ReplaceFieldName(DynamicFilterInfo filterInfo, DynamicIndexConfigModel dIndexConfig)
+        {
+            try
+            {
+                if (filterInfo.Field is not null)
+                {
+                    filterInfo.Field = FieldNameToDbColumnName(filterInfo.Field, dIndexConfig);
+                }
+                if (filterInfo.Filters != null && filterInfo.Filters.Any())
+                {
+                    foreach (var filterItem in filterInfo.Filters)
+                    {
+                        ReplaceFieldName(filterItem, dIndexConfig);
+                    }
+                }
+                return filterInfo;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return null;
+        }
     }
 }

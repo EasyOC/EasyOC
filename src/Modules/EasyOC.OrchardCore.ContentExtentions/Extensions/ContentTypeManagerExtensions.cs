@@ -40,10 +40,10 @@ namespace EasyOC
             switch (fieldTypeName)
             {
                 case "ContentPickerField":
-                    valuePath = "contentItemIds.firstValue";
+                    valuePath = "firstValue";
                     break;
                 case "UserPickerField":
-                    valuePath = "userIds.firstValue";
+                    valuePath = "firstValue";
                     break;
                 default:
                     return null;

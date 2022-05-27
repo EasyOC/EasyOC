@@ -82,6 +82,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 case nameof(TextField):
                 case nameof(LinkField):
                 case nameof(HtmlField):
+                case nameof(TimeField):
                     dbOption.CsTypeName = typeof(string).FullName;
                     dbOption.Length = -1;//Unlimited
                     break;
@@ -93,7 +94,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                     break;
                 case nameof(DateTimeField):
                 case nameof(DateField):
-                case nameof(TimeField):
                     dbOption.CsTypeName = typeof(DateTime).FullName;
                     break;
                 case nameof(ContentPickerField):
