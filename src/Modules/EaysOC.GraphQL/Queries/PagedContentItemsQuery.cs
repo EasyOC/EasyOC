@@ -16,6 +16,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
+using OrchardCore.Media.GraphQL;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,11 @@ namespace EaysOC.GraphQL.Queries
 
         public Task BuildAsync(ISchema schema)
         {
+
+            // var mediaField=    schema.Query.Fields.OfType<MediaFieldQueryObjectType>()
+            //     .FirstOrDefault();
+            // mediaField.Fields.fo
+
             var typeType = new PagedContentItemsType();
             var field = new FieldType()
             {

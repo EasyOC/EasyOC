@@ -5,11 +5,12 @@ using EaysOC.GraphQL.Queries.Types;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
-using OrchardCore.ContentManagement.GraphQL;
 using OrchardCore.ContentManagement.GraphQL.Mutations;
 using OrchardCore.ContentManagement.GraphQL.Mutations.Types;
 using OrchardCore.Modules;
 using OrchardCore.Apis;
+using OrchardCore.Media.Fields;
+
 namespace EaysOC.GraphQL
 {
     [Feature("EaysOC.GraphQL")]
@@ -31,6 +32,7 @@ namespace EaysOC.GraphQL
             services.AddSingleton<ISchemaBuilder, EOCContentTypeQuery>();
 
             services.ReplaceObjectGraphType<ContentPickerField, ContentPickerFieldQueryObjectType>();
+            services.ReplaceObjectGraphType<MediaField, MediaFieldQueryObjectType>();
 
 
             services.AddTransient<PagedContentItemsType>();
