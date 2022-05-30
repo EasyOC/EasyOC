@@ -15,7 +15,14 @@ namespace EaysOC.GraphQL.Queries.Types
             Field<ListGraphType<ContentItemInterface>, IEnumerable<ContentItem>>()
                 .Name("items")
                 .Description("the content items")
-                .Resolve(x => x.Source.Items.Select(i => i as ContentItem));
+                .Resolve(x =>
+                {
+                    if (x.Source?.Items == null || x.Source?.Items.Count() == 0)
+                    {
+                        return Enumerable.Empty<ContentItem>();
+                    }
+                    return x.Source?.Items.Select(i => i as ContentItem);
+                });
             Field<IntGraphType>("total", resolve: context => context.Source.Total);
             Description = "A paged collection of content items";
 

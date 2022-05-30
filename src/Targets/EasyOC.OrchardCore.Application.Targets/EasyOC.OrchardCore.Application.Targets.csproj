@@ -7,6 +7,7 @@
   并具有相同的“私有资产”属性。
 -->
 	<ItemGroup>
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
 

@@ -20,6 +20,7 @@ using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.Media.GraphQL;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -160,7 +161,7 @@ namespace EaysOC.GraphQL.Queries
             var contentItem = await contentManager?.GetAsync(ids, latest)!;
             var queryResults = new TotalQueryResults
             {
-                Items = contentItem, Total = Convert.ToInt32(totalCount)
+                Items = contentItem ?? new List<ContentItem>(), Total = Convert.ToInt32(totalCount)
             };
             return queryResults;
         }
