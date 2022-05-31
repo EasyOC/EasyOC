@@ -187,7 +187,7 @@ namespace System
                     var attr = e.EntityType.GetCustomAttributes().FirstOrDefault(x => x is EOCTableAttribute);
                     if (attr is EOCTableAttribute tableAttribute)
                     {
-                        tableName = string.Format("{0}{1}", tableAttribute.Collection, tableAttribute.Name);
+                        tableName = $"{tableAttribute.Collection}{tableAttribute.Name}";
                     }
                 }
                 if (!string.IsNullOrEmpty(tablePrefix))

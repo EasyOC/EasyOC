@@ -1,6 +1,7 @@
 ﻿using FreeSql.Internal.Model;
 using GraphQL.Types;
 using GraphQL.Utilities;
+using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,11 @@ namespace EaysOC.GraphQL.Queries.Types
         public DynamicFilterInput()
         {
             Name = "DynamicFilterInput";
-            Field<IdGraphType>("Value", resolve: context => context.Source.Value);
+            Description = "DynamicFilterInput";
+            Field<StringGraphType>("Value", resolve: context => context.Source?.Value
+            // ,
+            // description: "查询值,如果是数组或日期，请传入Json字符串"
+            );
             Field<StringGraphType>("Field", description: "partName.fieldName ，参照Graphql 执行结果返回格式",
             resolve: context => context.Source.Field);
             Field<ListGraphType<DynamicFilterInput>>("Filters", resolve: context => context.Source.Filters);

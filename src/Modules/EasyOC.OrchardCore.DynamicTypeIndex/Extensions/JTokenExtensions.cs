@@ -22,7 +22,7 @@ namespace Newtonsoft.Json.Linq
                     value = jToken.Value<object>();
                     break;
                 case JTokenType.Array:
-                    value = jToken.Value<Array>();
+                    value = jToken.ToList();
                     break;
                 case JTokenType.Constructor:
                     break;
@@ -74,7 +74,7 @@ namespace Newtonsoft.Json.Linq
             return value;
         }
 
-        public static object GetOCFieldValue(this JToken jToken,ContentFieldOption config)
+        public static object GetOCFieldValue(this JToken jToken, ContentFieldOption config)
         {
 
             switch (config.FieldType)

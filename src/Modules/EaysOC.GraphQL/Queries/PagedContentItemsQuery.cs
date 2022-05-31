@@ -5,6 +5,8 @@ using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
+using Google.Protobuf;
+using GraphQL;
 using GraphQL.Types;
 using YesSql;
 using MSHttp=Microsoft.AspNetCore.Http;
@@ -74,6 +76,10 @@ namespace EaysOC.GraphQL.Queries
                 {
                     Name = "dynamicFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#%E7%89%B9%E5%88%AB%E4%BB%8B%E7%BB%8D-wheredynamicfilter", DefaultValue = ""
                 },
+                new QueryArgument<StringGraphType>()
+                {
+                    Name = "dynamicJSONFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#%E7%89%B9%E5%88%AB%E4%BB%8B%E7%BB%8D-wheredynamicfilter", DefaultValue = ""
+                },
                 new QueryArgument<DynamicOrderByInput>()
                 {
                     Name = "orderBy", Description = "The order by info."
@@ -118,14 +124,22 @@ namespace EaysOC.GraphQL.Queries
 
             var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
             joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
-            if (context.HasPopulatedArgument("dynamicFilter"))
+            DynamicFilterInfo filterInfo = null;
+            if (context.HasPopulatedArgument("dynamicJSONFilter"))
             {
-                var filterInfo = context.GetArgument<DynamicFilterInfo>("dynamicFilter");
-                if (filterInfo is not null)
-                {
-                    filterInfo = ReplaceFieldName(filterInfo, dIndexConfig);
-                    prepareQuery = prepareQuery.WhereDynamicFilter(filterInfo);
-                }
+                var filterStr = context.GetArgument<string>("dynamicJSONFilter");
+                filterInfo = JsonConvert.DeserializeObject<DynamicFilterInfo>(filterStr);
+            }
+            else if (context.HasPopulatedArgument("dynamicFilter"))
+            {
+                filterInfo = context.GetArgument<DynamicFilterInfo>("dynamicFilter");
+
+            }
+
+            if (filterInfo is not null)
+            {
+                filterInfo = ReplaceFieldName(filterInfo, dIndexConfig);
+                prepareQuery = prepareQuery.WhereDynamicFilter(filterInfo);
             }
 
             //如果 排序不为空
@@ -150,7 +164,6 @@ namespace EaysOC.GraphQL.Queries
                 .Count(out var totalCount)
                 .Page(page, pageSize)
                 .ToListAsync((x, b) => x.ContentItemId);
-
             if (!ids.Any())
             {
                 return null;
@@ -241,6 +254,17 @@ namespace EaysOC.GraphQL.Queries
                 {
                     filterInfo.Field = FieldNameToDbColumnName(filterInfo.Field, dIndexConfig);
                 }
+                // if (filterInfo.Value is string)
+                // {
+                //     try
+                //     {
+                //         var strVal = filterInfo.Value.ToString() ?? string.Empty;
+                //         var jToken = JToken.Parse(strVal);
+                //         filterInfo.Value = jToken.GetValue();
+                //     }
+                //     catch {}
+                //
+                // }
                 if (filterInfo.Filters != null && filterInfo.Filters.Any())
                 {
                     foreach (var filterItem in filterInfo.Filters)
@@ -258,4 +282,5 @@ namespace EaysOC.GraphQL.Queries
             return null;
         }
     }
+
 }
