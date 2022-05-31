@@ -5,8 +5,6 @@ using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
-using Google.Protobuf;
-using GraphQL;
 using GraphQL.Types;
 using YesSql;
 using MSHttp=Microsoft.AspNetCore.Http;
@@ -20,7 +18,6 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
-using OrchardCore.Media.GraphQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -254,17 +251,20 @@ namespace EaysOC.GraphQL.Queries
                 {
                     filterInfo.Field = FieldNameToDbColumnName(filterInfo.Field, dIndexConfig);
                 }
-                // if (filterInfo.Value is string)
-                // {
-                //     try
-                //     {
-                //         var strVal = filterInfo.Value.ToString() ?? string.Empty;
-                //         var jToken = JToken.Parse(strVal);
-                //         filterInfo.Value = jToken.GetValue();
-                //     }
-                //     catch {}
-                //
-                // }
+                if (filterInfo.Value is string)
+                {
+                    var strVal = filterInfo.Value.ToString();
+                    strVal = (strVal ?? string.Empty).Trim();
+                    if (strVal.StartsWith("["))
+                    {
+                        filterInfo.Value = JsonConvert.DeserializeObject<List<string>>(strVal);
+                    }
+                    // else if (strVal.StartsWith("{"))
+                    // {
+                    //     filterInfo.Value = JsonConvert.DeserializeObject(strVal);
+                    // }
+
+                }
                 if (filterInfo.Filters != null && filterInfo.Filters.Any())
                 {
                     foreach (var filterItem in filterInfo.Filters)
