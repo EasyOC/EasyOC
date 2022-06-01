@@ -28,16 +28,13 @@ using YesSql;
 
 namespace EasyOC.OrchardCore.RDBMS.Services
 {
-    //[EOCAuthorization(OCPermissions.EditContentTypes)]
+    [EOCAuthorization(OCPermissions.EditContentTypes)]
     public class RDBMSAppService : AppServiceBase, IRDBMSAppService
     {
         private readonly IMapper mapper;
-        private readonly IContentManager _contentManager;
         private readonly IMemoryCache _memoryCache;
         private readonly IDeploymentManager _deploymentManager;
 
-        private readonly IAuthorizationService _authorizationService;
-        private readonly IContentDefinitionManager contentDefinitionManager;
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         public RDBMSAppService(
             IMapper mapper,
@@ -46,12 +43,9 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             IDeploymentManager deploymentManager)
         {
             this.mapper = mapper;
-            _contentManager = contentManager;
             _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
 
-            this.contentDefinitionManager = contentDefinitionManager;
             _memoryCache = memoryCache;
-            _authorizationService = authorizationService;
             _deploymentManager = deploymentManager;
         }
 
@@ -146,7 +140,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="connectionConfigId"></param>
         /// <param name="tableName"> 表名，如：dbo.table1 </param>
@@ -270,7 +264,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception> 
+        /// <exception cref="ArgumentException"></exception>
         public async Task ImportDeploymentPackageAsync(ImportJsonInupt model)
         {
             if (!model.Json.IsJson())

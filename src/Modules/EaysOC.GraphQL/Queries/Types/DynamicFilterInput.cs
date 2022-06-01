@@ -16,7 +16,7 @@ namespace EaysOC.GraphQL.Queries.Types
         {
             Name = "DynamicFilterInput";
             Description = "DynamicFilterInput";
-            Field<StringGraphType>("Value", resolve: context => context.Source?.Value
+            Field<IdGraphType>("Value", resolve: context => context.Source?.Value
             // ,
             // description: "查询值,如果是数组或日期，请传入Json字符串"
             );
@@ -28,21 +28,28 @@ namespace EaysOC.GraphQL.Queries.Types
             Field<DynamicFilterLogicGraphType>("Logic", resolve: context => context.Source?.Logic);
         }
     }
-    public class DynamicFilterOperatorGraphType : EnumerationGraphType<DynamicFilterOperator>
+    public class DynamicFilterOperatorGraphType : EnumerationGraphType
     {
-        // public DynamicFilterOperatorGraphType()
-        // {
-        //     Type enumType = typeof(DynamicFilterOperator);
-        //     this.Name = this.Name ?? StringUtils.ToPascalCase(enumType.Name);
-        //     foreach (string name in Enum.GetNames(enumType).Where(x => !"Equal,Equals".Contains(x)))
-        //         this.AddValue(this.ChangeEnumCase(((IEnumerable<MemberInfo>)
-        //             enumType.GetMember(name,
-        //             BindingFlags.DeclaredOnly
-        //             | BindingFlags.Static | BindingFlags.Public))
-        //         .First<MemberInfo>().Name),
-        //         (string)null, Enum.Parse(enumType, name));
-        //
-        // }
+        public DynamicFilterOperatorGraphType()
+        {
+            string[] ExceptedValues =
+            {
+                "Custom"
+            };
+
+            Type enumType = typeof(DynamicFilterOperator);
+            this.Name = this.Name ?? StringUtils.ToPascalCase(enumType.Name);
+            foreach (string name in Enum.GetNames(enumType).Where(x => !ExceptedValues.Contains(x)))
+            {
+                this.AddValue(StringUtils.ToConstantCase(((IEnumerable<MemberInfo>)
+                    enumType.GetMember(name,
+                    BindingFlags.DeclaredOnly
+                    | BindingFlags.Static | BindingFlags.Public))
+                .First<MemberInfo>().Name),
+                (string)null, Enum.Parse(enumType, name));
+            }
+
+        }
     }
     public class DynamicFilterLogicGraphType : EnumerationGraphType<DynamicFilterLogic>
     {
