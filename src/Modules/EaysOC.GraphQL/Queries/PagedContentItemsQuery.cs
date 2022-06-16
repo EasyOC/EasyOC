@@ -120,7 +120,10 @@ namespace EaysOC.GraphQL.Queries
             var indexType = await dynamicIndexAppService.GetDynamicIndexTypeAsync(dIndexConfig.EntityInfo);
 
             var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
-            joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
+            if (joinType != null)
+            {
+                joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
+            }
             DynamicFilterInfo filterInfo = null;
             if (context.HasPopulatedArgument("dynamicJSONFilter"))
             {

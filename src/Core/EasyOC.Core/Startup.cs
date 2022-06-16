@@ -51,7 +51,7 @@ namespace EasyOC.Core
                 options.CustomDefaultSchemaIdSelector();
                 var serviceProvider = ShellScope.Current.ServiceProvider;
 
-                var siteService = ShellScope.Current.ServiceProvider.GetRequiredService<ISiteService>();
+                var siteService = serviceProvider.GetRequiredService<ISiteService>();
 
                 var site = siteService.GetSiteSettingsAsync().GetAwaiter().GetResult();
                 var baseUrl = site.BaseUrl;
@@ -110,6 +110,7 @@ namespace EasyOC.Core
                 // TODO:一定要返回true！
                 options.DocInclusionPredicate((docName, description) => true);
 
+                //xml 配置文档
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var xmlDocFiles = Directory.GetFiles(baseDirectory, "*.xml");
                 foreach (var xmlFile in xmlDocFiles)

@@ -7,8 +7,10 @@
   并具有相同的“私有资产”属性。
 -->
 	<ItemGroup>
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AntdAdmin\EasyOC.OrchardCore.AntdAdmin.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
 
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" PrivateAssets="none" />
@@ -17,7 +19,7 @@
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" PrivateAssets="none" />
-<!--    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" PrivateAssets="none" />-->
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj" PrivateAssets="none" />
 <!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
     <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" PrivateAssets="none" />

@@ -14,7 +14,7 @@ using System;
 namespace EasyOC.OrchardCore.WorkflowPlus
 {
     [RequireFeatures(
-        "OrchardCore.Queries.Sql",
+        
         "OrchardCore.Workflows",
         "OrchardCore.Workflows.Http",
         "EasyOC.OrchardCore.WorkflowPlus")]

@@ -37,6 +37,6 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
   </ItemGroup>
   <PropertyGroup>
-    <TargetFrameworks>$(CommonTargetFrameworks)</TargetFrameworks>
+    <TargetFramework>$(CommonTargetFrameworks)</TargetFramework>
   </PropertyGroup>
 </Project>

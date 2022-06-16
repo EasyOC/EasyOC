@@ -9,7 +9,7 @@
         "OrchardCore.Workflows",
         "OrchardCore.Workflows.Http"},
     Description = "EasyOC.OrchardCore.WorkflowPlus",
-    Category = "Content Management"
+    Category = "Workflow"
 )]
 
 
