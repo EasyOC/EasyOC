@@ -12,6 +12,7 @@ using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Contents;
 using OrchardCore.Contents.Models;
 using OrchardCore.Lucene;
+using OrchardCore.Mvc.Utilities;
 using OrchardCore.Queries;
 using OrchardCore.Queries.Sql;
 using System;
@@ -104,7 +105,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
             });
             return result;
         }
-
+        [EOCAuthorization(OCPermissions.EditContentTypes)]
         public async Task<EditViewContentDefinitionDto> GetTypeDefinitionForEdit(string name)
         {
             var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
@@ -195,6 +196,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
 
             foreach (var part in typeDef.Parts)
             {
+
                 foreach (var field in part.PartDefinition.Fields)
                 {
                     var lastKey = field.FieldDefinition.GetFiledValuePath();
@@ -217,17 +219,18 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                         fieldModel.KeyPath = fieldModel.KeyPath.TrimEnd('.');
                     }
 
-                    string fieldName;
+                    string gpFieldName;
 
                     if (fieldModel.IsSelf)
                     {
                         //model.filedName
-                        fieldName = $"{fieldModel.FieldName.ToCamelCase()}";
+                        gpFieldName = $"{fieldModel.FieldName.ToCamelCase()}";
                     }
                     else
                     {
-                        //model.partName.filedName
-                        fieldName = $"{fieldModel.PartName.ToCamelCase()}.{fieldModel.FieldName.ToCamelCase()}";
+                        gpFieldName = fieldModel.PartName.ToCamelCase().TrimEnd("Part");
+                        gpFieldName = $"{gpFieldName}.{fieldModel.FieldName.ToCamelCase()}";
+                        gpFieldName = gpFieldName.Replace("Part.", "");
                     }
 
                     var gpValuePath = field.FieldDefinition.GetGraphqlValuePath();
@@ -236,12 +239,13 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                     {
                         //model.filedName.contentItemIds.firstValue
                         //model.partName.filedName.contentItemIds.firstValue
-                        fieldModel.GraphqlValuePath = $"{fieldName}.{gpValuePath}";
+                        fieldModel.GraphqlValuePath = $"{gpFieldName}.{gpValuePath}";
                     }
                     else
                     {
-                        fieldModel.GraphqlValuePath = fieldName;
+                        fieldModel.GraphqlValuePath = gpFieldName;
                     }
+
 
                     fields.Add(fieldModel);
                 }
