@@ -2,9 +2,9 @@
   <Import Project="Dependencies.AspNetCore.props" />
   <PropertyGroup>
     <!-- OrchardCore 的全局依赖版本-->
-    <OrchardCoreVersion>1.4.0-preview-16838</OrchardCoreVersion>
+    <OrchardCoreVersion>1.5.0-preview-16895</OrchardCoreVersion>
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-    <FreeSqlVersion>3.2.660-preview22020526</FreeSqlVersion>
+    <FreeSqlVersion>3.2.664</FreeSqlVersion>
 
     <!-- Special case - this property is used by a DotNetCliToolReference -->
     <DotNetXunitVersion>2.3.0</DotNetXunitVersion>

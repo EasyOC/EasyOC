@@ -77,9 +77,9 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 {
                     FieldName=nameof(TimeField),
                     Description = "Time field",
-                    FieldTypes = new[]{ typeof(TimeSpan?) },
+                    FieldTypes = new[]{ typeof(string) },
                     UnderlyingType = typeof(TimeField),
-                    FieldAccessor = field => (TimeSpan?)field.Content.Value
+                    FieldAccessor = field => field.Content.Values
                 }
             },
             {

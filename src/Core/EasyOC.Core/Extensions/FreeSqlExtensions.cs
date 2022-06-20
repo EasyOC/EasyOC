@@ -158,7 +158,7 @@ namespace System
                     Console.WriteLine(result);
                     if (logger != null)
                     {
-                        logger.LogDebug(result);
+                        logger.LogDebug("Executing Log :" + result);
                     }
 
                 }, executed: (cmd, traceLog) =>
@@ -169,7 +169,7 @@ namespace System
                     Console.WriteLine(result);
                     if (logger != null)
                     {
-                        logger.LogDebug(result);
+                        logger.LogDebug("Executed Log :" +result);
                     }
                 })
                 .Build();
