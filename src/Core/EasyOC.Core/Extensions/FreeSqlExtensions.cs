@@ -30,12 +30,10 @@ namespace System
 
         public static IFreeSql GetFreeSql(this IServiceProvider serviceProvider)
         {
-
             var shellConfig = serviceProvider.GetRequiredService<IShellConfiguration>();
             var dbOptions = shellConfig.Get<DatabaseShellsStorageOptions>();
             var targetDbType = ConvertToFreeSqlDataType(dbOptions.DatabaseProvider);
             return serviceProvider.GetFreeSql(targetDbType, tablePrefix: dbOptions.TablePrefix);
-
         }
 
 
@@ -44,14 +42,10 @@ namespace System
             return serviceProvider.GetFreeSql(Enum.Parse<DataType>(providerName), connectionString, tablePrefix);
         }
 
-
-
-
         public static IFreeSql GetFreeSqlFormPool(this IServiceProvider serviceProvider, string providerName, string connectionString, string tablePrefix = default)
         {
             return serviceProvider.GetFreeSqlFormPool(Enum.Parse<DataType>(providerName), connectionString, tablePrefix);
         }
-
         public static IFreeSql GetFreeSqlFormPool(this IServiceProvider serviceProvider, DataType dataType, string connectionString, string tablePrefix = default)
         {
             var logger = serviceProvider.GetService<ILogger<FreeSqlBuilder>>();
@@ -68,7 +62,10 @@ namespace System
             ib.Notice += (object sender, IdleBus<string, IFreeSql>.NoticeEventArgs e) =>
             {
                 Console.WriteLine(e.Log);
-                logger.LogDebug(e.Log);
+                if (logger != null)
+                {
+                    logger.LogDebug(e.Log);
+                }
             };
 
             //按照需要添加其他数据库的引用
@@ -76,8 +73,6 @@ namespace System
             () => serviceProvider.GetFreeSql(dataType, connectionString, tablePrefix));
             return ib.Get(ibKey);
         }
-
-
         public static string GetSqliteConnectionString(this IServiceProvider serviceProvider)
         {
             var shellOptions = serviceProvider.GetService<IOptions<ShellOptions>>();
@@ -87,9 +82,7 @@ namespace System
             var databaseFile = Path.Combine(databaseFolder, "yessql.db");
             return $"Data Source={databaseFile};Cache=Shared";
         }
-
         public static DataType ConvertToFreeSqlDataType(string providerName)
-
         {
             if (!string.IsNullOrEmpty(providerName))
             {
@@ -100,15 +93,14 @@ namespace System
                         return DataType.SqlServer;
                     case "Postgres":
                         return DataType.PostgreSQL;
-                    //以下与FreeSql 相同
-                    //case "Sqlite":
-                    //    return DataType.Sqlite;
-                    //case "MySql":
-                    //    return DataType.MySql;
+                    // 以下与FreeSql 相同
+                    case "Sqlite":
+                        return DataType.Sqlite;
+                    case "MySql":
+                        return DataType.MySql;
                     //其他
                     default:
-                        DataType dataType;
-                        if (Enum.TryParse(providerName.Replace(" ", string.Empty), out dataType))
+                        if (Enum.TryParse(providerName.Replace(" ", string.Empty), out DataType dataType))
                         {
                             return dataType;
                         }

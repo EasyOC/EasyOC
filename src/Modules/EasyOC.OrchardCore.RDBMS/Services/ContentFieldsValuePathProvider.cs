@@ -9,7 +9,8 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 {
     public class ContentFieldsValuePathProvider : IContentFieldsValuePathProvider
     {
-        public static Dictionary<string, FieldTypeValuePathDescriptor> ContentFieldValuePathMappings = new Dictionary<string, FieldTypeValuePathDescriptor>
+        private static readonly Dictionary<string, FieldTypeValuePathDescriptor> ContentFieldValuePathMappings =
+            new Dictionary<string, FieldTypeValuePathDescriptor>
         {
             {
                 nameof(BooleanField),

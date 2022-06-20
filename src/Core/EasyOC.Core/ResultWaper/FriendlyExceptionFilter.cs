@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OrchardCore.Environment.Shell.Scope;
+using System;
 using System.Threading.Tasks;
 using YesSql;
 
@@ -29,14 +30,19 @@ namespace EasyOC.Core.Filter
             var exception = context.Exception;
             _logger.LogError(exception, exception.Message);
 
-            //释放资源
-            await using (var session = ShellScope.Services.GetRequiredService<ISession>())
-            {
-                if (session != null)
-                {
-                    await session.CancelAsync();
-                }
-            }
+            // //释放资源
+            // try
+            // {
+            //     await using var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
+            //     if (session != null)
+            //     {
+            //         await session.CancelAsync();
+            //     }
+            // }
+            // catch (Exception e)
+            // {
+            //     Console.WriteLine(e);
+            // }
             // using (var freeSql = ShellScope.Services.GetRequiredService<IFreeSql>())
             // {
             //     freeSql

@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
-using EasyOC;
 using EasyOC.Core.Application;
-using EasyOC.Core.Extensions;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.RDBMS.Models;
+using EasyOC.OrchardCore.RDBMS.Services.Dto;
 using EasyOC.OrchardCore.RDBMS.ViewModels;
-using FreeSql;
 using FreeSql.DatabaseModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Records;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.Deployment.Services;
@@ -28,34 +24,35 @@ using YesSql;
 
 namespace EasyOC.OrchardCore.RDBMS.Services
 {
+
     [EOCAuthorization(OCPermissions.EditContentTypes)]
     public class RDBMSAppService : AppServiceBase, IRDBMSAppService
     {
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
         private readonly IDeploymentManager _deploymentManager;
+        private readonly IServiceProvider _serviceProvider;
 
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         public RDBMSAppService(
-            IMapper mapper,
-            IContentManager contentManager, IContentFieldsValuePathProvider contentFieldsValuePathProvider,
-            IContentDefinitionManager contentDefinitionManager, IMemoryCache memoryCache, IAuthorizationService authorizationService,
-            IDeploymentManager deploymentManager)
+            IMapper mapper, IMemoryCache memoryCache,
+            IDeploymentManager deploymentManager, IServiceProvider serviceProvider)
         {
-            this.mapper = mapper;
-            _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
+            this._mapper = mapper;
+            _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
 
             _memoryCache = memoryCache;
             _deploymentManager = deploymentManager;
+            _serviceProvider = serviceProvider;
         }
 
-        private async Task<ContentItem> GetConnectionConfigAsync(string connectionConfigId)
+        public async Task<ContentItem> GetConnectionConfigAsync(string connectionConfigId)
         {
             var connectionSettings = await YesSession.Query<ContentItem, ContentItemIndex>()
-                                            .Where(x => x.ContentType == "DbConnectionConfig"
-                                                    && (x.Published || x.Latest)
-                                                    && x.ContentItemId == connectionConfigId
-                                                    ).FirstOrDefaultAsync();
+                .Where(x => x.ContentType == "DbConnectionConfig"
+                            && (x.Published || x.Latest)
+                            && x.ContentItemId == connectionConfigId
+                ).FirstOrDefaultAsync();
 
             return connectionSettings;
         }
@@ -68,7 +65,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
             var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
             //无法判断 dynamic 类型 ，所以要先显示指定类型
-            return CurrentServiceProvider.GetFreeSql(providerName, connectionStr);
+            return _serviceProvider.GetFreeSql(providerName, connectionStr);
         }
         /// <summary>
         /// Get all Connection Config
@@ -77,8 +74,11 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         public async Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnecton()
         {
             var connectionSettings = await YesSession.Query<ContentItem, ContentItemIndex>()
-                                           .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published || x.Latest)).ListAsync();
-            var connectionList = connectionSettings.Select(x => new ConnectionConfigModel() { ConfigName = x.DisplayText, ConfigId = x.ContentItemId });
+                .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published || x.Latest)).ListAsync();
+            var connectionList = connectionSettings.Select(x => new ConnectionConfigModel()
+            {
+                ConfigName = x.DisplayText, ConfigId = x.ContentItemId
+            });
             return connectionList;
         }
 
@@ -104,14 +104,17 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 
                 var tables = result
                     .WhereIf(!string.IsNullOrEmpty(queryTablesDto.FilterText),
-                        x => $"{x.Schema}.{x.Name}".ToLower().Contains(queryTablesDto.FilterText))
+                    x => $"{x.Schema}.{x.Name}".ToLower().Contains(queryTablesDto.FilterText))
                     .OrderBy(x => x.Schema).ThenBy(x => x.Name)
                     .Take(queryTablesDto.MaxResultCount)
                     .Select(x =>
                     {
-                        var mResult = new DbTableInfoDto() { ColumnsCount = x.Columns.Count };
+                        var mResult = new DbTableInfoDto()
+                        {
+                            ColumnsCount = x.Columns.Count
+                        };
                         x.Columns.Clear();
-                        mResult = mapper.Map(x, mResult);
+                        mResult = _mapper.Map(x, mResult);
                         return mResult;
                     }
                     );
@@ -129,7 +132,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             var cacheKey = $"TablesLIST_{ConnectionConfigId}";
             if (DisableCache ||
                 !_memoryCache.TryGetValue<List<DbTableInfo>>
-                 (cacheKey, out var result))
+                    (cacheKey, out var result))
             {
                 var freeSql = await GetFreeSqlAsync(ConnectionConfigId);
                 result = freeSql.DbFirst.GetTablesByDatabase();
@@ -150,14 +153,14 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             var freeSql = await GetFreeSqlAsync(connectionConfigId);
 
             var result = freeSql.DbFirst.GetTableByName(tableName);
-            var mResult = mapper.Map<DbTableInfoDto>(result);
+            var mResult = _mapper.Map<DbTableInfoDto>(result);
             mResult.ColumnsCount = result.Columns.Count;
             return mResult;
         }
 
 
         [HttpGet]
-        public async Task<string> GenerateRecipeAsync(string connectionConfigId, string tableName)
+        public async Task<GenerateRecipeDto> GenerateRecipeAsync(string connectionConfigId, string tableName)
         {
             IFreeSql freeSql = await GetFreeSqlAsync(connectionConfigId);
             using (freeSql)
@@ -189,18 +192,22 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                     };
                     step.ContentTypes.Add(contentType);
                     var partName = typeName;
-                    contentType.ContentTypePartDefinitionRecords = new ContentTypePartDefinitionRecord[]{ new ContentTypePartDefinitionRecord
+                    contentType.ContentTypePartDefinitionRecords = new ContentTypePartDefinitionRecord[]
                     {
-                        Name = partName,
-                        PartName =partName,
-                        Settings=JObject.FromObject(
-                                new {
-                                    ContentTypePartSettings=new
-                                    {
-                                        Position="0"
-                                    }
-                                })
-                    }};
+                        new ContentTypePartDefinitionRecord
+                        {
+                            Name = partName,
+                            PartName = partName,
+                            Settings = JObject.FromObject(
+                            new
+                            {
+                                ContentTypePartSettings = new
+                                {
+                                    Position = "0"
+                                }
+                            })
+                        }
+                    };
 
                     var recipe = new RecipeModel()
                     {
@@ -212,7 +219,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         categories = Array.Empty<object>()
                     };
 
-                    recipe.steps = new List<Step>() { step };
+                    recipe.steps = new List<Step>()
+                    {
+                        step
+                    };
 
                     var index = 0;
                     foreach (var item in tb.Columns)
@@ -221,7 +231,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         recrod.Name = item.Name.ToSafeName();
                         recrod.Settings = JObject.FromObject(new
                         {
-                            ContentPartFieldSettings = new { DisplayName = item.Name, Position = (index++).ToString() }
+                            ContentPartFieldSettings = new
+                            {
+                                DisplayName = item.Name, Position = (index++).ToString()
+                            }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.CsType);
                         if (targetFieldType == null)
@@ -237,13 +250,22 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         Name = partName,
                         Settings = new ContentpartSettings()
                         {
-                            ContentPartSettings = new Contentpartsettings { Attachable = true, DefaultPosition = "0", Description = tb.Type.ToString() + " of " + fullName }
+                            ContentPartSettings = new Contentpartsettings
+                            {
+                                Attachable = true, DefaultPosition = "0", Description = tb.Type.ToString() + " of " + fullName
+                            }
                         },
                         DispalyName = fullName,
                         ContentPartFieldDefinitionRecords = recrods.ToArray()
                     });
 
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(recipe);
+                    return new GenerateRecipeDto(
+                        connectionConfigId,
+                        tableName,
+                        Newtonsoft.Json.JsonConvert.SerializeObject(recipe),
+                        typeName
+                        )
+                        ;
                 }
                 catch (Exception ex)
                 {
@@ -267,7 +289,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         /// <exception cref="ArgumentException"></exception>
         public async Task ImportDeploymentPackageAsync(ImportJsonInupt model)
         {
-            if (!model.Json.IsJson())
+            if (!model.RecipeContent.IsJson())
             {
                 throw new ArgumentException(S["The recipe is written in an incorrect json format."]);
             }
@@ -275,7 +297,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             try
             {
                 Directory.CreateDirectory(tempArchiveFolder);
-                File.WriteAllText(Path.Combine(tempArchiveFolder, "Recipe.json"), model.Json);
+                File.WriteAllText(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
                 await _deploymentManager.ImportDeploymentPackageAsync(new PhysicalFileProvider(tempArchiveFolder));
             }
             finally
@@ -293,6 +315,3 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 
     }
 }
-
-
-
