@@ -299,6 +299,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 Directory.CreateDirectory(tempArchiveFolder);
                 File.WriteAllText(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
                 await _deploymentManager.ImportDeploymentPackageAsync(new PhysicalFileProvider(tempArchiveFolder));
+                await Notifier.SuccessAsync(H["Import Success"]);
             }
             finally
             {
