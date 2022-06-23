@@ -89,25 +89,23 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         /// <returns></returns>
         public async Task<IEnumerable<DbTableInfoDto>> GetAllTablesAsync(QueryTablesDto queryTablesDto)
         {
-            try
+            if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
-                {
-                    Console.WriteLine();
-                }
-                List<DbTableInfo> result = await GetTablesFromCache(queryTablesDto.ConnectionConfigId, queryTablesDto.DisableCache);
+                Console.WriteLine();
+            }
+            List<DbTableInfo> result = await GetTablesFromCache(queryTablesDto.ConnectionConfigId, queryTablesDto.DisableCache);
 
-                if (!string.IsNullOrEmpty(queryTablesDto.FilterText))
-                {
-                    queryTablesDto.FilterText = queryTablesDto.FilterText.ToLower().Replace("[", string.Empty).Replace("]", string.Empty);
-                }
+            if (!string.IsNullOrEmpty(queryTablesDto.FilterText))
+            {
+                queryTablesDto.FilterText = queryTablesDto.FilterText.ToLower().Replace("[", string.Empty).Replace("]", string.Empty);
+            }
 
-                var tables = result
-                    .WhereIf(!string.IsNullOrEmpty(queryTablesDto.FilterText),
-                    x => $"{x.Schema}.{x.Name}".ToLower().Contains(queryTablesDto.FilterText))
-                    .OrderBy(x => x.Schema).ThenBy(x => x.Name)
-                    .Take(queryTablesDto.MaxResultCount)
-                    .Select(x =>
+            var tables = result
+                .WhereIf(!string.IsNullOrEmpty(queryTablesDto.FilterText),
+                x => $"{x.Schema}.{x.Name}".ToLower().Contains(queryTablesDto.FilterText))
+                .OrderBy(x => x.Schema).ThenBy(x => x.Name)
+                .Take(queryTablesDto.MaxResultCount)
+                .Select(x =>
                     {
                         var mResult = new DbTableInfoDto()
                         {
@@ -117,14 +115,9 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         mResult = _mapper.Map(x, mResult);
                         return mResult;
                     }
-                    );
-                return tables;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+                );
 
+            return tables;
         }
 
         private async Task<List<DbTableInfo>> GetTablesFromCache(string ConnectionConfigId, bool DisableCache)
@@ -297,7 +290,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             try
             {
                 Directory.CreateDirectory(tempArchiveFolder);
-                File.WriteAllText(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
+                await File.WriteAllTextAsync(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
                 await _deploymentManager.ImportDeploymentPackageAsync(new PhysicalFileProvider(tempArchiveFolder));
                 await Notifier.SuccessAsync(H["Import Success"]);
             }

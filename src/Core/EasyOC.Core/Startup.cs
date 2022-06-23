@@ -2,9 +2,7 @@
 using EasyOC.Core.Dynamic;
 using EasyOC.Core.Swagger;
 using EasyOC.DynamicWebApi;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +14,6 @@ using OrchardCore.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace EasyOC.Core
 {
@@ -130,7 +127,6 @@ namespace EasyOC.Core
                 // 指定全局默认的 api 前缀
                 options.DefaultApiPrefix = "api";
                 options.ActionRouteFactory = new ServiceActionRouteFactory();
-
             });
 
             //授权处理
