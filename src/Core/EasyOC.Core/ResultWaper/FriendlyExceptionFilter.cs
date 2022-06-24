@@ -26,23 +26,23 @@ namespace EasyOC.Core.Filter
             // 获取控制器信息
 
             var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
-            ILogger _logger = loggerFactory.CreateLogger(actionDescriptor.ControllerTypeInfo.AsType());
+            ILogger logger = loggerFactory.CreateLogger(actionDescriptor.ControllerTypeInfo.AsType());
             var exception = context.Exception;
-            _logger.LogError(exception, exception.Message);
+            logger.LogError(exception, exception.Message);
 
             // //释放资源
-            // try
-            // {
-            //     await using var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
-            //     if (session != null)
-            //     {
-            //         await session.CancelAsync();
-            //     }
-            // }
-            // catch (Exception e)
-            // {
-            //     Console.WriteLine(e);
-            // }
+            try
+            {
+                await using var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
+                if (session != null && session.CurrentTransaction != null)
+                {
+                    await session.CancelAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             // using (var freeSql = ShellScope.Services.GetRequiredService<IFreeSql>())
             // {
             //     freeSql
