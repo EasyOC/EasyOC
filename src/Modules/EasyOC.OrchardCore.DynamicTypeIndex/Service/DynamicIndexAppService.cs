@@ -313,21 +313,16 @@ namespace {entityInfo.NameSpace}
             while (take100.Any())
             {
                 var pendingIds = take100.Select(x => x.ContentItemId);
-                Fsql.Transaction(async () =>
-                {
-
-                    await  Fsql.Delete<DIndexBase>()
-                        .AsTable(indexTableName)
-                        .Where(x => pendingIds.Contains(x.ContentItemId))
-                        .ExecuteAffrowsAsync();
-                    var freeModels = take100.ToDictModel(model);
-                    // Specifies the collection of data dictionary objects to insert
-                    var freeItems = Fsql.InsertOrUpdateDict(freeModels)
-                        .AsTable(indexTableName)//Specify the name of the table to be inserted
-                        .WherePrimary("Id");
-                    totalRows += await freeItems.ExecuteAffrowsAsync();//Batch Inserting databases
-
-                });
+                await  Fsql.Delete<DIndexBase>()
+                    .AsTable(indexTableName)
+                    .Where(x => pendingIds.Contains(x.ContentItemId))
+                    .ExecuteAffrowsAsync();
+                var freeModels = take100.ToDictModel(model);
+                // Specifies the collection of data dictionary objects to insert
+                var freeItems = Fsql.InsertOrUpdateDict(freeModels)
+                    .AsTable(indexTableName)//Specify the name of the table to be inserted
+                    .WherePrimary("Id");
+                totalRows += await freeItems.ExecuteAffrowsAsync();//Batch Inserting databases
                 page++;
                 take100 = docs.Skip(page * 100).Take(100).ListAsync().GetAwaiter().GetResult();
             }
