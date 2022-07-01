@@ -50,6 +50,8 @@
                                 {
                                     <li><a class="dropdown-item" href="javascript:void(0)" data-action="@item.Value" data-title="@T["Bulk Action"]" data-message="@T["Are you sure you want to {0} these items?", @item.Text.ToLower()]">@item.Text</a></li>
                                 }
+                                
+                                <li><a class="dropdown-item" href="javascript:void(0)" data-action="" data-title="@T["Bulk Action"]">导出</a> </li>
                             </ul>
                         </div>
                     </div>
@@ -129,7 +131,7 @@
         });
 
         function displayActionsOrFilters() {
-            if ($(":checkbox[name='itemIds']:checked").length > 1) {
+            if ($(":checkbox[name='itemIds']:checked").length >= 1) {
                 actions.show();
                 filters.hide();
                 selectedItems.show();
