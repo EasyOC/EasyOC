@@ -10,9 +10,11 @@ using OrchardCore.Workflows;
 using OrchardCore.Workflows.Services;
 using OrchardCore.Workflows.ViewModels;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using DeploymentPermissions=OrchardCore.Deployment.Permissions;
+using DeploymentPermissions = OrchardCore.Deployment.Permissions;
 
 namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
 {
@@ -22,30 +24,33 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
         private readonly IDeploymentManager _deploymentManager;
         private readonly IWorkflowTypeStore _workflowTypeStore;
 
-        public WorkflowController(IAuthorizationService authorizationService, IDeploymentManager deploymentManager, IWorkflowTypeStore workflowTypeStore)
+        public WorkflowController(IAuthorizationService authorizationService, IDeploymentManager deploymentManager,
+            IWorkflowTypeStore workflowTypeStore)
         {
             _authorizationService = authorizationService;
             _deploymentManager = deploymentManager;
             _workflowTypeStore = workflowTypeStore;
         }
 
-        [HttpPost]
-        [ActionName("Index")]
-        [FormValueRequired("submit.Export")]
-        public async Task<IActionResult> BulkExport(IEnumerable<int> itemIds)
+        [HttpGet]
+        public async Task<IActionResult> BulkExport([FromQuery] string ids)
         {
             if (!await _authorizationService.AuthorizeAsync(User, DeploymentPermissions.Export))
             {
                 return Forbid();
             }
+
+            string archiveFileName;
+            var itemIds = ids.Split(',').Select(x => int.Parse(x));
             using (var fileBuilder = new TemporaryFileBuilder())
             {
-                var recipeDescriptor = new RecipeDescriptor();
+                 archiveFileName = fileBuilder.Folder + ".zip";
+                 var recipeDescriptor = new RecipeDescriptor();
                 var deploymentPlanResult = new DeploymentPlanResult(fileBuilder, recipeDescriptor);
                 var data = new JArray();
                 deploymentPlanResult.Steps.Add(new JObject(
-                new JProperty("name", "WorkflowType"),
-                new JProperty("data", data)
+                    new JProperty("name", "WorkflowType"),
+                    new JProperty("data", data)
                 ));
                 //Do filter
                 foreach (var workflow in await _workflowTypeStore.GetAsync(itemIds))
@@ -57,14 +62,16 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
                     data.Add(objectData);
                 }
 
-
+                await deploymentPlanResult.FinalizeAsync();
+                // ZipFile.CreateFromDirectory(fileBuilder.Folder, archiveFileName);
                 //TODO Export files to a zip file
-                return new PhysicalFileResult("workflows", "application/zip")
+                return new PhysicalFileResult(Path.Combine(fileBuilder.Folder,"Recipe.json"), "application/json")
                 {
-                    FileDownloadName = "workflows.zip"
+                    FileDownloadName = "Recipe.json"
                 };
             }
 
+            
         }
     }
 }

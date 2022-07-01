@@ -31,18 +31,18 @@ namespace EasyOC.Core.Filter
             logger.LogError(exception, exception.Message);
 
             // //释放资源
-            try
-            {
-                await using var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
-                if (session != null && session.CurrentTransaction != null)
-                {
-                    await session.CancelAsync();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            // try
+            // {
+            //     await using var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
+            //     if (session != null && session.CurrentTransaction != null)
+            //     {
+            //         await session.CancelAsync();
+            //     }
+            // }
+            // catch (Exception e)
+            // {
+            //     Console.WriteLine(e);
+            // }
             // using (var freeSql = ShellScope.Services.GetRequiredService<IFreeSql>())
             // {
             //     freeSql
