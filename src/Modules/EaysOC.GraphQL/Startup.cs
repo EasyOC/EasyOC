@@ -1,5 +1,7 @@
-﻿using EasyOC;
+﻿using System.Collections.Generic;
+using EasyOC;
 using EasyOC.GraphQL.Abstractions;
+using EaysOC.GraphQL.Handlers;
 using EaysOC.GraphQL.Queries;
 using EaysOC.GraphQL.Queries.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +19,10 @@ namespace EaysOC.GraphQL
     [RequireFeatures(EasyOC.Core.Constants.EasyOCCoreModuleId, "OrchardCore.Apis.GraphQL")]
     public class Startup : StartupBase
     {
-        public override int Order { get { return 1000; } }
+        public override int Order
+        {
+            get { return 1000; }
+        }
 
         public override void ConfigureServices(IServiceCollection services)
         {
@@ -40,7 +45,6 @@ namespace EaysOC.GraphQL
             // services.AddObjectGraphType<BagPart, BagPartQueryObjectType>();
 
 
-
             services.AddTransient<CreateContentItemInputType>();
 
 
@@ -48,9 +52,7 @@ namespace EaysOC.GraphQL
             services.AddGraphMutationType<DeleteContentItemMutation>();
             services.AddTransient<DeletionStatusObjectGraphType>();
             services.AddTransient<CreateContentItemInputType>();
-
-
+            services.AddScoped<IPagedContentItemQueryWhereFilter, DefaultPagedContentItemQueryWhereFilter>();
         }
-
     }
 }
