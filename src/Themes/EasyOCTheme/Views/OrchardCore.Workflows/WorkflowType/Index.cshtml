@@ -12,7 +12,6 @@
 <form asp-action="Index" id="workflows-types-form" method="post" class="no-multisubmit">
     <input type="submit" name="submit.Filter" id="submitFilter" class="visually-hidden" />
     <input type="submit" name="submit.BulkAction" class="visually-hidden" />
-    <input type="submit" name="submit.Export" class="visually-hidden" />
     <input asp-for="Options.BulkAction" type="hidden" />
 
     <div class="card mb-3 position-sticky action-bar">
@@ -51,7 +50,7 @@
                                 {
                                     <li><a class="dropdown-item" href="javascript:void(0)" data-action="@item.Value" data-title="@T["Bulk Action"]" data-message="@T["Are you sure you want to {0} these items?", @item.Text.ToLower()]">@item.Text</a></li>
                                 }
-                                
+
                                 <li><a class="dropdown-item" href="javascript:void(0)" data-action="export" data-title="@T["Bulk Action"]">导出</a> </li>
                             </ul>
                         </div>
@@ -123,20 +122,19 @@
             if ($(":checkbox[name='itemIds']:checked").length >= 1) {
                 var $this = $(this);
                  if ($this.data("action")==="export"){
-                   console.log(itemsCheckboxes.val())
                    var ids=[]
-                  $(":checkbox[name='itemIds']:checked").each(function() { 
-                      ids.push(this.value)
-                   }); 
-                    window.open('@Href("~/EasyOC.OrchardCore.WorkflowPlus/Workflow/BulkExport?ids=")'+ids)
-                 }else{ 
+                   $(":checkbox[name='itemIds']:checked").each(function (){
+                       ids.push(this.value)
+                   });
+                   window.open('@Href("~/EasyOC.OrchardCore.WorkflowPlus/Workflow/BulkExport?ids=")'+ids)
+                 }else{
                    confirmDialog({title: $this.data('title'), message: $this.data('message'), callback: function(r) {
                          if (r) {
                              $("[name='Options.BulkAction']").val($this.data("action"));
                              $("[name='submit.BulkAction']").click();
                          }
                      }});
-                 } 
+                 }
                 }
         });
 
