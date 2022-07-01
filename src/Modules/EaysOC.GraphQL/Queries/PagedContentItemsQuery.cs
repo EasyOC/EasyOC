@@ -138,7 +138,10 @@ namespace EaysOC.GraphQL.Queries
 
             if (filterInfo is not null)
             {
-                filterInfo = ReplaceFieldName(filterInfo, dIndexConfig);
+                if (dIndexConfig != null)
+                {
+                    filterInfo = ReplaceFieldName(filterInfo, dIndexConfig);
+                }
                 prepareQuery = prepareQuery.WhereDynamicFilter(filterInfo);
             }
 

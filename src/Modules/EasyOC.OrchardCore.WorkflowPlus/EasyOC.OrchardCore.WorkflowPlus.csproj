@@ -36,7 +36,8 @@
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Deployment" Version="$(OrchardCoreVersion)" />
 	</ItemGroup>
  
 	<ItemGroup>
