@@ -9,7 +9,7 @@
 @inject UserManager<IUser> UserManager;
 @{
     ViewLayout = "Layout__Login";
-
+    // ViewLayout = "Layout__MyLogin";
     var userCanRegister = (await SiteService.GetSiteSettingsAsync()).As<RegistrationSettings>().UsersCanRegister == UserRegistrationType.AllowRegistration;
     var allowResetPassword = (await SiteService.GetSiteSettingsAsync()).As<ResetPasswordSettings>().AllowResetPassword;
     var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -23,7 +23,7 @@
     {
         <div class="col-md-6 @(loginProviders.Count == 0 ? "offset-md-3" : String.Empty)">
             <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="auth-form no-multisubmit">
-                <h1 class="fs-4">@T["Log in"]</h1>
+                <h1 class="fs-4">@T["Log in"]111111111</h1>
                 <hr />
                 <div asp-validation-summary="All"></div>
                 <div class="mb-3">

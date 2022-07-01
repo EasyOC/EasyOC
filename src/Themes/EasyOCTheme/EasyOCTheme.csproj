@@ -10,6 +10,12 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </EmbeddedResource>
     <EmbeddedResource Remove="Views\OrchardCore.ContentTypes\**" />
+    <EmbeddedResource Update="Views\OrchardCore.Users\Account\Layout-Login.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\OrchardCore.Users\Account\Layout-MyLogin.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
    <ItemGroup> 
@@ -21,20 +27,16 @@
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
     
   </ItemGroup> 
 
   <ItemGroup>
-    <Content Include="Views\OrchardCore.Users\Account\_ViewImports.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Duplicate.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Edit.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\WorkflowType\EditProperties.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\WorkflowType\Index.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\WorkflowType\RenderActivity.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\Workflow\Details.cshtml" />
-    <Content Include="Views\OrchardCore.Workflows\Workflow\Index.cshtml" />
+    <AdditionalFiles Include="Views\OrchardCore.Users\Account\Layout-Login.cshtml" />
   </ItemGroup> 
+
+ 
  
 </Project>

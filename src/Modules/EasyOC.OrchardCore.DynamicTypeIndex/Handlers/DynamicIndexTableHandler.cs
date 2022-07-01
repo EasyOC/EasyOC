@@ -60,7 +60,12 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                     while (penddingUpdateList.Any())
                     {
                         var dictList = penddingUpdateList.ToDictModel(config);
-                        totalUpdated[typeName] += await _fsql.InsertOrUpdateDict(dictList)
+                        var tsFsql = _fsql.InsertOrUpdateDict(dictList);
+                        if (_session.CurrentTransaction != null)
+                        {
+                            tsFsql.WithTransaction(_session.CurrentTransaction);
+                        }
+                        totalUpdated[typeName] += await tsFsql
                             .WherePrimary("Id")
                             .ExecuteAffrowsAsync();
                         pageIndex++;
@@ -89,7 +94,13 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                 try
                 {
                     var dictModel = context.ContentItem.ToDictModel(config);
-                    await _fsql.InsertOrUpdateDict(dictModel)
+                    var tsFsql = _fsql.InsertOrUpdateDict(dictModel);
+                    if (_session.CurrentTransaction != null)
+                    {
+                        tsFsql.WithTransaction(_session.CurrentTransaction);
+                    }
+                    await tsFsql
+                        .WithTransaction(_session.CurrentTransaction)
                         .AsTable(config.TableName)
                         .WherePrimary("Id")
                         .ExecuteAffrowsAsync();

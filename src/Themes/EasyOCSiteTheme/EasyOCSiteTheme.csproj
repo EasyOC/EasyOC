@@ -21,4 +21,8 @@
     <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <RazorGenerate Remove="Views\OrchardCore.Users\Account\Login.cshtml" />
+  </ItemGroup>
+
 </Project>

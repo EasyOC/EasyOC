@@ -105,25 +105,25 @@ namespace EaysOC.GraphQL.Queries
             var serviceProvider = graphContext.ServiceProvider;
             var dynamicIndexAppService = serviceProvider.GetRequiredService<IDynamicIndexAppService>();
             var dIndexConfig = await dynamicIndexAppService.GetDynamicIndexConfigAsync(contentType);
-            if (dIndexConfig == null)
-            {
-                return null;
-            }
+
             var prepareQuery = _freesql.Select<ContentItemIndex, DIndexBase>()
-                .LeftJoin((a, b) => a.ContentItemId == b.ContentItemId)
+                .LeftJoin((a, b) => a.ContentItemId == b.ContentItemId && a.ContentItemVersionId == b.ContentItemVersionId)
                 .Where((a, b) =>
                     a.ContentType == contentType &&
                     a.Published == published &&
                     a.Latest == latest
                 );
-
-            var indexType = await dynamicIndexAppService.GetDynamicIndexTypeAsync(dIndexConfig.EntityInfo);
-
-            var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
-            if (joinType != null)
+            if (dIndexConfig != null)
             {
-                joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
+                var indexType = await dynamicIndexAppService.GetDynamicIndexTypeAsync(dIndexConfig.EntityInfo);
+
+                var joinType = (prepareQuery as Select0Provider)?._tables.LastOrDefault();
+                if (joinType != null)
+                {
+                    joinType.Table = _freesql.CodeFirst.GetTableByEntity(indexType);
+                }
             }
+
             DynamicFilterInfo filterInfo = null;
             if (context.HasPopulatedArgument("dynamicJSONFilter"))
             {
@@ -151,7 +151,10 @@ namespace EaysOC.GraphQL.Queries
 
                     var orderByField = orderByArguments["field"].Value<string>();
                     var orderByDirection = orderByArguments["direction"].Value<string>();
-                    orderByField = FieldNameToDbColumnName(orderByField, dIndexConfig);
+                    if (dIndexConfig != null)
+                    {
+                        orderByField = FieldNameToDbColumnName(orderByField, dIndexConfig);
+                    }
                     if (orderByField != null && orderByDirection != null)
                     {
                         prepareQuery = prepareQuery.OrderByPropertyName(orderByField, orderByDirection != "1");
@@ -164,13 +167,11 @@ namespace EaysOC.GraphQL.Queries
                 .Count(out var totalCount)
                 .Page(page, pageSize)
                 .ToListAsync((x, b) => x.ContentItemId);
-            if (!ids.Any())
+            if (ids != null && !ids.Any())
             {
                 return null;
             }
             var contentManager = serviceProvider.GetService<IContentManager>();
-            var session = graphContext.ServiceProvider.GetService<ISession>();
-            session.Query<ContentItem>();
             var contentItem = await contentManager?.GetAsync(ids, latest)!;
             var queryResults = new TotalQueryResults
             {

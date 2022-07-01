@@ -4,6 +4,7 @@ using OrchardCore.ContentManagement.Records;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex.Index
 {
+    [EOCTable("ContentItemIndex")]
     public class DIndexBase : FreeSqlDocumentIndex
     {
         [Column(IsPrimary = true)]
