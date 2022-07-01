@@ -5,8 +5,11 @@ using OrchardCore.Deployment;
 using OrchardCore.Deployment.Core.Services;
 using OrchardCore.Deployment.Services;
 using OrchardCore.Recipes.Models;
+using OrchardCore.Routing;
 using OrchardCore.Workflows;
 using OrchardCore.Workflows.Services;
+using OrchardCore.Workflows.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DeploymentPermissions=OrchardCore.Deployment.Permissions;
@@ -26,7 +29,10 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
             _workflowTypeStore = workflowTypeStore;
         }
 
-        public async Task<ActionResult> Export(int[] ids)
+        [HttpPost]
+        [ActionName("Index")]
+        [FormValueRequired("submit.Export")]
+        public async Task<IActionResult> BulkExport(IEnumerable<int> itemIds)
         {
             if (!await _authorizationService.AuthorizeAsync(User, DeploymentPermissions.Export))
             {
@@ -42,7 +48,7 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
                 new JProperty("data", data)
                 ));
                 //Do filter
-                foreach (var workflow in await _workflowTypeStore.GetAsync(ids))
+                foreach (var workflow in await _workflowTypeStore.GetAsync(itemIds))
                 {
                     var objectData = JObject.FromObject(workflow);
 
