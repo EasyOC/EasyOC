@@ -7,12 +7,11 @@
   并具有相同的“私有资产”属性。
 -->
 	<ItemGroup>
+    <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AntdAdmin\EasyOC.OrchardCore.AntdAdmin.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj" />
-    <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
-
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" PrivateAssets="none" />
@@ -21,10 +20,10 @@
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj" PrivateAssets="none" />
-<!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
     <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Themes\EasyOCSiteTheme\EasyOCSiteTheme.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" PrivateAssets="none" />
+<!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
 
 	</ItemGroup>
 

@@ -56,11 +56,8 @@ namespace EasyOC.Core
                 //var baseUrl = _shellConfiguration["AuthServer:Authority"].EnsureEndsWith('/');
                 if (string.IsNullOrEmpty(baseUrl))
                 {
-                    baseUrl = "/";
-                    //var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
-                    //var request = httpContextAccessor.HttpContext.Request;
-                    //var tenantSettings = ShellScope.Context.Settings;
-                    //baseUrl = $"{request.Scheme}://{request.Host}/{tenantSettings.RequestUrlPrefix}";
+                    var tenantSettings = ShellScope.Context.Settings;
+                    baseUrl = $"/{tenantSettings.RequestUrlPrefix}";
                 }
                 baseUrl = baseUrl.EnsureEndsWith('/');
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -75,34 +72,43 @@ namespace EasyOC.Core
                         AuthorizationCode = new OpenApiOAuthFlow()
                         {
                             Scopes = new Dictionary<string, string>
+                            {
                                 {
-                                    { "openid", "OpenID" },
-                                    { "profile", "Profile" },
-                                    { "roles", "Roles" },
-                                    { "offline_access", "offline access" },
-                                    // { "api", "Api" },
+                                    "openid", "OpenID"
                                 },
+                                {
+                                    "profile", "Profile"
+                                },
+                                {
+                                    "roles", "Roles"
+                                },
+                                {
+                                    "offline_access", "offline access"
+                                },
+                                // { "api", "Api" },
+                            },
                             AuthorizationUrl = new Uri($"{baseUrl}connect/authorize", UriKind.RelativeOrAbsolute),
                             TokenUrl = new Uri($"{baseUrl}connect/token", UriKind.RelativeOrAbsolute),
                         },
                     }
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
                         {
+                            Reference = new OpenApiReference
                             {
-                                new OpenApiSecurityScheme
-                                {
-                                    Reference = new OpenApiReference
-                                    {
-                                        Type = ReferenceType.SecurityScheme,
-                                        Id = "Bearer"
-                                    }
-                                },
-                                Array.Empty<string>()
+                                Type = ReferenceType.SecurityScheme, Id = "Bearer"
                             }
-                        });
+                        },
+                        Array.Empty<string>()
+                    }
+                });
                 options.SwaggerDoc("v1", new OpenApiInfo()
-                { Title = "EasyOC Dynamic WebApi", Version = "v1" });
+                {
+                    Title = "EasyOC Dynamic WebApi", Version = "v1"
+                });
                 //options.SchemaGeneratorOptions.
                 // TODO:一定要返回true！
                 options.DocInclusionPredicate((docName, description) => true);
@@ -155,22 +161,18 @@ namespace EasyOC.Core
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
             app.UseSwaggerUI(options =>
             {
-                var serviceProvider = app.ApplicationServices;
                 var env = serviceProvider.GetRequiredService<IHostEnvironment>();
                 if (env.IsDevelopment())
                 {
                     options.OAuthClientId(_shellConfiguration["AuthServer:SwaggerClientId"]);
-                    options.OAuthClientSecret(_shellConfiguration["AuthServer:SwaggerClientSecret"]);
+                    // options.OAuthClientSecret(_shellConfiguration["AuthServer:SwaggerClientSecret"]);
                     options.OAuth2RedirectUrl(_shellConfiguration["AuthServer:SwaggerOAuth2RedirectUrl"]);
                 }
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyOC WebApi");
-                options.OAuthScopes("openid", "profile", "roles", "api","offline_access");
+                options.OAuthScopes("openid", "profile", "roles");
 
             });
         }
     }
 
 }
-
-
-

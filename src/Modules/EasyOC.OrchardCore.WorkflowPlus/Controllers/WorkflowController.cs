@@ -5,12 +5,7 @@ using OrchardCore.Deployment;
 using OrchardCore.Deployment.Core.Services;
 using OrchardCore.Deployment.Services;
 using OrchardCore.Recipes.Models;
-using OrchardCore.Routing;
-using OrchardCore.Workflows;
 using OrchardCore.Workflows.Services;
-using OrchardCore.Workflows.ViewModels;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +28,7 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> BulkExport( string ids)
+        public async Task<IActionResult> BulkExport(string ids)
         {
             if (!await _authorizationService.AuthorizeAsync(User, DeploymentPermissions.Export))
             {
@@ -66,6 +61,7 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
                     objectData.Remove(nameof(workflow.Id));
                     data.Add(objectData);
                 }
+
                 await deploymentPlanResult.FinalizeAsync();
                 ZipFile.CreateFromDirectory(fileBuilder.Folder, archiveFileName);
             }

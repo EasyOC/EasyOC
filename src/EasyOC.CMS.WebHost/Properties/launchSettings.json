@@ -20,7 +20,7 @@
     "web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:44389/admin",
+      "launchUrl": "https://localhost:44389",
       "hotReloadProfile": "aspnetcore",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

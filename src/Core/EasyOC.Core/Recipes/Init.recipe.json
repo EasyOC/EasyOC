@@ -142,15 +142,6 @@
     },
     {
       "name": "OpenIdApplication",
-      "DisplayName": "Authorization Password Flow",
-      "ClientId": "vue_client_app",
-      "AllowAuthorizationCodeFlow": true,
-      "AllowLogoutEndpoint": true,
-      "AllowPasswordFlow": true,
-      "Type": "public"
-    },
-    {
-      "name": "OpenIdApplication",
       "DisplayName": "SwaggerClient",
       "ClientId": "SwaggerClient",
       "ConsentType": "implicit",
@@ -158,7 +149,7 @@
       "AllowLogoutEndpoint": false,
       "AllowPasswordFlow": false,
       "RedirectUris": "https://localhost:44389/swagger/oauth2-redirect.html http://localhost:2919/swagger/oauth2-redirect.html",
-      "Type": "confidential"
+      "Type": "public"
     },
     {
       "name": "OpenIdScope",
@@ -180,15 +171,9 @@
     },
     {
       "name": "OpenIdScope",
-      "Description": "A scope to provide permissions for remote clients",
-      "DisplayName": "permissions Scope",
-      "ScopeName": "permissions"
-    },
-    {
-      "name": "OpenIdScope",
-      "Description": "A scope to provide api for remote clients",
-      "DisplayName": "api Scope",
-      "ScopeName": "api"
+      "Description": "A scope to provide offline_access for remote clients",
+      "DisplayName": "offline_access Scope",
+      "ScopeName": "offline_access"
     },
     {
       "name": "AdminMenu",

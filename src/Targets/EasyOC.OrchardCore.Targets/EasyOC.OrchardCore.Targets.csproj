@@ -7,8 +7,8 @@
 
     Here, only project references are used but when packing the bundle they become package references,
     and with the same 'PrivateAssets' attribute.
-    
-    
+
+
     当一个包没有被直接引用时，例如仅通过该捆绑包的引用，
     如果此文件夹被标记为专用，则其生成文件夹中的文件不会在生成时进行评估。
     这可以通过使用“PrivateAssets”属性来定义。
@@ -38,6 +38,7 @@
 
 
     <PackageReference Include="OrchardCore.Cors" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.CustomSettings" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.DataProtection.Azure" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Deployment" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
@@ -89,8 +90,7 @@
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Widgets" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <!--    <PackageReference Include="OrchardCore.XmlRpc" Version="$(OrchardCoreVersion)" PrivateAssets="none" />-->
-
+    <PackageReference Include="OrchardCore.XmlRpc" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="TheAdmin" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <!--
       When adding a reference to this list, please keep it ordered alphabetically, and set PrivateAssets="none"
@@ -112,7 +112,6 @@
     <!--    <PackageReference Include="OrchardCore.Seo" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.Twitter" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
 
-    <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <!--    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" PrivateAssets="none"/>-->
   </ItemGroup>
   <ItemGroup>
