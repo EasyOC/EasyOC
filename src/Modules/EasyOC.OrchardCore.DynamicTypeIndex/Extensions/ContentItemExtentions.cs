@@ -69,7 +69,7 @@ namespace EasyOC
                                 value = valueToken.Value<DateTime?>();
                                 break;
                             case JTokenType.TimeSpan:
-                                value = valueToken.Value<TimeSpan?>();
+                                value = valueToken.Value<string?>();
                                 break;
                             default:
                                 break;

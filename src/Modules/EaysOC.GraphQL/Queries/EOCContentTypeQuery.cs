@@ -1,4 +1,4 @@
-using EasyOC.OrchardCore.ContentExtentions.GraphQL.Types;
+using EasyOC;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,9 +15,7 @@ using OrchardCore.ContentManagement.GraphQL.Queries;
 using OrchardCore.ContentManagement.GraphQL.Queries.Predicates;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using OrchardCore.ContentManagement.Metadata;
-using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
-using OrchardCore.Contents;
 using OrchardCore.Environment.Shell;
 using System;
 using System.Collections.Generic;
@@ -28,7 +26,7 @@ using YesSql;
 using Expression = OrchardCore.ContentManagement.GraphQL.Queries.Predicates.Expression;
 using ISession = YesSql.ISession;
 
-namespace EasyOC.OrchardCore.ContentExtentions.GraphQL
+namespace EaysOC.GraphQL.Queries
 {
     /// <summary>
     /// Registers all Content Types as queries.

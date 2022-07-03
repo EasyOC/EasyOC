@@ -51,9 +51,8 @@ namespace EasyOC
             return deserialized;
         }
 
-        public static ContentItemDto ToDto(this ContentItem content,ContentDefinition contentDefinition)
+        public static ContentItemDto ToDto(this ContentItem content)
         {
-            
             return content.ToDto<ContentItemDto>();
         }
 

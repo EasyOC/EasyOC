@@ -156,7 +156,7 @@ namespace System
                 return str;
             }
 
-            if (postFixes.IsNullOrEmpty())
+            if (postFixes == null|| postFixes.Length == 0)
             {
                 return str;
             }
@@ -213,7 +213,7 @@ namespace System
                 return str;
             }
 
-            if (preFixes.IsNullOrEmpty())
+            if (preFixes == null|| preFixes.Length == 0)
             {
                 return str;
             }

@@ -10,18 +10,6 @@
   "tags": [],
   "steps": [
     {
-      "name": "Feature",
-      "enable": [
-        "EasyOC.OrchardCore.VueElementUI",
-        "EasyOC.OrchardCore.Excel",
-        "EasyOC.OrchardCore.DynamicTypeIndex",
-        "EasyOC.OrchardCore.OpenApi",
-        "EasyOC.OrchardCore.RDBMS",
-        "EasyOC.OrchardCore.ContentExtentions",
-        "EasyOC.OrchardCore.WorkflowPlus"
-      ]
-    },
-    {
       "name": "ContentDefinition",
       "ContentTypes": [
         {
@@ -31,8 +19,8 @@
             "ContentTypeSettings": {
               "Listable": true,
               "Draftable": true,
-              "Versionable": true,
-              "Securable": true
+              "Securable": true,
+              "Versionable": true
             },
             "FullTextAspectSettings": {}
           },
@@ -55,20 +43,31 @@
             {
               "PartName": "UserProfile",
               "Name": "UserProfile",
-              "Settings": {}
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
             },
             {
               "PartName": "TitlePart",
               "Name": "TitlePart",
               "Settings": {
                 "ContentTypePartSettings": {
-                  "Position": "1"
+                  "Position": "1",
+                  "DisplayName": "Title",
+                  "Description": "Provides a Title for your content item."
                 },
                 "GraphQLContentTypePartSettings": {},
-                "TitlePartSettings": {
-                  "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】"
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
                 },
-                "ContentIndexSettings": {}
+                "TitlePartSettings": {
+                  "Options": 1,
+                  "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】"
+                }
               }
             }
           ]
@@ -93,6 +92,15 @@
               "Settings": {
                 "ContentTypePartSettings": {
                   "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
                 }
               }
             }
@@ -163,6 +171,64 @@
           ]
         },
         {
+          "Name": "AmisSchema",
+          "DisplayName": "Amis Schema",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AmisSchema",
+              "Name": "AmisSchema",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DynamicIndexConfigSetting",
+          "DisplayName": "DynamicIndex Config",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "DynamicIndexConfigSetting",
+              "Name": "DynamicIndexConfigSetting",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
           "Name": "VbenMenu",
           "DisplayName": "VbenMenu",
           "Settings": {
@@ -170,7 +236,6 @@
               "Creatable": true,
               "Listable": true,
               "Draftable": true,
-              "Versionable": true,
               "Securable": true
             },
             "FullTextAspectSettings": {}
@@ -197,7 +262,7 @@
                 "GraphQLContentTypePartSettings": {},
                 "TitlePartSettings": {
                   "Options": 2,
-                  "Pattern": "{{ContentItem.Content.VbenMenu.menuName.Text}}"
+                  "Pattern": "{{ContentItem.Content.VbenMenu.MenuName.Text}}"
                 },
                 "ContentIndexSettings": {
                   "Included": true,
@@ -209,8 +274,41 @@
           ]
         },
         {
-          "Name": "AmisSchema",
-          "DisplayName": "Amis Schema",
+          "Name": "RDBMSMappingConfig",
+          "DisplayName": "RDBMS Mapping Config",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "RDBMSMappingConfig",
+              "Name": "RDBMSMappingConfig",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DbConnectionConfig",
+          "DisplayName": "外部数据源",
           "Settings": {
             "ContentTypeSettings": {
               "Creatable": true,
@@ -223,8 +321,8 @@
           },
           "ContentTypePartDefinitionRecords": [
             {
-              "PartName": "AmisSchema",
-              "Name": "AmisSchema",
+              "PartName": "DbConnectionConfig",
+              "Name": "DbConnectionConfig",
               "Settings": {
                 "ContentTypePartSettings": {
                   "Position": "1"
@@ -249,60 +347,12 @@
           "Settings": {},
           "ContentPartFieldDefinitionRecords": [
             {
-              "FieldName": "TextField",
-              "Name": "FirstName",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "FirstName",
-                  "Position": "0"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "LastName",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "LastName",
-                  "Position": "2"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "Gender",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Gender",
-                  "Editor": "PredefinedList",
-                  "Position": "1"
-                },
-                "TextFieldSettings": {},
-                "TextFieldPredefinedListEditorSettings": {
-                  "Options": [
-                    {
-                      "name": "Male",
-                      "value": "Male"
-                    },
-                    {
-                      "name": "Female",
-                      "value": "Female"
-                    },
-                    {
-                      "name": "Unknown",
-                      "value": ""
-                    }
-                  ]
-                },
-                "ContentIndexSettings": {}
-              }
-            },
-            {
               "FieldName": "UserPickerField",
               "Name": "OwnerUser",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "OwnerUser"
+                  "DisplayName": "OwnerUser",
+                  "Position": "0"
                 },
                 "UserPickerFieldSettings": {
                   "Required": true,
@@ -310,6 +360,36 @@
                   "DisplayedRoles": []
                 },
                 "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "UserName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UserName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Email",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Email",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "UserId",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UserId",
+                  "Position": "3"
+                }
               }
             }
           ]
@@ -461,10 +541,35 @@
             },
             {
               "FieldName": "TextField",
-              "Name": "Name",
+              "Name": "RealName",
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "真实姓名",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "MediaField",
+              "Name": "Avatar",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "用户头像",
+                  "Editor": "Attached",
+                  "Position": "2"
+                },
+                "ContentIndexSettings": {},
+                "MediaFieldSettings": {
+                  "Multiple": false
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "登录名",
                   "Position": "4"
                 },
                 "TextFieldSettings": {},
@@ -472,16 +577,6 @@
                   "Included": true,
                   "Stored": true,
                   "Analyzed": true
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "RealName",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "真实姓名",
-                  "Position": "0"
                 }
               }
             }
@@ -684,6 +779,132 @@
           ]
         },
         {
+          "Name": "AmisSchema",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Schema",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Schema",
+                  "Editor": "Monaco",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "ContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Analyzed": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Description",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Description",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Name",
+                  "Position": "3"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "hasUrlParams",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "hasUrlParams",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "TargetTypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "TargetTypeName",
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DynamicIndexConfigSetting",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "TypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "TypeName",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "TableName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "TableName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ConfigData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ConfigData",
+                  "Editor": "Monaco",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "EntityInfo",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "EntityInfo",
+                  "Editor": "Monaco",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "ContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
           "Name": "VbenMenu",
           "Settings": {},
           "ContentPartFieldDefinitionRecords": [
@@ -703,7 +924,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "上级菜单",
-                  "Position": "2"
+                  "Position": "6"
                 },
                 "ContentPickerFieldSettings": {
                   "DisplayedContentTypes": [
@@ -723,7 +944,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "排序",
-                  "Position": "3"
+                  "Position": "7"
                 }
               }
             },
@@ -733,7 +954,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "图标",
-                  "Position": "4"
+                  "Position": "8"
                 }
               }
             },
@@ -743,7 +964,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "路由地址",
-                  "Position": "5"
+                  "Position": "9"
                 }
               }
             },
@@ -753,7 +974,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "组件路径",
-                  "Position": "6"
+                  "Position": "10"
                 }
               }
             },
@@ -763,7 +984,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "权限标识",
-                  "Position": "7"
+                  "Position": "11"
                 }
               }
             },
@@ -773,7 +994,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "状态",
-                  "Position": "8"
+                  "Position": "12"
                 }
               }
             },
@@ -783,17 +1004,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "是否外链",
-                  "Position": "9"
-                }
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "Keepalive",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "是否缓存",
-                  "Position": "10"
+                  "Position": "13"
                 }
               }
             },
@@ -803,7 +1014,7 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "是否显示",
-                  "Position": "11"
+                  "Position": "15"
                 }
               }
             },
@@ -813,7 +1024,125 @@
               "Settings": {
                 "ContentPartFieldSettings": {
                   "DisplayName": "菜单类型",
+                  "Position": "5"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Meta",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Meta",
+                  "Editor": "Monaco",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "NumericField",
+              "Name": "ComponentType",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ComponentType",
+                  "Position": "3"
+                },
+                "NumericFieldSettings": {
+                  "Hint": "组件 /  Layout / 动态页"
+                },
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "SchemaId",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "SchemaId",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "redirect",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "redirect",
                   "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "KeepAlive",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "KeepAlive"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "RDBMSMappingConfig",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "TargetTable",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Target Table",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ContentTypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ContentTypeName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "MappingData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "MappingData",
+                  "Editor": "CodeMirror",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "EnableAutoSync",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Enable Auto Sync",
+                  "Editor": "Switch",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "ReadOnly",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Read Only",
+                  "Editor": "Switch",
+                  "Position": "5"
                 }
               }
             }
@@ -832,42 +1161,81 @@
           "ContentPartFieldDefinitionRecords": []
         },
         {
-          "Name": "AmisSchema",
+          "Name": "DbConnectionConfig",
           "Settings": {},
           "ContentPartFieldDefinitionRecords": [
             {
               "FieldName": "TextField",
-              "Name": "Schema",
+              "Name": "DatabaseProvider",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "Schema",
-                  "Editor": "Monaco",
+                  "DisplayName": "Database Provider",
+                  "Editor": "PredefinedList",
                   "Position": "0"
                 },
-                "TextFieldSettings": {},
-                "TextFieldMonacoEditorSettings": {
-                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
-                },
-                "ContentIndexSettings": {}
-              }
-            },
-            {
-              "FieldName": "TextField",
-              "Name": "Name",
-              "Settings": {
-                "ContentPartFieldSettings": {
-                  "DisplayName": "Name",
-                  "Position": "1"
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "SqlServer",
+                      "value": "SqlServer"
+                    },
+                    {
+                      "name": "Sqlite",
+                      "value": "Sqlite"
+                    },
+                    {
+                      "name": "MySql",
+                      "value": "MySql"
+                    },
+                    {
+                      "name": "PostgreSQL",
+                      "value": "PostgreSQL"
+                    }
+                  ],
+                  "Editor": 1
                 }
               }
             },
             {
               "FieldName": "TextField",
-              "Name": "Description",
+              "Name": "ConnectionString",
               "Settings": {
                 "ContentPartFieldSettings": {
-                  "DisplayName": "Description",
+                  "DisplayName": "ConnectionString",
+                  "Editor": "TextArea",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "UseIntergrationAuth",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "使用集成身份认证",
+                  "Position": "1"
+                },
+                "BooleanFieldSettings": {},
+                "ContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "UserName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UserName",
                   "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Password",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Password",
+                  "Position": "3"
                 }
               }
             }
@@ -960,11 +1328,6 @@
           "Permissions": []
         },
         {
-          "Name": "User",
-          "Description": "User",
-          "Permissions": []
-        },
-        {
           "Name": "Administrator",
           "Description": "Administrator role",
           "Permissions": [
@@ -1039,6 +1402,13 @@
             "ManageMicrosoftAuthentication",
             "ManageTransformalizeSettings"
           ]
+        },
+        {
+          "Name": "User",
+          "Description": "User",
+          "Permissions": [
+            "ExecuteGraphQL"
+          ]
         }
       ]
     },
@@ -1055,6 +1425,29 @@
               "UserProfile",
               "VbenList",
               "VbenMenu"
+            ],
+            "Culture": "any"
+          }
+        },
+        {
+          "Crm": {
+            "AnalyzerName": "standardanalyzer",
+            "IndexLatest": true,
+            "IndexedContentTypes": [
+              "Customer",
+              "CustomerSource",
+              "Industry",
+              "MarketSegment"
+            ],
+            "Culture": "any"
+          }
+        },
+        {
+          "amis": {
+            "AnalyzerName": "standardanalyzer",
+            "IndexLatest": true,
+            "IndexedContentTypes": [
+              "AmisSchema"
             ],
             "Culture": "any"
           }
@@ -1079,6 +1472,14 @@
           "Name": "crmCustomers",
           "Source": "Lucene",
           "Schema": "{\r\n  \"type\":\"contentItem/Customer\" ,\r\n  \"hasTotal\": true\r\n}"
+        },
+        {
+          "Index": "amis",
+          "Template": "{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"AmisSchema\" } },\r\n                {  \"term\": { \"Content.ContentItem.Latest\": \"true\" } },\r\n                {  \"term\": { \"Content.ContentItem.DisplayText.Normalized\": \"{{name}}\" } }\r\n            ],\r\n        }\r\n    } \r\n}",
+          "ReturnContentItems": true,
+          "Name": "GetAmisPageSchema",
+          "Source": "Lucene",
+          "Schema": "{\r\n\"type\": \"contentItem/AmisSchema\"\r\n}"
         }
       ]
     },
@@ -1106,7 +1507,10 @@
                 "IncludeAll": false,
                 "ContentTypes": [
                   "AmisSchema",
+                  "DbConnectionConfig",
                   "Department",
+                  "DynamicIndexConfigSetting",
+                  "RDBMSMappingConfig",
                   "UserProfile",
                   "UserProfileInternal",
                   "VbenList",
@@ -1114,7 +1518,10 @@
                 ],
                 "ContentParts": [
                   "AmisSchema",
+                  "DbConnectionConfig",
                   "Department",
+                  "DynamicIndexConfigSetting",
+                  "RDBMSMappingConfig",
                   "UserProfile",
                   "UserProfileInternal",
                   "VbenList",
@@ -1138,7 +1545,9 @@
               "Step": {
                 "IncludeAll": false,
                 "IndexNames": [
-                  "basicIndex"
+                  "basicIndex",
+                  "Crm",
+                  "amis"
                 ],
                 "Id": "e9f6f4cced974e2b85c258cf2eddc7c5",
                 "Name": "LuceneIndex"
@@ -1158,7 +1567,8 @@
                 "DeploymentPlanNames": [
                   "Export content to deployment plan target",
                   "Export Basic Informations",
-                  "Export Sample Data"
+                  "Export Sample Data",
+                  "VbenMenus"
                 ],
                 "Id": "878a9e87a9984211bb97e75eacecf761",
                 "Name": "DeploymentPlan"
@@ -1233,6 +1643,29 @@
               "Step": {
                 "Id": "db5a582f177149aa961e944a101f9c25",
                 "Name": "AllQueries"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "VbenMenus",
+          "Steps": [
+            {
+              "Type": "ContentDefinitionDeploymentStep",
+              "Step": {
+                "IncludeAll": false,
+                "ContentTypes": [
+                  "VbenMenu",
+                  "VbenRoleMenus"
+                ],
+                "ContentParts": [
+                  "VbenMenu",
+                  "VbenRoleMenus",
+                  "TitlePart",
+                  "VbenMenuPart"
+                ],
+                "Id": "90cddf28ea0a4197a6f83d1e9ab619db",
+                "Name": "ContentDefinition"
               }
             }
           ]

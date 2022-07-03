@@ -7,10 +7,8 @@ namespace EasyOC.CMS.WebHost
 {
     public class Startup
     {
-
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -38,7 +36,7 @@ namespace EasyOC.CMS.WebHost
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(); // Enable CORS! 
+            app.UseCors(); // Enable CORS!
             app.UseStaticFiles();
             app.UseOrchardCore();
         }

@@ -67,7 +67,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 throw new UnauthorizedAccessException();
             }
             var users = Fsql.Select<UserIndex, UserProfileDIndex>()
-                 .LeftJoin((ui, up) => ui.UserId == up.UserId)
+                 .LeftJoin((ui, up) => ui.UserId == up.UserId && up.Latest && up.Published)
                  .Where((u, up) => u.IsEnabled)
                  .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.UserProfilePartDepartment == input.DepartmentId)
                  ;

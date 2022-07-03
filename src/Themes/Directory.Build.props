@@ -2,7 +2,5 @@
 
   <Import Project="..\EasyOC.Build\Commons.props" />
 
-  <PropertyGroup>
-  </PropertyGroup>
 
 </Project>

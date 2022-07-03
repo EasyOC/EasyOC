@@ -27,6 +27,8 @@
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Media" Version="$(OrchardCoreVersion)" />
+    
 
   </ItemGroup>
 

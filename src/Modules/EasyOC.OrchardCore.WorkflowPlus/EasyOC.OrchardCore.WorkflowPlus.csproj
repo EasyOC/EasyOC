@@ -11,9 +11,6 @@
 	  <None Remove="Timmers\**" />
 	</ItemGroup>
 	<ItemGroup>
-		
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Remove="Drivers\CAPEventDisplayDriver.cs" />
 		<Compile Remove="Timers\TimerEvent.cs" />
 		<Compile Remove="ViewModels\CAPEventViewModel.cs" />
@@ -36,7 +33,8 @@
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Deployment" Version="$(OrchardCoreVersion)" />
 	</ItemGroup>
  
 	<ItemGroup>
@@ -44,6 +42,13 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <RazorGenerate Remove="Views\WorkflowType\Duplicate.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\Edit.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\EditProperties.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\Index.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\RenderActivity.cshtml" />
 	</ItemGroup>
 
 </Project>

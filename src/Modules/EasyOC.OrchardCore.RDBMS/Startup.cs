@@ -19,20 +19,20 @@ using System;
 
 namespace EasyOC.OrchardCore.RDBMS
 {
-    [RequireFeatures("EasyOC.OrchardCore.VueElementUI", "EasyOC.OrchardCore.RDBMS")]
+    [Feature("EasyOC.OrchardCore.RDBMS")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(this.GetType().Assembly);
-            services.AddScoped<IQuerySource, FreeSqlQuerySource>();
+            services.AddScoped<IContentFieldsValuePathProvider, ContentFieldsValuePathProvider>();
+            // services.AddScoped<IQuerySource, FreeSqlQuerySource>();
             services.AddSingleton<IGlobalMethodProvider, FreeSqlWorkflowMethodsProvider>();
             //services.AddAutoMapper(GetType().Assembly);
             services.AddActivity<SQLTask, SQLTaskDisplayDriver>();
             services.AddScoped<IRDBMSAppService, RDBMSAppService>();
             //services.AddScoped<IPermissionProvider, Permissions>();
             services.AddScoped<INavigationProvider, AdminMenu>();
-            services.AddScoped<IContentFieldsValuePathProvider, ContentFieldsValuePathProvider>();
             services.AddScoped<IDataMigration, RDBMSMappingConfigMigration>();
             services.AddScoped<IDataMigration, DbConnectionConfigMigration>();
         }

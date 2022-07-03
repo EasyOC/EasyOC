@@ -3,20 +3,20 @@ using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement.Metadata.Models;
 using System;
 using System.Collections.Generic;
-using TextField = OrchardCore.ContentFields.Fields.TextField;
+using TextField=OrchardCore.ContentFields.Fields.TextField;
 
 namespace EasyOC.OrchardCore.DynamicTypeIndex
 {
     public static class DbFieldsExtensions
     {
         public static DynamicIndexFieldItem AddDbField<T>
-            (this List<DynamicIndexFieldItem> list,
-                string columnName, int length = 0, bool isSystem = false,
-               bool isNullable = false,
-               bool isIdentity = false,
-               bool isPrimaryKey = false,
-               bool isIndex = false
-            )
+        (this List<DynamicIndexFieldItem> list,
+            string columnName, int length = 0, bool isSystem = false,
+            bool isNullable = false,
+            bool isIdentity = false,
+            bool isPrimaryKey = false,
+            bool isIndex = false
+        )
         {
             var item = new DynamicIndexFieldItem
             {
@@ -39,9 +39,9 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
         }
 
         public static DynamicIndexFieldItem ToDynamicIndexField
-                    (this ContentPartFieldDefinition field,
-                         ContentTypePartDefinition part
-                    )
+        (this ContentPartFieldDefinition field,
+            ContentTypePartDefinition part
+        )
         {
             var isTypeSelf = part.IsTypeSelfPart();
             var fieldPath = $"{part.Name}.{field.Name}";
@@ -66,7 +66,10 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
 
             return item;
         }
-
+        public static string GetCsFieldName(this DbFiledOption dbOption)
+        {
+            return dbOption.Name.Replace("_", string.Empty);
+        }
 
         public static void FillDbFiledOption(this DbFiledOption dbOption, ContentPartFieldDefinition field, bool isTypeSelf = false)
         {
@@ -82,6 +85,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                 case nameof(TextField):
                 case nameof(LinkField):
                 case nameof(HtmlField):
+                case nameof(TimeField):
                     dbOption.CsTypeName = typeof(string).FullName;
                     dbOption.Length = -1;//Unlimited
                     break;
@@ -93,7 +97,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
                     break;
                 case nameof(DateTimeField):
                 case nameof(DateField):
-                case nameof(TimeField):
                     dbOption.CsTypeName = typeof(DateTime).FullName;
                     break;
                 case nameof(ContentPickerField):

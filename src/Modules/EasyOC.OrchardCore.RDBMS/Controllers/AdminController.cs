@@ -1,25 +1,14 @@
 ﻿using EasyOC.OrchardCore.RDBMS.Models;
 using EasyOC.OrchardCore.RDBMS.Services;
 using EasyOC.OrchardCore.RDBMS.ViewModels;
-using FreeSql;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Records;
-using OrchardCore.ContentManagement.Records;
-using OrchardCore.DisplayManagement.ModelBinding;
-using OrchardCore.DisplayManagement.Notify;
-using OrchardCore.Settings;
 using System.Collections.Generic;
-using System.Linq;
 using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
-using YesSql;
 using EasyOC.OrchardCore.ContentExtentions.AppServices;
 using System;
 
@@ -32,23 +21,24 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
         private readonly IContentManager _contentManager;
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         private readonly IRDBMSAppService _rDbmsAppService;
-
         private readonly IServiceProvider _serviceProvider;
 
         public AdminController(
             IAuthorizationService authorizationService,
-            IContentManager contentManager, IContentFieldsValuePathProvider contentFieldsValuePathProvider,
-            IRDBMSAppService rDbmsAppService,
+            IContentManager contentManager,
+            // IContentFieldsValuePathProvider contentFieldsValuePathProvider,
             IContentTypeManagementAppService contentManagementAppService,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService)
         {
             _authorizationService = authorizationService;
 
             _contentManager = contentManager;
-            _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
-            _rDbmsAppService = rDbmsAppService;
+            // _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
+            _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
+
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
+            _rDbmsAppService = rDbmsAppService;
         }
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)

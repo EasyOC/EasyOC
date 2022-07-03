@@ -6,7 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Scripting\ExcelMethodsProvider.cs" />
 	  <Compile Remove="Workflow\UploadExcelTask.cs" />
 	</ItemGroup>
 
@@ -34,6 +33,5 @@
 
 
 </Project>
-
 
 

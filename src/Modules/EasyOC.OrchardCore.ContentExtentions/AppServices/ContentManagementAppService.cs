@@ -142,6 +142,39 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
             };
         }
 
+
+        public async Task ImportAsync([FromBody] ImportContentInput model)
+        {
+            if (model.ContentType.IsNullOrWhiteSpace())
+            {
+                throw new AppFriendlyException("invalid property: contentType", StatusCodes.Status400BadRequest);
+            }
+
+            var typeDef = ContentDefinitionManager.GetTypeDefinition(model.ContentType);
+            if (typeDef == null)
+            {
+                throw new AppFriendlyException($"invalid property: contentType ,'{model.ContentType}' is not found "
+                    , StatusCodes.Status400BadRequest);
+            }
+
+
+            if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
+            {
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+            }
+
+
+            var ls = model.InputList.Select((m) =>
+            {
+                var contentItem = ContentManager.NewAsync(model.ContentType).GetAwaiter().GetResult();
+                //var newContentItem = contentItem as ContentItem;
+                m[nameof(ContentModel.ContentType)] = model.ContentType;
+                return MergeFromSimpleData(contentItem, m, typeDef);
+            });
+
+            await ContentManager.ImportAsync(ls);
+        }
+
         public static ContentItem MergeFromSimpleData(ContentItem contentItem, ContentModel model,
             ContentTypeDefinition typeDefinition)
         {

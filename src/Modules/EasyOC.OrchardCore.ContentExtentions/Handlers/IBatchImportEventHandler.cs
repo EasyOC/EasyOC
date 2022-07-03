@@ -9,7 +9,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.Handlers
 {
     public interface IBatchImportEventHandler
     {
-
         Task BeforeImportAsync(IEnumerable<ImportContentContext> contentItems);
 
         Task AfterImportAsync(IEnumerable<ImportContentContext> contentItems);
