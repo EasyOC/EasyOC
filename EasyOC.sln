@@ -92,6 +92,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.OrchardCore.AntdAdmi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombiq.HelpfulExtensions", "src\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj", "{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Lucene", "src\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj", "{8C7825F7-E1E8-4286-BA66-AB3887F784E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,6 +196,10 @@ Global
 		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -223,6 +229,7 @@ Global
 		{62DBC7EE-316C-4BFD-A6D6-9FDC046FDBBF} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{88C9C461-768A-4CD4-A33C-E6917EE44E81} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D} = {5A30262C-639E-4734-AB2A-97425C5A1478}
+		{8C7825F7-E1E8-4286-BA66-AB3887F784E4} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}

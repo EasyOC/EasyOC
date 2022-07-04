@@ -8,6 +8,7 @@
 -->
 	<ItemGroup>
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AntdAdmin\EasyOC.OrchardCore.AntdAdmin.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" PrivateAssets="none" />
