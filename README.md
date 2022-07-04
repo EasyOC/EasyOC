@@ -41,6 +41,10 @@ QQ群：877196442
 
 ![image](https://user-images.githubusercontent.com/15613121/146934540-f079cf5a-d462-4458-9ee4-5dd76960e265.png)
 
+### Swagger UI and openid code flow auth
+![swaggerUI](https://user-images.githubusercontent.com/15613121/161471700-c7cfc41f-503f-4406-95fd-04c93d93091b.gif)
+
+
 ### Generate ContentType form RDBMS
 
 ![image](https://user-images.githubusercontent.com/15613121/146937454-2c890612-4432-4557-82c1-a9795b183782.png)

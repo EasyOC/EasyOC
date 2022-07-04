@@ -193,7 +193,7 @@ namespace EaysOC.GraphQL.Queries
             var contentTypes = definitionManager.LoadTypeDefinitions()
                 .Select(x =>
                 {
-                    var stereotype = x.Settings.ToObject<ContentTypeSettings>().Stereotype;
+                    var stereotype = x.Settings.ToObject<ContentTypeSettings>()?.Stereotype;
                     return new
                     {
                         x.DisplayName, x.Name, Stereotype = stereotype
@@ -225,7 +225,7 @@ namespace EaysOC.GraphQL.Queries
                         {
                             return true;
                         }
-                        if (x.ContentFieldOption.FieldType == "ContentItemPickerField")
+                        if (x.ContentFieldOption.FieldType is "ContentItemPickerField" or "UserPickerField")
                         {
                             if (name.Equals($"{x.ContentFieldOption.FieldName}.firstValue", StringComparison.OrdinalIgnoreCase))
                             {
