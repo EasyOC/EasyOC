@@ -27,6 +27,7 @@
     <PackageManagement Include="FreeSql.Provider.SqlServer" Version="$(FreeSqlVersion)"  />
     <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="$(FreeSqlVersion)" />
     <PackageManagement Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageManagement Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00016" />
 
   </ItemGroup>
 </Project>

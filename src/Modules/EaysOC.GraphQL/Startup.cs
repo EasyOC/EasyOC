@@ -19,10 +19,7 @@ namespace EaysOC.GraphQL
     [RequireFeatures(EasyOC.Core.Constants.EasyOCCoreModuleId, "OrchardCore.Apis.GraphQL")]
     public class Startup : StartupBase
     {
-        public override int Order
-        {
-            get { return 1000; }
-        }
+
 
         public override void ConfigureServices(IServiceCollection services)
         {
