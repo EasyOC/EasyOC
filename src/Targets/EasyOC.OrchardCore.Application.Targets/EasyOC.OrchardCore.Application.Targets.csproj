@@ -9,10 +9,11 @@
 	<ItemGroup>
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj" PrivateAssets="none" />
+
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AntdAdmin\EasyOC.OrchardCore.AntdAdmin.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" PrivateAssets="none" />

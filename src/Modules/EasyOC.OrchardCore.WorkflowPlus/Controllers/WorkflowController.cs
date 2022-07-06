@@ -34,41 +34,73 @@ namespace EasyOC.OrchardCore.WorkflowPlus.Controllers
             {
                 return Forbid();
             }
-
-            string archiveFileName;
-            var itemIds = ids.Split(',').Select(int.Parse);
+            var itemIds = ids.Split(',').Select(int.Parse).ToArray();
             if (!itemIds.Any())
             {
                 return NoContent();
             }
-            using (var fileBuilder = new TemporaryFileBuilder())
+
+            using var fileBuilder = new TemporaryFileBuilder();
+            var archiveFileName = fileBuilder.Folder + ".zip";
+            var recipeDescriptor = new RecipeDescriptor();
+            var deploymentPlanResult = new DeploymentPlanResult(fileBuilder, recipeDescriptor);
+            var data = new JArray();
+            deploymentPlanResult.Steps.Add(new JObject(
+            new JProperty("name", "WorkflowType"),
+            new JProperty("data", data)
+            ));
+            //Do filter
+            foreach (var workflow in await _workflowTypeStore.GetAsync(itemIds))
             {
-                archiveFileName = fileBuilder.Folder + ".zip";
-                // archiveFileName = Path.Combine(fileBuilder.Folder, "Recipe.json");
-                var recipeDescriptor = new RecipeDescriptor();
-                var deploymentPlanResult = new DeploymentPlanResult(fileBuilder, recipeDescriptor);
-                var data = new JArray();
-                deploymentPlanResult.Steps.Add(new JObject(
-                new JProperty("name", "WorkflowType"),
-                new JProperty("data", data)
-                ));
-                //Do filter
-                foreach (var workflow in await _workflowTypeStore.GetAsync(itemIds))
-                {
-                    var objectData = JObject.FromObject(workflow);
+                var objectData = JObject.FromObject(workflow);
 
-                    // Don't serialize the Id as it could be interpreted as an updated object when added back to YesSql
-                    objectData.Remove(nameof(workflow.Id));
-                    data.Add(objectData);
-                }
-
-                await deploymentPlanResult.FinalizeAsync();
-                ZipFile.CreateFromDirectory(fileBuilder.Folder, archiveFileName);
+                // Don't serialize the Id as it could be interpreted as an updated object when added back to YesSql
+                objectData.Remove(nameof(workflow.Id));
+                data.Add(objectData);
             }
+
+            await deploymentPlanResult.FinalizeAsync();
+            ZipFile.CreateFromDirectory(fileBuilder.Folder, archiveFileName);
+
             return new PhysicalFileResult(archiveFileName, "application/zip")
             {
-                FileDownloadName = "WorkflowType.zip"
+                FileDownloadName = "WorkflowTypes.zip"
             };
         }
+
+        public async Task<IActionResult> ExportWorkflow(int id)
+        {
+            if (!await _authorizationService.AuthorizeAsync(User, DeploymentPermissions.Export))
+            {
+                return Forbid();
+            }
+
+
+            using var fileBuilder = new TemporaryFileBuilder();
+            var archiveFileName = fileBuilder.Folder + ".zip";
+            var recipeDescriptor = new RecipeDescriptor();
+            var deploymentPlanResult = new DeploymentPlanResult(fileBuilder, recipeDescriptor);
+            var data = new JArray();
+            deploymentPlanResult.Steps.Add(new JObject(
+            new JProperty("name", "WorkflowType"),
+            new JProperty("data", data)
+            ));
+            //Do filter
+            var workflow = await _workflowTypeStore.GetAsync(id);
+            var objectData = JObject.FromObject(workflow);
+
+            objectData.Remove(nameof(workflow.Id));
+            data.Add(objectData);
+
+            await deploymentPlanResult.FinalizeAsync();
+            ZipFile.CreateFromDirectory(fileBuilder.Folder, archiveFileName);
+
+            return new PhysicalFileResult(archiveFileName, "application/zip")
+            {
+                FileDownloadName = $"{workflow.Name}.zip"
+            };
+        }
+
+
     }
 }

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace OrchardCore.RelationDb.Controllers
+namespace EasyOC.OrchardCore.Amis.Controllers
 {
     public class AdminController : Controller
     {
@@ -12,11 +12,11 @@ namespace OrchardCore.RelationDb.Controllers
         {
             return View();
         }
-        [Route("JZSoft.OrchardCore.Amis/amis-editor/index")]
+        [Route("EasyOC.OrchardCore.Amis/amis-editor/index")]
         [AllowAnonymous]
         public IActionResult AmisEditor()
         {
-            //return Redirect("~/JZSoft.OrchardCore.Amis/amis-editor/index.html");
+            //return Redirect("~/EasyOC.OrchardCore.Amis/amis-editor/index.html");
             return View();
         }
 

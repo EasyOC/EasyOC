@@ -7,7 +7,7 @@ using OrchardCore.Security.Permissions;
 using System;
 // ReSharper disable All
 
-namespace JZSoft.OrchardCore.Amis
+namespace EasyOC.OrchardCore.Amis
 {
     public class Startup : StartupBase
     {
@@ -21,7 +21,7 @@ namespace JZSoft.OrchardCore.Amis
         {
             routes.MapAreaControllerRoute(
                 name: "Home",
-                areaName: "JZSoft.OrchardCore.Amis",
+                areaName: "EasyOC.OrchardCore.Amis",
                 pattern: "Home/Index",
                 defaults: new { controller = "Home", action = "Index" }
             );

@@ -54,6 +54,12 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
         }
 
+        /// <summary>
+        /// 获取指定类型的动态索引配置
+        /// 如果不存在，则生成默认配置
+        /// </summary>
+        /// <param name="typeName">ConntentTypeName</param>
+        /// <returns></returns>
         public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName)
         {
             var config = await GetDynamicIndexConfigAsync(typeName);

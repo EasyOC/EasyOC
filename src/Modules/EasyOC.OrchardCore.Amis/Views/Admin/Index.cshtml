@@ -1,1 +1,1970 @@
-Template
+@{
+    var resourceRoot = "/EasyOC.OrchardCore.Amis";
+}
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <title>amis demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="stylesheet" href="@(resourceRoot)/amis/sdk/sdk.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/amis/sdk/antd.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/amis/sdk/cxd.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/amis/sdk/helper.css" />
+    <link rel="stylesheet" href="@(resourceRoot)/amis/sdk/iconfont.css" />
+    <!-- 这是默认主题所需的，如果是其他主题则不需要 -->
+    <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
+    <!-- <link rel="stylesheet" href="sdk-ie11.css" /> -->
+    <!-- 不过 amis 开发团队几乎没测试过 IE 11 下的效果，所以可能有细节功能用不了，如果发现请报 issue -->
+    <style>
+      html,
+      body,
+      .app-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+</head>
+<body>
+<div id="root" class="app-wrapper"></div>
+<script src="@(resourceRoot)/amis/sdk/sdk.js"></script>
+<script type="text/javascript">
+      (function () {
+        let amis = amisRequire('amis/embed');
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON = {
+                         "type": "page",
+                         "regions": [
+                           "body",
+                           "toolbar",
+                           "header"
+                         ],
+                         "title": "客户管理",
+                         "body": [
+                           {
+                             "type": "crud",
+                             "name": "contentMange",
+                             "placeholder": "未查询到数据",
+                             "perPage": 10,
+                             "alwaysShowPagination": true,
+                             "perPageAvailable": [
+                               10,
+                               20,
+                               50,
+                               100
+                             ],
+                             "footerToolbar": [
+                               {
+                                 "type": "statistics"
+                               },
+                               {
+                                 "type": "switch-per-page"
+                               },
+                               {
+                                 "type": "pagination",
+                                 "align": "right"
+                               }
+                             ],
+                             "api": {
+                               "method": "post",
+                               "url": "/api/graphql",
+                               "data": {
+                                 "&": "$$"
+                               },
+                               "dataType": "json",
+                               "requestAdaptor": "console.log(\"api.发送适配器\",api) \n                     console.log(\"哈哈哈哈\", amisExt.convertCondition(api.body.conditions));\n                     const filterParams=[`status: ${api.data.status}`]\n                     const variables={\n                        jsonFilter:amisExt.dynamicJsonFilter(api.body.conditions)//,\n                        // filter: amisExt.convertCondition(api.body.conditions)\n                      }\n                     if(api.data.displayText){\n                         filterParams.push(`where: {displayText_contains: \"${api.data.displayText}\"}`)\n                        }\n                        if(api.data.orderBy){\n                                filterParams.push(`orderBy:{${api.body.orderBy}:${api.body.orderDir.toUpperCase()}}`)\n                            }\n                            console.log(\"filterParams.join(',')\",filterParams.join(','))\n                            const  query=`query curdQuery($jsonFilter:String){ \n        data:contentItems( \n            contentType: Customer\n            page: ${api.body.page}  \n            pageSize: ${api.body.perPage} \n            orderBy: {field: \"${api.body.orderBy?api.body.orderBy:''}\", direction: ${api.body.orderDir?api.body.orderDir.toUpperCase():'DESC' } } \n            dynamicJSONFilter: $jsonFilter\n              )\n            {  \n                total                 \n                items \n                { \n                    ... on  Customer\n                        {\n  contentItemId \n  contentItemVersionId \n  contentType \n  displayText \n  latest \n  published \n  modifiedUtc \n  publishedUtc \n  createdUtc \n  owner \n  author \n  name \n  custNum \n  marketSegment {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  source {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  industry {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  custClass {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  salesOwner {\n    firstValue \n    firstUserProfiles {\n      displayText \n    }\n  }\n  guimo \n  dateeeee \n  datetimesssssss \n  timeeeeeeeeeee \n  images {\n    urls \n    paths \n  }\n  address {\n    countryName \n    province \n    city \n    postalCode \n    details \n    name \n  }\n}\n                    \n                }\n            }\n        }`\n        api.data={query,variables}\n        console.log(\"api.发送适配器2\",api) \n        return api"
+                             },
+                             "columns": [
+                               {
+                                 "type": "operation",
+                                 "name": "displayText",
+                                 "label": "显示名称",
+                                 "buttons": [
+                                   {
+                                     "type": "button",
+                                     "label": "${displayText}",
+                                     "actionType": "drawer",
+                                     "level": "link",
+                                     "drawer": {
+                                       "title": "查看详情",
+                                       "body": [
+                                         {
+                                           "type": "container",
+                                           "body": [
+                                             {
+                                               "type": "button-toolbar",
+                                               "buttons": [
+                                                 {
+                                                   "type": "button",
+                                                   "label": "编辑",
+                                                   "actionType": "drawer",
+                                                   "level": "success",
+                                                   "drawer": {
+                                                     "resizable": true,
+                                                     "type": "drawer",
+                                                     "title": "编辑",
+                                                     "body": [
+                                                       {
+                                                         "type": "form",
+                                                         "body": [
+                                                           {
+                                                             "type": "property",
+                                                             "id": "u:1577f3084cdd",
+                                                             "title": "",
+                                                             "labelStyle": {
+                                                               "textAlign": "right"
+                                                             },
+                                                             "contentStyle": {
+                                                               "textAlign": "left"
+                                                             },
+                                                             "items": [
+                                                               {
+                                                                 "label": "编号",
+                                                                 "content": "${contentItemId}",
+                                                                 "span": 1
+                                                               },
+                                                               {
+                                                                 "label": "版本号",
+                                                                 "content": "${contentItemVersionId}",
+                                                                 "span": 1
+                                                               },
+                                                               {
+                                                                 "label": "创建人",
+                                                                 "content": "${author}",
+                                                                 "span": 1
+                                                               },
+                                                               {
+                                                                 "label": "创建时间",
+                                                                 "content": "${createdUtc | toDate |date:YYYY-MM-DD HH\\:mm\\:ss }",
+                                                                 "span": 1
+                                                               },
+                                                               {
+                                                                 "span": 1,
+                                                                 "label": "修改时间",
+                                                                 "content": "${modifiedUtc | toDate |date:YYYY-MM-DD HH\\:mm\\:ss } "
+                                                               }
+                                                             ],
+                                                             "column": 2,
+                                                             "mode": "table",
+                                                             "closeOnEsc": false,
+                                                             "closeOnOutside": false,
+                                                             "showCloseButton": true,
+                                                             "className": "m-b-md"
+                                                           },
+                                                           {
+                                                             "name": "name",
+                                                             "label": "客户名称",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "custNum",
+                                                             "label": "客户编号",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "marketSegment.firstValue",
+                                                             "label": "市场细分",
+                                                             "description": null,
+                                                             "type": "select",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "checkAll": false,
+                                                             "searchable": true,
+                                                             "multiple": false,
+                                                             "extractValue": false,
+                                                             "autoComplete": {
+                                                               "method": "post",
+                                                               "url": "/api/graphql",
+                                                               "dataType": "json",
+                                                               "replaceData": false,
+                                                               "requestAdaptor": "const query=`\n                        {\n                            options:marketSegment\n                            (status: PUBLISHED, first: 10, \n                                where: {displayText_contains: \"${api.body.term}\"}) \n                            {\n                                label:displayText\n                                value:contentItemId\n                            }\n                        }`\n                        api.data={query}\n                        return api"
+                                                             }
+                                                           },
+                                                           {
+                                                             "name": "source.firstValue",
+                                                             "label": "客户来源",
+                                                             "description": null,
+                                                             "type": "select",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "checkAll": false,
+                                                             "searchable": true,
+                                                             "multiple": false,
+                                                             "extractValue": false,
+                                                             "autoComplete": {
+                                                               "method": "post",
+                                                               "url": "/api/graphql",
+                                                               "dataType": "json",
+                                                               "replaceData": false,
+                                                               "requestAdaptor": "const query=`\n                        {\n                            options:customerSource\n                            (status: PUBLISHED, first: 10, \n                                where: {displayText_contains: \"${api.body.term}\"}) \n                            {\n                                label:displayText\n                                value:contentItemId\n                            }\n                        }`\n                        api.data={query}\n                        return api"
+                                                             }
+                                                           },
+                                                           {
+                                                             "name": "industry.firstValue",
+                                                             "label": "行业",
+                                                             "description": null,
+                                                             "type": "select",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "checkAll": false,
+                                                             "searchable": true,
+                                                             "multiple": false,
+                                                             "extractValue": false,
+                                                             "autoComplete": {
+                                                               "method": "post",
+                                                               "url": "/api/graphql",
+                                                               "dataType": "json",
+                                                               "replaceData": false,
+                                                               "requestAdaptor": "const query=`\n                        {\n                            options:industry\n                            (status: PUBLISHED, first: 10, \n                                where: {displayText_contains: \"${api.body.term}\"}) \n                            {\n                                label:displayText\n                                value:contentItemId\n                            }\n                        }`\n                        api.data={query}\n                        return api"
+                                                             }
+                                                           },
+                                                           {
+                                                             "name": "custClass.firstValue",
+                                                             "label": "客户分类",
+                                                             "description": null,
+                                                             "type": "select",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "checkAll": false,
+                                                             "searchable": true
+                                                           },
+                                                           {
+                                                             "name": "salesOwner.firstValue",
+                                                             "label": "销售负责人",
+                                                             "description": null,
+                                                             "type": "select",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "autoComplete": {
+                                                               "method": "post",
+                                                               "url": "/api/graphql",
+                                                               "dataType": "json",
+                                                               "replaceData": false,
+                                                               "requestAdaptor": "const query=`\n                    {\n                        options:userProfile(first: 10, where: {displayText_contains: \"${api.body.term}\"}) {\n                          label:displayText\n                          value:userId\n                        }\n                      }`\n                    api.data={query}\n                    return api"
+                                                             }
+                                                           },
+                                                           {
+                                                             "name": "guimo",
+                                                             "label": "客户规模",
+                                                             "description": null,
+                                                             "type": "select",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "options": [
+                                                               {
+                                                                 "label": "5万以上",
+                                                                 "value": "5"
+                                                               },
+                                                               {
+                                                                 "label": "10万以上",
+                                                                 "value": "10"
+                                                               },
+                                                               {
+                                                                 "label": "50万以上",
+                                                                 "value": "50"
+                                                               }
+                                                             ]
+                                                           },
+                                                           {
+                                                             "name": "customerRemark",
+                                                             "label": "客户备注",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "dateeeee",
+                                                             "label": "日期",
+                                                             "description": null,
+                                                             "type": "input-date",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "datetimesssssss",
+                                                             "label": "时间日期",
+                                                             "description": null,
+                                                             "type": "input-datetime",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "timeeeeeeeeeee",
+                                                             "label": "时间",
+                                                             "description": null,
+                                                             "type": "input-time",
+                                                             "required": false,
+                                                             "disabled": false,
+                                                             "timeFormat": "HH:mm:ss",
+                                                             "inputFormat": "HH:mm:ss"
+                                                           },
+                                                           {
+                                                             "name": "images.urls",
+                                                             "label": "图片",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.countryName",
+                                                             "label": "国家",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.province",
+                                                             "label": "省份",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.city",
+                                                             "label": "城市",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.postalCode",
+                                                             "label": "邮编",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.details",
+                                                             "label": "详细地址",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.location",
+                                                             "label": "定位",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           },
+                                                           {
+                                                             "name": "address.name",
+                                                             "label": "地址名称",
+                                                             "description": null,
+                                                             "type": "input-text",
+                                                             "required": false,
+                                                             "disabled": false
+                                                           }
+                                                         ],
+                                                         "initApi": {
+                                                           "method": "get",
+                                                           "url": "/api/graphql?query={\n        contentItem(contentItemId: \"${contentItemId}\")\n     {contentItemId displayText contentType contentItemVersionId modifiedUtc  publishedUtc owner createdUtc  author\n        ... on Customer\n           {\n  contentItemId \n  contentItemVersionId \n  contentType \n  displayText \n  latest \n  published \n  modifiedUtc \n  publishedUtc \n  createdUtc \n  owner \n  author \n  name \n  custNum \n  marketSegment {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  source {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  industry {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  custClass {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  salesOwner {\n    firstValue \n    firstUserProfiles {\n      displayText \n    }\n  }\n  guimo \n  dateeeee \n  datetimesssssss \n  timeeeeeeeeeee \n  images {\n    urls \n    paths \n  }\n  address {\n    countryName \n    province \n    city \n    postalCode \n    details \n    name \n  }\n}\n        }\n      }",
+                                                           "data": null,
+                                                           "dataType": "json",
+                                                           "replaceData": true,
+                                                           "onPreRequest": "",
+                                                           "responseData": null,
+                                                           "adaptor": "return {data:response.data.contentItem}",
+                                                           "sendOn": "!!this.contentItemId"
+                                                         },
+                                                         "api": {
+                                                           "method": "post",
+                                                           "url": "/api/ContentManagement/PostContent",
+                                                           "dataType": "json",
+                                                           "data": {
+                                                             "&": "$$",
+                                                             "contentType": "Customer"
+                                                           }
+                                                         },
+                                                         "name": "EditForm",
+                                                         "actions": [
+                                                         ],
+                                                         "debug": false
+                                                       }
+                                                     ],
+                                                     "closeOnEsc": true,
+                                                     "closeOnOutside": true,
+                                                     "showCloseButton": true,
+                                                     "size": "lg"
+                                                   },
+                                                   "onClick": "\r\n\r\nconsole.log(props,'Editing')"
+                                                 },
+                                                 {
+                                                   "type": "button",
+                                                   "label": "删除",
+                                                   "actionType": "ajax",
+                                                   "dialog": {
+                                                     "title": "系统提示",
+                                                     "body": "对你点击了"
+                                                   },
+                                                   "level": "danger",
+                                                   "tooltip": "",
+                                                   "tooltipPlacement": "bottom",
+                                                   "confirmText": "确认删除此内容吗？",
+                                                   "api": {
+                                                     "method": "delete",
+                                                     "url": "/api/content/${contentItemId}"
+                                                   }
+                                                 }
+                                               ],
+                                               "id": "u:a285dc1ca629"
+                                             }
+                                           ],
+                                           "id": "u:5f77e976da71",
+                                           "style": {
+                                             "float": "right"
+                                           }
+                                         },
+                                         {
+                                           "type": "tpl",
+                                           "tpl": "<p><strong>${displayText}</strong></p>",
+                                           "inline": false,
+                                           "id": "u:150d786edfa7",
+                                           "wrapperComponent": "h1"
+                                         },
+                                         {
+                                           "type": "form",
+                                           "initApi": {
+                                             "method": "get",
+                                             "url": "/api/graphql?query={\n        contentItem(contentItemId: \"${contentItemId}\")\n     {contentItemId displayText contentType contentItemVersionId modifiedUtc  publishedUtc owner createdUtc  author\n        ... on Customer\n           {\n  contentItemId \n  contentItemVersionId \n  contentType \n  displayText \n  latest \n  published \n  modifiedUtc \n  publishedUtc \n  createdUtc \n  owner \n  author \n  name \n  custNum \n  marketSegment {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  source {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  industry {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  custClass {\n    firstValue \n    firstContentItem {\n      displayText \n    }\n  }\n  salesOwner {\n    firstValue \n    firstUserProfiles {\n      displayText \n    }\n  }\n  guimo \n  dateeeee \n  datetimesssssss \n  timeeeeeeeeeee \n  images {\n    urls \n    paths \n  }\n  address {\n    countryName \n    province \n    city \n    postalCode \n    details \n    name \n  }\n}\n        }\n      }",
+                                             "data": null,
+                                             "dataType": "json",
+                                             "replaceData": true,
+                                             "onPreRequest": "",
+                                             "responseData": null,
+                                             "adaptor": "return {data:response.data.contentItem}",
+                                             "sendOn": "!!this.contentItemId"
+                                           },
+                                           "body": [
+                                             {
+                                               "type": "property",
+                                               "className": "b-b m-b",
+                                               "labelStyle": {
+                                                 "textAlign": "right"
+                                               },
+                                               "contentStyle": {
+                                                 "textAlign": "left"
+                                               },
+                                               "column": 2,
+                                               "items": [
+                                                 {
+                                                   "label": "编号",
+                                                   "content": "${contentItemId}",
+                                                   "span": 1
+                                                 },
+                                                 {
+                                                   "label": "版本号",
+                                                   "content": "${contentItemVersionId}",
+                                                   "span": 1
+                                                 },
+                                                 {
+                                                   "label": "创建人",
+                                                   "content": "${author}",
+                                                   "span": 1
+                                                 },
+                                                 {
+                                                   "label": "创建时间",
+                                                   "content": "${createdUtc | toDate |date:YYYY-MM-DD HH\\:mm\\:ss }",
+                                                   "span": 1
+                                                 },
+                                                 {
+                                                   "span": 1,
+                                                   "label": "修改时间",
+                                                   "content": "${modifiedUtc | toDate |date:YYYY-MM-DD HH\\:mm\\:ss } "
+                                                 }
+                                               ]
+                                             },
+                                             {
+                                               "type": "property",
+                                               "labelStyle": {
+                                                 "textAlign": "right"
+                                               },
+                                               "contentStyle": {
+                                                 "textAlign": "left"
+                                               },
+                                               "column": 2,
+                                               "items": [
+                                                 {
+                                                   "content": "${ name }",
+                                                   "label": "客户名称",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ custNum }",
+                                                   "label": "客户编号",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ marketSegment.firstContentItem.displayText }",
+                                                   "label": "市场细分",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ source.firstContentItem.displayText }",
+                                                   "label": "客户来源",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ industry.firstContentItem.displayText }",
+                                                   "label": "行业",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ custClass.firstContentItem.displayText }",
+                                                   "label": "客户分类",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ salesOwner.firstUserProfiles.displayText }",
+                                                   "label": "销售负责人",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ guimo }",
+                                                   "label": "客户规模",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ customerRemark }",
+                                                   "label": "客户备注",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ dateeeee }",
+                                                   "label": "日期",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${createdUtc | toDate |date:YYYY-MM-DD HH\\:mm\\:ss }",
+                                                   "label": "时间日期",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ timeeeeeeeeeee }",
+                                                   "label": "时间",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": {
+                                                     "type": "image",
+                                                     "src": "${ images.urls[0] }"
+                                                   },
+                                                   "label": "图片",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.countryName }",
+                                                   "label": "国家",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.province }",
+                                                   "label": "省份",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.city }",
+                                                   "label": "城市",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.postalCode }",
+                                                   "label": "邮编",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.details }",
+                                                   "label": "详细地址",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.location }",
+                                                   "label": "定位",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 },
+                                                 {
+                                                   "content": "${ address.name }",
+                                                   "label": "地址名称",
+                                                   "span": 1,
+                                                   "type": "text"
+                                                 }
+                                               ]
+                                             }
+                                           ]
+                                         }
+                                       ],
+                                       "type": "drawer",
+                                       "resizable": true,
+                                       "closeOnEsc": true,
+                                       "closeOnOutside": true,
+                                       "showCloseButton": true,
+                                       "size": "lg",
+                                       "data": null,
+                                       "actions": [
+                                       ],
+                                       "position": "right"
+                                     }
+                                   }
+                                 ]
+                               },
+                               {
+                                 "name": "name",
+                                 "label": "客户名称",
+                                 "sortable": true,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "custNum",
+                                 "label": "客户编号",
+                                 "sortable": true,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "marketSegment.firstContentItem.displayText",
+                                 "label": "市场细分",
+                                 "sortable": false,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "source.firstContentItem.displayText",
+                                 "label": "客户来源",
+                                 "sortable": false,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "industry.firstContentItem.displayText",
+                                 "label": "行业",
+                                 "sortable": false,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "custClass.firstContentItem.displayText",
+                                 "label": "客户分类",
+                                 "sortable": false,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "salesOwner.firstUserProfiles.displayText",
+                                 "label": "销售负责人",
+                                 "sortable": false,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "guimo",
+                                 "label": "客户规模",
+                                 "sortable": true,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "customerRemark",
+                                 "label": "客户备注",
+                                 "sortable": true,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "dateeeee",
+                                 "label": "日期",
+                                 "sortable": true,
+                                 "type": "date",
+                                 "placeholder": "-"
+                               },
+                               {
+                                 "name": "datetimesssssss",
+                                 "label": "时间日期",
+                                 "sortable": true,
+                                 "type": "date",
+                                 "placeholder": "-"
+                               },
+                               {
+                                 "name": "timeeeeeeeeeee",
+                                 "label": "时间",
+                                 "sortable": true,
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "images.urls[0]",
+                                 "label": "图片",
+                                 "type": "image",
+                                 "toggled": false
+                               },
+                               {
+                                 "name": "address.countryName",
+                                 "label": "国家",
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "address.province",
+                                 "label": "省份",
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "address.city",
+                                 "label": "城市",
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "address.postalCode",
+                                 "label": "邮编",
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "address.details",
+                                 "label": "详细地址",
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "address.location",
+                                 "label": "定位",
+                                 "type": "text"
+                               },
+                               {
+                                 "name": "address.name",
+                                 "label": "地址名称",
+                                 "type": "text"
+                               },
+                               {
+                                 "type": "date",
+                                 "label": "修改时间",
+                                 "name": "modifiedUtc",
+                                 "placeholder": "-",
+                                 "sortable": true
+                               },
+                               {
+                                 "name": "createdUtc",
+                                 "label": "创建时间",
+                                 "type": "date",
+                                 "placeholder": "-",
+                                 "sortable": true,
+                                 "toggled": false
+                               },
+                               {
+                                 "type": "text",
+                                 "name": "author",
+                                 "label": "创建人",
+                                 "placeholder": "-",
+                                 "sortable": true
+                               }
+                             ],
+                             "itemActions": [
+                             ],
+                             "features": [
+                               "filter",
+                               "create",
+                               "update",
+                               "view",
+                               "delete"
+                             ],
+                             "headerToolbar": [
+                               {
+                                 "type": "columns-toggler",
+                                 "align": "right",
+                                 "icon": "fas fa-cog",
+                                 "overlay": true,
+                                 "footerBtnSize": "sm"
+                               },
+                               {
+                                 "type": "button",
+                                 "label": "新增",
+                                 "actionType": "drawer",
+                                 "level": "primary",
+                                 "drawer": {
+                                   "title": "新增",
+                                   "body": [
+                                     {
+                                       "type": "form",
+                                       "api": {
+                                         "method": "post",
+                                         "url": "/api/ContentManagement/PostContent",
+                                         "dataType": "json",
+                                         "data": {
+                                           "&": "$$",
+                                           "contentType": "Customer"
+                                         }
+                                       },
+                                       "body": [
+                                         {
+                                           "name": "name",
+                                           "label": "客户名称",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "custNum",
+                                           "label": "客户编号",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "marketSegment.firstValue",
+                                           "label": "市场细分",
+                                           "description": null,
+                                           "type": "select",
+                                           "required": false,
+                                           "disabled": false,
+                                           "checkAll": false,
+                                           "searchable": true,
+                                           "multiple": false,
+                                           "extractValue": false,
+                                           "autoComplete": {
+                                             "method": "post",
+                                             "url": "/api/graphql",
+                                             "dataType": "json",
+                                             "replaceData": false,
+                                             "requestAdaptor": "const query=`\n                            {\n                                options:marketSegment\n                                (status: PUBLISHED, first: 10, \n                                    where: {displayText_contains: \"${api.body.term}\"}) \n                                {\n                                    label:displayText\n                                    value:contentItemId\n                                }\n                            }`\n                            api.data={query}\n                            return api"
+                                           }
+                                         },
+                                         {
+                                           "name": "source.firstValue",
+                                           "label": "客户来源",
+                                           "description": null,
+                                           "type": "select",
+                                           "required": false,
+                                           "disabled": false,
+                                           "checkAll": false,
+                                           "searchable": true,
+                                           "multiple": false,
+                                           "extractValue": false,
+                                           "autoComplete": {
+                                             "method": "post",
+                                             "url": "/api/graphql",
+                                             "dataType": "json",
+                                             "replaceData": false,
+                                             "requestAdaptor": "const query=`\n                            {\n                                options:customerSource\n                                (status: PUBLISHED, first: 10, \n                                    where: {displayText_contains: \"${api.body.term}\"}) \n                                {\n                                    label:displayText\n                                    value:contentItemId\n                                }\n                            }`\n                            api.data={query}\n                            return api"
+                                           }
+                                         },
+                                         {
+                                           "name": "industry.firstValue",
+                                           "label": "行业",
+                                           "description": null,
+                                           "type": "select",
+                                           "required": false,
+                                           "disabled": false,
+                                           "checkAll": false,
+                                           "searchable": true,
+                                           "multiple": false,
+                                           "extractValue": false,
+                                           "autoComplete": {
+                                             "method": "post",
+                                             "url": "/api/graphql",
+                                             "dataType": "json",
+                                             "replaceData": false,
+                                             "requestAdaptor": "const query=`\n                            {\n                                options:industry\n                                (status: PUBLISHED, first: 10, \n                                    where: {displayText_contains: \"${api.body.term}\"}) \n                                {\n                                    label:displayText\n                                    value:contentItemId\n                                }\n                            }`\n                            api.data={query}\n                            return api"
+                                           }
+                                         },
+                                         {
+                                           "name": "custClass.firstValue",
+                                           "label": "客户分类",
+                                           "description": null,
+                                           "type": "select",
+                                           "required": false,
+                                           "disabled": false,
+                                           "checkAll": false,
+                                           "searchable": true
+                                         },
+                                         {
+                                           "name": "salesOwner.firstValue",
+                                           "label": "销售负责人",
+                                           "description": null,
+                                           "type": "select",
+                                           "required": false,
+                                           "disabled": false,
+                                           "autoComplete": {
+                                             "method": "post",
+                                             "url": "/api/graphql",
+                                             "dataType": "json",
+                                             "replaceData": false,
+                                             "requestAdaptor": "const query=`\n                        {\n                            options:userProfile(first: 10, where: {displayText_contains: \"${api.body.term}\"}) {\n                            label:displayText\n                            value:userId\n                            }\n                        }`\n                        api.data={query}\n                        return api"
+                                           }
+                                         },
+                                         {
+                                           "name": "guimo",
+                                           "label": "客户规模",
+                                           "description": null,
+                                           "type": "select",
+                                           "required": false,
+                                           "disabled": false,
+                                           "options": [
+                                             {
+                                               "label": "5万以上",
+                                               "value": "5"
+                                             },
+                                             {
+                                               "label": "10万以上",
+                                               "value": "10"
+                                             },
+                                             {
+                                               "label": "50万以上",
+                                               "value": "50"
+                                             }
+                                           ]
+                                         },
+                                         {
+                                           "name": "customerRemark",
+                                           "label": "客户备注",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "dateeeee",
+                                           "label": "日期",
+                                           "description": null,
+                                           "type": "input-date",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "datetimesssssss",
+                                           "label": "时间日期",
+                                           "description": null,
+                                           "type": "input-datetime",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "timeeeeeeeeeee",
+                                           "label": "时间",
+                                           "description": null,
+                                           "type": "input-time",
+                                           "required": false,
+                                           "disabled": false,
+                                           "timeFormat": "HH:mm:ss"
+                                         },
+                                         {
+                                           "name": "images",
+                                           "label": "图片",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.countryName",
+                                           "label": "国家",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.province",
+                                           "label": "省份",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.city",
+                                           "label": "城市",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.postalCode",
+                                           "label": "邮编",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.details",
+                                           "label": "详细地址",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.location",
+                                           "label": "定位",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         },
+                                         {
+                                           "name": "address.name",
+                                           "label": "地址名称",
+                                           "description": null,
+                                           "type": "input-text",
+                                           "required": false,
+                                           "disabled": false
+                                         }
+                                       ],
+                                       "initApi": "",
+                                       "name": "EditForm",
+                                       "actions": [
+                                       ]
+                                     }
+                                   ],
+                                   "type": "drawer",
+                                   "closeOnEsc": true,
+                                   "resizable": true,
+                                   "closeOnOutside": true,
+                                   "showCloseButton": true,
+                                   "size": "lg"
+                                 }
+                               },
+                               {
+                                 "type": "bulk-actions"
+                               },
+                               {
+                                 "type": "button",
+                                 "tpl": "内容",
+                                 "label": "导入",
+                                 "perPageAvailable": [
+                                   10
+                                 ],
+                                 "level": "link",
+                                 "actionType": "dialog",
+                                 "dialog": {
+                                   "type": "dialog",
+                                   "title": "批量导入",
+                                   "body": [
+                                     {
+                                       "type": "form",
+                                       "api": "/amis/api/mock2/form/saveForm",
+                                       "debug": false,
+                                       "body": [
+                                         {
+                                           "type": "hidden",
+                                           "name": "contentType",
+                                           "id": "u:0147574696e9"
+                                         },
+                                         {
+                                           "type": "input-excel",
+                                           "name": "excel",
+                                           "label": "上传 Excel"
+                                         }
+                                       ]
+                                     }
+                                   ],
+                                   "closeOnEsc": false,
+                                   "closeOnOutside": false,
+                                   "showCloseButton": true,
+                                   "actions": [
+                                     {
+                                       "type": "button",
+                                       "label": "提交",
+                                       "actionType": "ajax",
+                                       "dialog": {
+                                         "title": "系统提示",
+                                         "body": "对你点击了"
+                                       },
+                                       "id": "u:16e6290ef54f",
+                                       "api": {
+                                         "method": "post",
+                                         "url": "/api/ContentManagement/Import",
+                                         "dataType": "json",
+                                         "requestAdaptor": "console.log('upload api', api)\r\n\r\nconst inputList = []\r\n\r\napi.data.excel.forEach((item)=>{\r\n   const model = {schema: JSON.stringify(api.data.excel)}\r\n   inputList.push(model)\r\n})\r\n\r\n\r\nconsole.log('uplod api input',inputList)\r\n\r\nconst data = {\r\n  draft : false,\r\n  contentType : api.data.contentType,\r\n   inputList : inputList\r\n}\r\n\r\n\r\nconsole.log('upload api22222', data)\r\n\r\napi.data = data\r\n\r\nreturn api",
+                                         "data": {
+                                           "&": "$$"
+                                         },
+                                         "replaceData": false
+                                       },
+                                       "close": false,
+                                       "level": "primary"
+                                     },
+                                     {
+                                       "type": "button",
+                                       "label": "取消",
+                                       "actionType": "cancel",
+                                       "dialog": {
+                                         "title": "系统提示",
+                                         "body": "对你点击了"
+                                       },
+                                       "id": "u:8fbe3dbbdc4c"
+                                     }
+                                   ]
+                                 }
+                               }
+                             ],
+                             "bulkActions": [
+                               {
+                                 "label": "批量删除",
+                                 "type": "submit",
+                                 "perPageAvailable": [
+                                   10
+                                 ],
+                                 "actionType": "ajax",
+                                 "block": false,
+                                 "level": "danger",
+                                 "tooltip": "",
+                                 "tooltipPlacement": "bottom",
+                                 "confirmText": "确认删选中项目吗？"
+                               }
+                             ],
+                             "messages": {
+                             },
+                             "primaryField": "contentItemVersionId",
+                             "filter": {
+                               "title": "查询条件",
+                               "name": "searchForm",
+                               "body": [
+                                 {
+                                   "type": "input-text",
+                                   "name": "displayText",
+                                   "label": "名称",
+                                   "size": "lg"
+                                 },
+                                 {
+                                   "type": "select",
+                                   "label": "状态",
+                                   "name": "status",
+                                   "options": [
+                                     {
+                                       "label": "已发布或草稿",
+                                       "value": "PUBLISHEDORLATEST"
+                                     },
+                                     {
+                                       "label": "只看最新版",
+                                       "value": "LATEST"
+                                     },
+                                     {
+                                       "label": "所有发布版",
+                                       "value": "PUBLISHED"
+                                     },
+                                     {
+                                       "label": "所有草稿",
+                                       "value": "DRAFT"
+                                     }
+                                   ],
+                                   "id": "u:b1a90587336d",
+                                   "perPageAvailable": [
+                                     10
+                                   ],
+                                   "checkAll": false,
+                                   "value": "PUBLISHEDORLATEST",
+                                   "searchable": false,
+                                   "size": "md"
+                                 }
+                               ],
+                               "actions": [
+                                 {
+                                   "type": "submit",
+                                   "label": "搜索",
+                                   "actionType": "submit",
+                                   "id": "u:f919f2d70d5d",
+                                   "level": "primary"
+                                 },
+                                 {
+                                   "type": "button",
+                                   "label": "高级..",
+                                   "actionType": "drawer",
+                                   "name": "conditionsDrawer",
+                                   "drawer": {
+                                     "position": "right",
+                                     "resizable": true,
+                                     "closeOnEsc": true,
+                                     "closeOnOutside": true,
+                                     "showCloseButton": true,
+                                     "title": "",
+                                     "overlay": false,
+                                     "width": "1000px",
+                                     "body": {
+                                       "type": "form",
+                                       "title": "表单",
+                                       "body": {
+                                         "type": "condition-builder",
+                                         "label": "",
+                                         "name": "conditions",
+                                         "searchable": true,
+                                         "fields": [
+                                           {
+                                             "name": "displayText",
+                                             "label": "显示名称",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "name": "published",
+                                             "label": "发布状态",
+                                             "type": "select",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ],
+                                             "options": [
+                                               {
+                                                 "label": "已发布或草稿",
+                                                 "value": "PUBLISHEDORLATEST"
+                                               },
+                                               {
+                                                 "label": "只看最新版",
+                                                 "value": "LATEST"
+                                               },
+                                               {
+                                                 "label": "所有发布版",
+                                                 "value": "PUBLISHED"
+                                               },
+                                               {
+                                                 "label": "所有草稿",
+                                                 "value": "DRAFT"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "修改时间",
+                                             "name": "modifiedUtc",
+                                             "type": "date",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于等于",
+                                                 "value": "GREATER_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "小于等于",
+                                                 "value": "LESS_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于",
+                                                 "value": "GREATER_THAN"
+                                               },
+                                               {
+                                                 "label": "小于",
+                                                 "value": "LESS_THAN"
+                                               },
+                                               "between"
+                                             ]
+                                           },
+                                           {
+                                             "label": "创建时间",
+                                             "type": "date",
+                                             "name": "createdUtc",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于等于",
+                                                 "value": "GREATER_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "小于等于",
+                                                 "value": "LESS_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于",
+                                                 "value": "GREATER_THAN"
+                                               },
+                                               {
+                                                 "label": "小于",
+                                                 "value": "LESS_THAN"
+                                               },
+                                               "between"
+                                             ]
+                                           },
+                                           {
+                                             "type": "select",
+                                             "name": "author",
+                                             "label": "创建人",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ],
+                                             "source": {
+                                               "method": "post",
+                                               "url": "/api/graphql",
+                                               "dataType": "json",
+                                               "replaceData": false,
+                                               "requestAdaptor": "const query=`\n                    {\n                        options:userProfile(first: 10}) {\n                          label:displayText\n                          value:userId\n                        }\n                      }`\n                    api.data={query}\n                    return api"
+                                             }
+                                           },
+                                           {
+                                             "label": "客户名称",
+                                             "name": "name",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "客户编号",
+                                             "name": "custNum",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "市场细分",
+                                             "name": "marketSegment.firstValue",
+                                             "type": "select",
+                                             "source": {
+                                               "method": "post",
+                                               "url": "/api/graphql",
+                                               "dataType": "json",
+                                               "replaceData": false,
+                                               "requestAdaptor": "\n                            console.log('genFilterOptions 111111111111111111111111')\n\n                            console.log(\"genFilterOptions body\", api.body);\n                            const text_containsName = \"\";\n\n                            const query=`\n                            {\n                                options:marketSegment\n                                (status: PUBLISHED, first: 10, \n                                    where: {displayText_contains: \"${text_containsName}\"}) \n                                {\n                                    label:displayText\n                                    value:contentItemId\n                                }\n                            }`\n                            console.log('genFilterOptions 3',query)\n\n                            api.data={query}\n\n                            console.log('genFilterOptions 2',api)\n                            return api"
+                                             },
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ]
+                                           },
+                                           {
+                                             "label": "客户来源",
+                                             "name": "source.firstValue",
+                                             "type": "select",
+                                             "source": {
+                                               "method": "post",
+                                               "url": "/api/graphql",
+                                               "dataType": "json",
+                                               "replaceData": false,
+                                               "requestAdaptor": "\n                            console.log('genFilterOptions 111111111111111111111111')\n\n                            console.log(\"genFilterOptions body\", api.body);\n                            const text_containsName = \"\";\n\n                            const query=`\n                            {\n                                options:customerSource\n                                (status: PUBLISHED, first: 10, \n                                    where: {displayText_contains: \"${text_containsName}\"}) \n                                {\n                                    label:displayText\n                                    value:contentItemId\n                                }\n                            }`\n                            console.log('genFilterOptions 3',query)\n\n                            api.data={query}\n\n                            console.log('genFilterOptions 2',api)\n                            return api"
+                                             },
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ]
+                                           },
+                                           {
+                                             "label": "行业",
+                                             "name": "industry.firstValue",
+                                             "type": "select",
+                                             "source": {
+                                               "method": "post",
+                                               "url": "/api/graphql",
+                                               "dataType": "json",
+                                               "replaceData": false,
+                                               "requestAdaptor": "\n                            console.log('genFilterOptions 111111111111111111111111')\n\n                            console.log(\"genFilterOptions body\", api.body);\n                            const text_containsName = \"\";\n\n                            const query=`\n                            {\n                                options:industry\n                                (status: PUBLISHED, first: 10, \n                                    where: {displayText_contains: \"${text_containsName}\"}) \n                                {\n                                    label:displayText\n                                    value:contentItemId\n                                }\n                            }`\n                            console.log('genFilterOptions 3',query)\n\n                            api.data={query}\n\n                            console.log('genFilterOptions 2',api)\n                            return api"
+                                             },
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ]
+                                           },
+                                           {
+                                             "label": "客户分类",
+                                             "name": "custClass.firstValue",
+                                             "type": "select",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ]
+                                           },
+                                           {
+                                             "label": "销售负责人",
+                                             "name": "salesOwner.firstValue",
+                                             "type": "select",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               "select_any_in",
+                                               "select_not_any_in"
+                                             ],
+                                             "source": {
+                                               "method": "post",
+                                               "url": "/api/graphql",
+                                               "dataType": "json",
+                                               "replaceData": false,
+                                               "requestAdaptor": "const query=`\n                    {\n                        options:userProfile(first: 10, where: {displayText_contains: \"${api.body.term}\"}) {\n                          label:displayText\n                          value:userId\n                        }\n                      }`\n                    api.data={query}\n                    return api"
+                                             }
+                                           },
+                                           {
+                                             "label": "客户规模",
+                                             "name": "guimo",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "日期",
+                                             "name": "dateeeee",
+                                             "type": "date",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于等于",
+                                                 "value": "GREATER_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "小于等于",
+                                                 "value": "LESS_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于",
+                                                 "value": "GREATER_THAN"
+                                               },
+                                               {
+                                                 "label": "小于",
+                                                 "value": "LESS_THAN"
+                                               },
+                                               "between"
+                                             ]
+                                           },
+                                           {
+                                             "label": "时间日期",
+                                             "name": "datetimesssssss",
+                                             "type": "date",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于等于",
+                                                 "value": "GREATER_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "小于等于",
+                                                 "value": "LESS_THAN_OR_EQUAL"
+                                               },
+                                               {
+                                                 "label": "大于",
+                                                 "value": "GREATER_THAN"
+                                               },
+                                               {
+                                                 "label": "小于",
+                                                 "value": "LESS_THAN"
+                                               },
+                                               "between"
+                                             ]
+                                           },
+                                           {
+                                             "label": "时间",
+                                             "name": "timeeeeeeeeeee",
+                                             "type": "time",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "国家",
+                                             "name": "address.countryName",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "省份",
+                                             "name": "address.province",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "城市",
+                                             "name": "address.city",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "邮编",
+                                             "name": "address.postalCode",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "详细地址",
+                                             "name": "address.details",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           },
+                                           {
+                                             "label": "地址名称",
+                                             "name": "address.name",
+                                             "type": "text",
+                                             "operators": [
+                                               {
+                                                 "label": "等于",
+                                                 "value": "EQUALS"
+                                               },
+                                               {
+                                                 "label": "不等于",
+                                                 "value": "NOT_EQUAL"
+                                               },
+                                               {
+                                                 "label": "模糊匹配",
+                                                 "value": "CONTAINS"
+                                               },
+                                               {
+                                                 "label": "不匹配",
+                                                 "value": "NOT_CONTAINS"
+                                               },
+                                               {
+                                                 "label": "匹配开头",
+                                                 "value": "STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "匹配结尾",
+                                                 "value": "ENDS_WITH"
+                                               },
+                                               {
+                                                 "label": "不开头",
+                                                 "value": "NOT_STARTS_WITH"
+                                               },
+                                               {
+                                                 "label": "不结尾",
+                                                 "value": "NOT_ENDS_WITH"
+                                               }
+                                             ]
+                                           }
+                                         ]
+                                       },
+                                       "id": "u:6c7f8dc7b9b6",
+                                       "target": "searchForm"
+                                     }
+                                   }
+                                 }
+                               ],
+                               "checkAll": false,
+                               "submitOnChange": false,
+                               "perPageAvailable": [
+                                 10
+                               ],
+                               "mode": "inline",
+                               "panelClassName": ""
+                             },
+                             "keepItemSelectionOnPageChange": true,
+                             "labelTpl": "${displayText}",
+                             "filterTogglable": true,
+                             "filterColumnCount": 3,
+                             "syncLocation": false,
+                             "defaultParams": {
+                             }
+                           }
+                         ],
+                         "messages": {
+                         },
+                         "style": {
+                         },
+                         "data": {
+                           "contentType": "Customer"
+                         },
+                         "definitions": {
+                         }
+                       };
+        let amisScoped = amis.embed('#root', amisJSON,{
+            theme:"cxd"
+        });
+      })();
+    </script>
+</body>
+</html>

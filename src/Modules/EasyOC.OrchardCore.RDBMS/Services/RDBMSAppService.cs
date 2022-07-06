@@ -131,7 +131,6 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 result = freeSql.DbFirst.GetTablesByDatabase();
                 _memoryCache.Set(cacheKey, result, absoluteExpiration: DateTime.Now.AddHours(4));
             }
-
             return result;
         }
 
