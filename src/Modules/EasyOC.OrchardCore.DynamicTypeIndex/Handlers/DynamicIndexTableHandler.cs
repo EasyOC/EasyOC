@@ -22,11 +22,12 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
         private readonly IHtmlLocalizer H;
         private readonly ISession _session;
         public virtual int DefaultPageSize { get; set; } = 100;
-        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql, INotifier notifier,
+
+        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql,
+            INotifier notifier,
             IHtmlLocalizer<DynamicIndexTableHandler> localizer, ISession session,
             ILogger<DynamicIndexTableHandler> logger)
         {
-
             _dynamicIndexAppService = dynamicIndexAppService;
             _fsql = fsql;
             this.notifier = notifier;
@@ -60,21 +61,22 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                     while (penddingUpdateList.Any())
                     {
                         var dictList = penddingUpdateList.ToDictModel(config);
-                        var tsFsql = _fsql.InsertOrUpdateDict(dictList);
+                        var tsFsql = _fsql.InsertOrUpdateDict(dictList.OrderByDescending(x => x.Keys.Count));
                         if (_session.CurrentTransaction != null)
                         {
                             tsFsql.WithTransaction(_session.CurrentTransaction);
                         }
+
                         totalUpdated[typeName] += await tsFsql
                             .WherePrimary("Id")
                             .ExecuteAffrowsAsync();
                         pageIndex++;
                         penddingUpdateList = contentQuery.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
                     }
+
                     await notifier.SuccessAsync(H["{0} 更新成功，更新数量：{1}.", typeName, totalUpdated[typeName]]);
                 }
             }
-
         }
 
         //public override async Task PublishedAsync(PublishContentContext context)
@@ -99,6 +101,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                     {
                         tsFsql.WithTransaction(_session.CurrentTransaction);
                     }
+
                     await tsFsql
                         .WithTransaction(_session.CurrentTransaction)
                         .AsTable(config.TableName)
@@ -110,8 +113,6 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                     _logger.LogError("索引更新失败,{0}" + e.Message);
                     throw;
                 }
-
-
             }
         }
     }

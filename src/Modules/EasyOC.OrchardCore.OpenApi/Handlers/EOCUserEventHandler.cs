@@ -20,7 +20,8 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
 {
     public class EOCUserEventHandler : UserEventHandlerBase
     {
-        private static readonly JsonMergeSettings UpdateJsonMergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
+        private static readonly JsonMergeSettings UpdateJsonMergeSettings = new JsonMergeSettings
+            { MergeArrayHandling = MergeArrayHandling.Replace };
 
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentItemIdGenerator _idGenerator;
@@ -30,11 +31,13 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
         private readonly IMapper _mapper;
         private readonly IHtmlLocalizer htmlLocalizer;
         private readonly ISession _session;
+
         public EOCUserEventHandler(
-          IContentDefinitionManager contentDefinitionManager,
-          ILogger<EOCUserEventHandler> logger,
-          IContentItemIdGenerator idGenerator,
-          IContentManager contentManager, IMapper mapper, IHtmlLocalizer<EOCUserEventHandler> htmlLocalizer, INotifier notifier, ISession session)
+            IContentDefinitionManager contentDefinitionManager,
+            ILogger<EOCUserEventHandler> logger,
+            IContentItemIdGenerator idGenerator,
+            IContentManager contentManager, IMapper mapper, IHtmlLocalizer<EOCUserEventHandler> htmlLocalizer,
+            INotifier notifier, ISession session)
         {
             _contentDefinitionManager = contentDefinitionManager;
             _logger = logger;
@@ -46,7 +49,8 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             _session = session;
         }
 
-
+        private static JsonMergeSettings _jsonMergeSettings = new JsonMergeSettings
+            { MergeArrayHandling = MergeArrayHandling.Replace };
 
         private async Task UpdateIndexAsync(UserContextBase context)
         {
@@ -56,17 +60,18 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
             {
                 return;
             }
-      
+
             var contentItem = await _contentManager.NewAsync(nameof(UserProfile));
-        
-            
             contentItem.Owner = user.UserId;
+            contentItem.Merge(internalProfile, _jsonMergeSettings);
+            contentItem.ContentType = nameof(UserProfile);
             var existsContent = await _contentManager.GetAsync(user.UserId, VersionOptions.DraftRequired);
             var isCreate = existsContent == null;
             if (!isCreate)
             {
-                contentItem = existsContent.Merge(contentItem, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
-            }
+                contentItem = existsContent.Merge(contentItem, _jsonMergeSettings);
+            } 
+
             contentItem.ContentItemId = user.UserId;
 
             await _contentManager.CreateOrUpdateAndPublishAsync(contentItem, isCreate, new PublishOptions
@@ -74,17 +79,15 @@ namespace EasyOC.OrchardCore.OpenApi.Handlers
                 Notifier = notifier,
                 HtmlLocalizer = htmlLocalizer
             });
-
         }
+
         public override async Task CreatedAsync(UserCreateContext context)
         {
             await UpdateIndexAsync(context);
-
         }
 
         public override async Task UpdatedAsync(UserUpdateContext context)
         {
-
             await UpdateIndexAsync(context);
         }
 
