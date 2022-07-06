@@ -51,7 +51,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             _cSharpScriptProvider = cSharpScriptProvider;
             //_cachedTypeConfigurations = _memoryCache.GetOrCreate("CachedTypeConfigurations", entry => new ConcurrentDictionary<string, DynamicIndexCachePakage>());
             _cachedTypeConfigurations = memoryCache.GetOrCreate("CachedTypeConfigurations",
-            entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
+                entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
         }
 
         public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName)
@@ -61,6 +61,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             {
                 config = GetDefaultConfig(typeName);
             }
+
             FillEntityInfo(config);
 
             return config;
@@ -74,6 +75,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             {
                 return null;
             }
+
             if (withCache)
             {
                 if (_typesCache.ContainsKey(typeFullName))
@@ -81,6 +83,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
                     return _typesCache[typeFullName];
                 }
             }
+
             var indexType = await GetDynamicIndexTypeAsync(config.EntityInfo);
             _typesCache[typeFullName] = indexType;
             return indexType;
@@ -97,30 +100,33 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
             //Create dynamic classes from the script
             var type = await _cSharpScriptProvider
                 .CreateTypeAsync(entityInfo.FullName,
-                entityInfo.EntityContent,
-                usings
+                    entityInfo.EntityContent,
+                    usings
                 );
             return type;
         }
+
         public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = false)
         {
             if (typeName.IsNullOrWhiteSpace())
             {
                 return null;
             }
+
             var pkg = _cachedTypeConfigurations.GetOrAdd(typeName,
-            async (key) =>
-            {
-                var contentItem = await YesSession
-                    .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
-                    .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
-                    .FirstOrDefaultAsync();
-                if (contentItem != null)
+                async (key) =>
                 {
-                    return ToConfigModel(contentItem);
-                }
-                return null;
-            });
+                    var contentItem = await YesSession
+                        .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
+                        .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
+                        .FirstOrDefaultAsync();
+                    if (contentItem != null)
+                    {
+                        return ToConfigModel(contentItem);
+                    }
+
+                    return null;
+                });
 
             return pkg;
         }
@@ -160,6 +166,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
                 var restAttr = new List<string>();
 
                 #region Field Attributes
+
                 if (item.IsPrimaryKey)
                 {
                     restAttr.Add("IsPrimary = true");
@@ -185,6 +192,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Service
                 {
                     restAttrText = "," + restAttr.JoinAsString(",");
                 }
+
                 #endregion
 
                 fields.Add($@"
@@ -265,10 +273,10 @@ namespace {entityInfo.NameSpace}
                 };
             });
             var sucessed = await ContentManager.CreateOrUpdateAndPublishAsync(doc, isCreate,
-            new PublishOptions
-            {
-                HtmlLocalizer = H, Notifier = Notifier
-            });
+                new PublishOptions
+                {
+                    HtmlLocalizer = H, Notifier = Notifier
+                });
 
             if (sucessed)
             {
@@ -313,20 +321,34 @@ namespace {entityInfo.NameSpace}
             while (take100.Any())
             {
                 var pendingIds = take100.Select(x => x.ContentItemId);
-                await  Fsql.Delete<DIndexBase>()
+                var deleteCmd = Fsql.Delete<DIndexBase>()
                     .AsTable(indexTableName)
-                    .Where(x => pendingIds.Contains(x.ContentItemId))
-                    .ExecuteAffrowsAsync();
+                    .Where(x => true);
+                if (YesSession.CurrentTransaction != null)
+                {
+                    deleteCmd.WithTransaction(YesSession.CurrentTransaction);
+                }
+
+                await deleteCmd.ExecuteAffrowsAsync();
+
                 var freeModels = take100.ToDictModel(model);
                 // Specifies the collection of data dictionary objects to insert
-                var freeItems = Fsql.InsertOrUpdateDict(freeModels)
-                    .AsTable(indexTableName)//Specify the name of the table to be inserted
+                var freeItems = Fsql.InsertOrUpdateDict(freeModels.OrderByDescending(x => x.Keys.Count))
+                    .AsTable(indexTableName) //Specify the name of the table to be inserted
                     .WherePrimary("Id");
-                totalRows += await freeItems.ExecuteAffrowsAsync();//Batch Inserting databases
-                page++;
-                take100 = docs.Skip(page * 100).Take(100).ListAsync().GetAwaiter().GetResult();
-            }
+                if (YesSession.CurrentTransaction != null)
+                {
+                    freeItems.WithTransaction(YesSession.CurrentTransaction);
+                }
 
+                totalRows += await freeItems.ExecuteAffrowsAsync(); //Batch Insert
+                page++;
+                take100 = await docs.Skip(page * 100).Take(100).ListAsync();
+            }
+            // if (YesSession.CurrentTransaction != null)
+            // {
+            //     await YesSession.CurrentTransaction.CommitAsync();
+            // }
 
             return totalRows;
         }
