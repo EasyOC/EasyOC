@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F57BF725-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.RDBMS", "src\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj", "{26E52CF2-DAEA-4667-9854-5FC7F355532D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.WorkflowPlus", "src\Modules\EasyOC.OrchardCore.WorkflowPlus\EasyOC.OrchardCore.WorkflowPlus.csproj", "{CAF72DD5-BFDD-48DB-B865-7A553E6CDAC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.Workflows", "src\Modules\EasyOC.Workflows\EasyOC.Workflows.csproj", "{CAF72DD5-BFDD-48DB-B865-7A553E6CDAC7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.Excel", "src\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj", "{AD353D9C-E8EE-42F7-A2DE-6989971DFDCE}"
 EndProject

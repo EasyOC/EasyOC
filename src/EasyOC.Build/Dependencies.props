@@ -27,7 +27,5 @@
     <PackageManagement Include="FreeSql.Provider.SqlServer" Version="$(FreeSqlVersion)"  />
     <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="$(FreeSqlVersion)" />
     <PackageManagement Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-  
-
   </ItemGroup>
 </Project>

@@ -122,10 +122,10 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         }
 
         [EOCAuthorization(OCPermissions.EditContentTypes)]
-        public async Task<object> CreateTypeDefinition(CreateTypeDefinitionInput input)
+        public Task<object> CreateTypeDefinition(CreateTypeDefinitionInput input)
         {
             return null;
-
+            // return  Task.FromResult(null);
             // var typeDefinition = _contentDefinitionManager.DeletePartDefinition(name);
         }
 
