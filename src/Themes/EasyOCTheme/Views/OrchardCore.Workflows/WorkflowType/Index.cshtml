@@ -126,7 +126,7 @@
                    $(":checkbox[name='itemIds']:checked").each(function (){
                        ids.push(this.value)
                    });
-                   window.open('@Href("~/EasyOC.OrchardCore.WorkflowPlus/Workflow/BulkExport?ids=")'+ids)
+                   window.open('@Href("~/EasyOC.Workflows/Workflow/BulkExport?ids=")'+ids)
                  }else{
                    confirmDialog({title: $this.data('title'), message: $this.data('message'), callback: function(r) {
                          if (r) {
