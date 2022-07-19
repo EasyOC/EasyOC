@@ -213,4 +213,6 @@ BenchmarkDotNet.Artifacts
 /src/EasyOC.CMS.WebHost/.config/*
 !/src/EasyOC.CMS.WebHost/wwwroot/.placeholder
 /src/EasyOC.CMS.WebHost/wwwroot/*
+
+src/EasyOC.CMS.WebHost/Properties/launchSettings.Development..json
 src/EasyOC.CMS.WebHost/appsettings.Development.json
