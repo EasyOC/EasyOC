@@ -10,7 +10,7 @@
         /// 状态码
         /// </summary>
         public int? StatusCode { get; set; }
-
+        public int? Status { get; set; }
         /// <summary>
         /// 数据
         /// </summary>
@@ -34,6 +34,6 @@
         /// <summary>
         /// 时间戳
         /// </summary>
-        public long Timestamp { get; set; } 
+        public long Timestamp { get; set; }
     }
 }

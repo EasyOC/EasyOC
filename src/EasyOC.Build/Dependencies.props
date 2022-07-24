@@ -2,7 +2,7 @@
   <Import Project="Dependencies.AspNetCore.props" />
   <PropertyGroup>
     <!-- OrchardCore 的全局依赖版本-->
-    <OrchardCoreVersion>1.5.0-preview-16907</OrchardCoreVersion>
+    <OrchardCoreVersion>1.4.0</OrchardCoreVersion>
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
     <FreeSqlVersion>3.2.664</FreeSqlVersion>
     <LuceneNetVersion>4.8.0-beta00016</LuceneNetVersion>

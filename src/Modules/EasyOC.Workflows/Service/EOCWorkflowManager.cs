@@ -1,4 +1,5 @@
-﻿using EasyOC.Workflows.Servcie;
+﻿using EasyOC.Workflows.Models;
+using EasyOC.Workflows.Servcie;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -86,7 +87,7 @@ namespace EasyOC.Workflows.Service
 
         public async Task<WorkflowExecutionContext> CreateWorkflowExecutionContextAsync(WorkflowType workflowType, Workflow workflow, IDictionary<string, object> input = null)
         {
-            var state = workflow.State.ToObject<WorkflowState>();
+            var state = workflow.State.ToObject<WorkflowStateExt>();
             var activityQuery = await Task.WhenAll(workflowType.Activities.Select(x =>
             {
                 var activityState = state.ActivityStates.ContainsKey(x.ActivityId) ? state.ActivityStates[x.ActivityId] : new JObject();
@@ -484,15 +485,14 @@ namespace EasyOC.Workflows.Service
 
         private async Task PersistAsync(WorkflowExecutionContext workflowContext)
         {
-            var state = workflowContext.Workflow.State.ToObject<WorkflowState>();
-
+            var state = workflowContext.Workflow.State.ToObject<WorkflowStateExt>();
+            state.LastExecutedOn=_clock.UtcNow;
             state.Input = await SerializeAsync(workflowContext.Input);
             state.Output = await SerializeAsync(workflowContext.Output);
             state.Properties = await SerializeAsync(workflowContext.Properties);
             state.LastResult = await SerializeAsync(workflowContext.LastResult);
             state.ExecutedActivities = workflowContext.ExecutedActivities.ToList();
             state.ActivityStates = workflowContext.Activities.ToDictionary(x => x.Key, x => x.Value.Activity.Properties);
-
             workflowContext.Workflow.State = JObject.FromObject(state);
             await _workflowStore.SaveAsync(workflowContext.Workflow);
         }
