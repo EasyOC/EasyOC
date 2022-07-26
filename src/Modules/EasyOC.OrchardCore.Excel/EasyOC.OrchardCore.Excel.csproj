@@ -7,11 +7,12 @@
 
 	<ItemGroup>
 	  <Compile Remove="Workflow\UploadExcelTask.cs" />
+	  <Compile Remove="Controllers\ExcelApiController.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
-		<PackageReference Include="Magicodes.IE.Excel" Version="2.6.1" />
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" /> 
+		<PackageReference Include="NPOI" />
 	</ItemGroup>
 	<!--
 	<ProjectReference Include="(.*)" />
@@ -23,11 +24,16 @@
 		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" />
 		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Scripting\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
+	  <ProjectReference Include="..\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" />
 	</ItemGroup>
 
 

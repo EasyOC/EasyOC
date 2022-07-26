@@ -20,7 +20,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.Excel.Services
 {
     [DynamicWebApi]
-    public class ExcelAppService : AppServiceBase, IDynamicWebApi, IExcelAppService
+    public class ExcelAppService : AppServiceBase, IExcelAppService
     {
         private readonly IContentManager _contentManager;
 
@@ -31,7 +31,6 @@ namespace EasyOC.OrchardCore.Excel.Services
         [IgnoreWebApiMethod]
         public List<object> Evaluate(string script, object data)
         {
-
             var result = JsEngine
                    .Execute("var excelTable = " + JsonSerializer.Serialize(data) + ";")
                    .Evaluate(script)?.ToObject();
@@ -139,6 +138,7 @@ namespace EasyOC.OrchardCore.Excel.Services
                 return Evaluate(settings.FieldsMappingConfig.Text, data);
             }
         }
+
         [IgnoreWebApiMethod]
         public async Task<ContentItemDto> GetExcelSettingsAsync(string displayText)
         {

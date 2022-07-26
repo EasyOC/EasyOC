@@ -5,13 +5,12 @@ namespace EasyOC.OrchardCore.Amis.Controllers
 {
     public class AdminController : Controller
     {
-
-
-
         public IActionResult Index()
         {
             return View();
         }
+
+        [HttpGet]
         [Route("EasyOC.OrchardCore.Amis/amis-editor/index")]
         [AllowAnonymous]
         public IActionResult AmisEditor()
@@ -19,6 +18,5 @@ namespace EasyOC.OrchardCore.Amis.Controllers
             //return Redirect("~/EasyOC.OrchardCore.Amis/amis-editor/index.html");
             return View();
         }
-
     }
 }

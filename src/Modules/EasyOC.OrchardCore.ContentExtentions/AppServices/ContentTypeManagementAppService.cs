@@ -85,9 +85,12 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         public ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false)
         {
             var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
+            if (typeDefinition == null)
+            {
+                throw new AppFriendlyException(HttpStatusCode.BadRequest, "ContentType not found");
+            }
             return typeDefinition.ToDto(withSettings);
         }
-
 
         [EOCAuthorization(OCPermissions.EditContentTypes)]
         public async Task<IEnumerable<QueryDefDto>> ListAllQueriesAsync()
@@ -145,50 +148,59 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         public List<ContentFieldsMappingDto> GetFields(ContentTypeDefinition typeDef)
         {
             var fields = new List<ContentFieldsMappingDto>();
-            fields.Add(new ContentFieldsMappingDto
+            fields.AddRange(new[]
             {
-                DisplayName = S["ID"].Value, FieldName = "ContentItemId", IsSelf = true, IsBasic = true,
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["ID"].Value, FieldName = "ContentItemId", IsSelf = true, IsBasic = true,
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["标题"].Value, FieldName = "DisplayText", IsSelf = true, IsBasic = true
+                }
             });
-            fields.Add(new ContentFieldsMappingDto
+
+            var lastCols = new[]
             {
-                DisplayName = S["版本号"].Value, FieldName = "ContentItemVersionId", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["内容类型"].Value, FieldName = "ContentType", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["标题"].Value, FieldName = "DisplayText", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["最新版"].Value, FieldName = "Latest", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["已发布"].Value, FieldName = "Published", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["归属人"].Value, FieldName = "Owner", IsSelf = true, IsBasic = true
-            });
-            fields.Add(new ContentFieldsMappingDto
-            {
-                DisplayName = S["作者"].Value, FieldName = "Author", IsSelf = true, IsBasic = true
-            });
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["归属人"].Value, FieldName = "Owner", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["作者"].Value, FieldName = "Author", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["版本号"].Value, FieldName = "ContentItemVersionId", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["内容类型"].Value, FieldName = "ContentType", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["最新版"].Value, FieldName = "Latest", IsSelf = true, IsBasic = true
+                },
+                new ContentFieldsMappingDto
+                {
+                    DisplayName = S["已发布"].Value, FieldName = "Published", IsSelf = true, IsBasic = true
+                }
+            };
+
+
             foreach (var item in fields)
             {
                 item.LastValueKey = item.KeyPath = item.FieldName;
@@ -219,7 +231,7 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                         fieldModel.KeyPath = fieldModel.KeyPath.TrimEnd('.');
                     }
 
-                    string gpFieldName;
+                    string gpFieldName = field.Name;
 
                     if (fieldModel.IsSelf)
                     {
@@ -250,7 +262,14 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
                     fields.Add(fieldModel);
                 }
             }
-
+            fields.AddRange(lastCols);
+            foreach (var field in fields)
+            {
+                if (field.GraphqlValuePath is null)
+                {
+                    field.GraphqlValuePath = field.FieldName.ToCamelCase();
+                }
+            }
             return fields;
         }
     }

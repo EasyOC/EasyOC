@@ -15,6 +15,7 @@ namespace EasyOC.OrchardCore.Excel.Services
         Task<DataTable> GetExcelDataFromConfigAsync(string fileFullPath, string rowFilterExpression = "");
         Task<ContentItemDto> GetExcelSettingsAsync(string displayText);
         Task<List<object>> GetProcessedDataAsync(string fileFullPath, string configDocumentId, string rowFilterExpression = "");
+
     }
 }
 

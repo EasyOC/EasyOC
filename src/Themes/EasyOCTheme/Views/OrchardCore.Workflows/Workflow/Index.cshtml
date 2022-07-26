@@ -1,6 +1,7 @@
 @model WorkflowIndexViewModel
 @using OrchardCore.Workflows.Models;
 @using Microsoft.IdentityModel.Tokens
+@using Microsoft.Data.SqlClient.Server
 @inject OrchardCore.Modules.ILocalClock LocalClock
 @{
     int startIndex = (Model.Pager.Page - 1) * (Model.Pager.PageSize) + 1;
@@ -112,6 +113,7 @@
                             </div>
                             <a asp-action="Details" asp-route-id="@entry.Workflow.Id">@entry.Workflow.WorkflowId</a>
                             <div>
+                                @* <span class="hint">@T["Created"]@await DisplayAsync(await New.DateTime(entry.Workflow.CreatedUtc))</span> *@
                                 <span class="hint">@T["Created: {0}", await LocalClock.ConvertToLocalAsync(entry.Workflow.CreatedUtc)]</span>
                                 @if (entry.Workflow.State.ContainsKey("LastExecutedOn")
                                      && entry.Workflow.State["LastExecutedOn"] is not null
