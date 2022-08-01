@@ -62,7 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.OpenApi"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Themes", "Themes", "{181DF740-F0EB-42D9-A94E-076745447CDB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOCTheme", "src\Themes\EasyOCTheme\EasyOCTheme.csproj", "{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOCVbenAdminTheme", "src\Themes\EasyOCVbenAdminTheme\EasyOCVbenAdminTheme.csproj", "{BB6F4735-E2E3-4848-89BC-26C0F2EAED7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.VueElementUI", "src\Modules\EasyOC.OrchardCore.VueElementUI\EasyOC.OrchardCore.VueElementUI.csproj", "{1FACFA2D-BE8E-4BF8-B099-5DF6AC62CD4F}"
 EndProject
@@ -90,9 +90,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.OrchardCore.AuditTra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.OrchardCore.AntdAdmin", "src\Modules\EasyOC.OrchardCore.AntdAdmin\EasyOC.OrchardCore.AntdAdmin.csproj", "{88C9C461-768A-4CD4-A33C-E6917EE44E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombiq.HelpfulExtensions", "src\Modules\Lombiq.HelpfulExtensions\Lombiq.HelpfulExtensions.csproj", "{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Lucene", "src\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj", "{8C7825F7-E1E8-4286-BA66-AB3887F784E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOCTheme", "src\Themes\EasyOCTheme\EasyOCTheme.csproj", "{0B9628DC-061B-4DA8-9F33-2E27E7221A81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,14 +192,14 @@ Global
 		{88C9C461-768A-4CD4-A33C-E6917EE44E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88C9C461-768A-4CD4-A33C-E6917EE44E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88C9C461-768A-4CD4-A33C-E6917EE44E81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C7825F7-E1E8-4286-BA66-AB3887F784E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -228,8 +228,8 @@ Global
 		{0D3D6871-D968-4871-B855-DBB965AEE8E4} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{62DBC7EE-316C-4BFD-A6D6-9FDC046FDBBF} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{88C9C461-768A-4CD4-A33C-E6917EE44E81} = {5A30262C-639E-4734-AB2A-97425C5A1478}
-		{8B89D3DF-D0D5-435F-9162-5ADB8BC1F00D} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{8C7825F7-E1E8-4286-BA66-AB3887F784E4} = {5A30262C-639E-4734-AB2A-97425C5A1478}
+		{0B9628DC-061B-4DA8-9F33-2E27E7221A81} = {181DF740-F0EB-42D9-A94E-076745447CDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}
