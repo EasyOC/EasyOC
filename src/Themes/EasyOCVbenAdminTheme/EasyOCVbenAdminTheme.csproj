@@ -25,17 +25,11 @@
   </ItemGroup>
  
   <ItemGroup>
-    <Content Include="Views\Layout-Login.cshtml" />
-    <Content Include="Views\Layout.cshtml" />
-    <Content Include="Views\Message.cshtml" />
-    <Content Include="Views\Navigation-admin.cshtml" />
-    <Content Include="Views\NavigationItem-admin.cshtml" />
-    <Content Include="Views\NavigationItemLink-admin.cshtml" />
-    <Content Include="Views\NavigationItemText.cshtml" />
-    <Content Include="Views\_ViewImports.cshtml" />
+    <Folder Include="Assets\vben\src\components" />
   </ItemGroup>
  
   <ItemGroup>
-    <Folder Include="Assets\vben" />
+    <Content Include="wwwroot\Vben\css\layout.css" />
+    <Content Include="wwwroot\Vben\css\theme.css" />
   </ItemGroup>
 </Project>
