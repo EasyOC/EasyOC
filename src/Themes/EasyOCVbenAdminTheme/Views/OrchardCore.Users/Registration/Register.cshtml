@@ -1,10 +1,12 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model OrchardCore.Users.ViewModels.ChangePasswordViewModel
 @using Microsoft.AspNetCore.Html
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model OrchardCore.Users.ViewModels.RegisterViewModel
+
 @inject Microsoft.Extensions.Options.IOptions<IdentityOptions> IdentityOptions
 @{
     ViewLayout = "Layout__Login";
+
 
     var options = IdentityOptions.Value;
     var passwordOptions = new HtmlContentBuilder();
@@ -54,30 +56,68 @@
 
     var passwordTooltip = T["Password must have at least {0}.", passwordOptions];
 }
-<!-- vben -->
+
 <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
 
     <div class="vben-login-form relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x">
-
-        <h2 class="mb-3 text-2xl font-bold text-center xl:text-3xl enter-x xl:text-left enter-x">重置密码</h2>
-        <form asp-controller="Account" asp-action="ChangePassword" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post"
+        <h2 class="mb-3 text-2xl font-bold text-center xl:text-3xl enter-x xl:text-left enter-x">@T["Register"]</h2>
+        <form asp-controller="Registration" asp-action="Register"
+              asp-route-returnurl="@ViewData["ReturnUrl"]" method="post"
               class="ant-form ant-form-horizontal p-4 enter-x">
-            <input hidden="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]"/>
-            <div asp-validation-summary="All"></div>
+            <h4>@T["Create a new account."]</h4>
+            <hr/>
+            @* <div asp-validation-summary="All"></div> *@
             <div class="ant-row ant-form-item enter-x" style="row-gap: 0px;">
                 <!---->
                 <div class="ant-col ant-form-item-control">
                     <div class="ant-form-item-control-input">
                         <div class="ant-form-item-control-input-content">
-                            <input asp-for="CurrentPassword"
-                                   placeholder="@T["Current password"]"
-                                   type="password" class="ant-input ant-input-lg">
-                            <span style="color: red" asp-validation-for="CurrentPassword" class="text-danger"></span>
+                            <input asp-for="UserName" autocomplete="off" placeholder="@T["Username"]" type="text" class="ant-input ant-input-lg fix-auto-fill">
+                            <span asp-validation-for="UserName" class="ant-form-item-explain ant-form-item-explain-error"></span>
                         </div><!---->
                     </div><!----><!---->
                 </div>
             </div>
-
+            @* <div class="ant-row ant-form-item enter-x" style="row-gap: 0px;"> *@
+            @*     <!----> *@
+            @*     <div class="ant-col ant-form-item-control"> *@
+            @*         <div class="ant-form-item-control-input"> *@
+            @*             <div class="ant-form-item-control-input-content"> *@
+            @*                 <input placeholder="手机号码" type="text" class="ant-input ant-input-lg fix-auto-fill" id="mobile"> *@
+            @*             </div><!----> *@
+            @*         </div><!----><!----> *@
+            @*     </div> *@
+            @* </div> *@
+            <div class="ant-row ant-form-item enter-x" style="row-gap: 0px;">
+                <!---->
+                <div class="ant-col ant-form-item-control">
+                    <div class="ant-form-item-control-input">
+                        <div class="ant-form-item-control-input-content">
+                            <input asp-for="Email" placeholder="@T["Email"]" type="text" class="ant-input ant-input-lg fix-auto-fill">
+                            <span asp-validation-for="Email" class="ant-form-item-explain ant-form-item-explain-error"></span>
+                        </div><!---->
+                    </div><!----><!---->
+                </div>
+            </div>
+            @* <div class="ant-row ant-form-item enter-x" style="row-gap: 0px;"> *@
+            @*     <!----> *@
+            @*     <div class="ant-col ant-form-item-control"> *@
+            @*         <div class="ant-form-item-control-input"> *@
+            @*             <div class="ant-form-item-control-input-content"> *@
+            @*                 <span class="fix-auto-fill vben-countdown-input ant-input-group-wrapper ant-input-group-wrapper-lg"> *@
+            @*                     <span class="ant-input-wrapper ant-input-group"> *@
+            @*                         <!----><input placeholder="短信验证码" type="text" class="ant-input ant-input-lg" id="sms"> *@
+            @*                         <span class="ant-input-group-addon"> *@
+            @*                             <button class="ant-btn ant-btn-lg" type="button"> *@
+            @*                                 <!----><span>获取验证码</span> *@
+            @*                             </button> *@
+            @*                         </span> *@
+            @*                     </span> *@
+            @*                 </span> *@
+            @*             </div><!----> *@
+            @*         </div><!----><!----> *@
+            @*     </div> *@
+            @* </div> *@
             <div class="ant-row ant-form-item enter-x" style="row-gap: 0px;">
                 <!---->
                 <div class="ant-col ant-form-item-control">
@@ -96,7 +136,8 @@
                                         </span>
                                         <span role="img" aria-label="eye-invisible" tabindex="-1" class="anticon anticon-eye-invisible ant-input-password-icon">
                                             <svg focusable="false" class="" data-icon="eye-invisible" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896">
-                                                     </svg>
+                                                <path d="M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 000-51.5zm-63.57-320.64L836 122.88a8 8 0 00-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 000 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 000 11.31L155.17 889a8 8 0 0011.31 0l712.15-712.12a8 8 0 000-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 00-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 01146.2-106.69L401.31 546.2A112 112 0 01396 512z"></path><path d="M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 00227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 01-112 112z"></path>
+                                            </svg>
                                         </span>
                                     </span>
                                 </span>
@@ -104,23 +145,23 @@
                                 <span id="passwordInvaild" style="display:none" class="ant-form-item-explain ant-form-item-explain-error">
                                     您输入的密码不符合规则，请重新输入
                                     <ul>
-                                        <li>密码长度不可小于 @options.Password.RequiredLength 位</li>
-                                        @if (options.Password.RequireUppercase)
-                                        {
-                                            <li>密码必须包含大写字母</li>
-                                        }
-                                        @if (options.Password.RequireLowercase)
-                                        {
-                                            <li>密码必须包含小写字母</li>
-                                        }
-                                        @if (options.Password.RequireDigit)
-                                        {
-                                            <li>密码必须包含数字</li>
-                                        }
-                                        @if (options.Password.RequireNonAlphanumeric)
-                                        {
-                                            <li>密码必须包含特殊字符</li>
-                                        }
+                                    <li>密码长度不可小于 @options.Password.RequiredLength 位</li>
+                                    @if (options.Password.RequireUppercase)
+                                    {
+                                        <li>密码必须包含大写字母</li>
+                                    }
+                                    @if (options.Password.RequireLowercase)
+                                    {
+                                        <li>密码必须包含小写字母</li>
+                                    }
+                                    @if (options.Password.RequireDigit)
+                                    {
+                                        <li>密码必须包含数字</li>
+                                    }
+                                    @if (options.Password.RequireNonAlphanumeric)
+                                    {
+                                        <li>密码必须包含特殊字符</li>
+                                    }
                                     </ul>
                                 </span>
                                 <span asp-validation-for="Password" class="ant-form-item-explain ant-form-item-explain-error"></span>
@@ -132,24 +173,24 @@
                     </div><!----><!---->
                 </div>
             </div>
-
             <div class="ant-row ant-form-item enter-x" style="row-gap: 0px;">
                 <!---->
                 <div class="ant-col ant-form-item-control">
                     <div class="ant-form-item-control-input">
                         <div class="ant-form-item-control-input-content">
                             <span class="ant-input-password ant-input-password-large ant-input-affix-wrapper ant-input-affix-wrapper-lg">
-                                <!----><input asp-for="PasswordConfirmation" placeholder="@T["New password confirmation"]" type="password" id="confirmPassword" class="ant-input ant-input-lg">
+                                <!----><input asp-for="ConfirmPassword" placeholder="@T["Confirm password"]" type="password" id="confirmPassword" class="ant-input ant-input-lg">
 
                                 <span class="ant-input-suffix">
                                     <!---->
                                     <span role="img" aria-label="eye-invisible" tabindex="-1" class="anticon anticon-eye-invisible ant-input-password-icon">
                                         <svg focusable="false" class="" data-icon="eye-invisible" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896">
-                                               </svg>
+                                            <path d="M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 000-51.5zm-63.57-320.64L836 122.88a8 8 0 00-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 000 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 000 11.31L155.17 889a8 8 0 0011.31 0l712.15-712.12a8 8 0 000-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 00-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 01146.2-106.69L401.31 546.2A112 112 0 01396 512z"></path><path d="M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 00227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 01-112 112z"></path>
+                                        </svg>
                                     </span>
                                 </span>
                             </span>
-                            <span asp-validation-for="PasswordConfirmation" class="ant-form-item-explain ant-form-item-explain-error"></span>
+                            <span asp-validation-for="ConfirmPassword" class="ant-form-item-explain ant-form-item-explain-error"></span>
                         </div><!---->
                     </div><!----><!---->
                 </div>
@@ -159,17 +200,27 @@
                 <div class="ant-col ant-form-item-control">
                     <div class="ant-form-item-control-input">
                         <div class="ant-form-item-control-input-content">
-                            <button type="submit" class="ant-btn ant-btn-primary ant-btn-lg ant-btn-block" type="button">
-                                <!----><span>重 置</span>
-                            </button>
-                            <a class="ant-btn ant-btn-lg ant-btn-block mt-4" href="@ViewData["ReturnUrl"]">
-                                <!----><span>返 回</span>
-                            </a>
-                        </div>
-                    </div>
+                            <label class="ant-checkbox-wrapper">
+                                <span class="ant-checkbox">
+                                    <input id="policy" type="checkbox" class="ant-checkbox-input"><span class="ant-checkbox-inner"></span>
+                                </span><label style="padding-left:5px;" for="policy">我同意xxx隐私政策</label>
+                                <span  id="policyNotify" style="display:none" class="ant-form-item-explain ant-form-item-explain-error">
+                                     请同意隐私政策
+                                </span>
+                            </label>
+                        </div><!---->
+                    </div><!----><!---->
                 </div>
             </div>
+            <button type="submit" class="ant-btn ant-btn-primary ant-btn-lg ant-btn-block enter-x">
+                <!----><span>注 册</span>
+
+            </button>
+            <a href="/" class="ant-btn ant-btn-lg ant-btn-block mt-4 enter-x" type="button">
+                <!----><span>返 回</span>
+            </a>
         </form>
+        <!--v-if--><!--v-if-->
     </div>
 </div>
 

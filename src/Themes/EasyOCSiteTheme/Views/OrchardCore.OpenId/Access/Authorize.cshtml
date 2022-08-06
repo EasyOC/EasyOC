@@ -6,20 +6,51 @@
     ViewLayout = "Layout__Login";
 }
 
-<div class="jumbotron">
-    <h1>@T["Authorization"]</h1>
+<div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
 
-    <p class="lead text-start">@T["Do you want to grant <strong>{0}</strong> access to your data? (scopes requested: {1})", Model.ApplicationName, Model.Scope]</p>
+    <div class="vben-login-form relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x">
+        <h2 class="mb-3 text-2xl font-bold text-center xl:text-3xl enter-x xl:text-left enter-x">@T["Authorization"]</h2>
 
-    <form asp-controller="Access" asp-action="Authorize" method="post" class="no-multisubmit">
-        @* Flow the request parameters so they can be received by the Accept/Reject actions: *@
-        @foreach (var parameter in Context.Request.HasFormContentType ?
-          (IEnumerable<KeyValuePair<string, StringValues>>) Context.Request.Form : Context.Request.Query)
-        {
-            <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
-        }
 
-        <input class="btn btn-lg btn-success" name="submit.Accept" type="submit" value="Yes" />
-        <input class="btn btn-lg btn-danger" name="submit.Deny" type="submit" value="No" />
-    </form>
+        <p class="lead text-start">@T["Do you want to grant <strong>{0}</strong> access to your data? (scopes requested: {1})", Model.ApplicationName, Model.Scope]</p>
+        <form asp-controller="Access" id="frmAuthorize" asp-action="Authorize" method="post" class="ant-form ant-form-horizontal p-4 enter-x">
+            @* Flow the request parameters so they can be received by the Accept/Reject actions: *@
+            @foreach (var parameter in Context.Request.HasFormContentType ?
+                (IEnumerable<KeyValuePair<string, StringValues>>)Context.Request.Form : Context.Request.Query)
+            {
+                <input type="hidden" name="@parameter.Key" value="@parameter.Value"/>
+            }
+            <input type="hidden" id="hdSubmitAction">
+            <div class="ant-row enter-x">
+                <div class="ant-col ant-col-xs-24 ant-col-md-6 ant-col-offset-6">
+                    <button onclick="submitAction(this);" id="submit.Accept" class="ant-btn ant-btn-primary ant-btn-block " type="button">
+                        <span>允许</span>
+                    </button>
+                </div>
+                <div class="ant-col ant-col-xs-24 ant-col-md-6 !my-2 !md:my-0 xs:mx-0 md:mx-2">
+                    <button id="submit.Deny"  onclick="submitAction(this);"
+                            class="ant-btn ant-btn-danger ant-btn-block" type="button">
+                        <span>拒绝</span>
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
 </div>
+<script at="Foot">
+ function submitAction(btn){
+     var hdSubmitAction=document.querySelector("#hdSubmitAction");
+     if (btn.id === "submit.Accept"){
+         hdSubmitAction.value="Yes";
+        hdSubmitAction.name="submit.Accept";
+     }else{
+        hdSubmitAction.value="No";
+       hdSubmitAction.name="submit.Deny";
+     }
+    document.querySelector("#frmAuthorize").submit();
+ }
+
+
+</script>

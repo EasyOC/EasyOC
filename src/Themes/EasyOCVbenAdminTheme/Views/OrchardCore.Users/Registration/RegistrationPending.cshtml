@@ -1,0 +1,22 @@
+﻿@{
+    ViewLayout = "Layout__Login";
+    var returnUrl = Context.Request.Query["ReturnUrl"];
+}
+<div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
+    <div class="vben-login-form relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x">
+
+        <h2>@T["User Registration Pending"]</h2>
+        <div>
+            <p>@T["Your user account has been created but has to be approved before it can be used."]</p>
+
+            @if (!String.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                <a href="@returnUrl">@T["Previous Page"]</a>
+            }
+            else
+            {
+                <a href="@Url.Content("~/")">@T["Home"]</a>
+            }
+        </div>
+    </div>
+</div>

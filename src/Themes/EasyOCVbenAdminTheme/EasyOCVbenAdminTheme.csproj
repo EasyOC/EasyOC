@@ -29,7 +29,19 @@
   </ItemGroup>
  
   <ItemGroup>
+    <Content Include="Views\OrchardCore.Users\Registration\ConfirmEmail.cshtml" />
+    <Content Include="Views\OrchardCore.Users\Registration\ConfirmEmailSent.cshtml" />
+    <Content Include="Views\OrchardCore.Users\Registration\Register.cshtml" />
+    <Content Include="Views\OrchardCore.Users\Registration\RegistrationPending.cshtml" />
     <Content Include="wwwroot\Vben\css\layout.css" />
     <Content Include="wwwroot\Vben\css\theme.css" />
+    <Content Include="wwwroot\Vben\js\theme.js" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ForgotPassword.cshtml" />
+    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ForgotPasswordConfirmation.cshtml" />
+    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ResetPassword.cshtml" />
+    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ResetPasswordConfirmation.cshtml" />
   </ItemGroup>
 </Project>
