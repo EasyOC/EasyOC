@@ -7,7 +7,6 @@
 @{
     ViewLayout = "Layout__Login";
 
-
     var options = IdentityOptions.Value;
     var passwordOptions = new HtmlContentBuilder();
     IHtmlContent separator = HtmlString.Empty;
@@ -226,16 +225,19 @@
 
 <script at="Foot">
 
-        strengthVben({
-            passwordSelector: '#@Html.IdFor(x => x.Password)',
-            minLength: @(options.Password.RequiredLength),
-            upperCase: @(options.Password.RequireUppercase ? "true" : "false"),
-            lowerCase: @(options.Password.RequireLowercase ? "true" : "false"),
-            numbers: @(options.Password.RequireDigit ? "true" : "false"),
-            specialchars: @(options.Password.RequireNonAlphanumeric ? "true" : "false"),
-            target: '#passwordStrength',
-            passwordInvaild:"#passwordInvaild"
-        });
+         (function(){
+                    strengthVben({
+                        passwordSelector: '#@Html.IdFor(x => x.Password)',
+                        minLength: @(options.Password.RequiredLength),
+                        upperCase: @(options.Password.RequireUppercase ? "true" : "false"),
+                        lowerCase: @(options.Password.RequireLowercase ? "true" : "false"),
+                        numbers: @(options.Password.RequireDigit ? "true" : "false"),
+                        specialchars: @(options.Password.RequireNonAlphanumeric ? "true" : "false"),
+                        target: '#passwordStrength',
+                        passwordInvaild:"#passwordInvaild"
+                    });
+            document.querySelector('#@Html.IdFor(x => x.Password)').focus();
+        })()
 
     document.querySelector('form').addEventListener("submit", function (e) {
         if (!document.querySelector('#policy').checked) {

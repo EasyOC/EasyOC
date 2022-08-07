@@ -12,7 +12,8 @@
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Menu" Version="1.4.0" />
+    <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" />
+
     <PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
@@ -22,26 +23,8 @@
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Admin" Version="$(OrchardCoreVersion)" />
 
+    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.OpenId\OrchardCore.OpenId.csproj"
+                      Version="$(OrchardCoreVersion)" />
   </ItemGroup>
- 
-  <ItemGroup>
-    <Folder Include="Assets\vben\src\components" />
-  </ItemGroup>
- 
-  <ItemGroup>
-    <Content Include="Views\OrchardCore.Users\Registration\ConfirmEmail.cshtml" />
-    <Content Include="Views\OrchardCore.Users\Registration\ConfirmEmailSent.cshtml" />
-    <Content Include="Views\OrchardCore.Users\Registration\Register.cshtml" />
-    <Content Include="Views\OrchardCore.Users\Registration\RegistrationPending.cshtml" />
-    <Content Include="wwwroot\Vben\css\layout.css" />
-    <Content Include="wwwroot\Vben\css\theme.css" />
-    <Content Include="wwwroot\Vben\js\theme.js" />
-  </ItemGroup>
- 
-  <ItemGroup>
-    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ForgotPassword.cshtml" />
-    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ForgotPasswordConfirmation.cshtml" />
-    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ResetPassword.cshtml" />
-    <RazorGenerate Remove="Views\OrchardCore.Users\ResetPassword\ResetPasswordConfirmation.cshtml" />
-  </ItemGroup>
+  
 </Project>
