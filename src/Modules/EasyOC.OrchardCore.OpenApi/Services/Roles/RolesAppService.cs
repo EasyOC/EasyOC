@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using EasyOC.Core.Application;
+using EasyOC.Core.DtoModels;
+using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
+using EasyOC.OrchardCore.OpenApi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using OrchardCore.Data.Documents;
@@ -18,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
-    public class RolesAppService : AppServcieBase, IRolesAppService
+    public class RolesAppService : AppServiceBase, IRolesAppService
     {
         private readonly RoleManager<IRole> _roleManager;
         private readonly IRoleService _roleService;
@@ -29,17 +32,15 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         private readonly IDocumentStore _documentStore;
 
 
-        private readonly IMapper _mapper;
 
         public RolesAppService(IRoleService roleService, RoleManager<IRole> roleManager
-            , IEnumerable<IPermissionProvider> permissionProviders, IMapper mapper
+            , IEnumerable<IPermissionProvider> permissionProviders
             , ITypeFeatureProvider typeFeatureProvider, IDocumentStore documentStore
             , IAuthorizationService authorizationService, INotifier notifier)
         {
             _roleService = roleService;
             _roleManager = roleManager;
             _permissionProviders = permissionProviders;
-            _mapper = mapper;
             _typeFeatureProvider = typeFeatureProvider;
             _documentStore = documentStore;
             _authorizationService = authorizationService;
@@ -50,14 +51,11 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         {
             var roles = await _roleService.GetRolesAsync();
 
-            return roles.Select(_mapper.Map<RoleDto>).ToList();
+            return roles.Select(ObjectMapper.Map<RoleDto>).ToList();
         }
+        [EOCAuthorization("ManageRoles")]
         public async Task<RoleDetailsDto> GetRoleDetailsAsync(string id)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
-            {
-                throw new UnauthorizedAccessException();
-            }
 
             var role = (Role)await _roleManager.FindByNameAsync(_roleManager.NormalizeKey(id));
             if (role == null)
@@ -71,15 +69,16 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             var model = new RoleDetailsDto
             {
-                Role = _mapper.Map<RoleDto>(role),
                 Name = role.RoleName,
                 RoleDescription = role.RoleDescription,
-                EffectivePermissions = await GetEffectivePermissions(role, allPermissions),
-                RoleCategoryPermissions = ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions)
+                Permissions = await GetEffectivePermissions(role, allPermissions),
+                //RoleCategoryPermissions = ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions),
+                VbenMenuIds = role.RoleClaims.Where(r => r.ClaimType == RoleClaimType.VbenMenuId.ToString()).Select(x => x.ClaimValue),
             };
 
             return model;
         }
+        [EOCAuthorization("ManageRoles")]
         public async Task CreateRoleAsync(RoleDto model)
         {
 
@@ -111,7 +110,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 await _notifier.ErrorAsync(H[error.Description]);
             }
         }
-
+        [EOCAuthorization("ManageRoles")]
         public async Task DeleteRoleAsync(string id)
         {
             //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
@@ -144,15 +143,10 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 }
             }
         }
-
-        public async Task UpdateRoleAsync(UpdateRoleInput input)
+        [EOCAuthorization("ManageRoles")]
+        public async Task UpdateRoleAsync(RoleDetailsDto input)
         {
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageRoles))
-            //{
-            //    return Forbid();
-            //}
-
-            var role = (Role)await _roleManager.FindByNameAsync(_roleManager.NormalizeKey(input.NormalizedRoleName));
+            var role = (Role)await _roleManager.FindByNameAsync(_roleManager.NormalizeKey(input.Name));
 
             if (role == null)
             {
@@ -161,17 +155,33 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             role.RoleDescription = input.RoleDescription;
 
-            role.RoleClaims.RemoveAll(c => c.ClaimType == Permission.ClaimType);
-            input.RoleClaims.ForEach(c => c.ClaimType = Permission.ClaimType);
-
-            role.RoleClaims.AddRange(_mapper.Map<IEnumerable<RoleClaim>>(input.RoleClaims.AsEnumerable()));
-
+            role.RoleClaims.Clear();
+            if (input.Permissions is not null && input.Permissions.Any())
+            {
+                role.RoleClaims.AddRange(input.Permissions
+                   .Select(x => new RoleClaim
+                   {
+                       ClaimType = RoleClaimType.Permission.ToString(),
+                       ClaimValue = x
+                   }));
+            }
+            if (input.VbenMenuIds is not null && input.VbenMenuIds.Any())
+            {
+                role.RoleClaims.AddRange(input.VbenMenuIds
+                  .Select(x => new RoleClaim
+                  {
+                      ClaimType = RoleClaimType.VbenMenuId.ToString(),
+                      ClaimValue = x
+                  }));
+            }
             await _roleManager.UpdateAsync(role);
 
             await _notifier.SuccessAsync(H["Role updated successfully."]);
 
         }
-        private async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
+
+        [IgnoreWebApiMethod]
+        public async Task<IDictionary<string, IEnumerable<Permission>>> GetInstalledPermissionsAsync()
         {
             var installedPermissions = new Dictionary<string, IEnumerable<Permission>>();
             foreach (var permissionProvider in _permissionProviders)
@@ -200,15 +210,14 @@ namespace EasyOC.OrchardCore.OpenApi.Services
 
             return installedPermissions;
         }
-
         public async Task<IDictionary<string, IEnumerable<PermissionDto>>> GetAllPermissionsAsync()
         {
             var installedPermissions = await GetInstalledPermissionsAsync();
 
-            return _mapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions);
+            return ObjectMapper.Map<IDictionary<string, IEnumerable<PermissionDto>>>(installedPermissions);
         }
-
-        private async Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions)
+        [IgnoreWebApiMethod]
+        public async Task<IEnumerable<string>> GetEffectivePermissions(Role role, IEnumerable<Permission> allPermissions)
         {
             // Create a fake user to check the actual permissions. If the role is anonymous
             // IsAuthenticated needs to be false.
@@ -216,7 +225,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 role.RoleName != "Anonymous" ? "FakeAuthenticationType" : null);
 
             // Add role claims
-            fakeIdentity.AddClaims(role.RoleClaims.Select(c => c.ToClaim()));
+            fakeIdentity.AddClaims(role.RoleClaims.Where(c => c.ClaimType == RoleClaimType.Permission.ToString()).Select(c => c.ToClaim()));
 
             var fakePrincipal = new ClaimsPrincipal(fakeIdentity);
 

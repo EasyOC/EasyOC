@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
-
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,14 +13,16 @@
 
   <ItemGroup>
     <Compile Remove="AutofacModule.cs" />
-    <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeItemMetadataAttribute.cs" />
-    <Compile Remove="ResultWaper\FriendlyException\Attributes\ErrorCodeTypeAttribute.cs" />
+    <Compile Remove="Extensions\FreeSqlProviderFactory.cs" />
+    <Compile Remove="Extensions\OCExtentions\ContentExtensions.cs" />
+    <Compile Remove="ResultWaper\Extensions\UnifyResultMiddlewareExtensions.cs" />
+    <Compile Remove="ResultWaper\Validation\DataValidationResult.cs" />
     <Compile Remove="RunAs.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+  <!--<ItemGroup>
+    
+  </ItemGroup>-->
 
 
   <ItemGroup>
@@ -37,12 +37,13 @@
     <PackageReference Include="FreeSql" />
     <PackageReference Include="FreeSql.Provider.MySql" />
     <PackageReference Include="FreeSql.Provider.Sqlite" />
+    <PackageReference Include="FreeSql.Provider.PostgreSQL" />
     <PackageReference Include="FreeSql.Provider.SqlServer" />
 
     <!--<PackageReference Include="Volo.Abp.Core" />-->
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
@@ -57,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\OCExtentions\" />
   </ItemGroup>
 
 </Project>

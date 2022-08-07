@@ -2,6 +2,14 @@
 {
     public class GetAllTypeFilterInput : SimpleFilterAndPageQueryInput
     {
-        public string Stereotype { get; set; }
+        public Stereotype? Stereotype { get; set; }
+    }
+    public enum Stereotype
+    {
+        All,
+        OnlyEmpty,
+        Widget,
+        CustomUserSettings,
+        MenuItem,
     }
 }

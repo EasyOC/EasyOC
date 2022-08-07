@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Timmers\**" />
+	  <EmbeddedResource Remove="Timmers\**" />
+	  <None Remove="Timmers\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Drivers\CAPEventDisplayDriver.cs" />
+		<Compile Remove="Timers\TimerEvent.cs" />
+		<Compile Remove="ViewModels\CAPEventViewModel.cs" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.PowerShell.Commands.Utility" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.PowerShell.ConsoleHost" Version="7.3.0-preview.1" />
+		<PackageReference Include="Microsoft.WSMan.Management" Version="7.3.0-preview.1" />
+		<PackageReference Include="RestSharp" Version="107.1.2-alpha.0.8" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Deployment" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Timers\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <RazorGenerate Remove="Views\WorkflowType\Duplicate.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\Edit.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\EditProperties.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\Index.cshtml" />
+	  <RazorGenerate Remove="Views\WorkflowType\RenderActivity.cshtml" />
+	</ItemGroup>
+
+</Project>
+
+
+

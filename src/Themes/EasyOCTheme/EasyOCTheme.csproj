@@ -1,24 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Views\Layout.liquid" />
+    <EmbeddedResource Update="Views\OrchardCore.ContentTypes\Admin\Create.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Remove="Views\OrchardCore.ContentTypes\**" />
+    <EmbeddedResource Update="Views\OrchardCore.Users\Account\Layout-Login.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\OrchardCore.Users\Account\Layout-MyLogin.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
+   <ItemGroup> 
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+  </ItemGroup> 
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-  </ItemGroup>
+    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+    
+  </ItemGroup> 
 
+  <ItemGroup>
+    <Content Include="Views\Layout.cshtml" />
+  </ItemGroup> 
+
+ 
+ 
 </Project>

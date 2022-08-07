@@ -2,7 +2,7 @@
 {
     public class ImportJsonInupt//: PostInputModel
     {
-        public string Json { get; set; }
+        public string RecipeContent { get; set; }
     }
 }
 

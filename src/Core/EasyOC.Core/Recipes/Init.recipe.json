@@ -13,23 +13,15 @@
       "name": "Feature",
       "enable": [
         "Application.Default",
-        "EasyOC.Core",
-        "EasyOC.OrchardCore.VueElementUI",
         "OrchardCore.Liquid",
         "OrchardCore.Settings",
         "OrchardCore.Contents",
         "OrchardCore.ContentTypes",
         "OrchardCore.Shortcodes",
         "OrchardCore.ContentFields",
-        "EasyOC.OrchardCore.Excel",
-        "EasyOC.OrchardCore.OpenApi",
-        "EasyOC.OrchardCore.RDBMS",
-        "EasyOC.OrchardCore.ContentExtentions",
         "OrchardCore.Queries",
         "OrchardCore.Queries.Sql",
-        "EasyOC.OrchardCore.WorkflowPlus",
         "OrchardCore.Resources",
-        "Lombiq.HelpfulExtensions.CodeGeneration",
         "OrchardCore.Autoroute",
         "OrchardCore.Flows",
         "OrchardCore.Title",
@@ -46,7 +38,6 @@
         "OrchardCore.Scripting",
         "OrchardCore.Recipes",
         "OrchardCore.BackgroundTasks",
-        "OrchardCore.ContentFields.Indexing.SQL",
         "OrchardCore.Users",
         "OrchardCore.ContentFields.Indexing.SQL.UserPicker",
         "OrchardCore.Localization",
@@ -114,7 +105,10 @@
         "SafeMode",
         "TheAdmin",
         "TheBlogTheme",
-        "TheTheme"
+        "TheTheme",
+        "EasyOCTheme",
+        "EasyOC.Core",
+        "Lombiq.HelpfulExtensions.CodeGeneration"
       ]
     },
     {
@@ -148,24 +142,14 @@
     },
     {
       "name": "OpenIdApplication",
-      "DisplayName": "Authorization Password Flow",
-      "ClientId": "vue_client_app",
-      "AllowAuthorizationCodeFlow": true,
-      "AllowLogoutEndpoint": true,
-      "AllowPasswordFlow": true,
-      "Type": "public"
-    },
-    {
-      "name": "OpenIdApplication",
       "DisplayName": "SwaggerClient",
       "ClientId": "SwaggerClient",
-      "ClientSecret": "123123",
       "ConsentType": "implicit",
       "AllowAuthorizationCodeFlow": true,
       "AllowLogoutEndpoint": false,
       "AllowPasswordFlow": false,
       "RedirectUris": "https://localhost:44389/swagger/oauth2-redirect.html http://localhost:2919/swagger/oauth2-redirect.html",
-      "Type": "confidential"
+      "Type": "public"
     },
     {
       "name": "OpenIdScope",
@@ -187,15 +171,9 @@
     },
     {
       "name": "OpenIdScope",
-      "Description": "A scope to provide permissions for remote clients",
-      "DisplayName": "permissions Scope",
-      "ScopeName": "permissions"
-    },
-    {
-      "name": "OpenIdScope",
-      "Description": "A scope to provide api for remote clients",
-      "DisplayName": "api Scope",
-      "ScopeName": "api"
+      "Description": "A scope to provide offline_access for remote clients",
+      "DisplayName": "offline_access Scope",
+      "ScopeName": "offline_access"
     },
     {
       "name": "AdminMenu",

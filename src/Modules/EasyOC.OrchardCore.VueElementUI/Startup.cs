@@ -16,7 +16,7 @@ namespace EasyOC.OrchardCore.VueElementUI
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ElmentUIResourceManagementOptions>();
-            services.AddTransient<IDataMigration, ElementUIMigrations>();
+            services.AddScoped<IDataMigration, ElementUIMigrations>();
 
         }
 

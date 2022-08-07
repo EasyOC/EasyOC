@@ -2,35 +2,31 @@
   <Import Project="Dependencies.AspNetCore.props" />
   <PropertyGroup>
     <!-- OrchardCore 的全局依赖版本-->
-    <OrchardCoreVersion>1.2.0</OrchardCoreVersion>
+    <OrchardCoreVersion>1.4.0</OrchardCoreVersion>
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-    <StatCanVersion>1.0.6-candev-4</StatCanVersion>
-
-    <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-    <!--<OrchardCoreLibrariesRoot Condition="Exists('..\..\..\..\..\..\OrchardCore\src\OrchardCore')">..\..\..\\..\..\..\OrchardCore\src\OrchardCore</OrchardCoreLibrariesRoot>
-		<OrchardCoreModulesRoot Condition="Exists('..\..\..\..\..\..\OrchardCore\src\OrchardCore.Modules')">..\..\..\\..\..\..\OrchardCore\src\OrchardCore.Modules</OrchardCoreModulesRoot>-->
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <Authors>EasyOC Team</Authors>
-    <Copyright>EasyOC Team</Copyright>
+    <FreeSqlVersion>3.2.664</FreeSqlVersion>
+    <LuceneNetVersion>4.8.0-beta00016</LuceneNetVersion>
+    <!-- Special case - this property is used by a DotNetCliToolReference -->
+    <DotNetXunitVersion>2.3.0</DotNetXunitVersion>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageManagement Include="OrchardCore.Translations.All" Version="1.3.0" />
     <!--依赖的第三方库版本-->
-    <PackageManagement Include="NodaTime"  Version="3.0.9"/>
 
+    <PackageManagement Include="NodaTime"  Version="3.0.9"/>
     <PackageManagement Include="RestSharp" Version="106.13.0" />
     <PackageManagement Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.14.0" />
-    <PackageManagement Include="Volo.Abp.Core" Version="5.0.0-beta.3" />
     <PackageManagement Include="HtmlSanitizer" Version="6.0.430-beta" />
     <PackageManagement Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageManagement Include="NJsonSchema" Version="10.5.2" />
     <PackageManagement Include="NSwag.AspNetCore" Version="13.13.2" />
     <PackageManagement Include="EasyOC.DynamicWebApi" Version="1.1.2" />
-    <PackageManagement Include="FreeSql" Version="2.6.100" />
-    <PackageManagement Include="FreeSql.Provider.MySql" Version="2.6.100" />
-    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="2.6.100" />
-    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="2.6.100" />
-    
-  </ItemGroup> 
+    <PackageManagement Include="FreeSql" Version="$(FreeSqlVersion)" />
+    <PackageManagement Include="FreeSql.Provider.MySql" Version="$(FreeSqlVersion)"  />
+    <PackageManagement Include="FreeSql.Provider.Sqlite" Version="$(FreeSqlVersion)"  />
+    <PackageManagement Include="FreeSql.Provider.SqlServer" Version="$(FreeSqlVersion)"  />
+    <PackageManagement Include="FreeSql.Provider.PostgreSQL" Version="$(FreeSqlVersion)" />
+    <PackageManagement Include="NPOI" Version="2.5.6" />
+    <PackageManagement Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 </Project>

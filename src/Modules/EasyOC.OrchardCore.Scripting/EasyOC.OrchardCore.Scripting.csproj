@@ -2,16 +2,14 @@
 	<PropertyGroup> 
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-		<PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" /> 
+		<PackageReference Include="OrchardCore.Scripting.JavaScript" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" /> 
 	</ItemGroup>
 
 </Project>

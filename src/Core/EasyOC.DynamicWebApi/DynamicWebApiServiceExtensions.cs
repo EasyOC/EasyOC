@@ -17,7 +17,7 @@ namespace EasyOC.DynamicWebApi
         /// Use Dynamic WebApi to Configure
         /// </summary>
         /// <param name="application"></param>
-        /// <param name="options"></param>
+        /// <param name="optionsAction"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseDynamicWebApi(this IApplicationBuilder application, Action<IServiceProvider, DynamicWebApiOptions> optionsAction)
         {

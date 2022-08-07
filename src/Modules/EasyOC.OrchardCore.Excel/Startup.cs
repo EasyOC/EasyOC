@@ -14,29 +14,32 @@ using System;
 
 namespace EasyOC.OrchardCore.Excel
 {
-    [RequireFeatures("EasyOC.OrchardCore.Excel")]
+    [Feature("EasyOC.OrchardCore.Excel")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IDataMigration, ExcelModuleMigrations>();
             services.AddScoped<IExcelAppService, ExcelAppService>();
             services.AddActivity<ExcelTask, ExcelTaskDisplayDriver>();
             services.AddContentPart<ImportExcelSettings>();
+
+            // services.AddHttpClient(Consts.GraphqlClient);
             //services.AddSingleton<IGlobalMethodProvider, ExcelMethodsProvider>();
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
         {
             routes.MapAreaControllerRoute(
-                name: "Home",
-                areaName: "EasyOC.OrchardCore.Excel",
-                pattern: "Home/Index",
-                defaults: new { controller = "Home", action = "Index" }
+            name: "Home",
+            areaName: "EasyOC.OrchardCore.Excel",
+            pattern: "Home/Index",
+            defaults: new
+            {
+                controller = "Home", action = "Index"
+            }
             );
         }
     }
 }
-
-
-

@@ -142,17 +142,17 @@ namespace EasyOC
 
         internal static void AdditionalPropertiesToCamelCase(this ContentElementDto contentElementDto)
         {
-            if (contentElementDto.AdditionalProperties != null && contentElementDto.AdditionalProperties.Any())
+            if (contentElementDto.Parts != null && contentElementDto.Parts.Any())
             {
                 var additionalProperties = new Dictionary<string, object>();
-                foreach (var key in contentElementDto.AdditionalProperties.Keys)
+                foreach (var key in contentElementDto.Parts.Keys)
                 {
-                    var value = contentElementDto.AdditionalProperties[key];
-                    contentElementDto.AdditionalProperties.Remove(key);
+                    var value = contentElementDto.Parts[key];
+                    contentElementDto.Parts.Remove(key);
                     var camelCaseKey = char.ToLowerInvariant(key[0]) + key.Substring(1);
                     additionalProperties.Add(camelCaseKey, value);
                 }
-                contentElementDto.AdditionalProperties = additionalProperties;
+                contentElementDto.Parts = additionalProperties;
             }
         }
     }

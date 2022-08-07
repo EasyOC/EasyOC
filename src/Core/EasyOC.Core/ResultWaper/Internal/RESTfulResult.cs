@@ -10,11 +10,11 @@
         /// 状态码
         /// </summary>
         public int? StatusCode { get; set; }
-
+        public int? Status { get; set; }
         /// <summary>
         /// 数据
         /// </summary>
-        public T Result { get; set; }
+        public T Data { get; set; }
 
         /// <summary>
         /// 执行成功
@@ -24,7 +24,7 @@
         /// <summary>
         /// 错误信息
         /// </summary>
-        public object Messages { get; set; }
+        public object Msg { get; set; }
 
         /// <summary>
         /// 附加数据
@@ -35,6 +35,5 @@
         /// 时间戳
         /// </summary>
         public long Timestamp { get; set; }
-        public object Message { get; internal set; }
     }
 }

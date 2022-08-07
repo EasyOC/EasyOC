@@ -1,29 +1,35 @@
 ﻿using EasyOC.OrchardCore.ContentExtentions.AppServices;
+using EasyOC.OrchardCore.ContentExtentions.Handlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.Modules;
 using System;
 
 namespace EasyOC.OrchardCore.ContentExtentions
 {
-    [RequireFeatures("OrchardCore.ContentFields",
-        "OrchardCore.ContentPreview", "EasyOC.OrchardCore.ContentExtentions")]
+    [RequireFeatures("OrchardCore.Contents")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IContentManagementAppService, ContentManagementAppService>();
+            services.AddAutoMapper(this.GetType().Assembly);
+            services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
+            services.Replace(ServiceDescriptor.Scoped<IContentManager, EOCDefaultContentManager>());
+            services.AddScoped<IBatchImportEventHandler, BatchImportEventHandlerBase>();
 
+
+            //修改类型定义事件处理声明
+            //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
+            services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
+            services.AddScoped(typeof(IHandleExecutor<>), typeof(HandleExecutorBase<>));
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
         {
-            //builder.UseDynamicWebApi((serviceProvider, options) =>
-            //{
-            //    options.AddAssemblyOptions(this.GetType().Assembly);
-            //});
-
             routes.MapAreaControllerRoute(
                 name: "Home",
                 areaName: "EasyOC.OrchardCore.ContentExtentions",

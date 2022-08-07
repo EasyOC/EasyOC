@@ -2,8 +2,8 @@
 
   <Import Project="..\EasyOC.Build\Commons.props" />
 
-  <PropertyGroup>
-     <!-- <TargetFrameworks>$(DefaultTargetFramework)</TargetFrameworks> -->
-  </PropertyGroup>
 
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

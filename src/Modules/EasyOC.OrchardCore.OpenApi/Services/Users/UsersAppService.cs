@@ -1,7 +1,8 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
+using FreeSql.Internal.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,7 @@ using OrchardCore.Users.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YesSql;
@@ -30,8 +32,8 @@ using Permissions = OrchardCore.Users.Permissions;
 
 namespace EasyOC.OrchardCore.OpenApi.Services
 {
-    [EOCAuthorization("View Users")]
-    public class UsersAppService : AppServcieBase, IUsersAppService
+    [EOCAuthorization(OCPermissions.View_Users)]
+    public class UsersAppService : AppServiceBase, IUsersAppService
     {
         private readonly UserManager<IUser> _userManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -60,57 +62,22 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         public async Task<PagedResult<UserListItemDto>> GetAllAsync(GetAllUserInput input)
         {
             var authUser = new User();
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, authUser))
+            if (!await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ViewUsers, authUser))
             {
                 throw new UnauthorizedAccessException();
             }
-            //var users = FreeSqlSession.Select<UserIndex, UserProfileIndex>()
-            //     .LeftJoin((ui, up) => ui.DocumentId == up.DocumentId)
-            //     .Where((u, up) => u.IsEnabled)
-            //     .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.Department == input.DepartmentId)
-            //     ;
-            //if (!string.IsNullOrWhiteSpace(input.Filter))
-            //{
-            //    var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
-            //    var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
-            //    users = users.Where((ui, up) =>
-            //        ui.NormalizedUserName.Contains(normalizedSearchUserName) ||
-            //        ui.NormalizedEmail.Contains(normalizedSearchEMail));
-            //}
-
-            //if (input.HasOrder())
-            //{
-            //    switch (input.SortField.ToLower())
-            //    {
-            //        case "username":
-            //            input.SortField = "NormalizedUserName";
-            //            break;
-            //        case "email":
-            //            input.SortField = "NormalizedEmail";
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //    users = users.OrderBy(input.GetOrderStr());
-            //}
-
-            //var pageinfo = new BasePagingInfo() { PageNumber = input.Page, PageSize = input.PageSize };
-            //var ids = await users
-            //    .Page(pageinfo)
-            //    .ToListAsync((a, b) => a.DocumentId);
-            //var results = await YesSession.GetAsync<User>(ids.ToArray());
-            //var count= pageinfo.Count;
-            #region Yessql
-            var users = YesSession.Query<User, UserProfileIndex>()
-                   .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
-                   .With<UserIndex>();
-
+            var users = Fsql.Select<UserIndex, UserProfileDIndex>()
+                 .LeftJoin((ui, up) => ui.UserId == up.UserId && up.Latest && up.Published)
+                 .Where((u, up) => u.IsEnabled)
+                 .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.UserProfilePartDepartment == input.DepartmentId)
+                 ;
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
                 var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
                 var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
-                users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
-                //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
+                users = users.Where((ui, up) =>
+                    ui.NormalizedUserName.Contains(normalizedSearchUserName) ||
+                    ui.NormalizedEmail.Contains(normalizedSearchEMail));
             }
 
             if (input.HasOrder())
@@ -129,10 +96,45 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 users = users.OrderBy(input.GetOrderStr());
             }
 
-            var count = await users.CountAsync();
-            var results = await users
-                .Page(input)
-                .ListAsync();
+            var pageinfo = new BasePagingInfo() { PageNumber = input.Page, PageSize = input.PageSize };
+            var ids = await users
+                .Page(pageinfo)
+                .ToListAsync((a, b) => a.DocumentId);
+            var results = await YesSession.GetAsync<User>(ids.ToArray());
+            var count = pageinfo.Count;
+            #region Yessql
+            //var users = YesSession.Query<User, UserProfileIndex>()
+            //       .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), x => x.Department == input.DepartmentId)
+            //       .With<UserIndex>();
+
+            //if (!string.IsNullOrWhiteSpace(input.Filter))
+            //{
+            //    var normalizedSearchUserName = _userManager.NormalizeName(input.Filter);
+            //    var normalizedSearchEMail = _userManager.NormalizeEmail(input.Filter);
+            //    users = users.Where(u => u.NormalizedUserName.Contains(normalizedSearchUserName) || u.NormalizedEmail.Contains(normalizedSearchEMail));
+            //    //users = users.With<TextFieldIndex>(x => x.ContentType== "UserProfiles" &&  )
+            //}
+
+            //if (input.HasOrder())
+            //{
+            //    switch (input.SortField.ToLower())
+            //    {
+            //        case "username":
+            //            input.SortField = "NormalizedUserName";
+            //            break;
+            //        case "email":
+            //            input.SortField = "NormalizedEmail";
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //    users = users.OrderBy(input.GetOrderStr());
+            //}
+
+            //var count = await users.CountAsync();
+            //var results = await users
+            //    .Page(input)
+            //    .ListAsync();
             #endregion
 
             var result = new List<UserListItemDto>();
@@ -146,7 +148,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             return new PagedResult<UserListItemDto>(count, result);
         }
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         private async Task FillAdditionalData(IEnumerable<User> users, bool incloudeItemDetails = false)
         {
             var contentDefs = GetUserSettingsTypeDefinitions();
@@ -248,7 +250,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     }
                 }
             }
-            #endregion 
+            #endregion
         }
 
 
@@ -321,11 +323,11 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             // When no id is provided we assume the user is trying to edit their own profile.
             if (String.IsNullOrEmpty(id))
             {
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                id = HttpUser.FindFirstValue(ClaimTypes.NameIdentifier);
             }
             else
             {
-                if (!await _authorizationService.AuthorizeAsync(User, CommonPermissions.ViewUsers))
+                if (!await _authorizationService.AuthorizeAsync(HttpUser, CommonPermissions.ViewUsers))
                 {
                     throw new AppFriendlyException("User not found.", StatusCodes.Status403Forbidden);
                 }
@@ -352,29 +354,29 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             if (String.IsNullOrEmpty(userDto.UserId))
             {
                 editingOwnUser = true;
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageOwnUserInformation))
+                id = HttpUser.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (!await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ManageOwnUserInformation))
                 {
-                    throw new AppFriendlyException(SimpleError.PermissionDenied);
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized);
                 }
             }
 
             var user = await _userManager.FindByIdAsync(id) as User;
             if (user == null)
             {
-                throw new AppFriendlyException(SimpleError.ResourceNotFound);
+                throw new AppFriendlyException(HttpStatusCode.NotFound);
             }
 
-            if (!editingOwnUser && !await _authorizationService.AuthorizeAsync(User, Permissions.ViewUsers, user))
+            if (!editingOwnUser && !await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ViewUsers, user))
             {
-                throw new AppFriendlyException(SimpleError.PermissionDenied);
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
             }
 
             ObjectMapper.Map(userDto, user);
             var result = await _userManager.UpdateAsync(user);
             if (result.Errors.Count() == 0)
             {
-                if (String.Equals(User.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
+                if (String.Equals(HttpUser.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
                 {
                     await _signInManager.RefreshSignInAsync(user);
                 }
@@ -393,7 +395,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
         [HttpPost]
         public async Task DeleteAsync(string id)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageUsers))
+            if (!await _authorizationService.AuthorizeAsync(HttpUser, Permissions.ManageUsers))
             {
                 throw new UnauthorizedAccessException();
 
@@ -461,13 +463,14 @@ namespace EasyOC.OrchardCore.OpenApi.Services
             return ObjectMapper.Map<IEnumerable<ContentTypeDefinitionDto>>(GetUserSettingsTypeDefinitions());
         }
 
-        [NonDynamicMethod]
+
+        [IgnoreWebApiMethod]
         public IEnumerable<ContentTypeDefinition> GetUserSettingsTypeDefinitions()
             => _contentDefinitionManager
                 .ListTypeDefinitions()
                 .Where(x => x.GetSettings<ContentTypeSettings>().Stereotype == "CustomUserSettings");
 
-        [NonDynamicMethod]
+        [IgnoreWebApiMethod]
         public async Task<ContentItem> GetUserSettingsAsync(User user, string settingsTypeName)
         {
             JToken property;

@@ -3,8 +3,8 @@
 [assembly: Module(
     Name = "EasyOC.OrchardCore.Scripting",
     Author = "The EasyOC Team",
-    //Dependencies = new[] { "Custom Settings" },
-    Description = "Provide getSiteSettings('CustomSettingType') ",
+    Dependencies = new[] { "OrchardCore.Queries" },
+    Description = "Provide getSiteSettings('CustomSettingType'), Override executeQuery ",
     Category = "Infrastructure"
 )]
 

@@ -16,35 +16,36 @@ namespace EasyOC.OrchardCore.Excel.Scripting
 
         public IEnumerable<GlobalMethod> GetMethods()
         {
-            return new[] {
-                new GlobalMethod{
-                  Name = "readExcelFromRequest",
-                    Method = serviceProvider => (Func<string,object>)(rowFilterExpression =>{
-                        var  httpContextAccessor= serviceProvider.GetRequiredService<IHttpContextAccessor>();
-                            var formFiles =  httpContextAccessor.HttpContext.Request.Form.Files;
-                            if (formFiles.Count==0)
+            return new[]
+            {
+                new GlobalMethod
+                {
+                    Name = "readExcelFromRequest",
+                    Method = serviceProvider => (Func<string, object>)(rowFilterExpression =>
+                    {
+                        var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                        var formFiles = httpContextAccessor?.HttpContext?.Request.Form.Files;
+                        if (formFiles is { Count: 0 })
+                        {
+                            return null;
+                        }
+                        var _excelAppService = serviceProvider.GetRequiredService<IExcelAppService>();
+                        var file = formFiles.FirstOrDefault();
+                        if (file != null)
+                        {
+                            using var stream = file.OpenReadStream();
+                            var table = _excelAppService.GetExcelDataFromConfigFromStream(stream, rowFilterExpression);
+                            if (table != null && table.Rows.Count > 0)
                             {
-                                return null;
+                                return JObject.Parse(JsonConvert.SerializeObject(table));
                             }
                             else
                             {
-                                var  _excelAppService= serviceProvider.GetRequiredService<IExcelAppService>();
-                                var file=formFiles.FirstOrDefault();
-                                using(var stream= file.OpenReadStream())
-                                {
-                                    var table= _excelAppService.GetExcelDataFromConfigFromStream(stream,rowFilterExpression);
-                                    if (table != null&& table.Rows.Count>0)
-                                    {
-                                        return JObject.Parse(JsonConvert.SerializeObject(table));
-
-                                    }
-                                    else
-                                    {
-                                        return null;
-                                    }
-                                }
+                                return null;
                             }
-                        })
+                        }
+                        return null;
+                    })
                 }
 
 
@@ -53,6 +54,3 @@ namespace EasyOC.OrchardCore.Excel.Scripting
         }
     }
 }
-
-
-

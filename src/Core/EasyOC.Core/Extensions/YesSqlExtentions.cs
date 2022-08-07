@@ -1,4 +1,4 @@
-﻿using EasyOC.Core.Indexs;
+﻿using EasyOC.Core.Indexes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using OrchardCore.Environment.Shell.Scope;
@@ -23,10 +23,10 @@ namespace EasyOC
 
         //public static ISchemaBuilder CreateMapIndexTable<IndexTable>(this ISchemaBuilder builder, string collection = null)
         //    where IndexTable : class, IFreeSqlMapDocumentIndex
-        //{ 
-        //    var provider = ShellScope.Current.ServiceProvider; 
+        //{
+        //    var provider = ShellScope.Current.ServiceProvider;
         //    var fsql = provider.GetRequiredService<IFreeSql>();
-        //    fsql.CodeFirst.SyncStructure<IndexTable>(); 
+        //    fsql.CodeFirst.SyncStructure<IndexTable>();
         //    return builder;
         //}
 

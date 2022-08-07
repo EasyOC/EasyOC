@@ -1,23 +1,49 @@
+EasyOC 是一个基于OrchardCore 的SPA 开发框架
+
+它在采用无入侵的方式基于Orchard Core CMS 增加了一系列模块用于提供 SPA服务 ，参考 ABP 的功能设计实现了一些用于 SPA 的特性和功能
+
+EasyOC is a SPA development framework based on OrchardCore
+
+It adds a series of modules based on Orchard Core CMS to provide SPA services in a non-invasive manner, and implements some features and functions specifically for SPA by referring to the functional design of ABP
+
+前端项目：https://github.com/EasyOC/EasyOC.VbenAdmin
+
+QQ群：877196442
+
 ## Features
 
+
+### For SPA Service Application
+
+- [X] GraphQL lucene queries can support Total and items
+- [X] wrapper API returns the result, You can use the Restful API to query OrchardCore for notifications added using `INotify`
+- [X] SwaggerUI
+- [X] [Dynamic Web API](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Services/Users/UsersAppService.cs) 
+- [x] [Authorization Attribute](https://github.com/EasyOC/EasyOC/blob/master/src/Core/EasyOC.Core/Authorization/Attributes/EOCAuthorizationAttribute.cs)
+- [X] Users And Roles Api
+
+
+### For OrchardCore CMS
 - [X] Generate ContentType From RDBMS
 - [X] Intergration [FreeSQL](https://github.com/dotnetcore/FreeSql) to current session (read current shell database)
 - [X] [FreeSQL](https://github.com/dotnetcore/FreeSql) external database connection. With FreeSQL, you can use [any of the 16 databases supported by FreeSQL](http://www.freesql.net/guide/type-mapping.html#%E5%88%A0%E9%99%A4) in OC
-- [X] SwaggerUI Intergration
 - [X] [Workflow Error Handle Event](#拦截所有工作流异常)
-- [X] [Dynamic Web API](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Services/Users/UsersAppService.cs)
-- [x] [Authorization Attribute](https://github.com/EasyOC/EasyOC/blob/master/src/Core/EasyOC.Core/Authorization/Attributes/EOCAuthorizationAttribute.cs)
 - [X] [Read Excel Workflow Task](https://github.com/EasyOC/EasyOC/issues/1) , you can read excel data from Upload or from local/network path
 - [X] [SQL Task ](#数据同步)
 - [X] [Create ContentItem Helper](#generate-contentmapping-with-rdbms)
 - [X] Powershell Task
 - [X] [User Profile](https://github.com/EasyOC/EasyOC/blob/master/src/Modules/EasyOC.OrchardCore.OpenApi/Handlers/UserEventHandler.cs) , SQL indexes that implement CustomUserSettings Indexable
-- [ ] GraphQL return items and total
+- [X] WeChat Authentication , Thanks to [@PimHwang](https://github.com/PimHwang/OrchardCore.Community)
+
 
 
 ### install
 
 ![image](https://user-images.githubusercontent.com/15613121/146934540-f079cf5a-d462-4458-9ee4-5dd76960e265.png)
+
+### Swagger UI and openid code flow auth
+![swaggerUI](https://user-images.githubusercontent.com/15613121/161471700-c7cfc41f-503f-4406-95fd-04c93d93091b.gif)
+
 
 ### Generate ContentType form RDBMS
 

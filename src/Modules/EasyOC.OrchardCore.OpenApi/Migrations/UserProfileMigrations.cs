@@ -1,64 +1,43 @@
-﻿using EasyOC.OrchardCore.OpenApi.Indexs;
-using Microsoft.Extensions.FileProviders;
-using OrchardCore.ContentManagement.Metadata;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using OrchardCore.Data.Migration;
-using OrchardCore.Deployment.Services;
+using OrchardCore.Modules;
 using OrchardCore.Recipes.Services;
-using System;
-using System.IO;
+using OrchardCore.Users.Handlers;
+using OrchardCore.Users.Indexes;
+using OrchardCore.Users.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using YesSql.Sql;
+using YesSql;
 
 namespace EasyOC.OrchardCore.OpenApi.Migrations
 {
     public class UserProfileMigrations : DataMigration
     {
         private readonly IRecipeMigrator _recipeMigrator;
-        private readonly IFreeSql _freeSql;
-        public UserProfileMigrations(IRecipeMigrator recipeMigrator, IFreeSql freeSql)
+        private readonly ILogger _logger;
+        private readonly IEnumerable<IUserEventHandler> Handlers;
+        private readonly ISession _session;
+
+        public UserProfileMigrations(IRecipeMigrator recipeMigrator,IEnumerable<IUserEventHandler> handlers,
+            ILogger<UserProfileMigrations> logger, ISession session)
         {
             _recipeMigrator = recipeMigrator;
-            _freeSql = freeSql;
+            Handlers = handlers;
+            _logger = logger;
+            _session = session;
         }
 
         public async Task<int> CreateAsync()
-        {
-
-
-            //SchemaBuilder.CreateMapIndexTable<UserProfileIndex>(table => table
-            //         // TODO These should have defaults. on SQL Server they will fall at 255. Exceptions are currently thrown if you go over that.
-            //         .Column<string>(nameof(UserProfileIndex.UserId))
-            //         .Column<string>(nameof(UserProfileIndex.UserName))
-            //         .Column<string>(nameof(UserProfileIndex.FirstName))
-            //         .Column<string>(nameof(UserProfileIndex.LastName))
-            //         .Column<string>(nameof(UserProfileIndex.Gender))
-            //         .Column<string>(nameof(UserProfileIndex.NickName))
-            //         .Column<string>(nameof(UserProfileIndex.Department))
-            //         .Column<string>(nameof(UserProfileIndex.Manager))
-            //         .Column<string>(nameof(UserProfileIndex.RealName))
-            //         .Column<string>(nameof(UserProfileIndex.EmployeCode))
-            //     );
-            ////SchemaBuilder.AlterIndexTable<UserProfileIndex>(table => table
-            ////    .CreateIndex("IDX_UserProfileIndex_DocumentId",
-            ////        nameof(UserProfileIndex.DocumentId),
-            ////        nameof(UserProfileIndex.UserId),
-            ////        nameof(UserProfileIndex.UserName),
-            ////        nameof(UserProfileIndex.FirstName),
-            ////        nameof(UserProfileIndex.LastName),
-            ////        nameof(UserProfileIndex.Gender),
-            ////        nameof(UserProfileIndex.NickName),
-            ////        nameof(UserProfileIndex.Department),
-            ////        nameof(UserProfileIndex.Manager),
-            ////        nameof(UserProfileIndex.RealName),
-            ////        nameof(UserProfileIndex.EmployeCode)
-            ////        ));
-           
-            //Use FreeSql
-            // create or update table
-            // auto create or update index
-            _freeSql.CodeFirst.SyncStructure<UserProfileIndex>();
-            SchemaBuilder.CreateForeignKey<UserProfileIndex>();
-            var str = await _recipeMigrator.ExecuteAsync("UserProfiles.json", this);
+        { 
+            //查找尚未创建索引的数据
+            var users = await _session.Query<User, UserIndex>().ListAsync();
+            foreach (var user in users)
+            {
+                var context = new UserUpdateContext(user);
+                //触发事件：为已存在用户创建索引
+                await Handlers.InvokeAsync((handler, context) => handler.UpdatedAsync(context), context, _logger);
+            } 
             return 1;
         }
     }

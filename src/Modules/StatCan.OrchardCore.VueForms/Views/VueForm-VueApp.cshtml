@@ -1,9 +1,0 @@
-@{
-    Model.Metadata.Alternates.Clear();
-    Model.Metadata.Type = "VueForm__CommonTemplate";
-}
-
-<div class="vue-app-instance">
-  @Tag(Model, Model.Properties["ComponentName"])
-</div>
-@await DisplayAsync(Model)

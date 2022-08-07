@@ -1,81 +1,287 @@
-﻿using EasyOC.Core.Application;
-using EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos;
-using OrchardCore.ContentManagement.Metadata;
-using OrchardCore.ContentManagement.Metadata.Settings;
+﻿using AngleSharp.Common;
+using EasyOC.Core.Application;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Display;
+using OrchardCore.ContentManagement.Display.ContentDisplay;
+using OrchardCore.ContentManagement.Handlers;
+using OrchardCore.ContentManagement.Metadata.Models;
+using OrchardCore.Contents;
+using OrchardCore.DisplayManagement.ModelBinding;
+using OrchardCore.DisplayManagement.Notify;
+using OrchardCore.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
-namespace EasyOC.OrchardCore.ContentExtentions.AppServices
+namespace EasyOC.OrchardCore.ContentExtentions.AppServices.Dtos
 {
-    [EOCAuthorization(OCPermissions.ViewContentTypes)]
-    public class ContentManagementAppService : AppServcieBase, IContentManagementAppService
+    [EOCAuthorization("AccessContentApi")]
+    public class ContentManagementAppService : AppServiceBase
     {
-        private readonly IContentDefinitionManager _contentDefinitionManager;
-        public ContentManagementAppService(IContentDefinitionManager contentDefinitionManager)
+        private static readonly JsonMergeSettings UpdateJsonMergeSettings =
+            new JsonMergeSettings {MergeArrayHandling = MergeArrayHandling.Replace};
+
+        private readonly IEnumerable<IContentHandler> _contentHandlers;
+        private readonly IEnumerable<IContentDisplayHandler> _handlers;
+
+        public ContentManagementAppService(IEnumerable<IContentHandler> contentHandlers,
+            IEnumerable<IContentDisplayHandler> handlers)
         {
-            _contentDefinitionManager = contentDefinitionManager;
+            _contentHandlers = contentHandlers;
+            _handlers = handlers;
         }
 
-        /// <summary>
-        /// 列出所有类型定义
-        /// </summary>
-        /// <returns></returns>
-        [EOCAuthorization("ViewContentTypes")]
-        public PagedResult<ContentTypeListItemDto> GetAllTypes(GetAllTypeFilterInput input)
-        {
 
-            var result = _contentDefinitionManager.ListTypeDefinitions().ToList()
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), x
-                 => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
-                    || x.DisplayName.Contains(input.Filter, StringComparison.OrdinalIgnoreCase))
-                .Select(x =>
+        public async Task<bool> DeleteAsync(string contentItemId)
+        {
+            var contentItem = await ContentManager.GetAsync(contentItemId, VersionOptions.Latest);
+
+            if (contentItem == null)
+            {
+                throw new AppFriendlyException(HttpStatusCode.NotFound);
+            }
+
+            if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.DeleteContent, contentItem))
+            {
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+            }
+
+            await ContentManager.RemoveAsync(contentItem);
+
+            return true;
+        }
+
+        public async Task<object> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
+        {
+            // It is really important to keep the proper method calls order with the ContentManager
+            // so that all event handlers gets triggered in the right sequence.
+            if (model.ContentType.IsNullOrWhiteSpace())
+            {
+                throw new AppFriendlyException("invalid property: contentType", StatusCodes.Status400BadRequest);
+            }
+
+            var typeDef = ContentDefinitionManager.GetTypeDefinition(model.ContentType);
+            if (typeDef == null)
+            {
+                throw new AppFriendlyException($"invalid property: contentType ,'{model.ContentType}' is not found "
+                    , StatusCodes.Status400BadRequest);
+            }
+
+            var contentItem = await ContentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
+            if (contentItem == null)
+            {
+                if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
                 {
-                    var listItem = new ContentTypeListItemDto();
-                    listItem.Name = x.Name;
-                    listItem.DisplayName = x.DisplayName;
-                    listItem.Stereotype = x.GetSettings<ContentTypeSettings>().Stereotype;
-                    return listItem;
-                })
-                .WhereIf(!string.IsNullOrEmpty(input.Stereotype), x
-                    => input.Stereotype.Equals(x.Stereotype, StringComparison.OrdinalIgnoreCase));
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+                }
 
-            return result.ToPagedResult(input);
+                var newContentItem = await ContentManager.NewAsync(model.ContentType);
+                newContentItem.Merge(MergeFromSimpleData(newContentItem, model, typeDef));
+
+                var result = await ContentManager.UpdateValidateAndCreateAsync(newContentItem, VersionOptions.Draft);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        await Notifier.ErrorAsync(H[error.ErrorMessage, error.MemberNames]);
+                    }
+
+                    throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
+                }
+
+                contentItem = newContentItem;
+            }
+            else
+            {
+                if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.EditContent, contentItem))
+                {
+                    throw new AppFriendlyException(HttpStatusCode.Unauthorized, "当前用户没有权限更新此内容");
+                }
+
+                contentItem.Merge(MergeFromSimpleData(contentItem, model, typeDef), UpdateJsonMergeSettings);
+
+                await ContentManager.UpdateAsync(contentItem);
+                var result = await ContentManager.ValidateAsync(contentItem);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        await Notifier.ErrorAsync(H[error.ErrorMessage, error.MemberNames]);
+                    }
+
+                    throw new AppFriendlyException(HttpStatusCode.BadRequest, result.Errors);
+                }
+            }
+
+            if (!draft)
+            {
+                await ContentManager.PublishAsync(contentItem);
+                await Notifier.SuccessAsync(H["发布成功！"]);
+            }
+            else
+            {
+                await ContentManager.SaveDraftAsync(contentItem);
+                await Notifier.SuccessAsync(H["已保存草稿"]);
+            }
+
+            return new
+            {
+                Id = contentItem.Id,
+                Latest = contentItem.Latest,
+                Published = contentItem.Published,
+                ContentItemId = contentItem.ContentItemId,
+                ContentItemVersionId = contentItem.ContentItemVersionId,
+            };
         }
-        public PagedResult<ContentPartDefinitionDto> GetAllParts(SimpleFilterAndPageQueryInput input)
+
+
+        public async Task ImportAsync([FromBody] ImportContentInput model)
         {
-            //if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            if (model.ContentType.IsNullOrWhiteSpace())
+            {
+                throw new AppFriendlyException("invalid property: contentType", StatusCodes.Status400BadRequest);
+            }
+
+            var typeDef = ContentDefinitionManager.GetTypeDefinition(model.ContentType);
+            if (typeDef == null)
+            {
+                throw new AppFriendlyException($"invalid property: contentType ,'{model.ContentType}' is not found "
+                    , StatusCodes.Status400BadRequest);
+            }
+
+
+            if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
+            {
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+            }
+
+
+            var ls = model.InputList.Select((m) =>
+            {
+                var contentItem = ContentManager.NewAsync(model.ContentType).GetAwaiter().GetResult();
+                //var newContentItem = contentItem as ContentItem;
+                m[nameof(ContentModel.ContentType)] = model.ContentType;
+                return MergeFromSimpleData(contentItem, m, typeDef);
+            });
+
+            await ContentManager.ImportAsync(ls);
+        }
+
+        public static ContentItem MergeFromSimpleData(ContentItem contentItem, ContentModel model,
+            ContentTypeDefinition typeDefinition)
+        {
+            JObject jObject = JObject.FromObject(model);
+
+            #region Update BaseInfo
+
+            if (model.ContentItemId != null)
+            {
+                contentItem.ContentItemId = model.ContentItemId;
+            }
+            //if (model.ContentItemVersionId != null)
             //{
-            //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
+            //    contentItem.ContentItemVersionId = model.ContentItemVersionId;
             //}
-            return _contentDefinitionManager.ListPartDefinitions()
-                .Select(x => x.ToDto(false))
-                .WhereIf(input.Filter.IsNullOrWhiteSpace(), x
-                => x.DisplayName.Contains(input.Filter) || x.Description.Contains(input.Filter))
-                .ToPagedResult(input);
+
+            if (model.DisplayText != null)
+            {
+                contentItem.DisplayText = model.DisplayText;
+            }
+
+            #endregion
+
+            //填充自带属性
+            var selfPart = typeDefinition.Parts.FirstOrDefault(x => x.Name == model.ContentType);
+            if (selfPart != null)
+            {
+                foreach (var item in selfPart.PartDefinition.Fields)
+                {
+                    var valuePath = item.FieldDefinition.GetFiledValuePath();
+                    if (valuePath == null || !jObject.ContainsKey(item.Name.ToCamelCase()))
+                    {
+                        continue;
+                    }
+
+                    if (item.FieldDefinition.Name is "ContentPickerField")
+                    {
+                        var valueToken = jObject.SelectToken($"{item.Name.ToCamelCase()}.firstValue");
+
+                        #region FirstValue
+
+                        if (valueToken != null && valueToken.Value<string>() != null)
+                        {
+                            var token = new JObject {[valuePath] = new JArray(new[] {valueToken.Value<string>()})};
+                            contentItem.Content[contentItem.ContentType][item.Name] = token;
+                        }
+
+                        #endregion
+
+                        else
+                        {
+                            valueToken = jObject.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToCamelCase()}");
+                            var token = new JObject {[valuePath] = valueToken};
+                            if (token.Type == JTokenType.Array)
+                            {
+                                contentItem.Content[contentItem.ContentType][item.Name] = token;
+                            }
+                        }
+                    }
+                    //else if (item.FieldDefinition.Name is "UserPickerField")
+                    //{
+                    //    var token = new JObject { [valuePath] = jObject.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToCamelCase()}") };
+                    //    if (token.Type == JTokenType.Array)
+                    //    {
+                    //        contentItem.Content[contentItem.ContentType][item.Name] = token;
+                    //    }
+                    //}
+                    else
+                    {
+                        var token = new JObject {[valuePath] = jObject[(item.Name.ToCamelCase())]};
+                        contentItem.Content[contentItem.ContentType][item.Name] = token;
+                    }
+                }
+            }
+
+            foreach (var part in typeDefinition.Parts.Where(x => x.Name != contentItem.ContentType))
+            {
+                JToken partData;
+                if (!jObject.ContainsKey(part.Name.ToCamelCase()) ||
+                    (partData = jObject[part.Name.ToCamelCase()]) == null)
+                {
+                    continue;
+                }
+
+                var partObj = new JObject(partData);
+                foreach (var item in part.PartDefinition.Fields)
+                {
+                    var valuePath = item.FieldDefinition.GetFiledValuePath();
+                    if (valuePath == null || !partObj.ContainsKey(item.Name.ToCamelCase()))
+                    {
+                        continue;
+                    }
+
+                    if (item.FieldDefinition.Name is "ContentPickerField" or "UserPickerField")
+                    {
+                        contentItem.Content[contentItem.ContentType][item.Name][valuePath] =
+                            partObj.SelectToken($"{item.Name.ToCamelCase()}.{valuePath.ToCamelCase()}");
+                    }
+                    else
+                    {
+                        var token = new JObject {[valuePath] = partObj[item.Name.ToCamelCase()]};
+                        contentItem.Content[part.Name][item.Name][valuePath] = token;
+                    }
+                }
+            }
+
+            return contentItem;
         }
-        public ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false)
-        {
-            //if (!await AuthorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
-            //{
-            //    throw new AppFriendlyException("Unauthorized", StatusCodes.Status401Unauthorized);
-            //}
-            var part = _contentDefinitionManager.LoadPartDefinition(name);
-            return part.ToDto(withSettings);
-        }
-
-
-        public ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false)
-        {
-            var typeDefinition = _contentDefinitionManager.LoadTypeDefinition(name);
-            return typeDefinition.ToDto(withSettings);
-        }
-
-
-
-
     }
 }
-
-
-

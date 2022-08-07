@@ -1,8 +1,42 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="Dependencies.props" />  
-	<!--<ItemGroup>
-		--><!--This is used for Source Link --><!--
-		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
-	</ItemGroup>-->
+  <Import Project="Dependencies.props" />
 
+  <PropertyGroup>
+    <VersionPrefix>1.4.0</VersionPrefix>
+    <VersionSuffix>preview</VersionSuffix>
+    <VersionSuffix Condition="'$(VersionSuffix)'!='' AND '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
+    <WarningsNotAsErrors>612,618</WarningsNotAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <DebugType>portable</DebugType>
+
+
+    <!-- Common NuGet properties-->
+    <OCFrameworkDescription>EasyOC  Framework is an application framework for building modular, multi-tenant applications on ASP.NET Core.</OCFrameworkDescription>
+    <OCCMSDescription>EasyOC  CMS is a Web Content Management System (CMS) built on top of the EasyOC Team Framework.</OCCMSDescription>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!--This is used to generate symbol package for Source Link-->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- This is used by GitHub Repository to find which repository should contain the package when updloaded -->
+    <RepositoryUrl>https://github.com/EasyOC/EasyOC</RepositoryUrl>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+
+    <PackageTags>EasyOC</PackageTags>
+    <Copyright>EasyOC Team Community and Contributors</Copyright>
+    <Authors>EasyOC Team and Contributors</Authors>
+    <Owners>EasyOC Team Community and Contributors</Owners>
+  </PropertyGroup>
+  <ItemGroup>
+
+    <!--This is used for Source Link -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>$(CommonTargetFrameworks)</TargetFramework>
+  </PropertyGroup>
 </Project>

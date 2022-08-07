@@ -38,42 +38,7 @@ namespace System
 
             return (T)Convert.ChangeType(obj, typeof(T), CultureInfo.InvariantCulture);
         }
-
-        /// <summary>
-        /// Check if an item is in a list.
-        /// </summary>
-        /// <param name="item">Item to check</param>
-        /// <param name="list">List of items</param>
-        /// <typeparam name="T">Type of the items</typeparam>
-        //public static bool IsIn<T>(this T item, params T[] list)
-        //{
-        //    return list.Contains(item);
-        //}
-
-        /// <summary>
-        /// Check if an item is in the given enumerable.
-        /// </summary>
-        /// <param name="item">Item to check</param>
-        /// <param name="items">Items</param>
-        /// <typeparam name="T">Type of the items</typeparam>
-        //public static bool IsIn<T>(this T item, IEnumerable<T> items)
-        //{
-        //    return items.Contains(item);
-        //}
-
-        /// <summary>
-        /// Can be used to conditionally perform a function
-        /// on an object and return the modified or the original object.
-        /// It is useful for chained calls.
-        /// </summary>
-        /// <param name="obj">An object</param>
-        /// <param name="condition">A condition</param>
-        /// <param name="func">A function that is executed only if the condition is <code>true</code></param>
-        /// <typeparam name="T">Type of the object</typeparam>
-        /// <returns>
-        /// Returns the modified object (by the <paramref name="func"/> if the <paramref name="condition"/> is <code>true</code>)
-        /// or the original object if the <paramref name="condition"/> is <code>false</code>
-        /// </returns>
+ 
         public static T If<T>(this T obj, bool condition, Func<T, T> func)
         {
             if (condition)

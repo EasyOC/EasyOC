@@ -25,6 +25,12 @@ namespace EasyOC.OrchardCore.OpenApi.Dto
             set;
         }
 
+        public List<RoleClaimDto> VbenMenuIds
+        {
+            get;
+            set;
+        } = new List<RoleClaimDto>();
+
         public List<RoleClaimDto> RoleClaims
         {
             get;
