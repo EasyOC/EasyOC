@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,20 +16,13 @@ namespace EasyOCVbenAdminTheme
     {
         public override void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
+            //serviceCollection.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
         }
         public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
         {
             var userOptions = serviceProvider.GetRequiredService<IOptions<UserOptions>>().Value;
 
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapGet(userOptions.LoginPath, new RequestDelegate(ctx =>
-            //         {
-            //             ctx.Response.Redirect("EasyOCVbenAdminTheme/Vben/index.html");
-            //             return Task.CompletedTask;
-            //         }));
-            // });
+       
 
         }
     }

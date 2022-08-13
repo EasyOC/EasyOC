@@ -22,9 +22,7 @@
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Admin" Version="$(OrchardCoreVersion)" />
-
-    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.OpenId\OrchardCore.OpenId.csproj"
-                      Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
   
 </Project>

@@ -66,7 +66,7 @@
     <PackageReference Include="OrchardCore.MiniProfiler" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Navigation" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-<!--    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
+    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Placements" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.PublishLater" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
