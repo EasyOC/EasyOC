@@ -70,9 +70,9 @@ return result;
             return result;
         }
 
-        public override Task<ActivityExecutionResult> ExecuteAsync(WorkflowExecutionContext workflowContext, ActivityContext activityContext)
+        public override ActivityExecutionResult Resume(WorkflowExecutionContext workflowContext, ActivityContext activityContext)
         {
-            return base.ExecuteAsync(workflowContext, activityContext);
+            return Outcomes("Done");
         }
 
     }
