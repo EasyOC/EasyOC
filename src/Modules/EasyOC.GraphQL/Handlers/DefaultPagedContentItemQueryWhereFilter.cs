@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Localization;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.Notify;
 
-namespace EaysOC.GraphQL.Handlers;
+namespace EasyOC.GraphQL.Handlers;
 
 public class DefaultPagedContentItemQueryWhereFilter : IPagedContentItemQueryWhereFilter
 {

@@ -1,13 +1,16 @@
-using OrchardCore.Modules.Manifest;
+﻿using OrchardCore.Modules.Manifest;
+using System;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
-Name = "EasyOC.Lucene",
-Author = "The EasyOC Team",
-Version = "0.0.1",
-Description = "EasyOC.Lucene",
-Dependencies = new[]
-{
-    "OrchardCore.Lucene"
-},
-Category = "Content Management"
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
+    Name = "EasyOC.Lucene",
+    Description = "EasyOC.Lucene",
+    Dependencies = new[]
+    {
+        "OrchardCore.Lucene"
+    },
+    Category = "Content Management"
 )]

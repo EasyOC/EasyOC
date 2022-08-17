@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace EaysOC.GraphQL.Queries.Types
+namespace EasyOC.GraphQL.Queries.Types
 {
     public class DynamicFilterInput : InputObjectGraphType<DynamicFilterInfo>
     {

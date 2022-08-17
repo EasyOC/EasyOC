@@ -3,7 +3,7 @@ using OrchardCore.Queries;
 using System.Collections.Generic;
 using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
 
-namespace EaysOC.GraphQL.Queries.Types
+namespace EasyOC.GraphQL.Queries.Types
 {
     [AutoMap(typeof(LuceneQueryResults))]
     public class TotalQueryResults : IQueryResults

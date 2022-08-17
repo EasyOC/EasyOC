@@ -1,4 +1,4 @@
-﻿using EaysOC.GraphQL.Queries.Types;
+﻿using EasyOC.GraphQL.Queries.Types;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
 
-namespace EaysOC.GraphQL.Queries
+namespace EasyOC.GraphQL.Queries
 {
     public class EOCLuceneQueryFieldTypeProvider : ISchemaBuilder
     {

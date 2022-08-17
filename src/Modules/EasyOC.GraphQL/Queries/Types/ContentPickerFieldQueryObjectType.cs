@@ -7,7 +7,7 @@ using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EaysOC.GraphQL.Queries.Types
+namespace EasyOC.GraphQL.Queries.Types
 {
     public class ContentPickerFieldQueryObjectType : ObjectGraphType<ContentPickerField>
     {

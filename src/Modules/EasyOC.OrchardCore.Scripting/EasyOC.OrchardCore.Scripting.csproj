@@ -12,6 +12,10 @@
 		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" /> 
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\EasyOC.Constants\EasyOC.Constants.csproj" />
+	</ItemGroup>
+
 </Project>
 
 

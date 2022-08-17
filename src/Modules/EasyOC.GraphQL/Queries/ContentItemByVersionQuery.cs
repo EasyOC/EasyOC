@@ -8,7 +8,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using System.Threading.Tasks;
 
-namespace EaysOC.GraphQL.Queries
+namespace EasyOC.GraphQL.Queries
 {
     public class ContentItemByVersionQuery : ISchemaBuilder
     {

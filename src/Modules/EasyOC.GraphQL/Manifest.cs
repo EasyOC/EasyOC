@@ -5,8 +5,8 @@ using static EasyOC.ManifestConsts;
     Author = Author,
     Website = Website,
     Version = CurrentVersion,
-    Name = "EasyOC.OrchardCore.DynamicTypeIndex",
-    Description = "EasyOC.OrchardCore.DynamicTypeIndex",
-    Dependencies =new[] { "EasyOC.OrchardCore.ContentExtentions","EasyOC.OrchardCore.CSharpScript"},
+    Name = "EasyOC.GraphQL",
+    Description = "EasyOC GraphQL Extensions",
+    Dependencies = new[] { "EasyOC.Core","OrchardCore.Apis.GraphQL" },
     Category = "Content Management"
 )]

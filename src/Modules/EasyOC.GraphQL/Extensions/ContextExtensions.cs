@@ -3,7 +3,7 @@ using GraphQL.Types;
 using System;
 using System.Linq;
 
-namespace EaysOC.GraphQL
+namespace EasyOC.GraphQL
 {
     public static class ContextExtensions
     {

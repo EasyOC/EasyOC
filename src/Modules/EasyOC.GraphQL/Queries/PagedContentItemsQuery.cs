@@ -1,8 +1,8 @@
-﻿using EasyOC.OrchardCore.DynamicTypeIndex;
+﻿using EasyOC.GraphQL.Queries.Types;
+using EasyOC.OrchardCore.DynamicTypeIndex;
 using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using EasyOC.OrchardCore.DynamicTypeIndex.Models;
 using EasyOC.OrchardCore.DynamicTypeIndex.Service;
-using EaysOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
 using GraphQL.Types;
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EaysOC.GraphQL.Queries
+namespace EasyOC.GraphQL.Queries
 {
     public class PagedContentItemsQuery : ISchemaBuilder
     {

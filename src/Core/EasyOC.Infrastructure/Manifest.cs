@@ -5,10 +5,7 @@ using static EasyOC.ManifestConsts;
     Author = Author,
     Website = Website,
     Version = CurrentVersion,
-    Name = "EasyOC.OrchardCore.VueElementUI",
-    Description = "EasyOC.OrchardCore.VueElementUI",
-    Category = "Content Management"
+    Name = "EasyOC.Infrastructure",
+    Description = "EasyOC.Infrastructure",
+    Category = "EasyOC Infrastructure"
 )]
-
-
-

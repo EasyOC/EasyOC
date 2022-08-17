@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using EasyOC;
 using EasyOC.GraphQL.Abstractions;
-using EaysOC.GraphQL.Handlers;
-using EaysOC.GraphQL.Queries;
-using EaysOC.GraphQL.Queries.Types;
+using EasyOC.GraphQL.Handlers;
+using EasyOC.GraphQL.Queries;
+using EasyOC.GraphQL.Queries.Types;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
@@ -13,9 +13,9 @@ using OrchardCore.Modules;
 using OrchardCore.Apis;
 using OrchardCore.Media.Fields;
 
-namespace EaysOC.GraphQL
+namespace EasyOC.GraphQL
 {
-    [Feature("EaysOC.GraphQL")]
+    [Feature("EasyOC.GraphQL")]
     [RequireFeatures(EasyOC.Core.Constants.EasyOCCoreModuleId, "OrchardCore.Apis.GraphQL")]
     public class Startup : StartupBase
     {

@@ -1,10 +1,11 @@
 ﻿using OrchardCore.Modules.Manifest;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
     Name = "EasyOC.Workflows",
-    Author = "The EasyOC Team",
-    Website = "https://orchardcore.net",
-    Version = "0.0.1",
     Dependencies = new[] { "OrchardCore.Queries.Sql",
         "OrchardCore.Workflows",
         "OrchardCore.Workflows.Http"},

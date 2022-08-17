@@ -1,10 +1,11 @@
 ﻿using OrchardCore.Modules.Manifest;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
     Name = "EasyOC.OrchardCore.Excel",
-    Author = "The EasyOC Team",
-    Website = "https://orchardcore.net",
-    Version = "0.0.1",
     Description = "EasyOC.OrchardCore.Excel",
     Category = "Content Management",
     Dependencies = new[] { EasyOC.Core.Constants.EasyOCCoreModuleId,

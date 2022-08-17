@@ -26,29 +26,11 @@ namespace EasyOC.Workflows.Activities
 
         public WorkflowExpression<bool> ErrorFilter
         {
-            get => GetProperty(() => new WorkflowExpression<bool>(getDefaultValue()));
+            get => GetProperty(() => new WorkflowExpression<bool>(GetDefaultValue()));
             set => SetProperty(value);
         }
 
-        private string getDefaultValue()
-        {
-            var sample = $@"
-//sample
-var errorInfo= input('{WorkflowFaultModel.WorkflowFaultInputKey}');
-var result=  errorInfo.{nameof(WorkflowFaultModel.WorkflowName)}== 'WorkflowName' ||
-errorInfo.{nameof(WorkflowFaultModel.WorkflowId)}== 'WorkflowId' ||
-errorInfo.{nameof(WorkflowFaultModel.ErrorMessage)}.indexOf('ErrorStr') ||
-errorInfo.{nameof(WorkflowFaultModel.ExceptionDetails)}.indexOf('ErrorStr') ||
-errorInfo.{nameof(WorkflowFaultModel.FaultMessage)}.indexOf('ErrorStr') ||
-errorInfo.{nameof(WorkflowFaultModel.ActivityDisplayName)}== 'ActivityDisplayName' ||
-errorInfo.{nameof(WorkflowFaultModel.ActivityTypeName)}== 'ActivityTypeName' ||
-errorInfo.{nameof(WorkflowFaultModel.ActivityId)}== 'ActivityId' ||
-errorInfo.{nameof(WorkflowFaultModel.ExcutedActivityCount)}== 20
-return result;
-            ";
-            return sample;
-        }
-        public string TriggeredWorkflowName { get; set; }
+
         public override LocalizedString DisplayText => S["Catch Workflow Fault Evnet"];
 
         public override LocalizedString Category => S["Background"];
@@ -75,6 +57,24 @@ return result;
             return Outcomes("Done");
         }
 
+        private string GetDefaultValue()
+        {
+            var sample = $@"
+//sample
+var errorInfo= input('{WorkflowFaultModel.WorkflowFaultInputKey}');
+var result=  errorInfo.{nameof(WorkflowFaultModel.WorkflowName)}== 'WorkflowName' ||
+errorInfo.{nameof(WorkflowFaultModel.WorkflowId)}== 'WorkflowId' ||
+errorInfo.{nameof(WorkflowFaultModel.ErrorMessage)}.indexOf('ErrorStr') ||
+errorInfo.{nameof(WorkflowFaultModel.ExceptionDetails)}.indexOf('ErrorStr') ||
+errorInfo.{nameof(WorkflowFaultModel.FaultMessage)}.indexOf('ErrorStr') ||
+errorInfo.{nameof(WorkflowFaultModel.ActivityDisplayName)}== 'ActivityDisplayName' ||
+errorInfo.{nameof(WorkflowFaultModel.ActivityTypeName)}== 'ActivityTypeName' ||
+errorInfo.{nameof(WorkflowFaultModel.ActivityId)}== 'ActivityId' ||
+errorInfo.{nameof(WorkflowFaultModel.ExcutedActivityCount)}== 20
+return result;
+            ";
+            return sample;
+        }
     }
 }
 

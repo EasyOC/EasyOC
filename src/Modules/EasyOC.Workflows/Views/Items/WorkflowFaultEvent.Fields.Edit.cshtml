@@ -9,18 +9,18 @@
     <div id="@Html.IdFor(x => x.ErrorFilter)_editor" asp-for="Text" style="min-height: 400px;" class="form-control"></div>
      <textarea asp-for="ErrorFilter" hidden>@Html.Raw(Model.ErrorFilter)</textarea>
     <span asp-validation-for="ErrorFilter"></span>
-    <span class="hint">@T["工作流名称集合，需要返回字符串集合。Javascript语法。"]</span><br />
+    <span class="hint">@T["检查捕获到的工作流错误信息，并返回一个布尔值，如果为真则将被当前工作流处理。Javascript语法。"]</span><br />
     <span class="hint">@T["获取错误信息： input('{0}')",WorkflowFaultModel.WorkflowFaultInputKey]</span><br />
     <span class="hint">@T["包含如下属性："]</span><br />
-    <span class="hint">@T["{0}：工作流Id",nameof( WorkflowFaultModel.WorkflowId)]</span><br />
-    <span class="hint">@T["{0}：工作流名称",nameof( WorkflowFaultModel.WorkflowName)]</span><br />
-    <span class="hint">@T["{0}：已执行节点数量",nameof( WorkflowFaultModel.ExcutedActivityCount)]</span><br />
-    <span class="hint">@T["{0}：节点名称",nameof( WorkflowFaultModel.ActivityDisplayName)]</span><br />
-    <span class="hint">@T["{0}：节点类型名称",nameof( WorkflowFaultModel.ActivityTypeName)]</span><br />
-    <span class="hint">@T["{0}：节点Id",nameof( WorkflowFaultModel.ActivityId)]</span><br />
-    <span class="hint">@T["{0}：异常信息概要",nameof( WorkflowFaultModel.ErrorMessage)]</span><br />
-    <span class="hint">@T["{0}：异常详细信息",nameof( WorkflowFaultModel.ExceptionDetails)]</span><br />
-    <span class="hint">@T["{0}：包含工作流节点手动引发的错误信息",nameof( WorkflowFaultModel.FaultMessage)]</span><br />
+    <span class="hint">@T["{0}：工作流Id",nameof(WorkflowFaultModel.WorkflowId)]</span><br />
+    <span class="hint">@T["{0}：工作流名称",nameof(WorkflowFaultModel.WorkflowName)]</span><br />
+    <span class="hint">@T["{0}：已执行节点数量",nameof(WorkflowFaultModel.ExcutedActivityCount)]</span><br />
+    <span class="hint">@T["{0}：节点名称",nameof(WorkflowFaultModel.ActivityDisplayName)]</span><br />
+    <span class="hint">@T["{0}：节点类型名称",nameof(WorkflowFaultModel.ActivityTypeName)]</span><br />
+    <span class="hint">@T["{0}：节点Id",nameof(WorkflowFaultModel.ActivityId)]</span><br />
+    <span class="hint">@T["{0}：异常信息概要",nameof(WorkflowFaultModel.ErrorMessage)]</span><br />
+    <span class="hint">@T["{0}：异常详细信息",nameof(WorkflowFaultModel.ExceptionDetails)]</span><br />
+    <span class="hint">@T["{0}：包含工作流节点手动引发的错误信息",nameof(WorkflowFaultModel.FaultMessage)]</span><br />
 
 </div>
 

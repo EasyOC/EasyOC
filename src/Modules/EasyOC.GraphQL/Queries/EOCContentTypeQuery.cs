@@ -26,7 +26,7 @@ using YesSql;
 using Expression = OrchardCore.ContentManagement.GraphQL.Queries.Predicates.Expression;
 using ISession = YesSql.ISession;
 
-namespace EaysOC.GraphQL.Queries
+namespace EasyOC.GraphQL.Queries
 {
     /// <summary>
     /// Registers all Content Types as queries.

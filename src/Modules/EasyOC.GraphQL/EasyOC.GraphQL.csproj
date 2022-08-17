@@ -5,6 +5,7 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
+    <RootNamespace>EasyOC.GraphQL</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

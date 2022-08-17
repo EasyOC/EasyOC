@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.Wechat", "src\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.Amis", "src\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj", "{02D295C1-3E29-44D7-AFCB-41330965D449}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EaysOC.GraphQL", "src\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj", "{B4D70E06-785B-4869-A61E-05682E322834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.GraphQL", "src\Modules\EasyOC.GraphQL\EasyOC.GraphQL.csproj", "{B4D70E06-785B-4869-A61E-05682E322834}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.DynamicTypeIndex", "src\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj", "{BB2E7C19-CF43-4727-AB6F-88434E4F57CA}"
 EndProject
@@ -93,6 +93,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Lucene", "src\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj", "{8C7825F7-E1E8-4286-BA66-AB3887F784E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOCTheme", "src\Themes\EasyOCTheme\EasyOCTheme.csproj", "{0B9628DC-061B-4DA8-9F33-2E27E7221A81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Infrastructure", "src\Core\EasyOC.Infrastructure\EasyOC.Infrastructure.csproj", "{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Constants", "EasyOC.Constants\EasyOC.Constants.csproj", "{DC5EA9A9-B7D7-42E6-9056-B0B264DB5F28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -200,6 +204,14 @@ Global
 		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B9628DC-061B-4DA8-9F33-2E27E7221A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC5EA9A9-B7D7-42E6-9056-B0B264DB5F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC5EA9A9-B7D7-42E6-9056-B0B264DB5F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC5EA9A9-B7D7-42E6-9056-B0B264DB5F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC5EA9A9-B7D7-42E6-9056-B0B264DB5F28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,6 +242,8 @@ Global
 		{88C9C461-768A-4CD4-A33C-E6917EE44E81} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{8C7825F7-E1E8-4286-BA66-AB3887F784E4} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{0B9628DC-061B-4DA8-9F33-2E27E7221A81} = {181DF740-F0EB-42D9-A94E-076745447CDB}
+		{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
+		{DC5EA9A9-B7D7-42E6-9056-B0B264DB5F28} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}

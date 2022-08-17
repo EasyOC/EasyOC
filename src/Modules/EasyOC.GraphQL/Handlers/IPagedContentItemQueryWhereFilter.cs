@@ -3,7 +3,7 @@ using EasyOC.OrchardCore.DynamicTypeIndex.Index;
 using FreeSql;
 using OrchardCore.ContentManagement.Records;
 
-namespace EaysOC.GraphQL.Handlers;
+namespace EasyOC.GraphQL.Handlers;
 
 public interface IPagedContentItemQueryWhereFilter
 {

@@ -1,7 +1,7 @@
 ﻿using GraphQL.Types;
 using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 
-namespace EaysOC.GraphQL.Queries.Types
+namespace EasyOC.GraphQL.Queries.Types
 {
     public class DynamicOrderByInput : InputObjectGraphType
     {
