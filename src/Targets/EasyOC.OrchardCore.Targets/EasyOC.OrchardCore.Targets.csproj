@@ -17,92 +17,91 @@
   -->
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Application.Targets" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <PackageReference Include="OrchardCore.Application.Targets" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 
     <!--
       When adding a reference to this list, please keep it ordered alphabetically, and set PrivateAssets="none"
     -->
-    <PackageReference Include="OrchardCore.Admin" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.AdminDashboard" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.AdminMenu" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Alias" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.AuditTrail" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Autoroute" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.AutoSetup" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.BackgroundTasks" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ContentLocalization" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ContentPreview" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <PackageReference Include="OrchardCore.Admin" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.AdminDashboard" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.AdminMenu" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Alias" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.AuditTrail" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Autoroute" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.AutoSetup" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.BackgroundTasks" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.ContentLocalization" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.ContentPreview" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 
 
-    <PackageReference Include="OrchardCore.Cors" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.CustomSettings" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.DataProtection.Azure" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Deployment" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Deployment.Remote" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Diagnostics" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.DynamicCache" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Features" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Feeds" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Flows" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Forms" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.HealthChecks" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.HomeRoute" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Html" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Https" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Indexing" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Layers" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Liquid" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Lists" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Localization" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Markdown" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Media" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.MiniProfiler" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Navigation" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Placements" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.PublishLater" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Recipes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Redis" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Resources" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ResponseCompression" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ReverseProxy" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Rules" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Scripting" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Settings" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Setup" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Shortcodes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Spatial" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Taxonomies" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Templates" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Tenants" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Widgets" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.XmlRpc" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="TheAdmin" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <PackageReference Include="OrchardCore.Cors" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.ContentTypes" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.CustomSettings" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.DataProtection.Azure" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Deployment" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Deployment.Remote" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Diagnostics" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.DynamicCache" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Email" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Features" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Feeds" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Flows" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Forms" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.HealthChecks" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.HomeRoute" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Html" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Https" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Indexing" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Layers" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Liquid" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Lists" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Localization" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Markdown" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Media" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.MiniProfiler" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Navigation" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Placements" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.PublishLater" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Recipes" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Redis" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Resources" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.ResponseCompression" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.ReverseProxy" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Rules" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Scripting" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Settings" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Setup" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Shortcodes" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Spatial" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Taxonomies" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Templates" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Tenants" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Widgets" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="OrchardCore.XmlRpc" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="TheAdmin" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
     <!--
       When adding a reference to this list, please keep it ordered alphabetically, and set PrivateAssets="none"
     -->
-    <PackageReference Include="SafeMode" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="TheAgencyTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="TheBlogTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="TheComingSoonTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="TheTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <PackageReference Include="SafeMode" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="TheAgencyTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="TheBlogTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="TheComingSoonTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
+    <PackageReference Include="TheTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
   </ItemGroup>
-  <ItemGroup>
-    <!--    <PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
+  <ItemGroup><!--    <PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.GitHub" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.Microsoft.Authentication" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <!--    <PackageReference Include="OrchardCore.ReCaptcha" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
@@ -113,9 +112,11 @@
     <!--    <PackageReference Include="OrchardCore.Twitter" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
 
     <!--    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" PrivateAssets="none"/>-->
+  
+    <ProjectReference Include="..\..\Core\EasyOC.Infrastructure\EasyOC.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Translations.All"/>
+    <PackageReference Include="OrchardCore.Translations.All" />
   </ItemGroup>
 
 </Project>

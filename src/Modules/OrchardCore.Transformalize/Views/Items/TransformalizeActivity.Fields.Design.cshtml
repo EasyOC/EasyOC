@@ -1,7 +1,0 @@
-@model ActivityViewModel<TransformalizeModule.Activities.TransformalizeActivity>
-@using OrchardCore.Workflows.Helpers
-@using OrchardCore.Workflows.ViewModels
-<header>
-    <h4><i class="fa fa-subway"></i>@Model.Activity.GetTitleOrDefault(() => T["Transformalize"])</h4>
-</header>
-<em>&quot;@Model.Activity.Alias&quot;</em>

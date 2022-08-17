@@ -1,10 +1,13 @@
 ﻿using OrchardCore.Modules.Manifest;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
     Name = "EasyOC.OrchardCore.Scripting",
-    Author = "The EasyOC Team",
-    //Dependencies = new[] { "Custom Settings" },
-    Description = "Provide getSiteSettings('CustomSettingType') ",
+    Dependencies = new[] { "OrchardCore.Queries" },
+    Description = "Provide getSiteSettings('CustomSettingType'), Override executeQuery ",
     Category = "Infrastructure"
 )]
 

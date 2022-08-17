@@ -1,29 +1,36 @@
 @model WorkflowIndexViewModel
 @using OrchardCore.Workflows.Models;
-@using OrchardCore.Workflows.ViewModels;
-
+@using Microsoft.IdentityModel.Tokens
+@using Microsoft.Data.SqlClient.Server
+@inject OrchardCore.Modules.ILocalClock LocalClock
 @{
     int startIndex = (Model.Pager.Page - 1) * (Model.Pager.PageSize) + 1;
     int endIndex = startIndex + Model.Workflows.Count - 1;
 }
 <script asp-name="bootstrap-select" depends-on="admin" at="Foot"></script>
 
-<zone Name="Title"><h1>@RenderTitleSegments(T["{0} Instances", Model.WorkflowType.Name])</h1></zone>
+<zone Name="Title">
+    <h1>@RenderTitleSegments(T["{0} Instances", Model.WorkflowType.Name])</h1>
+</zone>
 
 <zone name="Breadcrumbs">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="WorkflowType">@T["Workflows"]</a></li>
-            <li class="breadcrumb-item"><a asp-action="Edit" asp-controller="WorkflowType" asp-route-id="@Model.WorkflowType.Id">@Model.WorkflowType.Name</a></li>
+            <li class="breadcrumb-item">
+                <a asp-action="Index" asp-controller="WorkflowType">@T["Workflows"]</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a asp-action="Edit" asp-controller="WorkflowType" asp-route-id="@Model.WorkflowType.Id">@Model.WorkflowType.Name</a>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">@T["Instances"]</li>
         </ol>
     </nav>
 </zone>
 
 <form asp-action="Index" id="workflows-form" method="post" class="no-multisubmit">
-    <input type="submit" name="submit.Filter" id="submitFilter" class="visually-hidden" />
-    <input type="submit" name="submit.BulkAction" class="visually-hidden" />
-    <input asp-for="Options.BulkAction" type="hidden" />
+    <input type="submit" name="submit.Filter" id="submitFilter" class="visually-hidden"/>
+    <input type="submit" name="submit.BulkAction" class="visually-hidden"/>
+    <input asp-for="Options.BulkAction" type="hidden"/>
 
     <div class="mb-3">
         <ul class="list-group with-checkbox">
@@ -35,7 +42,9 @@
                             <div class="form-check mt-2 me-n2">
                                 <input type="checkbox" class="form-check-input" id="select-all">
                                 <label class="form-check-label" for="select-all" id="select-all-label" title="@T["Select All"]"></label>
-                                <label id="items" for="select-all">@T.Plural(Model.Workflows.Count, "1 item", "{0} items")<span class="text-muted" title="@T["Items {0} to {1}", startIndex, endIndex]">@T.Plural((int)Model.Pager.TotalItemCount, " / {0} item in total", " / {0} items in total")</span></label>
+                                <label id="items" for="select-all">
+                                    @T.Plural(Model.Workflows.Count, "1 item", "{0} items")<span class="text-muted" title="@T["Items {0} to {1}", startIndex, endIndex]">@T.Plural((int)Model.Pager.TotalItemCount, " / {0} item in total", " / {0} items in total")</span>
+                                </label>
                                 <label id="selected-items" class="text-muted" for="select-all"></label>
                             </div>
                         </div>
@@ -47,7 +56,9 @@
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bulk-action-menu-button">
                                     @foreach (var item in Model.Options.WorkflowsBulkAction)
                                     {
-                                        <li><a class="dropdown-item" href="javascript:void(0)" data-action="@item.Value" data-title="@T["Bulk Action"]" data-message="@T["Are you sure you want to {0} these items?", @item.Text.ToLower()]">@item.Text</a></li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)" data-action="@item.Value" data-title="@T["Bulk Action"]" data-message="@T["Are you sure you want to {0} these items?", @item.Text.ToLower()]">@item.Text</a>
+                                        </li>
                                     }
                                 </ul>
                             </div>
@@ -61,6 +72,7 @@
                         </div>
                     </div>
                 </li>
+
                 @for (var i = 0; i < Model.Workflows.Count; i++)
                 {
                     var entry = Model.Workflows[i];
@@ -101,7 +113,15 @@
                             </div>
                             <a asp-action="Details" asp-route-id="@entry.Workflow.Id">@entry.Workflow.WorkflowId</a>
                             <div>
-                                <span class="hint">@T["Created {0}", (object)(await DisplayAsync(await New.TimeSpan(Utc: entry.Workflow.CreatedUtc)))]</span>
+                                @* <span class="hint">@T["Created"]@await DisplayAsync(await New.DateTime(entry.Workflow.CreatedUtc))</span> *@
+                                <span class="hint">@T["Created: {0}", await LocalClock.ConvertToLocalAsync(entry.Workflow.CreatedUtc)]</span>
+                                @if (entry.Workflow.State.ContainsKey("LastExecutedOn")
+                                     && entry.Workflow.State["LastExecutedOn"] is not null
+                                     && DateTime.TryParse(entry.Workflow.State["LastExecutedOn"].ToString(), out var lastExecutedOn))
+                                {
+                                    lastExecutedOn = DateTime.SpecifyKind(lastExecutedOn, DateTimeKind.Utc);
+                                    <span class="hint">@T["| Last Executed: {0}", await LocalClock.ConvertToLocalAsync(lastExecutedOn)]</span>
+                                }
                                 <div class="info">
                                     <span class="badge bg-@statusCss">
                                         @T.GetLocalizedStatus(entry.Workflow.Status)

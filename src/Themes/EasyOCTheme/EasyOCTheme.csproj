@@ -34,7 +34,7 @@
   </ItemGroup> 
 
   <ItemGroup>
-    <AdditionalFiles Include="Views\OrchardCore.Users\Account\Layout-Login.cshtml" />
+    <Content Include="Views\Layout.cshtml" />
   </ItemGroup> 
 
  

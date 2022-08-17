@@ -15,20 +15,17 @@
     <Compile Remove="AutofacModule.cs" />
     <Compile Remove="Extensions\FreeSqlProviderFactory.cs" />
     <Compile Remove="Extensions\OCExtentions\ContentExtensions.cs" />
+    <Compile Remove="ResultWaper\Extensions\UnifyResultMiddlewareExtensions.cs" />
+    <Compile Remove="ResultWaper\Validation\DataValidationResult.cs" />
     <Compile Remove="RunAs.cs" />
   </ItemGroup>
 
   <!--<ItemGroup>
-    
+
   </ItemGroup>-->
 
 
   <ItemGroup>
-    <!--<PackageReference Include="Autofac" Version="6.3.0" />-->
-    <!--<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />-->
-    <!--<PackageReference Include="EasyOC.DynamicWebApi" />-->
-    <!--<PackageReference Include="ThisNetWorks.OrchardCore.OpenApi" Version="1.2.0-preview-16576" />-->
-    <!--<PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="0.0.6" />-->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
     <PackageReference Include="IdleBus" Version="1.5.2" />
@@ -55,11 +52,10 @@
 
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\EasyOC.Constants\EasyOC.Constants.csproj" />
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\OCExtentions\" />
-  </ItemGroup>
+
 
 </Project>
 

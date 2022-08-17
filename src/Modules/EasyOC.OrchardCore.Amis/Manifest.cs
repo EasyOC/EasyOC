@@ -1,10 +1,11 @@
 using OrchardCore.Modules.Manifest;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
-    Name = "JZSoft.OrchardCore.Amis",
-    Author = "The Orchard Core Team",
-    Website = "https://orchardcore.net",
-    Version = "0.0.1",
-    Description = "JZSoft.OrchardCore.Amis",
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
+    Name = "EasyOC.OrchardCore.Amis",
+    Description = "EasyOC.OrchardCore.Amis",
     Category = "Content Management"
 )]

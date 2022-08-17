@@ -3,7 +3,7 @@ using OrchardCore.Navigation;
 using System;
 using System.Threading.Tasks;
 
-namespace JZSoft.OrchardCore.Amis
+namespace EasyOC.OrchardCore.Amis
 {
     public class AdminMenu : INavigationProvider
     {
@@ -24,7 +24,7 @@ namespace JZSoft.OrchardCore.Amis
               .Add(S["Content Definition"], S["Content Definition"].PrefixPosition("9"), contentDefinition => contentDefinition
                   .Add(S["Amis Editor"], S["Amis Editor"].PrefixPosition("4"),
                                 action => action
-                                .Action("AmisEditor", "Admin", new { area = "JZSoft.OrchardCore.Amis" })
+                                .Action("AmisEditor", "Admin", new { area = "EasyOC.OrchardCore.Amis" })
                                 .Permission(Permissions.Amis_Editor)
                                 .LocalNav())
                             )

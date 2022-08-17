@@ -131,7 +131,6 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 result = freeSql.DbFirst.GetTablesByDatabase();
                 _memoryCache.Set(cacheKey, result, absoluteExpiration: DateTime.Now.AddHours(4));
             }
-
             return result;
         }
 
@@ -158,8 +157,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
             IFreeSql freeSql = await GetFreeSqlAsync(connectionConfigId);
             using (freeSql)
             {
-
-                var recrods = new List<ContentPartFieldDefinitionRecord>();
+                var records = new List<ContentPartFieldDefinitionRecord>();
                 try
                 {
                     var tb = freeSql.DbFirst.GetTableByName(tableName);
@@ -220,9 +218,9 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                     var index = 0;
                     foreach (var item in tb.Columns)
                     {
-                        var recrod = new ContentPartFieldDefinitionRecord();
-                        recrod.Name = item.Name.ToSafeName();
-                        recrod.Settings = JObject.FromObject(new
+                        var record = new ContentPartFieldDefinitionRecord();
+                        record.Name = item.Name.ToSafeName();
+                        record.Settings = JObject.FromObject(new
                         {
                             ContentPartFieldSettings = new
                             {
@@ -234,8 +232,8 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         {
                             targetFieldType = _contentFieldsValuePathProvider.GetField(typeof(int));
                         }
-                        recrod.FieldName = targetFieldType.FieldName;
-                        recrods.Add(recrod);
+                        record.FieldName = targetFieldType.FieldName;
+                        records.Add(record);
                     }
 
                     step.ContentParts.Add(new Contentpart
@@ -245,11 +243,11 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         {
                             ContentPartSettings = new Contentpartsettings
                             {
-                                Attachable = true, DefaultPosition = "0", Description = tb.Type.ToString() + " of " + fullName
+                                Attachable = true, DefaultPosition = "0", Description = tb.Type + " of " + fullName
                             }
                         },
                         DispalyName = fullName,
-                        ContentPartFieldDefinitionRecords = recrods.ToArray()
+                        ContentPartFieldDefinitionRecords = records.ToArray()
                     });
 
                     return new GenerateRecipeDto(
@@ -304,7 +302,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         }
         public JObject GetTableInfo(RDBMSMappingConfigViewModel config)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
     }
