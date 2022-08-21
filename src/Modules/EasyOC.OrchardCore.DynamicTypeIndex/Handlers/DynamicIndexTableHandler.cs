@@ -2,6 +2,7 @@
 using OrchardCore.ContentManagement.Handlers;
 using System.Threading.Tasks;
 using EasyOC.OrchardCore.ContentExtentions.Handlers;
+using EasyOC.OrchardCore.DynamicTypeIndex.Service;
 using System.Collections.Generic;
 using System.Linq;
 using OrchardCore.DisplayManagement.Notify;
@@ -21,11 +22,12 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
         private readonly IHtmlLocalizer H;
         private readonly ISession _session;
         public virtual int DefaultPageSize { get; set; } = 100;
-        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql, INotifier notifier,
+
+        public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql,
+            INotifier notifier,
             IHtmlLocalizer<DynamicIndexTableHandler> localizer, ISession session,
             ILogger<DynamicIndexTableHandler> logger)
         {
-
             _dynamicIndexAppService = dynamicIndexAppService;
             _fsql = fsql;
             this.notifier = notifier;
@@ -49,27 +51,32 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                 var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(typeName);
                 if (config != null)
                 {
-                    var contentList = contentItems.Where(x => x.ContentItem.ContentType == typeName)
+                    var contentQuery = contentItems.Where(x => x.ContentItem.ContentType == typeName)
                         .Select(x => x.ContentItem);
-                    var penddingUpdateList = contentList.Take(DefaultPageSize);
+                    var penddingUpdateList = contentQuery.Take(DefaultPageSize);
 
                     var pageIndex = 0;
                     totalUpdated[typeName] = 0;
 
-                    while (penddingUpdateList.Count() > 0)
+                    while (penddingUpdateList.Any())
                     {
                         var dictList = penddingUpdateList.ToDictModel(config);
-                        totalUpdated[typeName] += await _fsql.InsertOrUpdateDict(dictList)
-                                                            .WithTransaction(_session.CurrentTransaction)
-                                                            .WherePrimary("Id")
-                                                            .ExecuteAffrowsAsync();
+                        var tsFsql = _fsql.InsertOrUpdateDict(dictList.OrderByDescending(x => x.Keys.Count));
+                        if (_session.CurrentTransaction != null)
+                        {
+                            tsFsql.WithTransaction(_session.CurrentTransaction);
+                        }
+
+                        totalUpdated[typeName] += await tsFsql
+                            .WherePrimary("Id")
+                            .ExecuteAffrowsAsync();
                         pageIndex++;
-                        penddingUpdateList = contentList.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
+                        penddingUpdateList = contentQuery.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
                     }
+
                     await notifier.SuccessAsync(H["{0} 更新成功，更新数量：{1}.", typeName, totalUpdated[typeName]]);
                 }
             }
-
         }
 
         //public override async Task PublishedAsync(PublishContentContext context)
@@ -89,19 +96,23 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex.Handlers
                 try
                 {
                     var dictModel = context.ContentItem.ToDictModel(config);
+                    var tsFsql = _fsql.InsertOrUpdateDict(dictModel);
+                    if (_session.CurrentTransaction != null)
+                    {
+                        tsFsql.WithTransaction(_session.CurrentTransaction);
+                    }
 
-                    await _fsql.InsertOrUpdateDict(dictModel)
-                                          .WithTransaction(_session.CurrentTransaction)
-                                          .AsTable(config.TableName)
-                                          .WherePrimary("Id")
-                                          .ExecuteAffrowsAsync();
+                    await tsFsql
+                        .WithTransaction(_session.CurrentTransaction)
+                        .AsTable(config.TableName)
+                        .WherePrimary("Id")
+                        .ExecuteAffrowsAsync();
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError("索引更新失败,{0}" + e.InnerException);
+                    _logger.LogError("索引更新失败,{0}" + e.Message);
+                    throw;
                 }
-
-
             }
         }
     }

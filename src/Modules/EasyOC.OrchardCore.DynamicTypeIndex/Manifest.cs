@@ -1,11 +1,12 @@
 ﻿using OrchardCore.Modules.Manifest;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
     Name = "EasyOC.OrchardCore.DynamicTypeIndex",
-    Author = "The Orchard Core Team",
-    Website = "https://orchardcore.net",
-    Version = "0.0.1",
     Description = "EasyOC.OrchardCore.DynamicTypeIndex",
-    Dependencies =new[] { "EasyOC.OrchardCore.ContentExtentions"},
+    Dependencies =new[] { "EasyOC.OrchardCore.ContentExtentions","EasyOC.OrchardCore.CSharpScript"},
     Category = "Content Management"
 )]

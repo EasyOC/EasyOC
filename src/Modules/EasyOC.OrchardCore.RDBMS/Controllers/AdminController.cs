@@ -1,25 +1,14 @@
 ﻿using EasyOC.OrchardCore.RDBMS.Models;
 using EasyOC.OrchardCore.RDBMS.Services;
 using EasyOC.OrchardCore.RDBMS.ViewModels;
-using FreeSql;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Records;
-using OrchardCore.ContentManagement.Records;
-using OrchardCore.DisplayManagement.ModelBinding;
-using OrchardCore.DisplayManagement.Notify;
-using OrchardCore.Settings;
 using System.Collections.Generic;
-using System.Linq;
 using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
-using YesSql;
 using EasyOC.OrchardCore.ContentExtentions.AppServices;
 using System;
 
@@ -29,42 +18,27 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
     {
         private readonly IContentTypeManagementAppService _contentManagementAppService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentManager _contentManager;
-        private readonly ISiteService _siteService;
-        private readonly INotifier _notifier;
-        private readonly IUpdateModelAccessor _updateModelAccessor;
-        private readonly IStringLocalizer S;
-        private readonly IHtmlLocalizer H;
-        private readonly ISession _session;
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
-        private readonly IRDBMSAppService _rDBMSAppService;
-
+        private readonly IRDBMSAppService _rDbmsAppService;
         private readonly IServiceProvider _serviceProvider;
 
         public AdminController(
             IAuthorizationService authorizationService,
-            ISiteService siteService,
-            IStringLocalizer<AdminController> stringLocalizer,
-            IHtmlLocalizer<AdminController> htmlLocalizer,
-            INotifier notifier,
-            IUpdateModelAccessor updateModelAccessor,
-            IContentDefinitionManager contentDefinitionManager,
-            IContentManager contentManager, ISession session, IContentFieldsValuePathProvider contentFieldsValuePathProvider, IRDBMSAppService rDBMSAppService, IContentTypeManagementAppService contentManagementAppService, IServiceProvider serviceProvider)
+            IContentManager contentManager,
+            // IContentFieldsValuePathProvider contentFieldsValuePathProvider,
+            IContentTypeManagementAppService contentManagementAppService,
+            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService)
         {
             _authorizationService = authorizationService;
-            _siteService = siteService;
-            _updateModelAccessor = updateModelAccessor;
-            _notifier = notifier;
-            S = stringLocalizer;
-            H = htmlLocalizer;
-            _contentDefinitionManager = contentDefinitionManager;
+
             _contentManager = contentManager;
-            _session = session;
-            _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
-            _rDBMSAppService = rDBMSAppService;
+            // _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
+            _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
+
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
+            _rDbmsAppService = rDbmsAppService;
         }
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)
@@ -83,8 +57,9 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             //     var contentItem = new ContentItem()
             //     {
             //         ContentType = "RDBMSMappingConfig",
-            //         DisplayText=model.ConfigName, 
+            //         DisplayText=model.ConfigName,
             // };
+            // ReSharper disable once Mvc.ViewNotResolved
             return View(model);
         }
         [HttpGet]
@@ -101,7 +76,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             {
                 return Forbid();
             }
-            return Json(await _rDBMSAppService.GetAllTablesAsync(queryTablesDto));
+            return Json(await _rDbmsAppService.GetAllTablesAsync(queryTablesDto));
         }
 
         [HttpGet]
@@ -180,7 +155,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             {
                 return Forbid();
             }
-            return Json(await _rDBMSAppService.GetAllDbConnecton());
+            return Json(await _rDbmsAppService.GetAllDbConnecton());
         }
 
         [HttpGet]
@@ -190,7 +165,7 @@ namespace EasyOC.OrchardCore.RDBMS.Controllers
             {
                 return Forbid();
             }
-            return Json(await _rDBMSAppService.GetAllDbConnecton());
+            return Json(await _rDbmsAppService.GetAllDbConnecton());
         }
         [HttpGet]
         public async Task<IActionResult> GetTypeDefinitionAsync(string name, bool withSettings = false)

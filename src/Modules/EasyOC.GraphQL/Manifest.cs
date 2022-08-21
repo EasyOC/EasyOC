@@ -1,11 +1,18 @@
-﻿using OrchardCore.Modules.Manifest;
+﻿using EasyOC.Core;
+using OrchardCore.Modules.Manifest;
+using static EasyOC.ManifestConsts;
 
 [assembly: Module(
+    Author = Author,
+    Website = Website,
+    Version = CurrentVersion,
+    Id = "EasyOC.GraphQL",
     Name = "EasyOC.GraphQL",
-    Author = "The EasyOC Team",
-    Website = "https://orchardcore.net",
-    Version = "0.0.1",
-    Description = "EaysOC GraphQL Extentions",
-    Dependencies = new[] { "EasyOC.Core" },
+    Description = "EasyOC GraphQL Extensions",
+    Dependencies = new[]
+    {
+        Constants.EasyOCCoreModuleId, "OrchardCore.Apis.GraphQL","OrchardCore.ContentFields","OrchardCore.Media"
+    },
     Category = "Content Management"
-)]
+    )
+]

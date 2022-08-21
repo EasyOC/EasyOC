@@ -90,7 +90,7 @@ namespace EasyOC.Core
 
         public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, string parameterName)
         {
-            if (value.IsNullOrEmpty())
+            if (value == null|| value.Count == 0)
             {
                 throw new ArgumentException(parameterName + " can not be null or empty!", parameterName);
             }

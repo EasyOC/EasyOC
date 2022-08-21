@@ -34,9 +34,9 @@
   <ItemGroup>
 
     <!--This is used for Source Link -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
+<!--    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>-->
   </ItemGroup>
   <PropertyGroup>
-    <TargetFrameworks>$(CommonTargetFrameworks)</TargetFrameworks>
+    <TargetFramework>$(CommonTargetFrameworks)</TargetFramework>
   </PropertyGroup>
 </Project>

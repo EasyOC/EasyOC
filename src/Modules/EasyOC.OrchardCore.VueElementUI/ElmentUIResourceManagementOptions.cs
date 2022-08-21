@@ -23,11 +23,6 @@ namespace EasyOC.OrchardCore.VueElementUI
                 .SetVersion("2.15.6")
                 .SetDependencies("vuejs", "element-theme-chalk")
                 ;
-
-
-
-
-
         }
 
         public void Configure(ResourceManagementOptions options)

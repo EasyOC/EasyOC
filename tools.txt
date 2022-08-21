@@ -5,5 +5,5 @@
 
 项目引用替换为包引用：
 ProjectReference Include="(.*\\)(.*).csproj" PrivateAssets="none"
-PackageReference Include="$2"  Version="$(StatCanVersion)"
+PackageReference Include="$2"  Version="$(OrchardCoreVersion)"
 

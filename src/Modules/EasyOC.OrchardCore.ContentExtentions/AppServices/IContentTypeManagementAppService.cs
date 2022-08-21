@@ -12,6 +12,6 @@ namespace EasyOC.OrchardCore.ContentExtentions.AppServices
         ContentPartDefinitionDto GetPartDefinition(string name, bool withSettings = false);
         ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false);
         List<ContentFieldsMappingDto> GetFields(string typeName);
-        Task<IEnumerable<QueryDefDto>> ListLuceneQueriesAsync();
+        Task<IEnumerable<QueryDefDto>> ListAllQueriesAsync();
     }
 }

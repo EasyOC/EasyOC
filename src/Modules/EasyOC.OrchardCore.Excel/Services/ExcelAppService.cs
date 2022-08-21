@@ -20,7 +20,7 @@ using YesSql;
 namespace EasyOC.OrchardCore.Excel.Services
 {
     [DynamicWebApi]
-    public class ExcelAppService : AppServiceBase, IDynamicWebApi, IExcelAppService
+    public class ExcelAppService : AppServiceBase, IExcelAppService
     {
         private readonly IContentManager _contentManager;
 
@@ -31,17 +31,16 @@ namespace EasyOC.OrchardCore.Excel.Services
         [IgnoreWebApiMethod]
         public List<object> Evaluate(string script, object data)
         {
-
             var result = JsEngine
                    .Execute("var excelTable = " + JsonSerializer.Serialize(data) + ";")
                    .Evaluate(script)?.ToObject();
-            if (result != null)
+            if (result == null)
             {
-                var objArray = (object[])result;
-                var dynamicArray = objArray.Select(x => x);
-                return dynamicArray.ToList();
+                return null;
             }
-            return null;
+            var objArray = (object[])result;
+            var dynamicArray = objArray.Select(x => x);
+            return dynamicArray.ToList();
         }
 
         [IgnoreWebApiMethod]
@@ -55,7 +54,7 @@ namespace EasyOC.OrchardCore.Excel.Services
                 // 2. Use the AsDataSet extension method
                 var result = reader.AsDataSet(new ExcelDataSetConfiguration()
                 {
-                    // Gets or sets a value indicating whether to set the DataColumn.DataType 
+                    // Gets or sets a value indicating whether to set the DataColumn.DataType
                     // property in a second pass.
                     UseColumnDataType = true,
 
@@ -65,20 +64,20 @@ namespace EasyOC.OrchardCore.Excel.Services
                     //    tableReader.Name == settings.SheetName.Text
                     //,
 
-                    // Gets or sets a callback to obtain configuration options for a DataTable. 
+                    // Gets or sets a callback to obtain configuration options for a DataTable.
                     ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
                     {
-                        // Gets or sets a value indicating whether to use a row from the 
+                        // Gets or sets a value indicating whether to use a row from the
                         // data as column names.
                         UseHeaderRow = true,
-                        //// Gets or sets a callback to determine which row is the header row. 
+                        //// Gets or sets a callback to determine which row is the header row.
                         //// Only called when UseHeaderRow = true.
                         //ReadHeaderRow = (rowReader) =>
                         //{
                         //    // F.ex skip the first row and use the 2nd row as column headers:
                         //    rowReader.Read();
                         //},
-                        //// Gets or sets a callback to determine whether to include the 
+                        //// Gets or sets a callback to determine whether to include the
                         //// current row in the DataTable.
                         //FilterRow = (rowReader) =>
                         //{
@@ -86,7 +85,7 @@ namespace EasyOC.OrchardCore.Excel.Services
                         //},
 
                         //// Gets or sets a callback to determine whether to include the specific
-                        //// column in the DataTable. Called once per column after reading the 
+                        //// column in the DataTable. Called once per column after reading the
                         //// headers.
                         //FilterColumn = (rowReader, columnIndex) =>
                         //{
@@ -102,7 +101,7 @@ namespace EasyOC.OrchardCore.Excel.Services
                 }
                 if (!string.IsNullOrWhiteSpace(rowFilterExpression))
                 {
-                    //var dataTable = table.Select("Shipping_point='2049' and Created_Date>='2021-08-01'") 
+                    //var dataTable = table.Select("Shipping_point='2049' and Created_Date>='2021-08-01'")
                     var temp = table.Select(rowFilterExpression);
                     if (temp?.Length > 0)
                     {
@@ -139,6 +138,7 @@ namespace EasyOC.OrchardCore.Excel.Services
                 return Evaluate(settings.FieldsMappingConfig.Text, data);
             }
         }
+
         [IgnoreWebApiMethod]
         public async Task<ContentItemDto> GetExcelSettingsAsync(string displayText)
         {

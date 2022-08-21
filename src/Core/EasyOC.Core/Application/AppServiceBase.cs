@@ -75,7 +75,7 @@ namespace EasyOC.Core.Application
 
         #endregion
         protected IContentManager ContentManager => LazyServiceProvider.LazyGetRequiredService<IContentManager>();
-        protected YesSql.ISession YesSession => LazyServiceProvider.LazyGetRequiredService<YesSql.ISession>();
+        public YesSql.ISession YesSession => LazyServiceProvider.LazyGetRequiredService<YesSql.ISession>();
         protected IFreeSql Fsql => LazyServiceProvider.LazyGetRequiredService<IFreeSql>();
 
 

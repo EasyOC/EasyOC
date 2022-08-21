@@ -2,7 +2,7 @@ using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace JZSoft.OrchardCore.Amis
+namespace EasyOC.OrchardCore.Amis
 {
     public class Permissions : IPermissionProvider
     {

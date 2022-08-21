@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EasyOC.Core.Indexs;
+using EasyOC.Core.Indexes;
 using FreeSql.DataAnnotations;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;

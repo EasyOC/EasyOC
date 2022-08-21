@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <EmbeddedResource Remove="Views\Layout.liquid" />
+    <EmbeddedResource Update="Views\Layout-Login.cshtml">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
    <ItemGroup>
@@ -17,8 +20,13 @@
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" /> 
+
+    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
+ 
 
 </Project>

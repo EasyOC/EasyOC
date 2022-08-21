@@ -8,6 +8,9 @@
     <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="ViewModels\**" />
+    <Compile Remove="Migrations\VbenMenuMigrations.cs" />
+    <Compile Remove="Model\VbenMenu.cs" />
+    <Compile Remove="Controllers\ApiController.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,10 +43,6 @@
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

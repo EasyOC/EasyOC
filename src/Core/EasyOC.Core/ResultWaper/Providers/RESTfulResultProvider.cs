@@ -100,14 +100,15 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <param name="message"></param>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object message = default,  HttpContext httpContext = default)
+        private static RESTfulResult<object> RESTfulResult(int statusCode, bool succeeded = default, object data = default, object message = default, HttpContext httpContext = default)
         {
             return new RESTfulResult<object>
             {
                 StatusCode = statusCode,
+                Status = statusCode == 200 ? 0 : statusCode,
                 Succeeded = succeeded,
                 Data = data,
-                Msg = message, 
+                Msg = message,
                 Extras = httpContext.TakeExtras(),
                 Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             };

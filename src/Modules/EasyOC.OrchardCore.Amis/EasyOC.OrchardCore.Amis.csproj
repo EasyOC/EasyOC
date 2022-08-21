@@ -16,10 +16,11 @@
 		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <!-- <EmbeddedResource Update="wwwroot\amis-editor\package-lock.json">
+	<ItemGroup><!-- <EmbeddedResource Update="wwwroot\amis-editor\package-lock.json">
 	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
 	  </EmbeddedResource> -->
+	
+	  <ProjectReference Include="..\..\..\EasyOC.Constants\EasyOC.Constants.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties clientapp_4amis-editor-demo_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

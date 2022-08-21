@@ -20,17 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class UnifyResultServiceCollectionExtensions
     {
-        /// <summary>
-        /// 添加规范化结果服务
-        /// </summary>
-        /// <param name="mvcBuilder"></param>
-        /// <returns></returns>
-        public static IMvcBuilder AddUnifyResult(this IMvcBuilder mvcBuilder)
-        {
-            mvcBuilder.Services.AddUnifyResult<RESTfulResultProvider>();
-
-            return mvcBuilder;
-        }
+         
 
         /// <summary>
         /// 添加规范化结果服务
@@ -42,21 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddUnifyResult<RESTfulResultProvider>();
 
             return services;
-        }
-
-        /// <summary>
-        /// 添加规范化结果服务
-        /// </summary>
-        /// <typeparam name="TUnifyResultProvider"></typeparam>
-        /// <param name="mvcBuilder"></param>
-        /// <returns></returns>
-        public static IMvcBuilder AddUnifyResult<TUnifyResultProvider>(this IMvcBuilder mvcBuilder)
-            where TUnifyResultProvider : class, IUnifyResultProvider
-        {
-            mvcBuilder.Services.AddUnifyResult<TUnifyResultProvider>();
-
-            return mvcBuilder;
-        }
+        } 
 
         /// <summary>
         /// 添加规范化结果服务

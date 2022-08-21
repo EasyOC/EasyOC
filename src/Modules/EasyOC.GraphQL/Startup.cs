@@ -1,33 +1,44 @@
 ﻿using EasyOC.GraphQL.Abstractions;
-using EaysOC.GraphQL.Queries;
+using EasyOC.GraphQL.Handlers;
+using EasyOC.GraphQL.Queries;
+using EasyOC.GraphQL.Queries.Types;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Apis.GraphQL;
-using OrchardCore.ContentManagement.GraphQL;
+using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement.GraphQL.Mutations;
 using OrchardCore.ContentManagement.GraphQL.Mutations.Types;
 using OrchardCore.Modules;
 
-namespace EaysOC.GraphQL
+namespace EasyOC.GraphQL
 {
-    [Feature("EasyOC.OrchardCore.OpenApi")]
-    [RequireFeatures(EasyOC.Core.Constants.EasyOCCoreModuleId, "OrchardCore.Apis.GraphQL")]
+    [RequireFeatures( "OrchardCore.Apis.GraphQL","OrchardCore.ContentFields","OrchardCore.Media")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            // services.AddSingleton<ISchemaBuilder, OverrideRegisteredObjectTypesProvider>();
             services.AddSingleton<ISchemaBuilder, EOCLuceneQueryFieldTypeProvider>();
-            //services.AddSingleton<ISchemaBuilder, LuceneQueryFieldTypeProvider>();
             //services.AddContentGraphQL();
             //services.AddContentMutationGraphQL();
 
+            services.AddSingleton<ISchemaBuilder, ContentItemByVersionQuery>();
+
+            // services.Remove(ServiceDescriptor.Singleton<ISchemaBuilder, ContentTypeQuery>());
+            services.AddSingleton<ISchemaBuilder, EOCContentTypeQuery>();
+
+            services.ReplaceObjectGraphType<ContentPickerField, ContentPickerFieldQueryObjectType>();
+            services.AddTransient<PagedContentItemsType>();
+            services.AddSingleton<ISchemaBuilder, PagedContentItemsQuery>();
+
             services.AddTransient<CreateContentItemInputType>();
+
 
             services.AddGraphMutationType<CreateContentItemMutation>();
             services.AddGraphMutationType<DeleteContentItemMutation>();
-
             services.AddTransient<DeletionStatusObjectGraphType>();
             services.AddTransient<CreateContentItemInputType>();
+            services.AddScoped<IPagedContentItemQueryWhereFilter, DefaultPagedContentItemQueryWhereFilter>();
         }
-
     }
+
 }

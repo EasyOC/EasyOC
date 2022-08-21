@@ -1,9 +1,0 @@
-@using TransformalizeModule.ViewModels;
-@model TransformalizeActivityViewModel
-
-<div class="form-group" asp-validation-class-for="AliasExpression">
-    <label asp-for="AliasExpression" class="form-label">@T["Task Alias"]</label>
-    <input type="text" asp-for="AliasExpression" class="form-control code" />
-    <span asp-validation-for="AliasExpression"></span>
-    <span class="hint">@T["The Transformalize task's alias or it's content item id."]</span>
-</div>

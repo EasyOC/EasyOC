@@ -1,7 +1,7 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.OrchardCore.OpenApi.Dto;
-using EasyOC.OrchardCore.OpenApi.Indexs;
+using EasyOC.OrchardCore.OpenApi.Indexes;
 using FreeSql.Internal.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +67,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                 throw new UnauthorizedAccessException();
             }
             var users = Fsql.Select<UserIndex, UserProfileDIndex>()
-                 .LeftJoin((ui, up) => ui.UserId == up.UserId)
+                 .LeftJoin((ui, up) => ui.UserId == up.UserId && up.Latest && up.Published)
                  .Where((u, up) => u.IsEnabled)
                  .WhereIf(!input.DepartmentId.IsNullOrWhiteSpace(), (ui, up) => up.UserProfilePartDepartment == input.DepartmentId)
                  ;
@@ -250,7 +250,7 @@ namespace EasyOC.OrchardCore.OpenApi.Services
                     }
                 }
             }
-            #endregion 
+            #endregion
         }
 
 

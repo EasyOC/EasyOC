@@ -1,4 +1,4 @@
-﻿using EasyOC.OrchardCore.OpenApi.Indexs;
+﻿using EasyOC.OrchardCore.OpenApi.Indexes;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Data.Migration;
 using OrchardCore.Environment.Shell.Scope;
@@ -9,7 +9,7 @@ namespace EasyOC.OrchardCore.OpenApi.Migrations
 {
     public class VbenMenuMigrations : DataMigration
     {
-      
+
         public async Task<int> CreateAsync()
         {
             var _freeSql = ShellScope.Services.GetRequiredService<IFreeSql>();
