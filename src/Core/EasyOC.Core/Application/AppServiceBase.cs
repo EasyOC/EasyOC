@@ -25,7 +25,8 @@ using System.Threading.Tasks;
 
 namespace EasyOC.Core.Application
 {
-    [DynamicWebApi, Authorize(AuthenticationSchemes = "Api"), IgnoreAntiforgeryToken, AllowAnonymous]
+    //Api, Identity.Application, Identity.External, Identity.TwoFactorRememberMe, Identity.TwoFactorUserId, OpenIddict.Server.AspNetCore, OpenIddict.Validation.AspNetCore, Wechat
+    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous]
     public class AppServiceBase : IAppServcieBase, IDynamicWebApi
     {
         public IServiceProvider CurrentServiceProvider { get; }

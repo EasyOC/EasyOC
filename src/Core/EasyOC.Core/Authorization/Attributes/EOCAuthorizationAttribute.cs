@@ -39,6 +39,7 @@ namespace EasyOC
 
             if (!(context.HttpContext.User?.Identity?.IsAuthenticated ?? false))
             {
+
                 context.Result = new ContentResult()
                 {
                     Content = "Unauthorized",
@@ -46,9 +47,10 @@ namespace EasyOC
                 };
                 return;
             }
+
             if (_permissions.Any())
             {
-                var ServiceProvider = ShellScope.Current.ServiceProvider; 
+                var ServiceProvider = ShellScope.Current.ServiceProvider;
                 var _orchardCorePermissionService = ServiceProvider.GetRequiredService<IOrchardCorePermissionService>();
                 var _authorizationService =
                     ServiceProvider.GetRequiredService<IAuthorizationService>();

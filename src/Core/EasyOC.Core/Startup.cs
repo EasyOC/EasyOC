@@ -59,7 +59,7 @@ namespace EasyOC.Core
                     var tenantSettings = ShellScope.Context.Settings;
                     baseUrl = $"/{tenantSettings.RequestUrlPrefix}";
                 }
-                baseUrl = baseUrl.EnsureEndsWith('/');
+                baseUrl = baseUrl.EnsureEndsWith('/'); // Swagger 2.0 UI requires a trailing slash
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
 
