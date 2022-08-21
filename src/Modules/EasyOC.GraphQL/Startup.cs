@@ -29,15 +29,15 @@ namespace EasyOC.GraphQL
             services.ReplaceObjectGraphType<ContentPickerField, ContentPickerFieldQueryObjectType>();
             services.AddTransient<PagedContentItemsType>();
             services.AddSingleton<ISchemaBuilder, PagedContentItemsQuery>();
+            services.AddScoped<IPagedContentItemQueryWhereFilter, DefaultPagedContentItemQueryWhereFilter>();
+
+
 
             services.AddTransient<CreateContentItemInputType>();
-
-
             services.AddGraphMutationType<CreateContentItemMutation>();
             services.AddGraphMutationType<DeleteContentItemMutation>();
             services.AddTransient<DeletionStatusObjectGraphType>();
             services.AddTransient<CreateContentItemInputType>();
-            services.AddScoped<IPagedContentItemQueryWhereFilter, DefaultPagedContentItemQueryWhereFilter>();
         }
     }
 

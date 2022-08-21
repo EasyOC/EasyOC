@@ -12,17 +12,17 @@
   <ItemGroup>
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.Amis\EasyOC.Amis.csproj" PrivateAssets="none" />
 
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AntdAdmin\EasyOC.OrchardCore.AntdAdmin.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.AuditTrail\EasyOC.OrchardCore.AuditTrail.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.FreeSql\EasyOC.OrchardCore.FreeSql.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.OpenApi\EasyOC.OrchardCore.OpenApi.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Scripting\EasyOC.OrchardCore.Scripting.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.OrchardCore.RDBMS\EasyOC.OrchardCore.RDBMS.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.AntdAdmin\EasyOC.AntdAdmin.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.AuditTrail\EasyOC.AuditTrail.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.FreeSql\EasyOC.FreeSql.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.OpenApi\EasyOC.OpenApi.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.Scripting\EasyOC.Scripting.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.Excel\EasyOC.Excel.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.RDBMS\EasyOC.RDBMS.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Workflows\EasyOC.Workflows.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.GraphQL\EasyOC.GraphQL.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" PrivateAssets="none" />

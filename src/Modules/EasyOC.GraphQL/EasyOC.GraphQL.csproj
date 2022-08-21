@@ -41,8 +41,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
     <ProjectReference Include="..\EasyOC.GraphQL.Abstractions\EasyOC.GraphQL.Abstractions.csproj" />
-    <ProjectReference Include="..\EasyOC.OrchardCore.ContentExtentions\EasyOC.OrchardCore.ContentExtentions.csproj" />
-    <ProjectReference Include="..\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj" />
+    <ProjectReference Include="..\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" />
   </ItemGroup> 
 </Project>
 

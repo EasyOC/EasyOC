@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<RootNamespace>EasyOC.VueElementUI</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Autoroute" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
+	</ItemGroup>
+</Project>
+
+
+

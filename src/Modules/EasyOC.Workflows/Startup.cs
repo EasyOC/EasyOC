@@ -20,7 +20,8 @@ namespace EasyOC.Workflows
         {
             services.AddAutoMapper(this.GetType().Assembly);
             services.Replace(ServiceDescriptor.Scoped<IWorkflowManager, EocWorkflowManager>());
-            services.AddActivity<PowerShellTask, PowerShellTaskDisplayDriver>();
+            // 安全风险
+            // services.AddActivity<PowerShellTask, PowerShellTaskDisplayDriver>();
             services.AddActivity<EmailPlus, EmailPlusDisplayDriver>();
             services.AddActivity<WorkflowFaultEvent, WorkflowFaultEventDisplayDriver>();
             services.AddActivity<CreateUserTask, CreateUserTaskDriver>();
