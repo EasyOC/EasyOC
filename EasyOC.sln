@@ -72,7 +72,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.Wechat", "src\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.Amis", "src\Modules\EasyOC.OrchardCore.Amis\EasyOC.OrchardCore.Amis.csproj", "{02D295C1-3E29-44D7-AFCB-41330965D449}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EaysOC.GraphQL", "src\Modules\EaysOC.GraphQL\EaysOC.GraphQL.csproj", "{B4D70E06-785B-4869-A61E-05682E322834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.GraphQL", "src\Modules\EasyOC.GraphQL\EasyOC.GraphQL.csproj", "{B4D70E06-785B-4869-A61E-05682E322834}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.OrchardCore.DynamicTypeIndex", "src\Modules\EasyOC.OrchardCore.DynamicTypeIndex\EasyOC.OrchardCore.DynamicTypeIndex.csproj", "{BB2E7C19-CF43-4727-AB6F-88434E4F57CA}"
 EndProject

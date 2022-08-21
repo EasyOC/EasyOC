@@ -1,7 +1,7 @@
 ﻿using OrchardCore.Modules.Manifest;
 
 [assembly: Module(
-    Name = "EaysOC.GraphQL",
+    Name = "EasyOC.GraphQL",
     Author = "The EasyOC Team",
     Website = "https://orchardcore.net",
     Version = "0.0.1",
