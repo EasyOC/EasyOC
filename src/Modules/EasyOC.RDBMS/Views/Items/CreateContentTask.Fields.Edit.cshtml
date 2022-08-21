@@ -1,0 +1,248 @@
+﻿@using OrchardCore.Contents.Workflows.ViewModels
+@model CreateContentTaskViewModel
+
+
+<div id="CreateContentTaskVueForm">
+    <div class="form-group" asp-validation-class-for="ContentType">
+        <label asp-for="ContentType">@T["Content Type"]</label><br>
+        <select asp-for="ContentType" asp-items="@Model.AvailableContentTypes" class="form-control" asp-validation-class-for="ContentType"></select>
+        <span asp-validation-for="ContentType"></span>
+        <span class="hint">@T["Select the type of content to create."]</span>
+        @* <el-select v-model="selectValue" placeholder="" @@change="selectChange" style="width:100%;">
+            <el-option v-for="item in selectOption"
+            :key="item.Value"
+            :label="item.Text"
+            :value="item.Value">
+            </el-option>
+            </el-select>*@
+    </div>
+
+    <div class="form-group" asp-validation-class-for="Publish">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" asp-for="Publish" />
+            <label class="custom-control-label" asp-for="Publish">@T["Publish"]</label>
+            <span class="hint dashed">@T["Check if you want the content item to be published when being created. Leave unchecked to create a draft version."]</span>
+        </div>
+    </div>
+
+    <div class="form-group" asp-validation-class-for="ContentProperties">
+        <label asp-for="ContentProperties">@T["Content Properties"]</label>
+        <span style="float:right;">
+            <button type="button" style="padding:0 5px;" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+                Generate from RDBMS JSON
+            </button>
+        </span>
+
+        <div id="@Html.IdFor(x => x.ContentProperties)_editor" style="min-height: 200px;" class="form-control"></div>
+        <textarea asp-for="ContentProperties" hidden>@Html.Raw(Model.ContentProperties)</textarea>
+        <span asp-validation-for="ContentProperties"></span>
+        <el-input type="textarea" row="5" v-model="typeString" :disabled="newDisable" style="min-height: 150px;"></el-input>
+        <span class="hint">@T["Optionally provide values for the content parts, fields and their properties in JSON format. With Liquid support."]</span>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 680px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="PropertyExpresion">Property Expresion </label>
+                        <input id="PropertyExpresion" class="form-control" value='Workflow.Properties.xx' />
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJson">input Json </label>
+                        <div id="inputJson" style="min-height: 200px;" class="form-control"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="btn_gen" class="btn btn-success">Generate</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJson">Result Json </label>
+                        <div id="Result" style="min-height: 200px;" class="form-control"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script asp-name="monaco" depends-on="admin" at="Foot"></script>
+@*<script at="Foot" asp-name="elementUI" depends-on="vuejs"></script>*@
+@*<style asp-name="element-theme-chalk" at="Head"></style>*@
+@*<script at="Foot" asp-name="vuejs"></script>*@
+<script at="Foot" depends-on="monaco">
+
+
+    var type,typeString,inputJsonEditor,resultJsonEditor
+
+     var oldEditor;
+
+
+    $(function(){
+        loadTypeDef();
+
+        $("#@Html.IdFor(x=>x.ContentType)").change(function(e){
+            loadTypeDef();
+        })
+        initText2()
+        initText3()
+        $("#btn_gen").click(function(){
+            oldContentTypeblur(inputJsonEditor.getValue())
+        })
+
+        require(['vs/editor/editor.main'],()=> {
+            var settings=  {
+                "automaticLayout": true,
+                "language": "json"
+            };
+
+            var html = document.getElementsByTagName("html")[0];
+            const mutationObserver = new MutationObserver(setTheme);
+            mutationObserver.observe(html, { attributes: true });
+
+            function setTheme() {
+                var theme = html.dataset.theme;
+                if (theme === "darkmode") {
+                    monaco.editor.setTheme('vs-dark')
+                } else {
+                    monaco.editor.setTheme('vs')
+                }
+            }
+
+            setTheme();
+
+            oldEditor = monaco.editor.create(document.getElementById('@Html.IdFor(x => x.ContentProperties)_editor'), settings);
+            var textArea = document.getElementById('@Html.IdFor(x => x.ContentProperties)');
+
+            oldEditor.getModel().setValue(textArea.value);
+
+            window.addEventListener("submit", ()=> {
+                textArea.value =  oldEditor.getValue();
+            });
+        });
+    })
+
+    function loadTypeDef(){
+        var value=$("#@Html.IdFor(x=>x.ContentType)").val();
+               $.get('@Href("/Admin/EasyOC.RDBMS/Admin/GetTypeDefinition")?name='+ value+'&incloudeSettings=false', (data) => {
+                   type = data;
+                   typeString = JSON.stringify(data);
+                })
+    }
+
+    function oldContentTypeblur(value){
+              try {
+                const obj = JSON.parse(value)
+                if(Array.isArray(obj)){
+                   resultJsonEditor.getModel().setValue(JSON.stringify(convertType(obj[0])));
+                } else if(typeof(obj) == "object") {
+                    const newTypeValue = convertType(obj);
+                  resultJsonEditor.getModel().setValue(JSON.stringify(newTypeValue));
+                }
+                resultJsonEditor.getAction(['editor.action.formatDocument'])._run();
+
+              } catch(e) {
+                console.log("resultJsonEditor"+e)
+              }
+           }
+          function convertType(value) {
+              const newType = Object.assign({},type);
+              var content={}
+              var expression=$("#PropertyExpresion").val()
+              var keyList=Object.keys(value);
+                type.parts.forEach(part=>{
+                  part.partDefinition.fields.forEach(f=>{
+                      keyList.forEach(k=>{
+                        if(f.name.toLowerCase()==k.toLowerCase()){
+                            content[part.name] = content[part.name] ? content[part.name] : {};
+                            content[part.name][f.name] = content[part.name][f.name] ? content[part.name][f.name]: {};
+                            switch(f.fieldDefinition.name.toLowerCase()) {
+                                case "textfield": content[part.name][f.name].Text = `{{${expression}.${k}}}`; break;
+                                //case "multitextfield": content[part.name][f.name].Values =value[k]; break;
+                                case "booleanfield": content[part.name][f.name].Value = `{{${expression}.${k}}}`; break;
+                                case "datefield": content[part.name][f.name].Value = `{{${expression}.${k}}}`; break;
+                                case "timefield": content[part.name][f.name].Value = `{{${expression}.${k}}}`; break;
+                                case "date&timefield": content[part.name][f.name].Value = `{{${expression}.${k}}}`; break;
+                                case "numericfield": content[part.name][f.name].Value = `{{${expression}.${k}}}`; break;
+                            }
+                        }
+                    })
+                  })
+
+              })
+
+              return content;
+           }
+
+
+     function initText2() {
+        require(['vs/editor/editor.main'],  ()=> {
+            var settings=  {
+                    "automaticLayout": true,
+                    "language": "json"
+            };
+
+            var html = document.getElementsByTagName("html")[0];
+            const mutationObserver = new MutationObserver(setTheme);
+            mutationObserver.observe(html, { attributes: true });
+
+            function setTheme() {
+                var theme = html.dataset.theme;
+                if (theme === "darkmode") {
+                    monaco.editor.setTheme('vs-dark')
+                } else {
+                    monaco.editor.setTheme('vs')
+                }
+            }
+            setTheme();
+            if(!inputJsonEditor ){
+                inputJsonEditor = monaco.editor.create(document.getElementById("inputJson"), settings);
+            }
+            //inputJsonEditor.getModel().onDidChangeContent((event) => {
+            //    oldContentTypeblur(inputJsonEditor.getValue())
+            //});
+
+            //if(!resultJsonEditor)
+            //    resultJsonEditor = monaco.editor.create(document.getElementById("Result_VIUE"), settings);
+
+        });
+    }
+    function initText3() {
+        require(['vs/editor/editor.main'],  ()=> {
+            var settings=  {
+                    "automaticLayout": true,
+                    "language": "json"
+            };
+
+            var html = document.getElementsByTagName("html")[0];
+            const mutationObserver = new MutationObserver(setTheme);
+            mutationObserver.observe(html, { attributes: true });
+
+            function setTheme() {
+                var theme = html.dataset.theme;
+                if (theme === "darkmode") {
+                    monaco.editor.setTheme('vs-dark')
+                } else {
+                    monaco.editor.setTheme('vs')
+                }
+            }
+            setTheme();
+
+            if(!resultJsonEditor)
+                resultJsonEditor = monaco.editor.create(document.getElementById("Result"), settings);
+
+        });
+    }
+
+
+</script>
+
+

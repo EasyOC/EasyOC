@@ -52,7 +52,7 @@
 
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EasyOC.Constants\EasyOC.Constants.csproj" />
+    <ProjectReference Include="..\EasyOC.Constants\EasyOC.Constants.csproj" />
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
   </ItemGroup>
 

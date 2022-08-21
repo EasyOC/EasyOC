@@ -1,5 +1,5 @@
 using System;
-using EasyOC.OrchardCore.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Index;
 using FreeSql;
 using OrchardCore.ContentManagement.Records;
 

@@ -1,4 +1,4 @@
-﻿using OrchardCore.DisplayManagement.Manifest;
+using OrchardCore.DisplayManagement.Manifest;
 using OrchardCore.Modules.Manifest;
 
 [assembly: Theme(

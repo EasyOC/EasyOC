@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -39,7 +40,7 @@
 	  <Folder Include="Timers\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\EasyOC.OrchardCore.Excel\EasyOC.OrchardCore.Excel.csproj" />
+	  <ProjectReference Include="..\EasyOC.Excel\EasyOC.Excel.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <RazorGenerate Remove="Views\WorkflowType\Duplicate.cshtml" />

@@ -16,6 +16,7 @@ public class EocPermissionHandler : PermissionHandler
 
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
+
         if (context.HasSucceeded || !(context?.User?.Identity?.IsAuthenticated ?? false))
         {
             return Task.CompletedTask;

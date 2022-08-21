@@ -1,7 +1,7 @@
 ﻿using EasyOC.Core;
 using OrchardCore.Modules.Manifest;
 using System;
-using static EasyOC.ManifestConsts;
+using static EasyOC.Constants.ManifestConstants;
 
 [assembly: Module(
     Id = Constants.EasyOCCoreModuleId,

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <RootNamespace>EasyOC.OpenApi</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModels\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="ViewModels\**" />
+    <Compile Remove="Migrations\VbenMenuMigrations.cs" />
+    <Compile Remove="Model\VbenMenu.cs" />
+    <Compile Remove="Controllers\ApiController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="GraphQL\ContentItemConnectionType.cs" />
+    <Compile Remove="GraphQL\SqlQueryFieldTypeProvider.cs" />
+    <Compile Remove="Indexs\CustomUserSettingsIndexProvider.cs" />
+    <Compile Remove="Indexs\UserProfileIndex.cs" />
+    <Compile Remove="Indexs\UserTextFieldIndexProvider.cs" />
+    <Compile Remove="Services\GraphqlAppService.cs" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    
+  </ItemGroup>-->
+
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+    <ProjectReference Include="..\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+
+		<RootNamespace>EasyOC.Amis</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="ClientApp\amis-editor-demo\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Navigation.Core" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
+	<ItemGroup><!-- <EmbeddedResource Update="wwwroot\amis-editor\package-lock.json">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource> -->
+ 
+
+	  <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties clientapp_4amis-editor-demo_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+
+
+
+</Project>

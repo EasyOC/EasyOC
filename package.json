@@ -16,7 +16,7 @@
     "help": "gulp help",
     "watch": " gulp watch",
     "postinstall": "run-s install:*",
-    "install:VueElementUI": "cd src/Modules/EasyOC.OrchardCore.VueElementUI && npm install",
+    "install:VueElementUI": "cd src/Modules/EasyOC.VueElementUI && npm install",
     "install:vueforms": "cd src/Modules/StatCan.OrchardCore.VueForms && npm install",
     "install:vuetifytheme": "cd src/Themes/VuetifyTheme && npm install"
   },

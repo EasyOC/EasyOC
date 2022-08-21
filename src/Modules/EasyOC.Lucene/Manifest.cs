@@ -1,6 +1,6 @@
 ﻿using OrchardCore.Modules.Manifest;
 using System;
-using static EasyOC.ManifestConsts;
+using static EasyOC.Constants.ManifestConstants;
 
 [assembly: Module(
     Author = Author,

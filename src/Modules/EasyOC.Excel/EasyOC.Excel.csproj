@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+
+		<RootNamespace>EasyOC.Excel</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Workflow\UploadExcelTask.cs" />
+	  <Compile Remove="Controllers\ExcelApiController.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" /> 
+		<PackageReference Include="NPOI" />
+	</ItemGroup>
+	<!--
+	<ProjectReference Include="(.*)" />
+	<ProjectReference Include="$(OrchardCoreLibrariesRoot)\$1\$1.csproj" />
+	-->
+	<ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" />
+		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Scripting\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" />
+	  <ProjectReference Include="..\EasyOC.OpenApi\EasyOC.OpenApi.csproj" />
+	</ItemGroup>
+
+
+
+</Project>
+
+

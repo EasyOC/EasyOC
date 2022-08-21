@@ -6,14 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EasyOC.Constants\EasyOC.Constants.csproj" />
+    <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
   </ItemGroup>
 
   <ItemGroup>

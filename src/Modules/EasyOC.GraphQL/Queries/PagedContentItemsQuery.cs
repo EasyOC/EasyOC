@@ -1,8 +1,8 @@
 ﻿using EasyOC.GraphQL.Queries.Types;
-using EasyOC.OrchardCore.DynamicTypeIndex;
-using EasyOC.OrchardCore.DynamicTypeIndex.Index;
-using EasyOC.OrchardCore.DynamicTypeIndex.Models;
-using EasyOC.OrchardCore.DynamicTypeIndex.Service;
+using EasyOC.DynamicTypeIndex;
+using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Models;
+using EasyOC.DynamicTypeIndex.Service;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
 using GraphQL.Types;
@@ -47,9 +47,9 @@ namespace EasyOC.GraphQL.Queries
             var typeType = new PagedContentItemsType();
             var field = new FieldType()
             {
-                Name = "ContentItems",
+                Name = "PagedContentItems",
                 Description = S["Content items are instances of content types, just like objects are instances of classes."],
-                Resolver = new LockedAsyncFieldResolver<TotalQueryResults>(ResolveAsync),
+                Resolver = new LockedAsyncFieldResolver<PagedContentItemResult>(ResolveAsync),
                 Type = typeType.GetType(),
                 ResolvedType = typeType,
                 Arguments = new QueryArguments(
@@ -90,7 +90,7 @@ namespace EasyOC.GraphQL.Queries
             // schema.RegisterType<DynamicOrderByInput>();
         }
 
-        private async Task<TotalQueryResults> ResolveAsync(ResolveFieldContext context)
+        private async Task<PagedContentItemResult> ResolveAsync(ResolveFieldContext context)
         {
             var contentType = context.GetArgument<string>("contentType");
             if (string.IsNullOrEmpty(contentType))
@@ -176,7 +176,7 @@ namespace EasyOC.GraphQL.Queries
             }
             var contentManager = serviceProvider.GetService<IContentManager>();
             var contentItem = await contentManager?.GetAsync(ids, latest)!;
-            var queryResults = new TotalQueryResults
+            var queryResults = new PagedContentItemResult
             {
                 Items = contentItem ?? new List<ContentItem>(), Total = Convert.ToInt32(totalCount)
             };

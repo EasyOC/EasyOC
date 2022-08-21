@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     if (options.Schemes.All(x => x.Name != "Api"))
                     {
-                        options.AddScheme<ApiAuthenticationHandler>("Api", null);
+                        options.AddScheme<EOCApiAuthenticationHandler>("Api", null);
                     }
                 });
 
