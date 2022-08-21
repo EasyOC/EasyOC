@@ -7,6 +7,6 @@ using static EasyOC.ManifestConsts;
     Version = CurrentVersion,
     Name = "EasyOC.OrchardCore.OpenApi",
     Description = "EasyOC.OrchardCore.OpenApi",
-    Dependencies = new[] { "EasyOC.Core","OrchardCore.Recipes", "EasyOC.OrchardCore.DynamicTypeIndex" },
+    Dependencies = new[] { "EasyOC.Core","OrchardCore.Recipes", "EasyOC.OrchardCore.DynamicTypeIndex","EasyOC.GraphQL" },
     Category = "Content Management"
 )]

@@ -62,6 +62,7 @@ namespace EasyOC.OrchardCore.RDBMS.Services
         public async Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId)
         {
             var connectionObject = await GetConnectionConfigAsync(connectionConfigId);
+            if (connectionObject == null) { return null; }
             var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
             var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
             //无法判断 dynamic 类型 ，所以要先显示指定类型
@@ -77,7 +78,9 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                 .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published || x.Latest)).ListAsync();
             var connectionList = connectionSettings.Select(x => new ConnectionConfigModel()
             {
-                ConfigName = x.DisplayText, ConfigId = x.ContentItemId
+
+                ConfigName = x.DisplayText,
+                ConfigId = x.ContentItemId
             });
             return connectionList;
         }
@@ -122,6 +125,10 @@ namespace EasyOC.OrchardCore.RDBMS.Services
 
         private async Task<List<DbTableInfo>> GetTablesFromCache(string ConnectionConfigId, bool DisableCache)
         {
+            if (ConnectionConfigId is null)
+            {
+                return null;
+            }
             var cacheKey = $"TablesLIST_{ConnectionConfigId}";
             if (DisableCache ||
                 !_memoryCache.TryGetValue<List<DbTableInfo>>
@@ -224,7 +231,8 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         {
                             ContentPartFieldSettings = new
                             {
-                                DisplayName = item.Name, Position = (index++).ToString()
+                                DisplayName = item.Name,
+                                Position = (index++).ToString()
                             }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.CsType);
@@ -243,7 +251,9 @@ namespace EasyOC.OrchardCore.RDBMS.Services
                         {
                             ContentPartSettings = new Contentpartsettings
                             {
-                                Attachable = true, DefaultPosition = "0", Description = tb.Type + " of " + fullName
+                                Attachable = true,
+                                DefaultPosition = "0",
+                                Description = tb.Type + " of " + fullName
                             }
                         },
                         DispalyName = fullName,

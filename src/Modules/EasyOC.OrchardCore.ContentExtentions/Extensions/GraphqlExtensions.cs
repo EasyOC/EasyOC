@@ -6,9 +6,9 @@ using System;
 
 namespace EasyOC;
 
-public static class GraphicalExtensions
+public static class GraphqlExtensions
 {
-    public static void ReplaceObjectGraphType<TInput,TInputType>(this IServiceCollection services )
+    public static void ReplaceObjectGraphType<TInput,TInputType>(this IServiceCollection services)
         where TInputType :  ObjectGraphType<TInput>
     {
         services.AddSingleton<TInputType>();
@@ -16,9 +16,5 @@ public static class GraphicalExtensions
             (s => s.GetRequiredService<TInputType>()));
         services.Replace(ServiceDescriptor.Singleton<IObjectGraphType, TInputType>
             (s => s.GetRequiredService<TInputType>()));
-
-
     }
-
-
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace EasyOC.GraphQL.Queries.Types
 {
-    public class PagedContentItemsType : ObjectGraphType<TotalQueryResults>
+    public class PagedContentItemsType : ObjectGraphType<PagedContentItemResult>
     {
         public PagedContentItemsType()
         {
@@ -16,11 +16,7 @@ namespace EasyOC.GraphQL.Queries.Types
                 .Description("the content items")
                 .Resolve(x =>
                 {
-                    if (x.Source?.Items == null || x.Source?.Items?.Count() == 0)
-                    {
-                        return Enumerable.Empty<ContentItem>();
-                    }
-                    return x.Source?.Items?.Select(i => i as ContentItem);
+                    return x.Source?.Items;
                 });
             Field<IntGraphType>("total", resolve: context => context.Source.Total);
             Description = "A paged collection of content items";

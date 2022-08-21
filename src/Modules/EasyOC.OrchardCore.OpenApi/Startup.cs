@@ -18,8 +18,7 @@ using System;
 
 namespace EasyOC.OrchardCore.OpenApi
 {
-    [Feature("EasyOC.OrchardCore.OpenApi")]
-    [RequireFeatures(Constants.EasyOCCoreModuleId)]
+    [RequireFeatures(Constants.EasyOCCoreModuleId,"EasyOC.GraphQL")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)

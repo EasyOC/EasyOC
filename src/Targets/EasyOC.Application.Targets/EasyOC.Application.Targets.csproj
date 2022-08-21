@@ -6,6 +6,9 @@
     在这里，只使用项目引用，但打包包时，它们会成为包引用，
     并具有相同的“私有资产”属性。
   -->
+  <PropertyGroup>
+    <RootNamespace>EasyOC.OrchardCore.Application.Targets</RootNamespace>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj" PrivateAssets="none" />

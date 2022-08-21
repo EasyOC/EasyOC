@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.Apis.GraphQL.Resolvers;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.GraphQL.Queries;
 using OrchardCore.Lucene;
 using OrchardCore.Queries;
@@ -38,6 +39,7 @@ namespace EasyOC.GraphQL.Queries
 
         public async Task BuildAsync(ISchema schema)
         {
+
             var queryManager = _httpContextAccessor.HttpContext.RequestServices.GetService<IQueryManager>();
 
             var queries = await queryManager.ListQueriesAsync();
@@ -193,7 +195,7 @@ namespace EasyOC.GraphQL.Queries
             var items = totalType.Field(typetype.Type, "items",
                 resolve: context =>
                 {
-                    return context.Source?.Items ?? Array.Empty<object>();
+                    return context.Source?.Items ?? Array.Empty<ContentItem>();
                 });
             items.ResolvedType = typetype.ResolvedType;
             totalType.Field<IntGraphType>("total",
@@ -222,7 +224,7 @@ namespace EasyOC.GraphQL.Queries
 
                 return new TotalQueryResults
                 {
-                    Total = (result as LuceneQueryResults)?.Count, Items = result?.Items ?? Array.Empty<object>()
+                    Total = (result as LuceneQueryResults)?.Count, Items = result?.Items ?? Array.Empty<ContentItem>()
                 };
             });
             fieldType.Type = totalType.GetType();

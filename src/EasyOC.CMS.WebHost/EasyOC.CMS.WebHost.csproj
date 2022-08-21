@@ -24,7 +24,7 @@
 
   <ItemGroup>
 <!--    <ProjectReference Include="..\Targets\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" />-->
-    <ProjectReference Include="..\Targets\EasyOC.OrchardCore.Application.Targets\EasyOC.OrchardCore.Application.Targets.csproj" />
+    <ProjectReference Include="..\Targets\EasyOC.Application.Targets\EasyOC.Application.Targets.csproj" />
   </ItemGroup>
 
   <ItemGroup>

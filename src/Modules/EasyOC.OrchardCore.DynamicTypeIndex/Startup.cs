@@ -17,6 +17,7 @@ namespace EasyOC.OrchardCore.DynamicTypeIndex
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            // NatashaInitializer.Preheating();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IDataMigration, DynamicIndexDataMigration>();
             services.AddScoped<IDynamicIndexAppService, DynamicIndexAppService>();
