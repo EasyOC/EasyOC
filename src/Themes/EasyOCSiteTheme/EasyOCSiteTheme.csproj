@@ -22,7 +22,9 @@
     <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />
+<!--    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />-->
+        <ProjectReference Include="../../OrchardCore.Modules/OrchardCore.OpenId/OrchardCore.OpenId.csproj" Version="$(OrchardCoreVersion)" />
+
     <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" /> 
 
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />

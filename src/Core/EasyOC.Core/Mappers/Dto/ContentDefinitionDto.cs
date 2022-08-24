@@ -7,7 +7,7 @@ namespace EasyOC
     //[AutoMap(typeof(ContentTypeDefinition))]
     /// <summary>
     /// Dto of <see cref="ContentTypeDefinition"/>
-    /// Converting Method <see cref="ContentTypeDtoExtentions"/>
+    /// Converting Method <see cref="ContentTypeDtoExtensions"/>
     /// </summary>
     public class ContentTypeDefinitionDto : ContentDefinitionDto
     {

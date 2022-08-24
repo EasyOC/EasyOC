@@ -5,7 +5,7 @@ namespace EasyOC.VueElementUI
 {
     public class ElmentUIResourceManagementOptions : IConfigureOptions<ResourceManagementOptions>
     {
-        private static global::OrchardCore.ResourceManagement.ResourceManifest _manifest;
+        private static  ResourceManifest _manifest;
 
         static ElmentUIResourceManagementOptions()
         {

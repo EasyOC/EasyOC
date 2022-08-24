@@ -1,5 +1,5 @@
 ﻿using EasyOC.Core.Indexes;
-using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Indexing;
 using FreeSql.DataAnnotations;
 
 // 此代码由程序生成，复制到代码文件后请更新命名空间，

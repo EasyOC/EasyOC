@@ -1,4 +1,4 @@
-﻿{% assign resourceRoot="~/EasyOC.Amis/amis/" | absolute_url  %}
+﻿{% assign resourceRoot="~/EasyOC.Amis/" | absolute_url  %}
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -10,11 +10,11 @@
         content="width=device-width, initial-scale=1, maximum-scale=1"
     />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <link rel="stylesheet" href="{{resourceRoot}}sdk/sdk.css" />
-    <link rel="stylesheet" href="{{resourceRoot}}sdk/antd.css" />
-    <link rel="stylesheet" href="{{resourceRoot}}sdk/cxd.css" />
-    <link rel="stylesheet" href="{{resourceRoot}}sdk/helper.css" />
-    <link rel="stylesheet" href="{{resourceRoot}}sdk/iconfont.css" />
+    <link rel="stylesheet" href="{{resourceRoot}}amis/sdk/sdk.css" />
+    <link rel="stylesheet" href="{{resourceRoot}}amis/sdk/antd.css" />
+    <link rel="stylesheet" href="{{resourceRoot}}amis/sdk/cxd.css" />
+    <link rel="stylesheet" href="{{resourceRoot}}amis/sdk/helper.css" />
+    <link rel="stylesheet" href="{{resourceRoot}}amis/sdk/iconfont.css" />
     <!-- 这是默认主题所需的，如果是其他主题则不需要 -->
     <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
     <!-- <link rel="stylesheet" href="sdk-ie11.css" /> -->
@@ -33,15 +33,16 @@
 </head>
 <body>
 <div id="root" class="app-wrapper"></div>
-<script src="{{resourceRoot}}sdk/sdk.js"></script>
+<script src="{{resourceRoot}}amis/sdk/sdk.js"></script>
+<script src="{{resourceRoot}}Scripts/AmisExt.js"></script>
+<script src="{{resourceRoot}}Scripts/AmisEnv.js"></script>
 <script type="text/javascript">
       (function () {
         let amis = amisRequire('amis/embed');
         // 通过替换下面这个配置来生成不同页面
         let amisJSON = {{ Model.ContentItem.Content["AmisSchema"].Schema.Text |raw}};
-        let amisScoped = amis.embed('#root', amisJSON,{
-            theme:"cxd"
-        });
+        let amisScoped = amis.embed('#root', amisJSON,
+            AmisEnv);
       })();
     </script>
 </body>

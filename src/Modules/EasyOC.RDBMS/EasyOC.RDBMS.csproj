@@ -28,7 +28,7 @@
     <PackageReference Include="OrchardCore.Queries.Abstractions" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
     <ProjectReference Include="..\EasyOC.Excel\EasyOC.Excel.csproj" />
     <ProjectReference Include="..\EasyOC.VueElementUI\EasyOC.VueElementUI.csproj" />
   </ItemGroup>

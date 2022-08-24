@@ -1,7 +1,7 @@
 ﻿using System;
 using OrchardCore.ContentManagement.Handlers;
 using System.Threading.Tasks;
-using EasyOC.ContentExtentions.Handlers;
+using EasyOC.ContentExtensions.Handlers;
 using EasyOC.DynamicTypeIndex.Service;
 using System.Collections.Generic;
 using System.Linq;

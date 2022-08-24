@@ -26,6 +26,19 @@
 	  <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\Scripts" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Assets.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Include="Assets\Scripts\AmisEnv.ts" />
+	  <TypeScriptCompile Include="Assets\Scripts\AmisExt.ts" />
+	</ItemGroup>
+
 	<ProjectExtensions><VisualStudio><UserProperties clientapp_4amis-editor-demo_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 

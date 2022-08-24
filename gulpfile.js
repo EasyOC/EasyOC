@@ -39,7 +39,11 @@ gulp.task("build-assets", function () {
         var doRebuild = false;
         return createAssetGroupTask(assetGroup, doRebuild);
     });
+    try { 
     return merge(assetGroupTasks);
+    } catch (error) {
+        console.log("errorerrorerror",error)
+    }
 });
 
 // Full rebuild (all assets groups are built regardless of timestamps).
@@ -114,6 +118,7 @@ function getAssetGroups() {
 function resolveAssetGroupPaths(assetGroup, assetManifestPath) {
     assetGroup.manifestPath = assetManifestPath;
     assetGroup.basePath = path.dirname(assetManifestPath);
+    console.log("assetGroup",JSON.stringify(assetGroup))
     assetGroup.inputPaths = assetGroup.inputs.map(function (inputPath) {
         return path.resolve(path.join(assetGroup.basePath, inputPath)).replace(/\\/g, '/');
     });

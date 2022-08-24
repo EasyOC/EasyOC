@@ -1,6 +1,6 @@
 using EasyOC.AuditTrail.Models;
 using EasyOC.AuditTrail.Services;
-using EasyOC.ContentExtentions.Handlers;
+using EasyOC.ContentExtensions.Handlers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using OrchardCore.AuditTrail.Services;

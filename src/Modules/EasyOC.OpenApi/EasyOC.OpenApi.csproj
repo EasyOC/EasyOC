@@ -42,7 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
-    <ProjectReference Include="..\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" />
+    <ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
     <ProjectReference Include="..\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" />
   </ItemGroup>
 

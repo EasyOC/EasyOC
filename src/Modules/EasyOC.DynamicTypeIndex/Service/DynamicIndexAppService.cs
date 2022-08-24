@@ -1,7 +1,7 @@
 ﻿using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
 using EasyOC.CSharpScript.Services;
-using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Indexing;
 using EasyOC.DynamicTypeIndex.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -212,7 +212,7 @@ namespace EasyOC.DynamicTypeIndex.Service
             var template = $@"
 using EasyOC.Core.Indexes;
 using FreeSql.DataAnnotations;
-using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Indexing;
 // 此代码由程序生成，复制到代码文件后请更新命名空间，
 // 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace {entityInfo.NameSpace}

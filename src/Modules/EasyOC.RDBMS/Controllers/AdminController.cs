@@ -9,7 +9,7 @@ using OrchardCore.ContentManagement.Metadata.Records;
 using System.Collections.Generic;
 using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
-using EasyOC.ContentExtentions.AppServices;
+using EasyOC.ContentExtensions.AppServices;
 using System;
 
 namespace EasyOC.RDBMS.Controllers

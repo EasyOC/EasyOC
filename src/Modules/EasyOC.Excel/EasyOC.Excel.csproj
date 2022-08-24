@@ -34,7 +34,7 @@
 		<Folder Include="Scripting\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" />
+	  <ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
 	  <ProjectReference Include="..\EasyOC.OpenApi\EasyOC.OpenApi.csproj" />
 	</ItemGroup>
 

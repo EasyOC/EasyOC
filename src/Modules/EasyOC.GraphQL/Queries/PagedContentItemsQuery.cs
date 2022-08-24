@@ -1,6 +1,6 @@
 ﻿using EasyOC.GraphQL.Queries.Types;
 using EasyOC.DynamicTypeIndex;
-using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Indexing;
 using EasyOC.DynamicTypeIndex.Models;
 using EasyOC.DynamicTypeIndex.Service;
 using FreeSql.Internal.CommonProvider;
