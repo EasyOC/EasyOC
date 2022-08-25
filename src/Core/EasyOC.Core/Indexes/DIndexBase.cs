@@ -1,8 +1,7 @@
-﻿using EasyOC.Core.Indexes;
-using FreeSql.DataAnnotations;
+﻿using FreeSql.DataAnnotations;
 using OrchardCore.ContentManagement.Records;
 
-namespace EasyOC.DynamicTypeIndex.Indexing
+namespace EasyOC.Core.Indexes
 {
     [EOCTable("ContentItemIndex")]
     public class DIndexBase : FreeSqlDocumentIndex

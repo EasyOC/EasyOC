@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YesSql;
+using EasyOC.Core.Indexes;
 
 namespace EasyOC.DynamicTypeIndex.Service
 {
@@ -100,7 +101,7 @@ namespace EasyOC.DynamicTypeIndex.Service
         {
             IEnumerable<string> usings = new List<string>()
             {
-                "EasyOC.Core.Indexes", "FreeSql.DataAnnotations", "EasyOC.DynamicTypeIndex.Index"
+                "EasyOC.Core.Indexes", "FreeSql.DataAnnotations"
             };
 
             //Create dynamic classes from the script
@@ -211,8 +212,7 @@ namespace EasyOC.DynamicTypeIndex.Service
             // ReSharper disable once StringLiteralTypo
             var template = $@"
 using EasyOC.Core.Indexes;
-using FreeSql.DataAnnotations;
-using EasyOC.DynamicTypeIndex.Indexing;
+using FreeSql.DataAnnotations; 
 // 此代码由程序生成，复制到代码文件后请更新命名空间，
 // 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace {entityInfo.NameSpace}

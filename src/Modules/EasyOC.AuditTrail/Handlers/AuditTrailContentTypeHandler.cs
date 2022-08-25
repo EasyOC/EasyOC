@@ -1,4 +1,4 @@
-using EasyOC.AuditTrail.Models;
+﻿using EasyOC.AuditTrail.Models;
 using EasyOC.AuditTrail.Services;
 using EasyOC.ContentExtensions.Handlers;
 using Microsoft.AspNetCore.Http;
@@ -53,11 +53,11 @@ namespace EasyOC.AuditTrail.Handlers
         }
         public override async void ContentTypeRemoved(ContentTypeRemovedContext context)
         {
-            await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentTypeRemoved,
-            new AuditTrailContentTypeEvent
-            {
-                TypeName = context.ContentTypeDefinition.Name, EventContext = JObject.FromObject(context)
-            });
+            //await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentTypeRemoved,
+            //new AuditTrailContentTypeEvent
+            //{
+            //    TypeName = context.ContentTypeDefinition.Name, EventContext = JObject.FromObject(context)
+            //});
         }
 
         public override async void ContentTypeImported(ContentTypeImportedContext context)

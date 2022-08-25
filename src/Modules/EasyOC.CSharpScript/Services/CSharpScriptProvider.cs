@@ -4,6 +4,7 @@ using System.Reflection;
 using EasyOC;
 using Natasha.CSharp;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace EasyOC.CSharpScript.Services
 {
@@ -11,6 +12,12 @@ namespace EasyOC.CSharpScript.Services
     {
         private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
         private AssemblyCSharpBuilder _builder;
+        private readonly ILogger _logger;
+
+        public CSharpScriptProvider(ILogger<CSharpScriptProvider> logger)
+        {
+            _logger = logger;
+        }
 
         public virtual Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
             bool useGlobalSharedBuilder = true)
@@ -78,8 +85,9 @@ namespace EasyOC.CSharpScript.Services
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "脚本编译错误,{error}", e.Message);
                 Console.WriteLine(e);
-                throw;
+                throw new Exception("模型映射解析错误");
             }
         }
     }

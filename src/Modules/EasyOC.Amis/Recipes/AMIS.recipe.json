@@ -1,4 +1,4 @@
-{
+ï»¿{
   "name": "AMIS Page",
   "displayName": "AMIS Page init",
   "description": "",
@@ -224,7 +224,7 @@
           "Author": "[js: parameters('AdminUsername')]",
           "AmisPage": {
             "JsonSchema": {
-              "Text": " return {\r\n  \"type\": \"page\",\r\n  \"body\": {\r\n    \"type\": \"service\",\r\n    \"api\": \"https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/sample?perPage=5\",\r\n    \"body\": [\r\n      {\r\n        \"type\": \"panel\",\r\n        \"title\": \"¼òµ¥ List Ê¾Àý\",\r\n        \"body\": {\r\n          \"type\": \"list\",\r\n          \"source\": \"$rows\",\r\n          \"listItem\": {\r\n            \"body\": [\r\n              {\r\n                \"type\": \"hbox\",\r\n                \"columns\": [\r\n                  {\r\n                    \"label\": \"Engine\",\r\n                    \"name\": \"engine\"\r\n                  },\r\n                  {\r\n                    \"name\": \"version\",\r\n                    \"label\": \"Version\"\r\n                  }\r\n                ]\r\n              }\r\n            ],\r\n            \"actions\": [\r\n              {\r\n                \"type\": \"button\",\r\n                \"level\": \"link\",\r\n                \"label\": \"²é¿´ÏêÇé\",\r\n                \"actionType\": \"dialog\",\r\n                \"dialog\": {\r\n                  \"title\": \"²é¿´ÏêÇé\",\r\n                  \"body\": {\r\n                    \"type\": \"form\",\r\n                    \"body\": [\r\n                      {\r\n                        \"label\": \"Engine\",\r\n                        \"name\": \"engine\",\r\n                        \"type\": \"static\"\r\n                      },\r\n                      {\r\n                        \"name\": \"version\",\r\n                        \"label\": \"Version\",\r\n                        \"type\": \"static\"\r\n                      }\r\n                    ]\r\n                  }\r\n                }\r\n              }\r\n            ]\r\n          }\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+              "Text": " return {\r\n  \"type\": \"page\",\r\n  \"body\": {\r\n    \"type\": \"service\",\r\n    \"api\": \"https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/sample?perPage=5\",\r\n    \"body\": [\r\n      {\r\n        \"type\": \"panel\",\r\n        \"title\": \"ï¿½ï¿½ List Ê¾ï¿½ï¿½\",\r\n        \"body\": {\r\n          \"type\": \"list\",\r\n          \"source\": \"$rows\",\r\n          \"listItem\": {\r\n            \"body\": [\r\n              {\r\n                \"type\": \"hbox\",\r\n                \"columns\": [\r\n                  {\r\n                    \"label\": \"Engine\",\r\n                    \"name\": \"engine\"\r\n                  },\r\n                  {\r\n                    \"name\": \"version\",\r\n                    \"label\": \"Version\"\r\n                  }\r\n                ]\r\n              }\r\n            ],\r\n            \"actions\": [\r\n              {\r\n                \"type\": \"button\",\r\n                \"level\": \"link\",\r\n                \"label\": \"ï¿½é¿´ï¿½ï¿½ï¿½ï¿½\",\r\n                \"actionType\": \"dialog\",\r\n                \"dialog\": {\r\n                  \"title\": \"ï¿½é¿´ï¿½ï¿½ï¿½ï¿½\",\r\n                  \"body\": {\r\n                    \"type\": \"form\",\r\n                    \"body\": [\r\n                      {\r\n                        \"label\": \"Engine\",\r\n                        \"name\": \"engine\",\r\n                        \"type\": \"static\"\r\n                      },\r\n                      {\r\n                        \"name\": \"version\",\r\n                        \"label\": \"Version\",\r\n                        \"type\": \"static\"\r\n                      }\r\n                    ]\r\n                  }\r\n                }\r\n              }\r\n            ]\r\n          }\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
             }
           },
           "AliasPart": {
@@ -255,6 +255,10 @@
       "Templates": {
         "Content__AmisPage": {
           "Content": "[file:text('Templates/Content-AmisPage.liquid')]",
+          "Description": null
+        },
+        "Content__AmisSchema": {
+          "Content": "[file:text('Templates/Content-AmisSchema.liquid')]",
           "Description": null
         }
       }
