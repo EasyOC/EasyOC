@@ -31171,6 +31171,11 @@ readers do not read off random characters that represent icons */
   border-width: 0;
 }
 
+.amis-scope .a-CalendarMobile-pop--time {
+  height: fit-content;
+  max-height: 90vh;
+}
+
 .amis-scope .a-CalendarMobile-wrap {
   display: flex;
   flex-direction: column;
@@ -31392,7 +31397,7 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-CalendarMobile .a-CalendarMobile-calendar-wrap .a-CalendarMobile-calendar .rdtPicker .rdtToday .calendar-wrap {
-  border: 1px solid #2468F2;
+  border: 1px solid #2468f2;
 }
 
 .amis-scope .a-CalendarMobile-calendar-header {
@@ -31936,17 +31941,6 @@ readers do not read off random characters that represent icons */
   user-select: none;
 }
 
-.amis-scope .a-CBPicker-trigger {
-  cursor: pointer;
-  transition: transform 0s ease-out;
-  display: flex;
-  color: #4b5563;
-}
-
-.amis-scope .a-CBPicker-trigger:hover {
-  color: #7266ba;
-}
-
 @keyframes contextMenuInSpecial {
   from {
     transform: scale3d(1, 1, 1);
@@ -32466,16 +32460,13 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-Crud-toolbar-item {
+  margin-left: 0.25rem;
   margin-top: 0.25rem;
   line-height: 1.5;
   height: 1.875rem;
   vertical-align: middle;
   display: inline-flex;
   align-items: center;
-}
-
-.amis-scope .a-Crud-toolbar-item:not(:first-child) {
-  margin-left: 0.25rem;
 }
 
 .amis-scope .a-Crud-toolbar-item--left {
@@ -32517,6 +32508,7 @@ readers do not read off random characters that represent icons */
 
 @media (min-width: 576px) {
   .amis-scope .a-Crud-toolbar {
+    margin-left: calc(0.25rem * -1);
     margin-top: calc(0.25rem * -1);
     flex-basis: 0;
     flex-grow: 1;
@@ -32533,161 +32525,10 @@ readers do not read off random characters that represent icons */
   }
 
   .amis-scope .a-Crud-toolbar-item {
+    margin-left: 0.25rem;
     line-height: 1.5;
     height: 1.875rem;
     vertical-align: middle;
-  }
-
-  .amis-scope .a-Crud-toolbar-item:not(:first-child) {
-    margin-left: 0.25rem;
-  }
-
-  .amis-scope .a-Crud-toolbar-item--left {
-    float: left;
-  }
-
-  .amis-scope .a-Crud-toolbar-item--right {
-    float: right;
-  }
-
-  .amis-scope .a-Crud-actions > * + .a-Button,
-  .amis-scope .a-Crud-actions > * + .a-Button--disabled-wrap {
-    margin-left: 0.25rem;
-  }
-}
-
-.amis-scope .a-Crud2 {
-  position: relative;
-}
-
-.amis-scope .a-Crud2-selection,
-.amis-scope .a-Crud2-toolbar,
-.amis-scope .a-Crud2-body {
-  margin-bottom: 0.75rem;
-}
-
-.amis-scope .a-Crud2-selectionLabel {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: 0.25rem;
-}
-
-.amis-scope .a-Crud2-value {
-  cursor: pointer;
-  vertical-align: middle;
-  user-select: none;
-  line-height: calc( 1.4285714286 * 0.875rem - 0.125rem );
-  display: inline-block;
-  font-size: 0.75rem;
-  color: #23b7e5;
-  background: #d9f3fb;
-  border: 0.0625rem solid #abe4f6;
-  border-radius: 2px;
-  margin-right: 0.25rem;
-  margin-top: 0.25rem;
-}
-
-.amis-scope .a-Crud2-value:hover {
-  background: #c2ecf9;
-}
-
-.amis-scope .a-Crud2-value.is-disabled {
-  pointer-events: none;
-  opacity: 0.65;
-}
-
-.amis-scope .a-Crud2-valueIcon {
-  cursor: pointer;
-  border-right: 0.0625rem solid #abe4f6;
-  padding: 1px 5px;
-}
-
-.amis-scope .a-Crud2-valueIcon:hover {
-  background: #c2ecf9;
-}
-
-.amis-scope .a-Crud2-valueLabel {
-  padding: 0 0.25rem;
-}
-
-.amis-scope .a-Crud2-selectionClear {
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-  margin-left: 0.25rem;
-  margin-top: 0.25rem;
-  vertical-align: middle;
-}
-
-.amis-scope .a-Crud2-toolbar-item {
-  margin-top: 0.25rem;
-  line-height: 1.5;
-  height: 1.875rem;
-  vertical-align: middle;
-  display: inline-flex;
-  align-items: center;
-}
-
-.amis-scope .a-Crud2-toolbar-item:not(:first-child) {
-  margin-left: 0.25rem;
-}
-
-.amis-scope .a-Crud2-toolbar-item--left {
-  float: left;
-}
-
-.amis-scope .a-Crud2-toolbar-item--right {
-  float: right;
-}
-
-.amis-scope .a-Crud2-actions > * + .a-Button,
-.amis-scope .a-Crud2-actions > * + .a-ButtonGroup,
-.amis-scope .a-Crud2-actions > * + .a-ButtonToolbar {
-  margin-left: 0.25rem;
-}
-
-.amis-scope .a-Crud2-statistics {
-  line-height: 1.875rem;
-  vertical-align: middle;
-}
-
-.amis-scope .a-Crud2-pageSwitch .a-Select {
-  margin-left: 0.25rem;
-}
-
-.amis-scope .a-Crud2-pager {
-  align-self: flex-start;
-}
-
-.amis-scope .a-Crud2-filter {
-  margin-bottom: 0.75rem;
-}
-
-@media (min-width: 576px) {
-  .amis-scope .a-Crud-toolbar {
-    margin-top: calc(0.25rem * -1);
-    flex-basis: 0;
-    flex-grow: 1;
-  }
-
-  .amis-scope .a-Crud-toolbar::before,
-  .amis-scope .a-Crud-toolbar::after {
-    display: table;
-    content: "";
-  }
-
-  .amis-scope .a-Crud-toolbar::after {
-    clear: both;
-  }
-
-  .amis-scope .a-Crud-toolbar-item {
-    line-height: 1.5;
-    height: 1.875rem;
-    vertical-align: middle;
-  }
-
-  .amis-scope .a-Crud-toolbar-item:not(:first-child) {
-    margin-left: 0.25rem;
   }
 
   .amis-scope .a-Crud-toolbar-item--left {
@@ -32721,6 +32562,13 @@ readers do not read off random characters that represent icons */
   z-index: 5;
   top: auto;
   box-shadow: none;
+}
+
+.amis-scope .a-Table-fixedLeft--autoFillHeight > table thead,
+.amis-scope .a-Table-fixedRight--autoFillHeight > table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .amis-scope .a-Table-fixedLeft {
@@ -35752,7 +35600,7 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Table-v2.a-Table-resizable .a-Table-table > thead > tr > th .a-Table-thead-resizable {
   position: absolute;
-  width: 3px;
+  width: 1px;
   right: 0;
   top: 0;
   bottom: 0;
@@ -35816,6 +35664,8 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Table-v2 .a-TableCell-searchBtn {
   cursor: pointer;
+  position: static;
+  transform: translateY(-50%);
   color: #99a6ad;
   margin-left: 0.5rem;
 }
@@ -38780,7 +38630,7 @@ readers do not read off random characters that represent icons */
   font-size: 0.875rem;
   flex-wrap: wrap;
   justify-content: flex-start;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   padding: 0 0.3125rem;
   min-height: 1.875rem;
   align-items: center;
@@ -38816,6 +38666,10 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-ResultBox--borderNone {
   border-color: transparent !important;
+}
+
+.amis-scope .a-ResultBox.is-clearable {
+  padding-right: 3.4375rem;
 }
 
 .amis-scope .a-ResultBox.is-error {
@@ -38866,30 +38720,7 @@ readers do not read off random characters that represent icons */
   padding-left: 0.75rem;
 }
 
-.amis-scope .a-ResultBox-value-wrap {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.amis-scope .a-ResultBox-actions {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.amis-scope .a-ResultBox-actions > *:first-child {
-  margin-left: 0.3125rem;
-}
-
-.amis-scope .a-ResultBox-actions > *:not(:last-child) {
-  margin-right: 0.3125rem;
-}
-
 .amis-scope .a-ResultBox-singleValue {
-  padding: 0 calc(0.5rem - 0.1875rem);
-  flex-grow: 1;
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
@@ -38927,7 +38758,10 @@ readers do not read off random characters that represent icons */
   margin-left: auto;
   text-decoration: none;
   height: 100%;
+  padding: 0.25rem;
   margin: auto 0;
+  position: absolute;
+  right: 10px;
   background-color: unset;
 }
 
@@ -39018,7 +38852,6 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-ResultBox-placeholder {
   color: #99a6ad;
-  flex-grow: 1;
   user-select: none;
 }
 
@@ -39164,7 +38997,7 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-SearchBox.is-active {
   background: #fff;
   border: 0.0625rem solid #d1d5db;
-  width: 150px;
+  width: 9.375rem;
 }
 
 .amis-scope .a-SearchBox.is-active > input {
@@ -39180,14 +39013,8 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-SearchBox-searchBtn {
-  display: flex;
-  width: var(--SearchBox-height);
-  align-items: center;
-  justify-content: center;
-}
-
-.amis-scope .a-SearchBox-searchBtn .icon {
-  top: 0;
+  display: inline-block;
+  padding: 0.3125rem 0.625rem;
 }
 
 .amis-scope .a-SearchBox-activeBtn,
@@ -39273,6 +39100,116 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-SearchBox--enhance.is-active.is-disabled .a-SearchBox-searchBtn {
   background: var(--SearchBox-enhonce-disabled-color);
   color: var(--SearchBox-enhonce-disabled-search-color);
+}
+
+.amis-scope .a-SearchBox-history > .is-history {
+  width: 100%;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown {
+  position: absolute;
+  left: 0;
+  z-index: 998;
+  padding: 0.5rem 0;
+  width: 100%;
+  max-width: calc(9.375rem * 2);
+  min-height: 4.5rem;
+  max-height: 12.5rem;
+  background: #fff;
+  border: 0.0625rem solid #d1d5db;
+  border-top: none;
+  border-radius: 0.142rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  display: none;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown.is-active {
+  display: block;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  margin-bottom: 0.625rem;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown header h4 {
+  font-size: 0.875rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown header a {
+  display: inline-block;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 1rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc( 12.5rem - 38px - 0.5rem * 2 );
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag {
+  display: inlin-flex;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  max-width: 160px;
+  border-radius: 0.125rem;
+  background-color: #f2f2f4;
+  color: #151a26;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  max-width: 96px;
+  cursor: pointer;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-text {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 24px;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close {
+  margin-left: 0.5rem;
+  margin-right: 0.25rem;
+  cursor: pointer;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close i {
+  font-size: 0.5rem;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close .icon {
+  width: 0.5rem;
+  height: 0.5rem;
+  position: inherit;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close:hover {
+  opacity: 0.7;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close:active {
+  opacity: 0.3;
 }
 
 .amis-scope .a-ListMenu {
@@ -40874,9 +40811,9 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-TextControl-revealPassword .icon {
-  width: var(--Form-input-password-icon-size);
-  height: var(--Form-input-password-icon-size);
-  color: var(--Form-input-password-icon-color);
+  width: 1rem;
+  height: 1rem;
+  color: #84868c;
   cursor: pointer;
 }
 
@@ -41196,7 +41133,7 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-Checkbox--checkbox input[disabled] + i {
-  border-color: #b8babf;
+  border-color: #99a6ad;
   cursor: not-allowed;
 }
 
@@ -41262,18 +41199,22 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox input[disabled] + i {
-  border-color: #d1d5db;
+  border-color: #99a6ad;
   background: #f7f7f9;
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox input[disabled]:checked + i:before {
-  border-color: #b8babf;
-  background: #f7f7f9;
+  border-color: #99a6ad;
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox input:checked[disabled] + i {
-  border-color: #d1d5db;
+  border-color: #99a6ad;
   background: #f7f7f9;
+}
+
+.amis-scope .a-Checkbox--full.a-Checkbox--checkbox input:checked[disabled] + i:before {
+  background: #f7f7f9;
+  border-color: #d4d6d9;
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox > i {
@@ -41310,7 +41251,7 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-Checkbox--partial.a-Checkbox--checkbox input[disabled] + i {
-  border-color: #b8babf;
+  border-color: #99a6ad;
 }
 
 .amis-scope .a-Checkbox--partial.a-Checkbox--checkbox input[disabled] + i:before {
@@ -41322,7 +41263,7 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-Checkbox--partial.a-Checkbox--checkbox input:checked[disabled] + i {
   width: calc(1rem / 2);
   height: calc(1rem / 2);
-  background: #f7f7f9;
+  background: #e5e7eb;
 }
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox {
@@ -41345,7 +41286,6 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox:hover:not(:disabled) {
   color: #23b7e5;
-  border-color: #23b7e5;
 }
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox:hover input:checked + i {
@@ -41375,12 +41315,12 @@ readers do not read off random characters that represent icons */
   left: 0;
   width: 0.5rem;
   height: calc(0.5rem / 2);
-  transform: translate(-80%, -160%) rotate(-50deg) scale(0.8);
+  transform: translate(-80%, -160%) rotate(-50deg);
   background: transparent;
 }
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox input[disabled] + i {
-  border-color: #b8babf;
+  border-color: #99a6ad;
   background: transparent;
 }
 
@@ -41390,13 +41330,8 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox input:checked[disabled] + i {
   background: transparent;
-  border-width: 0.4375rem;
-  border-color: #e8e9eb transparent transparent #e8e9eb;
-}
-
-.amis-scope .a-Checkbox--button.a-Checkbox--checkbox input:checked[disabled] + i:before {
-  background: transparent;
-  border-color: #ffffff !important;
+  border-width: 0.5rem;
+  border-color: #23b7e5 transparent transparent #23b7e5;
 }
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox > i {
@@ -41431,22 +41366,8 @@ readers do not read off random characters that represent icons */
   color: var(--Switch-checked-onHover-bgColor);
 }
 
-.amis-scope .a-Checkbox--button--disabled--unchecked.a-Checkbox--checkbox {
+.amis-scope .a-Checkbox--button--disabled--unchecked.a-Checkbox--checkbox.a-Checkbox--full i {
   background: #f7f7f9;
-  border-color: #d1d5db;
-}
-
-.amis-scope .a-Checkbox--button--disabled--unchecked.a-Checkbox--checkbox:hover {
-  border-color: #d1d5db !important;
-}
-
-.amis-scope .a-Checkbox--button--disabled--checked.a-Checkbox--checkbox {
-  background: #f7f7f9;
-  border-color: #d1d5db !important;
-}
-
-.amis-scope .a-Checkbox--button--disabled--checked.a-Checkbox--checkbox:hover {
-  border-color: #d1d5db !important;
 }
 
 .amis-scope .a-Checkbox--radio {
@@ -43560,6 +43481,20 @@ readers do not read off random characters that represent icons */
   display: flex;
 }
 
+.amis-scope .a-DateControl.is-date > .a-DatePicker {
+  min-width: calc(calc(
+    1rem * 5 + 0.75rem * 2 +
+      0.875rem * 2
+  ) + 1rem * 2);
+}
+
+.amis-scope .a-DateControl.is-datetime > .a-DatePicker {
+  min-width: calc(calc(
+    1rem * 5 + 0.75rem * 2 +
+      0.875rem * 2
+  ) + 1rem * 6);
+}
+
 .amis-scope .a-DatePicker-shortcuts {
   margin: 0;
   padding-left: 0.625rem;
@@ -44306,7 +44241,7 @@ readers do not read off random characters that represent icons */
   margin: 0;
   padding-left: 0.625rem;
   list-style: none;
-  background: #F7F7F9;
+  background: #f7f7f9;
   line-height: 2rem;
 }
 
@@ -46942,8 +46877,7 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-Transfer-select > .a-ChainedSelection .a-ChainedSelection-col {
   height: 100%;
   overflow: auto;
-  min-width: unset;
-  flex: 1 1 0;
+  min-width: 8.125rem;
 }
 
 .amis-scope .a-Transfer .a--ResultTreeList {
@@ -48891,6 +48825,7 @@ readers do not read off random characters that represent icons */
   overflow: auto;
   scroll-behavior: smooth;
   background: #fff;
+  position: relative;
 }
 
 .amis-scope .a-AnchorNav-section-wrap > .a-AnchorNav-section {
@@ -49644,13 +49579,11 @@ readers do not read off random characters that represent icons */
       ) / 2
   ) 0.5rem;
   border-radius: 0.142rem;
-  background-color: #fff;
-  height: 1.875rem;
 }
 
 .amis-scope .a-FormulaPicker.is-input-group .a-FormulaPicker-input {
-  display: flex;
-  align-items: center;
+  display: inline-block;
+  width: 100%;
   background: none;
   padding: 0;
   border: 0;
@@ -49664,7 +49597,7 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-FormulaPicker.is-input-group .a-FormulaPicker-toggler .icon-function {
-  transform: scale(1.8);
+  transform: scale(1.6);
 }
 
 .amis-scope .a-FormulaPicker.is-input-group .a-FormulaPicker-toggler .icon-ellipsis-v {
@@ -49874,17 +49807,23 @@ readers do not read off random characters that represent icons */
   display: inline-flex;
   height: 1.5rem;
   padding: 0 0.5rem;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   font-size: 0.75rem;
   max-width: 160px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
   transition: all 0.3;
   border-radius: 0.125rem;
   background-color: #f2f2f4;
   color: #151a26;
+}
+
+.amis-scope .a-Tag-text {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1.5rem;
 }
 
 .amis-scope .a-Tag:not(:last-child) {
@@ -49928,6 +49867,7 @@ readers do not read off random characters that represent icons */
   border-radius: calc((1.5rem + 2px) / 2);
   border: 1px solid #f2f2f4;
   color: #f2f2f4;
+  line-height: 22px;
 }
 
 .amis-scope .a-Tag--rounded--inactive {
