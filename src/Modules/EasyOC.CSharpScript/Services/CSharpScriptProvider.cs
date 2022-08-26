@@ -23,7 +23,9 @@ namespace EasyOC.CSharpScript.Services
             bool useGlobalSharedBuilder = true)
         {
             NatashaInitializer.Preheating();
-            return Task.FromResult(new AssemblyCSharpBuilder());
+            var builder = new AssemblyCSharpBuilder();
+            DefaultUsing.Remove("<CppImplementationDetails>");
+            return Task.FromResult(builder);
         }
 
         public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,
@@ -61,6 +63,7 @@ namespace EasyOC.CSharpScript.Services
             try
             {
                 var builder = await GetAssemblyCSharpBuilderAsync(false);
+
                 //只包含命名空间，不含 using  xxx.xxx.xxx ；
                 //如： System.Text
                 if (usings != null)
