@@ -28,6 +28,8 @@ namespace EasyOC.DynamicTypeIndex
             services.AddScoped<IContentHandler, DynamicIndexTableHandler>();
             services.AddScoped<IBatchImportEventHandler, DynamicIndexTableHandler>();
 
+            
+            services.AddScoped<IDataMigration, ContentPickerFieldIndexMigration>();
             services.AddScoped<IScopedIndexProvider, ContentPickerFieldIndexProvider>();
         }
     }

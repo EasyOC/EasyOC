@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
+	  <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
 	</ItemGroup>
 
 </Project>

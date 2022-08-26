@@ -1,4 +1,5 @@
-﻿using EasyOC.Scripting.Liquid;
+﻿using EasyOC.Scripting.Filters;
+using EasyOC.Scripting.Liquid;
 using EasyOC.Scripting.Providers;
 using EasyOC.Scripting.Providers.OrchardCore.Queries;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +19,7 @@ namespace EasyOC.Scripting
             services.AddSingleton<IGlobalMethodProvider, EasyOCScriptExtendsProvider>();
             services.AddSingleton<IGlobalMethodProvider, QueryGlobalMethodProvider>();
             services.AddLiquidFilter<UsersByUserNameFilter>("users_by_userName");
+            services.AddLiquidFilter<AbsoluteBaseUrlFilter>("absolute_baseUrl");
 
         }
 
