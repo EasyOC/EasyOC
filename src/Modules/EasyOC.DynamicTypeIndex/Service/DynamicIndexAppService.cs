@@ -30,7 +30,8 @@ namespace EasyOC.DynamicTypeIndex.Service
     {
         public const string DefaultTableNameTemplate = "{0}DIndex_{1}";
         public const string DefaultEntityNameTemplate = "{0}DIndex";
-        public const string DefaultNamespace = "EasyOC.DynamicTypeIndex.{0}.IndexModels";
+        public const string DefaultNamespaceTemplate = "EasyOC.DynamicTypeIndex.{0}.IndexModels";
+        public string DefaultNamespace => string.Format(DefaultEntityNameTemplate, _tanentName);
 
         private readonly ICSharpScriptProvider _cSharpScriptProvider;
         private readonly ConcurrentDictionary<string, Task<DynamicIndexConfigModel>> _cachedTypeConfigurations;
@@ -51,7 +52,7 @@ namespace EasyOC.DynamicTypeIndex.Service
         {
             _store = store;
             _shellConfiguration = shellConfiguration;
-            _tanentName = shellsSettings.Name;
+            _tanentName = shellsSettings.Name; 
             _cSharpScriptProvider = cSharpScriptProvider;
             _cachedTypeConfigurations = memoryCache.GetOrCreate("CachedTypeConfigurations", entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
             _typesCache = memoryCache.GetOrCreate("CachedTypeDefs", entry => new ConcurrentDictionary<string, Task<Type>>());
@@ -144,7 +145,7 @@ namespace EasyOC.DynamicTypeIndex.Service
             // }
             // else
             // {
-            entityInfo.NameSpace = string.Format(DefaultNamespace, _tanentName);
+            entityInfo.NameSpace = DefaultNamespace;
             entityInfo.EntityName = string.Format(DefaultEntityNameTemplate, config.TypeName);
             // }
 
@@ -458,10 +459,10 @@ namespace {entityInfo.NameSpace}
             var builder = _cSharpScriptProvider.GetAssemblyCSharpBuilder(withOutCache);
 
             HashSet<string> usings = new HashSet<string>();
-            //usings.Add("EasyOC.Core.Indexes");
-            //usings.Add("FreeSql.DataAnnotations");
-            //usings.Add("EasyOC.DynamicTypeIndex.Index");
-            //builder.Domain.UsingRecorder.Using(usings);
+            usings.Add("EasyOC.Core.Indexes");
+            usings.Add("FreeSql.DataAnnotations");
+            usings.Add("EasyOC.DynamicTypeIndex.Index");
+            builder.Domain.UsingRecorder.Using(usings);
             builder.Add(string.Join("\r\n", typeDefs));
             // var asm = builder.GetAssembly();
             // foreach (var key in typesDict.Keys)

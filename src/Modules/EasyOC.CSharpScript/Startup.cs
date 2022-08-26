@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Modules;
+using System.Threading.Tasks;
 // ReSharper disable Mvc.ControllerNotResolved Mvc.AreaNotResolved
 
 namespace EasyOC.CSharpScript
 {
     public class Startup : StartupBase
     {
-        public override void ConfigureServices(IServiceCollection services)
+        public override async void ConfigureServices(IServiceCollection services)
         {
-            NatashaInitializer.Preheating();
             services.AddSingleton<ICSharpScriptProvider, CSharpScriptProvider>();
         }
 

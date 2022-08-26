@@ -11,7 +11,6 @@ namespace EasyOC.CSharpScript.Services
     public class CSharpScriptProvider : ICSharpScriptProvider
     {
         private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
-        private AssemblyCSharpBuilder _builder;
         private readonly ILogger _logger;
 
         public CSharpScriptProvider(ILogger<CSharpScriptProvider> logger)
