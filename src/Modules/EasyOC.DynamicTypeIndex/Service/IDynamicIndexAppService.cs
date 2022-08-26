@@ -11,12 +11,11 @@ namespace EasyOC.DynamicTypeIndex.Service
         string GetDynamicIndexTableName(string typeName);
         DynamicIndexConfigModel GetDefaultConfig(string typeName);
         Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = true);
-        Task<Type> GetDynamicIndexTypeAsync(DynamicIndexEntityInfo entityInfo);
+        Task<Type> GetDynamicIndexTypeAsync(DynamicIndexEntityInfo entityInfo, bool withCache = true);
         Task<Type> GetDynamicIndexTypeAsync(string typeFullName, bool withCache = true);
         Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName);
         Task<int> RebuildIndexData(DynamicIndexConfigModel model);
-        Task<int> RebuildIndexData(string typeName);
-        Task<Type> SyncTableStructAsync(DynamicIndexEntityInfo entityInfo);
+        Task<int> RebuildIndexData(string typeName); 
         DynamicIndexConfigModel ToConfigModel(ContentItem storedConfig);
         Task<DynamicIndexConfigModel> UpdateDynamicIndexAsync([FromBody] DynamicIndexConfigModel model);
 

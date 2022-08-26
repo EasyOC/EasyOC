@@ -80,11 +80,11 @@ namespace EasyOC.AuditTrail.Handlers
         }
         public override async void ContentPartRemoved(ContentPartRemovedContext context)
         {
-            await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentPartRemoved,
-            new AuditTrailContentTypeEvent
-            {
-                PartName = context.ContentPartDefinition.Name, EventContext = JObject.FromObject(context)
-            });
+            //await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentPartRemoved,
+            //new AuditTrailContentTypeEvent
+            //{
+            //    PartName = context.ContentPartDefinition.Name, EventContext = JObject.FromObject(context)
+            //});
         }
         public override async void ContentPartAttached(ContentPartAttachedContext context)
         {

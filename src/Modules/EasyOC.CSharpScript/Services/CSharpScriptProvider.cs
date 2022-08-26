@@ -19,13 +19,12 @@ namespace EasyOC.CSharpScript.Services
             _logger = logger;
         }
 
-        public virtual Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
+        public virtual AssemblyCSharpBuilder GetAssemblyCSharpBuilder(
             bool useGlobalSharedBuilder = true)
         {
-            NatashaInitializer.Preheating();
             var builder = new AssemblyCSharpBuilder();
             DefaultUsing.Remove("<CppImplementationDetails>");
-            return Task.FromResult(builder);
+            return builder;
         }
 
         public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,
@@ -37,8 +36,7 @@ namespace EasyOC.CSharpScript.Services
             }
             else
             {
-                var builder = await GetAssemblyCSharpBuilderAsync();
-                builder.Domain = DomainManagement.CurrentDomain;
+                var builder = GetAssemblyCSharpBuilder();
                 if (usings != null)
                     builder.Domain.UsingRecorder.Using(usings);
                 builder.Add(cSharpScripts);
@@ -62,8 +60,7 @@ namespace EasyOC.CSharpScript.Services
         {
             try
             {
-                var builder = await GetAssemblyCSharpBuilderAsync(false);
-
+                var builder = GetAssemblyCSharpBuilder();
                 //只包含命名空间，不含 using  xxx.xxx.xxx ；
                 //如： System.Text
                 if (usings != null)
@@ -74,7 +71,6 @@ namespace EasyOC.CSharpScript.Services
                 var asm = builder.GetAssembly();
 
                 var type = asm.GetType(fullName);
-
                 if (_types.ContainsKey(fullName))
                 {
                     _types[fullName] = type;

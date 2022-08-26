@@ -1,4 +1,4 @@
-using EasyOC.CSharpScript.Services;
+﻿using EasyOC.CSharpScript.Services;
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -12,6 +12,7 @@ namespace EasyOC.CSharpScript
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            NatashaInitializer.Preheating();
             services.AddSingleton<ICSharpScriptProvider, CSharpScriptProvider>();
         }
 
