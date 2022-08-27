@@ -27,10 +27,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\Scripts" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Content Include="Assets.json" />
 	</ItemGroup>
 

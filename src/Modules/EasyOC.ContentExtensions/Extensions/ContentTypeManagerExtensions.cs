@@ -15,6 +15,12 @@ namespace EasyOC
                 case "TextField":
                     valuePath = "Text";
                     break;
+                case "HtmlField":
+                    valuePath = "Html";
+                    break;
+                case "MediaField":
+                    valuePath = "Paths";
+                    break;
                 case "BooleanField":
                 case "DateField":
                 case "TimeField":

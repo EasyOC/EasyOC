@@ -1,15 +1,8 @@
-[
+﻿[
   {
     "inputs": [
       "Assets/Scripts/AmisExt.ts"
     ],
     "output": "wwwroot/Scripts/AmisExt.js"
-  },
-
-  {
-    "inputs": [
-      "Assets/Scripts/AmisEnv.ts"
-    ],
-    "output": "wwwroot/Scripts/AmisEnv.js"
   }
 ]

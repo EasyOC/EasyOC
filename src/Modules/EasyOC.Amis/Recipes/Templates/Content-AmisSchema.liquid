@@ -1,4 +1,4 @@
-﻿{% assign resourceRoot="~/EasyOC.Amis/" | absolute_url  %}
+{% assign resourceRoot="~/EasyOC.Amis/" | absolute_url  %}
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -36,13 +36,15 @@
 <script src="{{resourceRoot}}amis/sdk/sdk.js"></script>
 <script src="{{resourceRoot}}Scripts/AmisExt.js"></script>
 <script src="{{resourceRoot}}Scripts/AmisEnv.js"></script>
+<script src="{{resourceRoot}}Scripts/axios/dist/axios.js"></script>
 <script type="text/javascript">
       (function () {
         let amis = amisRequire('amis/embed');
         // 通过替换下面这个配置来生成不同页面
         let amisJSON = {{ Model.ContentItem.Content["AmisSchema"].Schema.Text |raw}};
-        let amisScoped = amis.embed('#root', amisJSON,
-            AmisEnv);
+        var env=buildEnv(axios);
+        let amisScoped = amis.embed('#root', amisJSON,{},
+            env);
       })();
     </script>
 </body>

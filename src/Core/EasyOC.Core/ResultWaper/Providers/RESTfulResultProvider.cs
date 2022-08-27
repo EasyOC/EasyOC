@@ -50,8 +50,10 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <returns></returns>
         public IActionResult OnSucceeded(ActionExecutedContext context, object data)
         {
+            var notifyList = _notifier.List().ToArray();
+            _notifier.List().Clear();
             return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
-                message: _notifier.List().ToArray(),//处理OC 的代码内执行消息
+                message: notifyList,//处理OC 的代码内执行消息
                 httpContext: context.HttpContext));
         }
 

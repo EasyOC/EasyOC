@@ -10,7 +10,6 @@
     "help": "gulp help",
     "watch": " gulp watch",
     "postinstall": "run-s install:*",
-    "install:VueElementUI": "cd src/Modules/EasyOC.VueElementUI && npm install",
     "install:amis": "cd src/Modules/EasyOC.Amis && npm install"    
   },
   "devDependencies": {

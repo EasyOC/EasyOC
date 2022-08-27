@@ -93,8 +93,5 @@ namespace EasyOC.Core.ResultWaper.Extensions
             var returnType = method.ReturnType;
             return isAsyncMethod ? returnType.GenericTypeArguments.FirstOrDefault() ?? typeof(void) : returnType;
         }
-
-
-
     }
 }
