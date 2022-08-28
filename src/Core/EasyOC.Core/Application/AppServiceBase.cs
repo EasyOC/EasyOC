@@ -27,6 +27,7 @@ namespace EasyOC.Core.Application
 {
     //Api, Identity.Application, Identity.External, Identity.TwoFactorRememberMe, Identity.TwoFactorUserId, OpenIddict.Server.AspNetCore, OpenIddict.Validation.AspNetCore, Wechat
     [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous]
+    [Authorize(AuthenticationSchemes = "Api,Identity.Application")]
     public class AppServiceBase : IAppServcieBase, IDynamicWebApi
     {
         public IServiceProvider CurrentServiceProvider { get; }

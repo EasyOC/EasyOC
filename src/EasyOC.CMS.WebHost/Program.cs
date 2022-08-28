@@ -10,6 +10,7 @@ namespace EasyOC.CMS.WebHost
     {
         public static Task Main(string[] args)
         {
+            _ = Task.Run(() => { NatashaInitializer.Preheating(); });//Natasha 预热
             return BuildWebHost(args).RunAsync();
         }
 

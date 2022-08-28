@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gulp", "Gulp", "{5555E483-C
 		package.json = package.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.ContentExtentions", "src\Modules\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj", "{0AB5AB7E-A9A1-405A-8F60-B39CECF81198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.ContentExtensions", "src\Modules\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj", "{0AB5AB7E-A9A1-405A-8F60-B39CECF81198}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.CMS.WebHost", "src\EasyOC.CMS.WebHost\EasyOC.CMS.WebHost.csproj", "{5713D0BB-A79F-40E7-9D9A-F7894881C836}"
 EndProject
@@ -98,7 +98,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.Infrastructure", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.Media", "src\OrchardCore.Modules\OrchardCore.Media\OrchardCore.Media.csproj", "{AA36D547-21C7-4AA4-9FA3-A8C5BC42AB86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Constants", "src\Core\EasyOC.Constants\EasyOC.Constants.csproj", "{3852398C-DFF5-4691-87D7-7B11932FF5AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.Constants", "src\Core\EasyOC.Constants\EasyOC.Constants.csproj", "{3852398C-DFF5-4691-87D7-7B11932FF5AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.OpenId", "src\OrchardCore.Modules\OrchardCore.OpenId\OrchardCore.OpenId.csproj", "{7250AED1-090E-4D26-8195-3BB56AC5D4D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.PowerBIClient", "src\Modules\EasyOC.PowerBIClient\EasyOC.PowerBIClient.csproj", "{E9AC464B-1887-4D3E-B22B-B95A77DF24A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -218,6 +222,14 @@ Global
 		{3852398C-DFF5-4691-87D7-7B11932FF5AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3852398C-DFF5-4691-87D7-7B11932FF5AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3852398C-DFF5-4691-87D7-7B11932FF5AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7250AED1-090E-4D26-8195-3BB56AC5D4D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7250AED1-090E-4D26-8195-3BB56AC5D4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7250AED1-090E-4D26-8195-3BB56AC5D4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7250AED1-090E-4D26-8195-3BB56AC5D4D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9AC464B-1887-4D3E-B22B-B95A77DF24A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9AC464B-1887-4D3E-B22B-B95A77DF24A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9AC464B-1887-4D3E-B22B-B95A77DF24A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9AC464B-1887-4D3E-B22B-B95A77DF24A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +263,8 @@ Global
 		{9F9A90AF-DAFA-4964-A62F-ED9950AD7B66} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
 		{AA36D547-21C7-4AA4-9FA3-A8C5BC42AB86} = {AA7DB5EF-F07C-4DDD-B2C4-C5442F3DECB0}
 		{3852398C-DFF5-4691-87D7-7B11932FF5AF} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
+		{7250AED1-090E-4D26-8195-3BB56AC5D4D4} = {AA7DB5EF-F07C-4DDD-B2C4-C5442F3DECB0}
+		{E9AC464B-1887-4D3E-B22B-B95A77DF24A2} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}

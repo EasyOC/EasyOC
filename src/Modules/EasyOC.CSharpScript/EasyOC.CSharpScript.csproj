@@ -10,7 +10,8 @@
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="DotNetCore.Natasha.CSharp" Version="4.1.0" />
+    <PackageReference Include="DotNetCore.Compile.Environment" Version="3.0.0" />
+    <PackageReference Include="DotNetCore.Natasha.CSharp" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

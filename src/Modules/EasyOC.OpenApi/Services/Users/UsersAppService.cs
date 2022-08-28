@@ -374,7 +374,7 @@ namespace EasyOC.OpenApi.Services
 
             ObjectMapper.Map(userDto, user);
             var result = await _userManager.UpdateAsync(user);
-            if (result.Errors.Count() == 0)
+            if (!result.Errors.Any())
             {
                 if (String.Equals(HttpUser.FindFirstValue(ClaimTypes.NameIdentifier), user.UserId, StringComparison.OrdinalIgnoreCase))
                 {

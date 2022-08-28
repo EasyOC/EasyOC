@@ -1,13 +1,12 @@
 ﻿using EasyOC.GraphQL.Queries.Types;
 using EasyOC.DynamicTypeIndex;
-using EasyOC.DynamicTypeIndex.Index;
 using EasyOC.DynamicTypeIndex.Models;
 using EasyOC.DynamicTypeIndex.Service;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
 using GraphQL.Types;
 using YesSql;
-using MSHttp=Microsoft.AspNetCore.Http;
+using MSHttp = Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -22,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EasyOC.Core.Indexes;
 
 namespace EasyOC.GraphQL.Queries
 {

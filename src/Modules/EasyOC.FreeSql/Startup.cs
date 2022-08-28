@@ -11,6 +11,7 @@ using OrchardCore.Queries;
 
 namespace EasyOC.FreeSql
 {
+    [RequireFeatures("EasyOC.DynamicTypeIndex")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)

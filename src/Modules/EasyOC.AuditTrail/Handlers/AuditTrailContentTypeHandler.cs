@@ -1,6 +1,6 @@
-using EasyOC.AuditTrail.Models;
+﻿using EasyOC.AuditTrail.Models;
 using EasyOC.AuditTrail.Services;
-using EasyOC.ContentExtentions.Handlers;
+using EasyOC.ContentExtensions.Handlers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using OrchardCore.AuditTrail.Services;
@@ -53,11 +53,11 @@ namespace EasyOC.AuditTrail.Handlers
         }
         public override async void ContentTypeRemoved(ContentTypeRemovedContext context)
         {
-            await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentTypeRemoved,
-            new AuditTrailContentTypeEvent
-            {
-                TypeName = context.ContentTypeDefinition.Name, EventContext = JObject.FromObject(context)
-            });
+            //await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentTypeRemoved,
+            //new AuditTrailContentTypeEvent
+            //{
+            //    TypeName = context.ContentTypeDefinition.Name, EventContext = JObject.FromObject(context)
+            //});
         }
 
         public override async void ContentTypeImported(ContentTypeImportedContext context)
@@ -80,11 +80,11 @@ namespace EasyOC.AuditTrail.Handlers
         }
         public override async void ContentPartRemoved(ContentPartRemovedContext context)
         {
-            await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentPartRemoved,
-            new AuditTrailContentTypeEvent
-            {
-                PartName = context.ContentPartDefinition.Name, EventContext = JObject.FromObject(context)
-            });
+            //await RecordAuditTrailEventAsync(ContentTypeAuditTrailEventConfiguration.ContentPartRemoved,
+            //new AuditTrailContentTypeEvent
+            //{
+            //    PartName = context.ContentPartDefinition.Name, EventContext = JObject.FromObject(context)
+            //});
         }
         public override async void ContentPartAttached(ContentPartAttachedContext context)
         {

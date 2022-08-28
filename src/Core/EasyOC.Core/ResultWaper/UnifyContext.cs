@@ -1,12 +1,10 @@
 ﻿using EasyOC.Core.ResultWaper.Extensions;
 using EasyOC.Core.ResultWaper.Internal;
 using EasyOC.Core.ResultWaper.Providers;
-using Furion.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
@@ -91,12 +89,10 @@ namespace EasyOC.Core.Filter
             object errors = default;
             var statusCode = StatusCodes.Status500InternalServerError;
             var isValidationException = false; // 判断是否是验证异常
-            var isFriendlyException = false;
 
             // 判断是否是友好异常
             if (context.Exception is AppFriendlyException friendlyException)
             {
-                isFriendlyException = true;
                 errorCode = friendlyException.ErrorCode;
                 statusCode = friendlyException.StatusCode;
                 isValidationException = friendlyException.ValidationException;
@@ -106,29 +102,7 @@ namespace EasyOC.Core.Filter
             // 处理验证失败异常
             if (!isValidationException)
             {
-                // 判断是否定义了全局类型异常
-                var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-
-                // 查找所有全局定义异常
-                var ifExceptionAttributes = actionDescriptor.MethodInfo
-                            .GetCustomAttributes<IfExceptionAttribute>(true)
-                            .Where(u => u.ErrorCode == null);
-
-                // 处理全局异常
-                if (ifExceptionAttributes.Any())
-                {
-                    // 首先判断是否有相同类型的异常
-                    var actionIfExceptionAttribute = ifExceptionAttributes.FirstOrDefault(u => u.ExceptionType ==
-                                                    (isFriendlyException && context.Exception.InnerException != null
-                                                                        ? context.Exception.InnerException.GetType()
-                                                                        : context.Exception.GetType()))
-                            ?? ifExceptionAttributes.FirstOrDefault(u => u.ExceptionType == null);
-
-                    // 支持渲染配置文件
-                    if (actionIfExceptionAttribute is { ErrorMessage: not null })
-                        errors = actionIfExceptionAttribute.ErrorMessage;
-                }
-                else errors = context.Exception?.InnerException?.Message ?? context.Exception.Message;
+                errors = context.Exception?.InnerException?.Message ?? context.Exception.Message;
             }
 
             return new ExceptionMetadata

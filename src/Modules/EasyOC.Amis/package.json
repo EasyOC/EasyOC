@@ -1,8 +1,11 @@
 {
   "name": "jzsoft.orchardcore.amis",
   "version": "1.0.0",
-  "description": "",  
+  "description": "",
   "dependencies": {
-    "amis-editor": "^4.0.1-beta.10"
+    "amis": "^1.9.1-beta.29",
+    "amis-editor": "^4.0.1-beta.10",
+    "axios": "^0.27.2",
+    "copy-to-clipboard": "^3.3.2"
   }
 }

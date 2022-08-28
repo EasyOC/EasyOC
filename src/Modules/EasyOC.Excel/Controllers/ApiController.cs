@@ -1,4 +1,4 @@
-﻿using EasyOC.ContentExtentions.AppServices;
+﻿using EasyOC.ContentExtensions.AppServices;
 using EasyOC.Excel.Models;
 using GraphQL;
 using GraphQL.Execution;

@@ -1,5 +1,5 @@
-using System;
-using EasyOC.DynamicTypeIndex.Index;
+﻿using System;
+using EasyOC.Core.Indexes;
 using FreeSql;
 using Microsoft.AspNetCore.Mvc.Localization;
 using OrchardCore.ContentManagement.Records;

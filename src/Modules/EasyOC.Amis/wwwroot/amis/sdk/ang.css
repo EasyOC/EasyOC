@@ -13633,12 +13633,10 @@ readers do not read off random characters that represent icons */
   --Checkbox-size: 1rem;
   --Checkbox-inner-size: calc(var(--Checkbox-size) / 2);
   --Checkbox-onHover-color: var(--info);
-  --Checkbox-onDisabled-bg: #f7f7f9;
-  --Checkbox-onDisabled-color: #b8babf;
+  --Checkbox-onDisabled-bg: #e5e7eb;
+  --Checkbox-onDisabled-color: var(--text--muted-color);
   --Checkbox-inner-onDisabled-bg: #d4d6d9;
-  --Checkbox-inner-onDisabled-color: #ffffff;
-  --Checkbox-disabled-unchecked-bg: #f7f7f9;
-  --Checkbox-inner-disabled-checked-bg: #e8e9eb;
+  --Checkbox-disabled-unchecked-bg: #f2f3f3;
   --Checkbox-border-width: var(--Form-input-borderWidth);
   --Checkbox-paddingX: 0.75rem;
   --Checkbox-button-height: 2rem;
@@ -13854,6 +13852,8 @@ readers do not read off random characters that represent icons */
   --Form-input-onHover-bg: rgba(255, 255, 255, 0.6);
   --Form-input-onHover-borderColor: var(--Form-input-onFocused-borderColor);
   --Form-input-paddingX: 0.5rem;
+  --Form-input-password-icon-size: 1rem;
+  --Form-input-password-icon-color: #84868c;
   --Form-inputNumber-paddingX: 0.75rem;
   --Form-inputNumber-base-width: 1.5rem;
   --Form-inputNumber-base-height: 2rem;
@@ -14735,6 +14735,10 @@ readers do not read off random characters that represent icons */
   --default-padding: 4px 12px;
   --menu-min-width: 150px;
   --menu-sub-min-width: 100px;
+  --SearchBox-height: 1.875rem;
+  --SearchBox-width: 9.375rem;
+  --SearchBox-history-dropdown-maxWidth: calc(var(--SearchBox-width) * 2);
+  --SearchBox-history-dropdown-maxHeight: 12.5rem;
 }
 
 /* BASICS */
@@ -32667,6 +32671,11 @@ readers do not read off random characters that represent icons */
   border-width: 0;
 }
 
+.amis-scope .a-CalendarMobile-pop--time {
+  height: fit-content;
+  max-height: 90vh;
+}
+
 .amis-scope .a-CalendarMobile-wrap {
   display: flex;
   flex-direction: column;
@@ -32888,7 +32897,7 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-CalendarMobile .a-CalendarMobile-calendar-wrap .a-CalendarMobile-calendar .rdtPicker .rdtToday .calendar-wrap {
-  border: 1px solid #2468F2;
+  border: 1px solid #2468f2;
 }
 
 .amis-scope .a-CalendarMobile-calendar-header {
@@ -33431,17 +33440,6 @@ readers do not read off random characters that represent icons */
   user-select: none;
 }
 
-.amis-scope .a-CBPicker-trigger {
-  cursor: pointer;
-  transition: transform var(--animation-duration) ease-out;
-  display: flex;
-  color: var(--Form-select-caret-iconColor);
-}
-
-.amis-scope .a-CBPicker-trigger:hover {
-  color: var(--primary);
-}
-
 @keyframes contextMenuInSpecial {
   from {
     transform: scale3d(1, 1, 1);
@@ -33961,16 +33959,13 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-Crud-toolbar-item {
+  margin-left: var(--Crud-toolbar-gap);
   margin-top: var(--Crud-toolbar-gap);
   line-height: var(--Crud-toolbar-lineHeight);
   height: var(--Crud-toolbar-height);
   vertical-align: middle;
   display: inline-flex;
   align-items: center;
-}
-
-.amis-scope .a-Crud-toolbar-item:not(:first-child) {
-  margin-left: var(--Crud-toolbar-gap);
 }
 
 .amis-scope .a-Crud-toolbar-item--left {
@@ -34012,6 +34007,7 @@ readers do not read off random characters that represent icons */
 
 @media (min-width: 576px) {
   .amis-scope .a-Crud-toolbar {
+    margin-left: calc(var(--Crud-toolbar-gap) * -1);
     margin-top: calc(var(--Crud-toolbar-gap) * -1);
     flex-basis: 0;
     flex-grow: 1;
@@ -34028,161 +34024,10 @@ readers do not read off random characters that represent icons */
   }
 
   .amis-scope .a-Crud-toolbar-item {
+    margin-left: var(--Crud-toolbar-gap);
     line-height: var(--Crud-toolbar-lineHeight);
     height: var(--Crud-toolbar-height);
     vertical-align: middle;
-  }
-
-  .amis-scope .a-Crud-toolbar-item:not(:first-child) {
-    margin-left: var(--Crud-toolbar-gap);
-  }
-
-  .amis-scope .a-Crud-toolbar-item--left {
-    float: left;
-  }
-
-  .amis-scope .a-Crud-toolbar-item--right {
-    float: right;
-  }
-
-  .amis-scope .a-Crud-actions > * + .a-Button,
-  .amis-scope .a-Crud-actions > * + .a-Button--disabled-wrap {
-    margin-left: var(--Crud-toolbar-gap);
-  }
-}
-
-.amis-scope .a-Crud2 {
-  position: relative;
-}
-
-.amis-scope .a-Crud2-selection,
-.amis-scope .a-Crud2-toolbar,
-.amis-scope .a-Crud2-body {
-  margin-bottom: var(--gap-base);
-}
-
-.amis-scope .a-Crud2-selectionLabel {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: var(--gap-xs);
-}
-
-.amis-scope .a-Crud2-value {
-  cursor: pointer;
-  vertical-align: middle;
-  user-select: none;
-  line-height: calc( var(--Form-input-lineHeight) * var(--Form-input-fontSize) - 0.125rem );
-  display: inline-block;
-  font-size: var(--Form-selectValue-fontSize);
-  color: var(--Form-selectValue-color);
-  background: var(--Form-selectValue-bg);
-  border: 0.0625rem solid var(--Form-selectValue-borderColor);
-  border-radius: 2px;
-  margin-right: var(--gap-xs);
-  margin-top: var(--gap-xs);
-}
-
-.amis-scope .a-Crud2-value:hover {
-  background: var(--Form-selectValue-onHover-bg);
-}
-
-.amis-scope .a-Crud2-value.is-disabled {
-  pointer-events: none;
-  opacity: var(--Button-onDisabled-opacity);
-}
-
-.amis-scope .a-Crud2-valueIcon {
-  cursor: pointer;
-  border-right: 0.0625rem solid var(--Form-selectValue-borderColor);
-  padding: 1px 5px;
-}
-
-.amis-scope .a-Crud2-valueIcon:hover {
-  background: var(--Form-selectValue-onHover-bg);
-}
-
-.amis-scope .a-Crud2-valueLabel {
-  padding: 0 var(--gap-xs);
-}
-
-.amis-scope .a-Crud2-selectionClear {
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-  margin-left: var(--gap-xs);
-  margin-top: var(--gap-xs);
-  vertical-align: middle;
-}
-
-.amis-scope .a-Crud2-toolbar-item {
-  margin-top: var(--Crud-toolbar-gap);
-  line-height: var(--Crud-toolbar-lineHeight);
-  height: var(--Crud-toolbar-height);
-  vertical-align: middle;
-  display: inline-flex;
-  align-items: center;
-}
-
-.amis-scope .a-Crud2-toolbar-item:not(:first-child) {
-  margin-left: var(--Crud-toolbar-gap);
-}
-
-.amis-scope .a-Crud2-toolbar-item--left {
-  float: left;
-}
-
-.amis-scope .a-Crud2-toolbar-item--right {
-  float: right;
-}
-
-.amis-scope .a-Crud2-actions > * + .a-Button,
-.amis-scope .a-Crud2-actions > * + .a-ButtonGroup,
-.amis-scope .a-Crud2-actions > * + .a-ButtonToolbar {
-  margin-left: var(--Crud-toolbar-gap);
-}
-
-.amis-scope .a-Crud2-statistics {
-  line-height: var(--Crud-toolbar-height);
-  vertical-align: middle;
-}
-
-.amis-scope .a-Crud2-pageSwitch .a-Select {
-  margin-left: var(--Crud-toolbar-gap);
-}
-
-.amis-scope .a-Crud2-pager {
-  align-self: flex-start;
-}
-
-.amis-scope .a-Crud2-filter {
-  margin-bottom: var(--gap-base);
-}
-
-@media (min-width: 576px) {
-  .amis-scope .a-Crud-toolbar {
-    margin-top: calc(var(--Crud-toolbar-gap) * -1);
-    flex-basis: 0;
-    flex-grow: 1;
-  }
-
-  .amis-scope .a-Crud-toolbar::before,
-  .amis-scope .a-Crud-toolbar::after {
-    display: table;
-    content: "";
-  }
-
-  .amis-scope .a-Crud-toolbar::after {
-    clear: both;
-  }
-
-  .amis-scope .a-Crud-toolbar-item {
-    line-height: var(--Crud-toolbar-lineHeight);
-    height: var(--Crud-toolbar-height);
-    vertical-align: middle;
-  }
-
-  .amis-scope .a-Crud-toolbar-item:not(:first-child) {
-    margin-left: var(--Crud-toolbar-gap);
   }
 
   .amis-scope .a-Crud-toolbar-item--left {
@@ -34216,6 +34061,13 @@ readers do not read off random characters that represent icons */
   z-index: var(--Table-fixed-zIndex);
   top: auto;
   box-shadow: none;
+}
+
+.amis-scope .a-Table-fixedLeft--autoFillHeight > table thead,
+.amis-scope .a-Table-fixedRight--autoFillHeight > table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .amis-scope .a-Table-fixedLeft {
@@ -37190,7 +37042,7 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Table-v2.a-Table-resizable .a-Table-table > thead > tr > th .a-Table-thead-resizable {
   position: absolute;
-  width: 3px;
+  width: 1px;
   right: 0;
   top: 0;
   bottom: 0;
@@ -37254,6 +37106,8 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Table-v2 .a-TableCell-searchBtn {
   cursor: pointer;
+  position: static;
+  transform: translateY(-50%);
   color: var(--text--muted-color);
   margin-left: var(--TableCell-icon-gap);
 }
@@ -40200,7 +40054,7 @@ readers do not read off random characters that represent icons */
   font-size: var(--Form-input-fontSize);
   flex-wrap: wrap;
   justify-content: flex-start;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   padding: 0 0.3125rem;
   min-height: var(--Form-input-height);
   align-items: center;
@@ -40236,6 +40090,10 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-ResultBox--borderNone {
   border-color: transparent !important;
+}
+
+.amis-scope .a-ResultBox.is-clearable {
+  padding-right: 3.4375rem;
 }
 
 .amis-scope .a-ResultBox.is-error {
@@ -40286,30 +40144,7 @@ readers do not read off random characters that represent icons */
   padding-left: var(--gap-base);
 }
 
-.amis-scope .a-ResultBox-value-wrap {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.amis-scope .a-ResultBox-actions {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.amis-scope .a-ResultBox-actions > *:first-child {
-  margin-left: 0.3125rem;
-}
-
-.amis-scope .a-ResultBox-actions > *:not(:last-child) {
-  margin-right: 0.3125rem;
-}
-
 .amis-scope .a-ResultBox-singleValue {
-  padding: 0 calc(var(--Form-input-paddingX) - 0.1875rem);
-  flex-grow: 1;
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
@@ -40347,7 +40182,10 @@ readers do not read off random characters that represent icons */
   margin-left: auto;
   text-decoration: none;
   height: 100%;
+  padding: 0.25rem;
   margin: auto 0;
+  position: absolute;
+  right: 10px;
   background-color: unset;
 }
 
@@ -40438,7 +40276,6 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-ResultBox-placeholder {
   color: var(--Form-input-placeholderColor);
-  flex-grow: 1;
   user-select: none;
 }
 
@@ -40584,7 +40421,7 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-SearchBox.is-active {
   background: var(--Form-input-bg);
   border: var(--Form-input-borderWidth) solid var(--Form-input-borderColor);
-  width: 150px;
+  width: var(--SearchBox-width);
 }
 
 .amis-scope .a-SearchBox.is-active > input {
@@ -40600,14 +40437,8 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-SearchBox-searchBtn {
-  display: flex;
-  width: var(--SearchBox-height);
-  align-items: center;
-  justify-content: center;
-}
-
-.amis-scope .a-SearchBox-searchBtn .icon {
-  top: 0;
+  display: inline-block;
+  padding: 0.3125rem 0.625rem;
 }
 
 .amis-scope .a-SearchBox-activeBtn,
@@ -40693,6 +40524,116 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-SearchBox--enhance.is-active.is-disabled .a-SearchBox-searchBtn {
   background: var(--SearchBox-enhonce-disabled-color);
   color: var(--SearchBox-enhonce-disabled-search-color);
+}
+
+.amis-scope .a-SearchBox-history > .is-history {
+  width: 100%;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown {
+  position: absolute;
+  left: 0;
+  z-index: 998;
+  padding: var(--gap-sm) 0;
+  width: 100%;
+  max-width: var(--SearchBox-history-dropdown-maxWidth);
+  min-height: 4.5rem;
+  max-height: var(--SearchBox-history-dropdown-maxHeight);
+  background: var(--white);
+  border: var(--borderWidth) solid var(--borderColor);
+  border-top: none;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--boxShadow);
+  display: none;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown.is-active {
+  display: block;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gap-md);
+  margin-bottom: 0.625rem;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown header h4 {
+  font-size: var(--fontSizeBase);
+  height: 1.5rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-dropdown header a {
+  display: inline-block;
+  font-size: var(--fontSizeSm);
+  cursor: pointer;
+  padding: 0;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 var(--gap-md);
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc( var(--SearchBox-history-dropdown-maxHeight) - 38px - var(--gap-sm) * 2 );
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag {
+  display: inlin-flex;
+  height: var(--Tag-height);
+  padding: 0 var(--gap-sm);
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--Tag-content-fontSize);
+  max-width: 160px;
+  border-radius: var(--Tag-borderRadius);
+  background-color: var(--Tag-default-color);
+  color: var(--Tag-fontColor);
+  margin-bottom: var(--gap-sm);
+  margin-right: var(--gap-sm);
+  max-width: 96px;
+  cursor: pointer;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-text {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 24px;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close {
+  margin-left: var(--gap-sm);
+  margin-right: var(--gap-xs);
+  cursor: pointer;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close i {
+  font-size: 0.5rem;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close .icon {
+  width: 0.5rem;
+  height: 0.5rem;
+  position: inherit;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close:hover {
+  opacity: 0.7;
+}
+
+.amis-scope .a-SearchBox-history .a-SearchBox-history-tag-close:active {
+  opacity: 0.3;
 }
 
 .amis-scope .a-ListMenu {
@@ -42636,18 +42577,22 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox input[disabled] + i {
-  border-color: var(--Checkbox-color);
-  background: var(--Checkbox-onDisabled-bg);
+  border-color: var(--Checkbox-onDisabled-color);
+  background: var(--FileControl-onDisabled-bg);
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox input[disabled]:checked + i:before {
   border-color: var(--Checkbox-onDisabled-color);
-  background: var(--Checkbox-onDisabled-bg);
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox input:checked[disabled] + i {
-  border-color: var(--Checkbox-color);
-  background: var(--Checkbox-onDisabled-bg);
+  border-color: var(--Checkbox-onDisabled-color);
+  background: var(--FileControl-onDisabled-bg);
+}
+
+.amis-scope .a-Checkbox--full.a-Checkbox--checkbox input:checked[disabled] + i:before {
+  background: var(--FileControl-onDisabled-bg);
+  border-color: var(--Checkbox-inner-onDisabled-bg);
 }
 
 .amis-scope .a-Checkbox--full.a-Checkbox--checkbox > i {
@@ -42719,7 +42664,6 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox:hover:not(:disabled) {
   color: var(--Checkbox-onHover-color);
-  border-color: var(--Checkbox-onHover-color);
 }
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox:hover input:checked + i {
@@ -42749,7 +42693,7 @@ readers do not read off random characters that represent icons */
   left: 0;
   width: var(--Checkbox--full-inner-size);
   height: calc(var(--Checkbox--full-inner-size) / 2);
-  transform: translate(-80%, -160%) rotate(-50deg) scale(0.8);
+  transform: translate(-80%, -160%) rotate(-50deg);
   background: transparent;
 }
 
@@ -42764,13 +42708,8 @@ readers do not read off random characters that represent icons */
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox input:checked[disabled] + i {
   background: transparent;
-  border-width: 0.4375rem;
-  border-color: var(--Checkbox-inner-disabled-checked-bg) transparent transparent var(--Checkbox-inner-disabled-checked-bg);
-}
-
-.amis-scope .a-Checkbox--button.a-Checkbox--checkbox input:checked[disabled] + i:before {
-  background: transparent;
-  border-color: var(--Checkbox-inner-onDisabled-color) !important;
+  border-width: 0.5rem;
+  border-color: var(--Checkbox-onHover-color) transparent transparent var(--Checkbox-onHover-color);
 }
 
 .amis-scope .a-Checkbox--button.a-Checkbox--checkbox > i {
@@ -42805,22 +42744,8 @@ readers do not read off random characters that represent icons */
   color: var(--Switch-checked-onHover-bgColor);
 }
 
-.amis-scope .a-Checkbox--button--disabled--unchecked.a-Checkbox--checkbox {
-  background: var(--Checkbox-disabled-unchecked-bg);
-  border-color: var(--Checkbox-color);
-}
-
-.amis-scope .a-Checkbox--button--disabled--unchecked.a-Checkbox--checkbox:hover {
-  border-color: var(--Checkbox-color) !important;
-}
-
-.amis-scope .a-Checkbox--button--disabled--checked.a-Checkbox--checkbox {
-  background: var(--Checkbox-onDisabled-bg);
-  border-color: var(--Checkbox-color) !important;
-}
-
-.amis-scope .a-Checkbox--button--disabled--checked.a-Checkbox--checkbox:hover {
-  border-color: var(--Checkbox-color) !important;
+.amis-scope .a-Checkbox--button--disabled--unchecked.a-Checkbox--checkbox.a-Checkbox--full i {
+  background: var(--FileControl-onDisabled-bg);
 }
 
 .amis-scope .a-Checkbox--radio {
@@ -44901,6 +44826,14 @@ readers do not read off random characters that represent icons */
   display: flex;
 }
 
+.amis-scope .a-DateControl.is-date > .a-DatePicker {
+  min-width: calc(var(--DatePicker-minWidth) + var(--fontSizeLg) * 2);
+}
+
+.amis-scope .a-DateControl.is-datetime > .a-DatePicker {
+  min-width: calc(var(--DatePicker-minWidth) + var(--fontSizeLg) * 6);
+}
+
 .amis-scope .a-DatePicker-shortcuts {
   margin: 0;
   padding-left: 0.625rem;
@@ -45625,7 +45558,7 @@ readers do not read off random characters that represent icons */
   margin: 0;
   padding-left: 0.625rem;
   list-style: none;
-  background: #F7F7F9;
+  background: #f7f7f9;
   line-height: 2rem;
 }
 
@@ -48201,8 +48134,7 @@ readers do not read off random characters that represent icons */
 .amis-scope .a-Transfer-select > .a-ChainedSelection .a-ChainedSelection-col {
   height: 100%;
   overflow: auto;
-  min-width: unset;
-  flex: 1 1 0;
+  min-width: 8.125rem;
 }
 
 .amis-scope .a-Transfer .a--ResultTreeList {
@@ -50090,6 +50022,7 @@ readers do not read off random characters that represent icons */
   overflow: auto;
   scroll-behavior: smooth;
   background: var(--Tabs-content-bg);
+  position: relative;
 }
 
 .amis-scope .a-AnchorNav-section-wrap > .a-AnchorNav-section {
@@ -50838,13 +50771,11 @@ readers do not read off random characters that represent icons */
   border: var(--Form-input-borderWidth) solid var(--Form-input-borderColor);
   padding: var(--Form-input-paddingY) var(--Form-input-paddingX);
   border-radius: var(--borderRadius);
-  background-color: #fff;
-  height: var(--Form-input-height);
 }
 
 .amis-scope .a-FormulaPicker.is-input-group .a-FormulaPicker-input {
-  display: flex;
-  align-items: center;
+  display: inline-block;
+  width: 100%;
   background: none;
   padding: 0;
   border: 0;
@@ -50858,7 +50789,7 @@ readers do not read off random characters that represent icons */
 }
 
 .amis-scope .a-FormulaPicker.is-input-group .a-FormulaPicker-toggler .icon-function {
-  transform: scale(1.8);
+  transform: scale(1.6);
 }
 
 .amis-scope .a-FormulaPicker.is-input-group .a-FormulaPicker-toggler .icon-ellipsis-v {
@@ -51067,17 +50998,23 @@ readers do not read off random characters that represent icons */
   display: inline-flex;
   height: var(--Tag-height);
   padding: 0 var(--gap-sm);
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   font-size: var(--Tag-content-fontSize);
   max-width: 160px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
   transition: all 0.3;
   border-radius: var(--Tag-borderRadius);
   background-color: var(--Tag-default-color);
   color: var(--Tag-fontColor);
+}
+
+.amis-scope .a-Tag-text {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: var(--Tag-height);
 }
 
 .amis-scope .a-Tag:not(:last-child) {
@@ -51121,6 +51058,7 @@ readers do not read off random characters that represent icons */
   border-radius: calc((var(--Tag-height) + 2px) / 2);
   border: 1px solid var(--Tag-default-color);
   color: var(--Tag-default-color);
+  line-height: 22px;
 }
 
 .amis-scope .a-Tag--rounded--inactive {

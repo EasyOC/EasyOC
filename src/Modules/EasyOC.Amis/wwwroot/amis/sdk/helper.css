@@ -5,132 +5,133 @@
 title: 背景色
 ---
 
-| Class       | Properties               |
-| ----------- | ------------------------ |
-| bg-transparent | background: transparent |
-| bg-none | background: none !important |
-| bg-transparent | background: transparent |
-| bg-current | background: currentColor |
-| bg-black | background: #000 |
-| bg-white | background: #fff |
-| bg-primary | background: #007bff |
-| bg-secondary | background: #6c757d |
-| bg-success | background: #28a745 |
-| bg-info | background: #17a2b8 |
-| bg-warning | background: #28a745 |
-| bg-danger | background: #dc3545 |
-| bg-light | background: #f8f9fa |
-| bg-dark | background: #343a40 |
-| bg-gray-transparent | background: transparent |
-| bg-gray-current | background: currentColor |
-| bg-gray-50 | background: #f9fafb |
-| bg-gray-100 | background: #f3f4f6 |
-| bg-gray-200 | background: #e5e7eb |
-| bg-gray-300 | background: #d1d5db |
-| bg-gray-400 | background: #9ca3af |
-| bg-gray-500 | background: #6b7280 |
-| bg-gray-600 | background: #4b5563 |
-| bg-gray-700 | background: #374151 |
-| bg-gray-800 | background: #1f2937 |
-| bg-gray-900 | background: #111827 |
-| bg-red-transparent | background: transparent |
-| bg-red-current | background: currentColor |
-| bg-red-50 | background: #fef2f2 |
-| bg-red-100 | background: #fee2e2 |
-| bg-red-200 | background: #fecaca |
-| bg-red-300 | background: #fca5a5 |
-| bg-red-400 | background: #f87171 |
-| bg-red-500 | background: #ef4444 |
-| bg-red-600 | background: #dc2626 |
-| bg-red-700 | background: #b91c1c |
-| bg-red-800 | background: #991b1b |
-| bg-red-900 | background: #7f1d1d |
-| bg-yellow-transparent | background: transparent |
-| bg-yellow-current | background: currentColor |
-| bg-yellow-50 | background: #fffbeb |
-| bg-yellow-100 | background: #fef3c7 |
-| bg-yellow-200 | background: #fde68a |
-| bg-yellow-300 | background: #fcd34d |
-| bg-yellow-400 | background: #fbbf24 |
-| bg-yellow-500 | background: #f59e0b |
-| bg-yellow-600 | background: #d97706 |
-| bg-yellow-700 | background: #b45309 |
-| bg-yellow-800 | background: #92400e |
-| bg-yellow-900 | background: #78350f |
-| bg-green-transparent | background: transparent |
-| bg-green-current | background: currentColor |
-| bg-green-50 | background: #ecfdf5 |
-| bg-green-100 | background: #d1fae5 |
-| bg-green-200 | background: #a7f3d0 |
-| bg-green-300 | background: #6ee7b7 |
-| bg-green-400 | background: #34d399 |
-| bg-green-500 | background: #10b981 |
-| bg-green-600 | background: #059669 |
-| bg-green-700 | background: #047857 |
-| bg-green-800 | background: #065f46 |
-| bg-green-900 | background: #064e3b |
-| bg-blue-transparent | background: transparent |
-| bg-blue-current | background: currentColor |
-| bg-blue-50 | background: #eff6ff |
-| bg-blue-100 | background: #dbeafe |
-| bg-blue-200 | background: #bfdbfe |
-| bg-blue-300 | background: #93c5fd |
-| bg-blue-400 | background: #60a5fa |
-| bg-blue-500 | background: #3b82f6 |
-| bg-blue-600 | background: #2563eb |
-| bg-blue-700 | background: #1d4ed8 |
-| bg-blue-800 | background: #1e40af |
-| bg-blue-900 | background: #1e3a8a |
-| bg-cyan-transparent | background: transparent |
-| bg-cyan-current | background: currentColor |
-| bg-cyan-50 | background: #ecfeff |
-| bg-cyan-100 | background: #cffafe |
-| bg-cyan-200 | background: #a5f3fc |
-| bg-cyan-300 | background: #67e8f9 |
-| bg-cyan-400 | background: #22d3ee |
-| bg-cyan-500 | background: #06b6d4 |
-| bg-cyan-600 | background: #0891b2 |
-| bg-cyan-700 | background: #0e7490 |
-| bg-cyan-800 | background: #155e75 |
-| bg-cyan-900 | background: #164e63 |
-| bg-indigo-transparent | background: transparent |
-| bg-indigo-current | background: currentColor |
-| bg-indigo-50 | background: #eef2ff |
-| bg-indigo-100 | background: #e0e7ff |
-| bg-indigo-200 | background: #c7d2fe |
-| bg-indigo-300 | background: #a5b4fc |
-| bg-indigo-400 | background: #818cf8 |
-| bg-indigo-500 | background: #6366f1 |
-| bg-indigo-600 | background: #4f46e5 |
-| bg-indigo-700 | background: #4338ca |
-| bg-indigo-800 | background: #3730a3 |
-| bg-indigo-900 | background: #312e81 |
-| bg-purple-transparent | background: transparent |
-| bg-purple-current | background: currentColor |
-| bg-purple-50 | background: #f5f3ff |
-| bg-purple-100 | background: #ede9fe |
-| bg-purple-200 | background: #ddd6fe |
-| bg-purple-300 | background: #c4b5fd |
-| bg-purple-400 | background: #a78bfa |
-| bg-purple-500 | background: #8b5cf6 |
-| bg-purple-600 | background: #7c3aed |
-| bg-purple-700 | background: #6d28d9 |
-| bg-purple-800 | background: #5b21b6 |
-| bg-purple-900 | background: #4c1d95 |
-| bg-pink-transparent | background: transparent |
-| bg-pink-current | background: currentColor |
-| bg-pink-50 | background: #fdf2f8 |
-| bg-pink-100 | background: #fce7f3 |
-| bg-pink-200 | background: #fbcfe8 |
-| bg-pink-300 | background: #f9a8d4 |
-| bg-pink-400 | background: #f472b6 |
-| bg-pink-500 | background: #ec4899 |
-| bg-pink-600 | background: #db2777 |
-| bg-pink-700 | background: #be185d |
-| bg-pink-800 | background: #9d174d |
-| bg-pink-900 | background: #831843 |
+| Class       | Properties               |   Demo   |
+| ----------- | ------------------------ | -------- |
+| bg-none | background: none !important | <span  style="background: none !important;" class="w-24 h-6"></div> |
+| bg-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-black | background: #000 | <div style="background: #000;" class="w-24 h-6"></div> |
+| bg-white | background: #fff | <div style="background: #fff;" class="w-24 h-6"></div> |
+| bg-primary | background: #007bff | <div style="background: #007bff;" class="w-24 h-6"></div> |
+| bg-secondary | background: #6c757d | <div style="background: #6c757d;" class="w-24 h-6"></div> |
+| bg-success | background: #28a745 | <div style="background: #28a745;" class="w-24 h-6"></div> |
+| bg-info | background: #007bff | <div style="background: #007bff" class="w-24 h-6"></div> |
+| bg-warning | background: #28a745 | <div style="background: #28a745;" class="w-24 h-6"></div> |
+| bg-danger | background: #dc3545 | <div style="background: #dc3545;" class="w-24 h-6"></div> |
+| bg-light | background: #f8f9fa | <div style="background: #f8f9fa;" class="w-24 h-6"></div> |
+| bg-dark | background: #343a40 | <div style="background: #343a40;" class="w-24 h-6"></div> |
+| bg-gray-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-gray-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-gray-50 | background: #f9fafb | <div style="background: #f9fafb;" class="w-24 h-6"></div> |
+| bg-gray-100 | background: #f3f4f6 | <div style="background: #f3f4f6;" class="w-24 h-6"></div> |
+| bg-gray-200 | background: #e5e7eb | <div style="background: #e5e7eb;" class="w-24 h-6"></div> |
+| bg-gray-300 | background: #d1d5db | <div style="background: #d1d5db;" class="w-24 h-6"></div> |
+| bg-gray-400 | background: #9ca3af | <div style="background: #9ca3af;" class="w-24 h-6"></div> |
+| bg-gray-500 | background: #6b7280 | <div style="background: #6b7280;" class="w-24 h-6"></div> |
+| bg-gray-600 | background: #4b5563 | <div style="background: #4b5563;" class="w-24 h-6"></div> |
+| bg-gray-700 | background: #374151 | <div style="background: #374151;" class="w-24 h-6"></div> |
+| bg-gray-800 | background: #1f2937 | <div style="background: #1f2937;" class="w-24 h-6"></div> |
+| bg-gray-900 | background: #111827 | <div style="background: #111827;" class="w-24 h-6"></div> |
+| bg-red-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-red-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-red-50 | background: #fef2f2 | <div style="background: #fef2f2;" class="w-24 h-6"></div> |
+| bg-red-100 | background: #fee2e2 | <div style="background: #fee2e2;" class="w-24 h-6"></div> |
+| bg-red-200 | background: #fecaca | <div style="background: #fecaca;" class="w-24 h-6"></div> |
+| bg-red-300 | background: #fca5a5 | <div style="background: #fca5a5;" class="w-24 h-6"></div> |
+| bg-red-400 | background: #f87171 | <div style="background: #f87171;" class="w-24 h-6"></div> |
+| bg-red-500 | background: #ef4444 | <div style="background: #ef4444;" class="w-24 h-6"></div> |
+| bg-red-600 | background: #dc2626 | <div style="background: #dc2626;" class="w-24 h-6"></div> |
+| bg-red-700 | background: #b91c1c | <div style="background: #b91c1c;" class="w-24 h-6"></div> |
+| bg-red-800 | background: #991b1b | <div style="background: #991b1b;" class="w-24 h-6"></div> |
+| bg-red-900 | background: #7f1d1d | <div style="background: #7f1d1d;" class="w-24 h-6"></div> |
+| bg-yellow-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-yellow-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-yellow-50 | background: #fffbeb | <div style="background: #fffbeb;" class="w-24 h-6"></div> |
+| bg-yellow-100 | background: #fef3c7 | <div style="background: #fef3c7;" class="w-24 h-6"></div> |
+| bg-yellow-200 | background: #fde68a | <div style="background: #fde68a;" class="w-24 h-6"></div> |
+| bg-yellow-300 | background: #fcd34d | <div style="background: #fcd34d;" class="w-24 h-6"></div> |
+| bg-yellow-400 | background: #fbbf24 | <div style="background: #fbbf24;" class="w-24 h-6"></div> |
+| bg-yellow-500 | background: #f59e0b | <div style="background: #f59e0b;" class="w-24 h-6"></div> |
+| bg-yellow-600 | background: #d97706 | <div style="background: #d97706;" class="w-24 h-6"></div> |
+| bg-yellow-700 | background: #b45309 | <div style="background: #b45309;" class="w-24 h-6"></div> |
+| bg-yellow-800 | background: #92400e | <div style="background: #92400e;" class="w-24 h-6"></div> |
+| bg-yellow-900 | background: #78350f | <div style="background: #78350f;" class="w-24 h-6"></div> |
+| bg-green-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-green-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-green-50 | background: #ecfdf5 | <div style="background: #ecfdf5;" class="w-24 h-6"></div> |
+| bg-green-100 | background: #d1fae5 | <div style="background: #d1fae5;" class="w-24 h-6"></div> |
+| bg-green-200 | background: #a7f3d0 | <div style="background: #a7f3d0;" class="w-24 h-6"></div> |
+| bg-green-300 | background: #6ee7b7 | <div style="background: #6ee7b7;" class="w-24 h-6"></div> |
+| bg-green-400 | background: #34d399 | <div style="background: #34d399;" class="w-24 h-6"></div> |
+| bg-green-500 | background: #10b981 | <div style="background: #10b981;" class="w-24 h-6"></div> |
+| bg-green-600 | background: #059669 | <div style="background: #059669;" class="w-24 h-6"></div> |
+| bg-green-700 | background: #047857 | <div style="background: #047857;" class="w-24 h-6"></div> |
+| bg-green-800 | background: #065f46 | <div style="background: #065f46;" class="w-24 h-6"></div> |
+| bg-green-900 | background: #064e3b | <div style="background: #064e3b;" class="w-24 h-6"></div> |
+| bg-blue-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-blue-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-blue-50 | background: #eff6ff | <div style="background: #eff6ff;" class="w-24 h-6"></div> |
+| bg-blue-100 | background: #dbeafe | <div style="background: #dbeafe;" class="w-24 h-6"></div> |
+| bg-blue-200 | background: #bfdbfe | <div style="background: #bfdbfe;" class="w-24 h-6"></div> |
+| bg-blue-300 | background: #93c5fd | <div style="background: #93c5fd;" class="w-24 h-6"></div> |
+| bg-blue-400 | background: #60a5fa | <div style="background: #60a5fa;" class="w-24 h-6"></div> |
+| bg-blue-500 | background: #3b82f6 | <div style="background: #3b82f6;" class="w-24 h-6"></div> |
+| bg-blue-600 | background: #2563eb | <div style="background: #2563eb;" class="w-24 h-6"></div> |
+| bg-blue-700 | background: #1d4ed8 | <div style="background: #1d4ed8;" class="w-24 h-6"></div> |
+| bg-blue-800 | background: #1e40af | <div style="background: #1e40af;" class="w-24 h-6"></div> |
+| bg-blue-900 | background: #1e3a8a | <div style="background: #1e3a8a;" class="w-24 h-6"></div> |
+| bg-cyan-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-cyan-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-cyan-50 | background: #ecfeff | <div style="background: #ecfeff;" class="w-24 h-6"></div> |
+| bg-cyan-100 | background: #cffafe | <div style="background: #cffafe;" class="w-24 h-6"></div> |
+| bg-cyan-200 | background: #a5f3fc | <div style="background: #a5f3fc;" class="w-24 h-6"></div> |
+| bg-cyan-300 | background: #67e8f9 | <div style="background: #67e8f9;" class="w-24 h-6"></div> |
+| bg-cyan-400 | background: #22d3ee | <div style="background: #22d3ee;" class="w-24 h-6"></div> |
+| bg-cyan-500 | background: #06b6d4 | <div style="background: #06b6d4;" class="w-24 h-6"></div> |
+| bg-cyan-600 | background: #0891b2 | <div style="background: #0891b2;" class="w-24 h-6"></div> |
+| bg-cyan-700 | background: #0e7490 | <div style="background: #0e7490;" class="w-24 h-6"></div> |
+| bg-cyan-800 | background: #155e75 | <div style="background: #155e75;" class="w-24 h-6"></div> |
+| bg-cyan-900 | background: #164e63 | <div style="background: #164e63;" class="w-24 h-6"></div> |
+| bg-indigo-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-indigo-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-indigo-50 | background: #eef2ff | <div style="background: #eef2ff;" class="w-24 h-6"></div> |
+| bg-indigo-100 | background: #e0e7ff | <div style="background: #e0e7ff;" class="w-24 h-6"></div> |
+| bg-indigo-200 | background: #c7d2fe | <div style="background: #c7d2fe;" class="w-24 h-6"></div> |
+| bg-indigo-300 | background: #a5b4fc | <div style="background: #a5b4fc;" class="w-24 h-6"></div> |
+| bg-indigo-400 | background: #818cf8 | <div style="background: #818cf8;" class="w-24 h-6"></div> |
+| bg-indigo-500 | background: #6366f1 | <div style="background: #6366f1;" class="w-24 h-6"></div> |
+| bg-indigo-600 | background: #4f46e5 | <div style="background: #4f46e5;" class="w-24 h-6"></div> |
+| bg-indigo-700 | background: #4338ca | <div style="background: #4338ca;" class="w-24 h-6"></div> |
+| bg-indigo-800 | background: #3730a3 | <div style="background: #3730a3;" class="w-24 h-6"></div> |
+| bg-indigo-900 | background: #312e81 | <div style="background: #312e81;" class="w-24 h-6"></div> |
+| bg-purple-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-purple-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-purple-50 | background: #f5f3ff | <div style="background: #f5f3ff;" class="w-24 h-6"></div> |
+| bg-purple-100 | background: #ede9fe | <div style="background: #ede9fe;" class="w-24 h-6"></div> |
+| bg-purple-200 | background: #ddd6fe | <div style="background: #ddd6fe;" class="w-24 h-6"></div> |
+| bg-purple-300 | background: #c4b5fd | <div style="background: #c4b5fd;" class="w-24 h-6"></div> |
+| bg-purple-400 | background: #a78bfa | <div style="background: #a78bfa;" class="w-24 h-6"></div> |
+| bg-purple-500 | background: #8b5cf6 | <div style="background: #8b5cf6;" class="w-24 h-6"></div> |
+| bg-purple-600 | background: #7c3aed | <div style="background: #7c3aed;" class="w-24 h-6"></div> |
+| bg-purple-700 | background: #6d28d9 | <div style="background: #6d28d9;" class="w-24 h-6"></div> |
+| bg-purple-800 | background: #5b21b6 | <div style="background: #5b21b6;" class="w-24 h-6"></div> |
+| bg-purple-900 | background: #4c1d95 | <div style="background: #4c1d95;" class="w-24 h-6"></div> |
+| bg-pink-transparent | background: transparent | <div style="background: transparent;" class="w-24 h-6"></div> |
+| bg-pink-current | background: currentColor | <div style="background: currentColor;" class="w-24 h-6"></div> |
+| bg-pink-50 | background: #fdf2f8 | <div style="background: #fdf2f8;" class="w-24 h-6"></div> |
+| bg-pink-100 | background: #fce7f3 | <div style="background: #fce7f3;" class="w-24 h-6"></div> |
+| bg-pink-200 | background: #fbcfe8 | <div style="background: #fbcfe8;" class="w-24 h-6"></div> |
+| bg-pink-300 | background: #f9a8d4 | <div style="background: #f9a8d4;" class="w-24 h-6"></div> |
+| bg-pink-400 | background: #f472b6 | <div style="background: #f472b6;" class="w-24 h-6"></div> |
+| bg-pink-500 | background: #ec4899 | <div style="background: #ec4899;" class="w-24 h-6"></div> |
+| bg-pink-600 | background: #db2777 | <div style="background: #db2777;" class="w-24 h-6"></div> |
+| bg-pink-700 | background: #be185d | <div style="background: #be185d;" class="w-24 h-6"></div> |
+| bg-pink-800 | background: #9d174d | <div style="background: #9d174d;" class="w-24 h-6"></div> |
+| bg-pink-900 | background: #831843 | <div style="background: #831843;" class="w-24 h-6"></div> |
 
 还有 hover、active、focus、disabled 扩展，比如 `hover:bg-black`
+
+参考: [tailwindcss](https://tailwindcss.com/docs/background-color)
 
 */
 .bg-transparent {
@@ -170,7 +171,7 @@ title: 背景色
 }
 
 .bg-info {
-  background-color: #17a2b8;
+  background-color: #007bff;
 }
 
 .bg-warning {
@@ -658,7 +659,7 @@ title: 背景色
 }
 
 .hover\:bg-info:hover {
-  background-color: #17a2b8;
+  background-color: #007bff;
 }
 
 .hover\:bg-warning:hover {
@@ -1152,7 +1153,7 @@ title: 背景色
 
 .active\:bg-info.is-active,
 .active\:bg-info:active {
-  background-color: #17a2b8;
+  background-color: #007bff;
 }
 
 .active\:bg-warning.is-active,
@@ -1734,7 +1735,7 @@ title: 背景色
 }
 
 .focus\:bg-info:focus {
-  background-color: #17a2b8;
+  background-color: #007bff;
 }
 
 .focus\:bg-warning:focus {
@@ -2228,7 +2229,7 @@ title: 背景色
 
 .disabled\:bg-info.is-disabled,
 .disabled\:bg-info:disabled {
-  background-color: #17a2b8;
+  background-color: #007bff;
 }
 
 .disabled\:bg-warning.is-disabled,
@@ -2810,7 +2811,7 @@ title: 背景色
 }
 
 .group:hover .group-hover\:bg-info {
-  background-color: #17a2b8;
+  background-color: #007bff;
 }
 
 .group:hover .group-hover\:bg-warning {
@@ -3299,7 +3300,7 @@ title: 背景色
   }
 
   .m\:bg-info {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .m\:bg-warning {
@@ -3787,7 +3788,7 @@ title: 背景色
   }
 
   .m\:hover\:bg-info:hover {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .m\:hover\:bg-warning:hover {
@@ -4281,7 +4282,7 @@ title: 背景色
 
   .m\:active\:bg-info.is-active,
 .m\:active\:bg-info:active {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .m\:active\:bg-warning.is-active,
@@ -4863,7 +4864,7 @@ title: 背景色
   }
 
   .m\:focus\:bg-info:focus {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .m\:focus\:bg-warning:focus {
@@ -5357,7 +5358,7 @@ title: 背景色
 
   .m\:disabled\:bg-info.is-disabled,
 .m\:disabled\:bg-info:disabled {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .m\:disabled\:bg-warning.is-disabled,
@@ -5939,7 +5940,7 @@ title: 背景色
   }
 
   .group:hover .m\:group-hover\:bg-info {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .group:hover .m\:group-hover\:bg-warning {
@@ -6428,7 +6429,7 @@ title: 背景色
   }
 
   .pc\:bg-info {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .pc\:bg-warning {
@@ -6916,7 +6917,7 @@ title: 背景色
   }
 
   .pc\:hover\:bg-info:hover {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .pc\:hover\:bg-warning:hover {
@@ -7410,7 +7411,7 @@ title: 背景色
 
   .pc\:active\:bg-info.is-active,
 .pc\:active\:bg-info:active {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .pc\:active\:bg-warning.is-active,
@@ -7992,7 +7993,7 @@ title: 背景色
   }
 
   .pc\:focus\:bg-info:focus {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .pc\:focus\:bg-warning:focus {
@@ -8486,7 +8487,7 @@ title: 背景色
 
   .pc\:disabled\:bg-info.is-disabled,
 .pc\:disabled\:bg-info:disabled {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .pc\:disabled\:bg-warning.is-disabled,
@@ -9068,7 +9069,7 @@ title: 背景色
   }
 
   .group:hover .pc\:group-hover\:bg-info {
-    background-color: #17a2b8;
+    background-color: #007bff;
   }
 
   .group:hover .pc\:group-hover\:bg-warning {
@@ -9532,7 +9533,7 @@ title: 边框颜色
 | border-primary | border-color: #007bff |
 | border-secondary | border-color: #6c757d |
 | border-success | border-color: #28a745 |
-| border-info | border-color: #17a2b8 |
+| border-info | border-color: #007bff |
 | border-warning | border-color: #28a745 |
 | border-danger | border-color: #dc3545 |
 | border-light | border-color: #f8f9fa |
@@ -9653,7 +9654,7 @@ title: 边框颜色
 }
 
 .border-info {
-  border-color: #17a2b8;
+  border-color: #007bff;
 }
 
 .border-warning {
@@ -10053,7 +10054,7 @@ title: 边框颜色
 }
 
 .hover\:border-info:hover {
-  border-color: #17a2b8;
+  border-color: #007bff;
 }
 
 .hover\:border-warning:hover {
@@ -10459,7 +10460,7 @@ title: 边框颜色
 
 .active\:border-info.is-active,
 .active\:border-info:active {
-  border-color: #17a2b8;
+  border-color: #007bff;
 }
 
 .active\:border-warning.is-active,
@@ -10953,7 +10954,7 @@ title: 边框颜色
 }
 
 .focus\:border-info:focus {
-  border-color: #17a2b8;
+  border-color: #007bff;
 }
 
 .focus\:border-warning:focus {
@@ -11359,7 +11360,7 @@ title: 边框颜色
 
 .disabled\:border-info.is-disabled,
 .disabled\:border-info:disabled {
-  border-color: #17a2b8;
+  border-color: #007bff;
 }
 
 .disabled\:border-warning.is-disabled,
@@ -11853,7 +11854,7 @@ title: 边框颜色
 }
 
 .group:hover .group-hover\:border-info {
-  border-color: #17a2b8;
+  border-color: #007bff;
 }
 
 .group:hover .group-hover\:border-warning {
@@ -12254,7 +12255,7 @@ title: 边框颜色
   }
 
   .m\:border-info {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .m\:border-warning {
@@ -12654,7 +12655,7 @@ title: 边框颜色
   }
 
   .m\:hover\:border-info:hover {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .m\:hover\:border-warning:hover {
@@ -13060,7 +13061,7 @@ title: 边框颜色
 
   .m\:active\:border-info.is-active,
 .m\:active\:border-info:active {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .m\:active\:border-warning.is-active,
@@ -13554,7 +13555,7 @@ title: 边框颜色
   }
 
   .m\:focus\:border-info:focus {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .m\:focus\:border-warning:focus {
@@ -13960,7 +13961,7 @@ title: 边框颜色
 
   .m\:disabled\:border-info.is-disabled,
 .m\:disabled\:border-info:disabled {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .m\:disabled\:border-warning.is-disabled,
@@ -14454,7 +14455,7 @@ title: 边框颜色
   }
 
   .group:hover .m\:group-hover\:border-info {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .group:hover .m\:group-hover\:border-warning {
@@ -14855,7 +14856,7 @@ title: 边框颜色
   }
 
   .pc\:border-info {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .pc\:border-warning {
@@ -15255,7 +15256,7 @@ title: 边框颜色
   }
 
   .pc\:hover\:border-info:hover {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .pc\:hover\:border-warning:hover {
@@ -15661,7 +15662,7 @@ title: 边框颜色
 
   .pc\:active\:border-info.is-active,
 .pc\:active\:border-info:active {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .pc\:active\:border-warning.is-active,
@@ -16155,7 +16156,7 @@ title: 边框颜色
   }
 
   .pc\:focus\:border-info:focus {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .pc\:focus\:border-warning:focus {
@@ -16561,7 +16562,7 @@ title: 边框颜色
 
   .pc\:disabled\:border-info.is-disabled,
 .pc\:disabled\:border-info:disabled {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .pc\:disabled\:border-warning.is-disabled,
@@ -17055,7 +17056,7 @@ title: 边框颜色
   }
 
   .group:hover .pc\:group-hover\:border-info {
-    border-color: #17a2b8;
+    border-color: #007bff;
   }
 
   .group:hover .pc\:group-hover\:border-warning {
@@ -19179,7 +19180,7 @@ title: Display
 | grid               | display: grid;               |
 | inline-grid        | display: inline-grid;        |
 | contents           | display: contents;           |
-| hidden             | display: hidden;             |
+| hidden             | display: none;               |
 
 ## 用法
 css 相关的知识点就不介绍了，请参考：
@@ -33842,6 +33843,214 @@ title: Box Shadow
 
   .group:hover .pc\:group-hover\:shadow-none {
     box-shadow: none;
+  }
+}
+/*!markdown
+
+---
+title: Opacity
+---
+
+| Class       | Properties               |
+| ----------- | ------------------------ |
+| opacity-0 | opacity: 0 |
+| opacity-5 | opacity: 0.05 |
+| opacity-10 | opacity: 0.1 |
+| opacity-20 | opacity: 0.2 |
+| opacity-25 | opacity: 0.25 |
+| opacity-30 | opacity: 0.3 |
+| opacity-40 | opacity: 0.4 |
+| opacity-50 | opacity: 0.5 |
+| opacity-60 | opacity: 0.6 |
+| opacity-70 | opacity: 0.7 |
+| opacity-75 | opacity: 0.75 |
+| opacity-80 | opacity: 0.8 |
+| opacity-90 | opacity: 0.9 |
+| opacity-95 | opacity: 0.95 |
+| opacity-100 | opacity: 1 |
+
+
+*/
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-5 {
+  opacity: 0.05;
+}
+
+.opacity-10 {
+  opacity: 0.1;
+}
+
+.opacity-20 {
+  opacity: 0.2;
+}
+
+.opacity-25 {
+  opacity: 0.25;
+}
+
+.opacity-30 {
+  opacity: 0.3;
+}
+
+.opacity-40 {
+  opacity: 0.4;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-60 {
+  opacity: 0.6;
+}
+
+.opacity-70 {
+  opacity: 0.7;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.opacity-80 {
+  opacity: 0.8;
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+.opacity-95 {
+  opacity: 0.95;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .m\:opacity-0 {
+    opacity: 0;
+  }
+
+  .m\:opacity-5 {
+    opacity: 0.05;
+  }
+
+  .m\:opacity-10 {
+    opacity: 0.1;
+  }
+
+  .m\:opacity-20 {
+    opacity: 0.2;
+  }
+
+  .m\:opacity-25 {
+    opacity: 0.25;
+  }
+
+  .m\:opacity-30 {
+    opacity: 0.3;
+  }
+
+  .m\:opacity-40 {
+    opacity: 0.4;
+  }
+
+  .m\:opacity-50 {
+    opacity: 0.5;
+  }
+
+  .m\:opacity-60 {
+    opacity: 0.6;
+  }
+
+  .m\:opacity-70 {
+    opacity: 0.7;
+  }
+
+  .m\:opacity-75 {
+    opacity: 0.75;
+  }
+
+  .m\:opacity-80 {
+    opacity: 0.8;
+  }
+
+  .m\:opacity-90 {
+    opacity: 0.9;
+  }
+
+  .m\:opacity-95 {
+    opacity: 0.95;
+  }
+
+  .m\:opacity-100 {
+    opacity: 1;
+  }
+}
+@media (min-width: 769px) {
+  .pc\:opacity-0 {
+    opacity: 0;
+  }
+
+  .pc\:opacity-5 {
+    opacity: 0.05;
+  }
+
+  .pc\:opacity-10 {
+    opacity: 0.1;
+  }
+
+  .pc\:opacity-20 {
+    opacity: 0.2;
+  }
+
+  .pc\:opacity-25 {
+    opacity: 0.25;
+  }
+
+  .pc\:opacity-30 {
+    opacity: 0.3;
+  }
+
+  .pc\:opacity-40 {
+    opacity: 0.4;
+  }
+
+  .pc\:opacity-50 {
+    opacity: 0.5;
+  }
+
+  .pc\:opacity-60 {
+    opacity: 0.6;
+  }
+
+  .pc\:opacity-70 {
+    opacity: 0.7;
+  }
+
+  .pc\:opacity-75 {
+    opacity: 0.75;
+  }
+
+  .pc\:opacity-80 {
+    opacity: 0.8;
+  }
+
+  .pc\:opacity-90 {
+    opacity: 0.9;
+  }
+
+  .pc\:opacity-95 {
+    opacity: 0.95;
+  }
+
+  .pc\:opacity-100 {
+    opacity: 1;
   }
 }
 /*!markdown
@@ -48970,15 +49179,9 @@ title: Font Family
 
 | Class       | Properties               |
 | ----------- | ------------------------ |
-| font-sans | ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' |
+| font-sans | ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' |
 | font-serif | font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif |
-| font-mono | font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace |
-
-
-
+| font-mono | font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace |
 
 */
 .font-sans {
@@ -49728,110 +49931,110 @@ title: Text Align
 title: Text Color
 ---
 
-| Class       | Properties               |
-| ----------- | ------------------------ |
-| text-transparent | color: transparent |
-| text-current | color: currentColor |
-| text-black | color: #000 |
-| text-white | color: #fff |
-| text-primary | color: #007bff |
-| text-secondary | color: #6c757d |
-| text-success | color: #28a745 |
-| text-info | color: #17a2b8 |
-| text-warning | color: #fad733 |
-| text-danger | color: #dc3545 |
-| text-light | color: #f8f9fa |
-| text-dark | color: #343a40 |
-| text-gray-50 | color: #f9fafb |
-| text-gray-100 | color: #f3f4f6 |
-| text-gray-200 | color: #e5e7eb |
-| text-gray-300 | color: #d1d5db |
-| text-gray-400 | color: #9ca3af |
-| text-gray-500 | color: #6b7280 |
-| text-gray-600 | color: #4b5563 |
-| text-gray-700 | color: #374151 |
-| text-gray-800 | color: #1f2937 |
-| text-gray-900 | color: #111827 |
-| text-red-50 | color: #fef2f2 |
-| text-red-100 | color: #fee2e2 |
-| text-red-200 | color: #fecaca |
-| text-red-300 | color: #fca5a5 |
-| text-red-400 | color: #f87171 |
-| text-red-500 | color: #ef4444 |
-| text-red-600 | color: #dc2626 |
-| text-red-700 | color: #b91c1c |
-| text-red-800 | color: #991b1b |
-| text-red-900 | color: #7f1d1d |
-| text-yellow-50 | color: #fffbeb |
-| text-yellow-100 | color: #fef3c7 |
-| text-yellow-200 | color: #fde68a |
-| text-yellow-300 | color: #fcd34d |
-| text-yellow-400 | color: #fbbf24 |
-| text-yellow-500 | color: #f59e0b |
-| text-yellow-600 | color: #d97706 |
-| text-yellow-700 | color: #b45309 |
-| text-yellow-800 | color: #92400e |
-| text-yellow-900 | color: #78350f |
-| text-green-50 | color: #ecfdf5 |
-| text-green-100 | color: #d1fae5 |
-| text-green-200 | color: #a7f3d0 |
-| text-green-300 | color: #6ee7b7 |
-| text-green-400 | color: #34d399 |
-| text-green-500 | color: #10b981 |
-| text-green-600 | color: #059669 |
-| text-green-700 | color: #047857 |
-| text-green-800 | color: #065f46 |
-| text-green-900 | color: #064e3b |
-| text-blue-50 | color: #eff6ff |
-| text-blue-100 | color: #dbeafe |
-| text-blue-200 | color: #bfdbfe |
-| text-blue-300 | color: #93c5fd |
-| text-blue-400 | color: #60a5fa |
-| text-blue-500 | color: #3b82f6 |
-| text-blue-600 | color: #2563eb |
-| text-blue-700 | color: #1d4ed8 |
-| text-blue-800 | color: #1e40af |
-| text-blue-900 | color: #1e3a8a |
-| text-cyan-50 | color: #ecfeff |
-| text-cyan-100 | color: #cffafe |
-| text-cyan-200 | color: #a5f3fc |
-| text-cyan-300 | color: #67e8f9 |
-| text-cyan-400 | color: #22d3ee |
-| text-cyan-500 | color: #06b6d4 |
-| text-cyan-600 | color: #0891b2 |
-| text-cyan-700 | color: #0e7490 |
-| text-cyan-800 | color: #155e75 |
-| text-cyan-900 | color: #164e63 |
-| text-indigo-50 | color: #eef2ff |
-| text-indigo-100 | color: #e0e7ff |
-| text-indigo-200 | color: #c7d2fe |
-| text-indigo-300 | color: #a5b4fc |
-| text-indigo-400 | color: #818cf8 |
-| text-indigo-500 | color: #6366f1 |
-| text-indigo-600 | color: #4f46e5 |
-| text-indigo-700 | color: #4338ca |
-| text-indigo-800 | color: #3730a3 |
-| text-indigo-900 | color: #312e81 |
-| text-purple-50 | color: #f5f3ff |
-| text-purple-100 | color: #ede9fe |
-| text-purple-200 | color: #ddd6fe |
-| text-purple-300 | color: #c4b5fd |
-| text-purple-400 | color: #a78bfa |
-| text-purple-500 | color: #8b5cf6 |
-| text-purple-600 | color: #7c3aed |
-| text-purple-700 | color: #6d28d9 |
-| text-purple-800 | color: #5b21b6 |
-| text-purple-900 | color: #4c1d95 |
-| text-pink-50 | color: #fdf2f8 |
-| text-pink-100 | color: #fce7f3 |
-| text-pink-200 | color: #fbcfe8 |
-| text-pink-300 | color: #f9a8d4 |
-| text-pink-400 | color: #f472b6 |
-| text-pink-500 | color: #ec4899 |
-| text-pink-600 | color: #db2777 |
-| text-pink-700 | color: #be185d |
-| text-pink-800 | color: #9d174d |
-| text-pink-900 | color: #831843 |
+| Class       | Properties               | 示例效果               |
+| ----------- | ------------------------ | ------------------------ |
+| text-transparent | color: transparent | <span style="color: #transparent">AaBbCcDd</span>|
+| text-current | color: currentColor | <span style="color: #currentColor">AaBbCcDd</span>|
+| text-black | color: #000 | <span style="color: #000">AaBbCcDd</span>|
+| text-white | color: #fff | <span style="color: #fff">AaBbCcDd</span>|
+| text-primary | color: #007bff | <span style="color: #007bff">AaBbCcDd</span>|
+| text-secondary | color: #6c757d | <span style="color: #6c757d">AaBbCcDd</span>|
+| text-success | color: #28a745 | <span style="color: #28a745">AaBbCcDd</span>|
+| text-info | color: #007bff | <span style="color: #007bff">AaBbCcDd</span>|
+| text-warning | color: #fad733 | <span style="color: #fad733">AaBbCcDd</span>|
+| text-danger | color: #dc3545 | <span style="color: #dc3545">AaBbCcDd</span>|
+| text-light | color: #f8f9fa | <span style="color: #f8f9fa">AaBbCcDd</span>|
+| text-dark | color: #343a40 | <span style="color: #343a40">AaBbCcDd</span>|
+| text-gray-50 | color: #f9fafb | <span style="color: #f9fafb">AaBbCcDd</span>|
+| text-gray-100 | color: #f3f4f6 | <span style="color: #f3f4f6">AaBbCcDd</span>|
+| text-gray-200 | color: #e5e7eb | <span style="color: #e5e7eb">AaBbCcDd</span>|
+| text-gray-300 | color: #d1d5db | <span style="color: #d1d5db">AaBbCcDd</span>|
+| text-gray-400 | color: #9ca3af | <span style="color: #9ca3af">AaBbCcDd</span>|
+| text-gray-500 | color: #6b7280 | <span style="color: #6b7280">AaBbCcDd</span>|
+| text-gray-600 | color: #4b5563 | <span style="color: #4b5563">AaBbCcDd</span>|
+| text-gray-700 | color: #374151 | <span style="color: #374151">AaBbCcDd</span>|
+| text-gray-800 | color: #1f2937 | <span style="color: #1f2937">AaBbCcDd</span>|
+| text-gray-900 | color: #111827 | <span style="color: #111827">AaBbCcDd</span>|
+| text-red-50 | color: #fef2f2 | <span style="color: #fef2f2">AaBbCcDd</span>|
+| text-red-100 | color: #fee2e2 | <span style="color: #fee2e2">AaBbCcDd</span>|
+| text-red-200 | color: #fecaca | <span style="color: #fecaca">AaBbCcDd</span>|
+| text-red-300 | color: #fca5a5 | <span style="color: #fca5a5">AaBbCcDd</span>|
+| text-red-400 | color: #f87171 | <span style="color: #f87171">AaBbCcDd</span>|
+| text-red-500 | color: #ef4444 | <span style="color: #ef4444">AaBbCcDd</span>|
+| text-red-600 | color: #dc2626 | <span style="color: #dc2626">AaBbCcDd</span>|
+| text-red-700 | color: #b91c1c | <span style="color: #b91c1c">AaBbCcDd</span>|
+| text-red-800 | color: #991b1b | <span style="color: #991b1b">AaBbCcDd</span>|
+| text-red-900 | color: #7f1d1d | <span style="color: #7f1d1d">AaBbCcDd</span>|
+| text-yellow-50 | color: #fffbeb | <span style="color: #fffbeb">AaBbCcDd</span>|
+| text-yellow-100 | color: #fef3c7 | <span style="color: #fef3c7">AaBbCcDd</span>|
+| text-yellow-200 | color: #fde68a | <span style="color: #fde68a">AaBbCcDd</span>|
+| text-yellow-300 | color: #fcd34d | <span style="color: #fcd34d">AaBbCcDd</span>|
+| text-yellow-400 | color: #fbbf24 | <span style="color: #fbbf24">AaBbCcDd</span>|
+| text-yellow-500 | color: #f59e0b | <span style="color: #f59e0b">AaBbCcDd</span>|
+| text-yellow-600 | color: #d97706 | <span style="color: #d97706">AaBbCcDd</span>|
+| text-yellow-700 | color: #b45309 | <span style="color: #b45309">AaBbCcDd</span>|
+| text-yellow-800 | color: #92400e | <span style="color: #92400e">AaBbCcDd</span>|
+| text-yellow-900 | color: #78350f | <span style="color: #78350f">AaBbCcDd</span>|
+| text-green-50 | color: #ecfdf5 | <span style="color: #ecfdf5">AaBbCcDd</span>|
+| text-green-100 | color: #d1fae5 | <span style="color: #d1fae5">AaBbCcDd</span>|
+| text-green-200 | color: #a7f3d0 | <span style="color: #a7f3d0">AaBbCcDd</span>|
+| text-green-300 | color: #6ee7b7 | <span style="color: #6ee7b7">AaBbCcDd</span>|
+| text-green-400 | color: #34d399 | <span style="color: #34d399">AaBbCcDd</span>|
+| text-green-500 | color: #10b981 | <span style="color: #10b981">AaBbCcDd</span>|
+| text-green-600 | color: #059669 | <span style="color: #059669">AaBbCcDd</span>|
+| text-green-700 | color: #047857 | <span style="color: #047857">AaBbCcDd</span>|
+| text-green-800 | color: #065f46 | <span style="color: #065f46">AaBbCcDd</span>|
+| text-green-900 | color: #064e3b | <span style="color: #064e3b">AaBbCcDd</span>|
+| text-blue-50 | color: #eff6ff | <span style="color: #eff6ff">AaBbCcDd</span>|
+| text-blue-100 | color: #dbeafe | <span style="color: #dbeafe">AaBbCcDd</span>|
+| text-blue-200 | color: #bfdbfe | <span style="color: #bfdbfe">AaBbCcDd</span>|
+| text-blue-300 | color: #93c5fd | <span style="color: #93c5fd">AaBbCcDd</span>|
+| text-blue-400 | color: #60a5fa | <span style="color: #60a5fa">AaBbCcDd</span>|
+| text-blue-500 | color: #3b82f6 | <span style="color: #3b82f6">AaBbCcDd</span>|
+| text-blue-600 | color: #2563eb | <span style="color: #2563eb">AaBbCcDd</span>|
+| text-blue-700 | color: #1d4ed8 | <span style="color: #1d4ed8">AaBbCcDd</span>|
+| text-blue-800 | color: #1e40af | <span style="color: #1e40af">AaBbCcDd</span>|
+| text-blue-900 | color: #1e3a8a | <span style="color: #1e3a8a">AaBbCcDd</span>|
+| text-cyan-50 | color: #ecfeff | <span style="color: #ecfeff">AaBbCcDd</span>|
+| text-cyan-100 | color: #cffafe | <span style="color: #cffafe">AaBbCcDd</span>|
+| text-cyan-200 | color: #a5f3fc | <span style="color: #a5f3fc">AaBbCcDd</span>|
+| text-cyan-300 | color: #67e8f9 | <span style="color: #67e8f9">AaBbCcDd</span>|
+| text-cyan-400 | color: #22d3ee | <span style="color: #22d3ee">AaBbCcDd</span>|
+| text-cyan-500 | color: #06b6d4 | <span style="color: #06b6d4">AaBbCcDd</span>|
+| text-cyan-600 | color: #0891b2 | <span style="color: #0891b2">AaBbCcDd</span>|
+| text-cyan-700 | color: #0e7490 | <span style="color: #0e7490">AaBbCcDd</span>|
+| text-cyan-800 | color: #155e75 | <span style="color: #155e75">AaBbCcDd</span>|
+| text-cyan-900 | color: #164e63 | <span style="color: #164e63">AaBbCcDd</span>|
+| text-indigo-50 | color: #eef2ff | <span style="color: #eef2ff">AaBbCcDd</span>|
+| text-indigo-100 | color: #e0e7ff | <span style="color: #e0e7ff">AaBbCcDd</span>|
+| text-indigo-200 | color: #c7d2fe | <span style="color: #c7d2fe">AaBbCcDd</span>|
+| text-indigo-300 | color: #a5b4fc | <span style="color: #a5b4fc">AaBbCcDd</span>|
+| text-indigo-400 | color: #818cf8 | <span style="color: #818cf8">AaBbCcDd</span>|
+| text-indigo-500 | color: #6366f1 | <span style="color: #6366f1">AaBbCcDd</span>|
+| text-indigo-600 | color: #4f46e5 | <span style="color: #4f46e5">AaBbCcDd</span>|
+| text-indigo-700 | color: #4338ca | <span style="color: #4338ca">AaBbCcDd</span>|
+| text-indigo-800 | color: #3730a3 | <span style="color: #3730a3">AaBbCcDd</span>|
+| text-indigo-900 | color: #312e81 | <span style="color: #312e81">AaBbCcDd</span>|
+| text-purple-50 | color: #f5f3ff | <span style="color: #f5f3ff">AaBbCcDd</span>|
+| text-purple-100 | color: #ede9fe | <span style="color: #ede9fe">AaBbCcDd</span>|
+| text-purple-200 | color: #ddd6fe | <span style="color: #ddd6fe">AaBbCcDd</span>|
+| text-purple-300 | color: #c4b5fd | <span style="color: #c4b5fd">AaBbCcDd</span>|
+| text-purple-400 | color: #a78bfa | <span style="color: #a78bfa">AaBbCcDd</span>|
+| text-purple-500 | color: #8b5cf6 | <span style="color: #8b5cf6">AaBbCcDd</span>|
+| text-purple-600 | color: #7c3aed | <span style="color: #7c3aed">AaBbCcDd</span>|
+| text-purple-700 | color: #6d28d9 | <span style="color: #6d28d9">AaBbCcDd</span>|
+| text-purple-800 | color: #5b21b6 | <span style="color: #5b21b6">AaBbCcDd</span>|
+| text-purple-900 | color: #4c1d95 | <span style="color: #4c1d95">AaBbCcDd</span>|
+| text-pink-50 | color: #fdf2f8 | <span style="color: #fdf2f8">AaBbCcDd</span>|
+| text-pink-100 | color: #fce7f3 | <span style="color: #fce7f3">AaBbCcDd</span>|
+| text-pink-200 | color: #fbcfe8 | <span style="color: #fbcfe8">AaBbCcDd</span>|
+| text-pink-300 | color: #f9a8d4 | <span style="color: #f9a8d4">AaBbCcDd</span>|
+| text-pink-400 | color: #f472b6 | <span style="color: #f472b6">AaBbCcDd</span>|
+| text-pink-500 | color: #ec4899 | <span style="color: #ec4899">AaBbCcDd</span>|
+| text-pink-600 | color: #db2777 | <span style="color: #db2777">AaBbCcDd</span>|
+| text-pink-700 | color: #be185d | <span style="color: #be185d">AaBbCcDd</span>|
+| text-pink-800 | color: #9d174d | <span style="color: #9d174d">AaBbCcDd</span>|
+| text-pink-900 | color: #831843 | <span style="color: #831843">AaBbCcDd</span>|
 
 还有 hover、active、focus、disabled 扩展，比如 `hover:text-black`
 
@@ -49865,7 +50068,7 @@ title: Text Color
 }
 
 .text-info {
-  color: #17a2b8;
+  color: #007bff;
 }
 
 .text-warning {
@@ -50273,7 +50476,7 @@ title: Text Color
 }
 
 .hover\:text-info:hover {
-  color: #17a2b8;
+  color: #007bff;
 }
 
 .hover\:text-warning:hover {
@@ -50687,7 +50890,7 @@ title: Text Color
 
 .active\:text-info.is-active,
 .active\:text-info:active {
-  color: #17a2b8;
+  color: #007bff;
 }
 
 .active\:text-warning.is-active,
@@ -51189,7 +51392,7 @@ title: Text Color
 }
 
 .focus\:text-info:focus {
-  color: #17a2b8;
+  color: #007bff;
 }
 
 .focus\:text-warning:focus {
@@ -51603,7 +51806,7 @@ title: Text Color
 
 .disabled\:text-info.is-disabled,
 .disabled\:text-info:disabled {
-  color: #17a2b8;
+  color: #007bff;
 }
 
 .disabled\:text-warning.is-disabled,
@@ -52105,7 +52308,7 @@ title: Text Color
 }
 
 .group:hover .group-hover\:text-info {
-  color: #17a2b8;
+  color: #007bff;
 }
 
 .group:hover .group-hover\:text-warning {
@@ -52514,7 +52717,7 @@ title: Text Color
   }
 
   .m\:text-info {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .m\:text-warning {
@@ -52922,7 +53125,7 @@ title: Text Color
   }
 
   .m\:hover\:text-info:hover {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .m\:hover\:text-warning:hover {
@@ -53336,7 +53539,7 @@ title: Text Color
 
   .m\:active\:text-info.is-active,
 .m\:active\:text-info:active {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .m\:active\:text-warning.is-active,
@@ -53838,7 +54041,7 @@ title: Text Color
   }
 
   .m\:focus\:text-info:focus {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .m\:focus\:text-warning:focus {
@@ -54252,7 +54455,7 @@ title: Text Color
 
   .m\:disabled\:text-info.is-disabled,
 .m\:disabled\:text-info:disabled {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .m\:disabled\:text-warning.is-disabled,
@@ -54754,7 +54957,7 @@ title: Text Color
   }
 
   .group:hover .m\:group-hover\:text-info {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .group:hover .m\:group-hover\:text-warning {
@@ -55163,7 +55366,7 @@ title: Text Color
   }
 
   .pc\:text-info {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .pc\:text-warning {
@@ -55571,7 +55774,7 @@ title: Text Color
   }
 
   .pc\:hover\:text-info:hover {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .pc\:hover\:text-warning:hover {
@@ -55985,7 +56188,7 @@ title: Text Color
 
   .pc\:active\:text-info.is-active,
 .pc\:active\:text-info:active {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .pc\:active\:text-warning.is-active,
@@ -56487,7 +56690,7 @@ title: Text Color
   }
 
   .pc\:focus\:text-info:focus {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .pc\:focus\:text-warning:focus {
@@ -56901,7 +57104,7 @@ title: Text Color
 
   .pc\:disabled\:text-info.is-disabled,
 .pc\:disabled\:text-info:disabled {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .pc\:disabled\:text-warning.is-disabled,
@@ -57403,7 +57606,7 @@ title: Text Color
   }
 
   .group:hover .pc\:group-hover\:text-info {
-    color: #17a2b8;
+    color: #007bff;
   }
 
   .group:hover .pc\:group-hover\:text-warning {

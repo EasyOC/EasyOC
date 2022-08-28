@@ -1,8 +1,9 @@
 ﻿using EasyOC.Core.Application;
-using EasyOC.DynamicWebApi.Attributes;
+using EasyOC.Core.Indexes;
 using EasyOC.CSharpScript.Services;
-using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Indexing;
 using EasyOC.DynamicTypeIndex.Models;
+using EasyOC.DynamicWebApi.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.DisplayManagement.Notify;
+using OrchardCore.Environment.Shell;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Environment.Shell.Scope;
 using OrchardCore.Shells.Database.Configuration;
@@ -28,14 +30,15 @@ namespace EasyOC.DynamicTypeIndex.Service
     {
         public const string DefaultTableNameTemplate = "{0}DIndex_{1}";
         public const string DefaultEntityNameTemplate = "{0}DIndex";
-        public const string DefaultNamespace = "EasyOC.DynamicTypeIndex.IndexModels";
-        private readonly Dictionary<string, Type> _typesCache = new Dictionary<string, Type>();
+        public const string DefaultNamespaceTemplate = "EasyOC.DynamicTypeIndex.{0}.IndexModels";
+        public string DefaultNamespace => string.Format(DefaultEntityNameTemplate, _tanentName);
 
         private readonly ICSharpScriptProvider _cSharpScriptProvider;
         private readonly ConcurrentDictionary<string, Task<DynamicIndexConfigModel>> _cachedTypeConfigurations;
+        private readonly ConcurrentDictionary<string, Task<Type>> _typesCache;
         private readonly IStore _store;
         private readonly IShellConfiguration _shellConfiguration;
-
+        private readonly string _tanentName;
         public string GetDynamicIndexTableName(string typeName)
         {
             var shellConfig = ShellScope.Current.ServiceProvider.GetRequiredService<IShellConfiguration>();
@@ -44,14 +47,15 @@ namespace EasyOC.DynamicTypeIndex.Service
         }
 
         public DynamicIndexAppService(IStore store, IShellConfiguration shellConfiguration, IMemoryCache memoryCache,
+            ShellSettings shellsSettings,
             ICSharpScriptProvider cSharpScriptProvider)
         {
             _store = store;
             _shellConfiguration = shellConfiguration;
+            _tanentName = shellsSettings.Name; 
             _cSharpScriptProvider = cSharpScriptProvider;
-            //_cachedTypeConfigurations = _memoryCache.GetOrCreate("CachedTypeConfigurations", entry => new ConcurrentDictionary<string, DynamicIndexCachePakage>());
-            _cachedTypeConfigurations = memoryCache.GetOrCreate("CachedTypeConfigurations",
-                entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
+            _cachedTypeConfigurations = memoryCache.GetOrCreate("CachedTypeConfigurations", entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
+            _typesCache = memoryCache.GetOrCreate("CachedTypeDefs", entry => new ConcurrentDictionary<string, Task<Type>>());
         }
 
         /// <summary>
@@ -67,7 +71,6 @@ namespace EasyOC.DynamicTypeIndex.Service
             {
                 config = GetDefaultConfig(typeName);
             }
-
             FillEntityInfo(config);
 
             return config;
@@ -76,43 +79,35 @@ namespace EasyOC.DynamicTypeIndex.Service
         [IgnoreWebApiMethod]
         public async Task<Type> GetDynamicIndexTypeAsync(string typeFullName, bool withCache = true)
         {
-            var config = await GetDynamicIndexConfigAsync(typeFullName);
+            var config = await GetDynamicIndexConfigAsync(typeFullName, withCache);
             if (config == null)
             {
                 return null;
             }
+            var indexType = await GetDynamicIndexTypeAsync(config.EntityInfo, withCache);
 
-            if (withCache)
-            {
-                if (_typesCache.ContainsKey(typeFullName))
-                {
-                    return _typesCache[typeFullName];
-                }
-            }
-
-            var indexType = await GetDynamicIndexTypeAsync(config.EntityInfo);
-            _typesCache[typeFullName] = indexType;
             return indexType;
         }
 
         [IgnoreWebApiMethod]
-        public async Task<Type> GetDynamicIndexTypeAsync(DynamicIndexEntityInfo entityInfo)
+        public async Task<Type> GetDynamicIndexTypeAsync(DynamicIndexEntityInfo entityInfo, bool withCache = true)
         {
-            IEnumerable<string> usings = new List<string>()
+            var getTypeFn = async () =>
             {
-                "EasyOC.Core.Indexes", "FreeSql.DataAnnotations", "EasyOC.DynamicTypeIndex.Index"
+                var type = await _cSharpScriptProvider.CreateTypeAsync(entityInfo.FullName, entityInfo.EntityContent);
+                return type;
             };
-
-            //Create dynamic classes from the script
-            var type = await _cSharpScriptProvider
-                .CreateTypeAsync(entityInfo.FullName,
-                    entityInfo.EntityContent,
-                    usings
-                );
-            return type;
+            if (withCache)
+            {
+                return await _typesCache.GetOrAdd(entityInfo.FullName, async (tName) =>
+                {
+                    return await getTypeFn();
+                });
+            }
+            return await getTypeFn();
         }
 
-        public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = false)
+        public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = true)
         {
             if (typeName.IsNullOrWhiteSpace())
             {
@@ -211,8 +206,7 @@ namespace EasyOC.DynamicTypeIndex.Service
             // ReSharper disable once StringLiteralTypo
             var template = $@"
 using EasyOC.Core.Indexes;
-using FreeSql.DataAnnotations;
-using EasyOC.DynamicTypeIndex.Index;
+using FreeSql.DataAnnotations; 
 // 此代码由程序生成，复制到代码文件后请更新命名空间，
 // 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace {entityInfo.NameSpace}
@@ -227,7 +221,6 @@ namespace {entityInfo.NameSpace}
 }}
 ";
             entityInfo.EntityContent = template;
-            Console.WriteLine(template);
 
             return entityInfo;
         }
@@ -235,7 +228,7 @@ namespace {entityInfo.NameSpace}
         [IgnoreWebApiMethod]
         public async Task<Type> SyncTableStructAsync(DynamicIndexEntityInfo entityInfo)
         {
-            var type = await GetDynamicIndexTypeAsync(entityInfo);
+            var type = await GetDynamicIndexTypeAsync(entityInfo, false);
             //Sync Table Structure
             Fsql.CodeFirst.SyncStructure(type);
             return type;
@@ -281,15 +274,16 @@ namespace {entityInfo.NameSpace}
             var sucessed = await ContentManager.CreateOrUpdateAndPublishAsync(doc, isCreate,
                 new PublishOptions
                 {
-                    HtmlLocalizer = H, Notifier = Notifier
+                    HtmlLocalizer = H,
+                    Notifier = Notifier
                 });
 
             if (sucessed)
             {
                 model.ContentItemId = doc.ContentItemId;
                 await YesSession.SaveChangesAsync();
+                var fullName = model.EntityInfo.FullName;
                 await RebuildIndexData(model);
-                _cachedTypeConfigurations[model.TypeName] = Task.FromResult(model);
                 return model;
             }
             else
@@ -369,7 +363,8 @@ namespace {entityInfo.NameSpace}
         {
             var config = new DynamicIndexConfigModel()
             {
-                TypeName = typeName, TableName = GetDynamicIndexTableName(typeName)
+                TypeName = typeName,
+                TableName = GetDynamicIndexTableName(typeName)
             };
             var typeDef = ContentDefinitionManager.GetTypeDefinition(typeName);
             if (typeDef is null)
@@ -461,7 +456,7 @@ namespace {entityInfo.NameSpace}
                 typeDefs.Add(model.EntityInfo.EntityContent);
             }
 
-            var builder = await _cSharpScriptProvider.GetAssemblyCSharpBuilderAsync(withOutCache);
+            var builder = _cSharpScriptProvider.GetAssemblyCSharpBuilder(withOutCache);
 
             HashSet<string> usings = new HashSet<string>();
             usings.Add("EasyOC.Core.Indexes");
@@ -479,5 +474,6 @@ namespace {entityInfo.NameSpace}
 
             return builder;
         }
+
     }
 }

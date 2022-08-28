@@ -184,6 +184,7 @@ amisRequire('amis').registerLocale('de-DE', {
   'saveFailed': 'Fehler beim Speichern',
   'saveSuccess': 'Erfolgreich gespeichert',
   'search': 'Suchen',
+  'searchHistory': 'Suchverlauf',
   'searchResult': 'Suchergebnis',
   'Checkboxes.selectAll': 'Alle auswählen/abwählen',
   'Select.checkAll': 'Alle markieren',

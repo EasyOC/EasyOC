@@ -7,6 +7,6 @@ using static EasyOC.Constants.ManifestConstants;
     Version = CurrentVersion,
     Name = "EasyOC.DynamicTypeIndex",
     Description = "EasyOC.DynamicTypeIndex",
-    Dependencies =new[] { "EasyOC.ContentExtentions","EasyOC.CSharpScript"},
+    Dependencies =new[] { "EasyOC.ContentExtensions","EasyOC.CSharpScript"},
     Category = "Content Management"
 )]

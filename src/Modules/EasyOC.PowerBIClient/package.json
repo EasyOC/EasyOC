@@ -1,0 +1,14 @@
+{
+  "name": "easyoc.powerbiclient",
+  "version": "1.0.0",
+  "description": "PowerBI-cliet lib",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yanzhong.han@jizhouosft.com",
+  "license": "ISC",
+  "dependencies": {
+    "powerbi-client": "^2.21.1"
+  }
+}

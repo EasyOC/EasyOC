@@ -6,6 +6,10 @@ using static EasyOC.Constants.ManifestConstants;
     Website = Website,
     Version = CurrentVersion,
     Description = "EasyOC.FreeSql",
+    Dependencies = new[]
+    {
+        "EasyOC.DynamicTypeIndex"
+    },
     Name = "EasyOC.FreeSql",
     Category = "Content Management"
 )]

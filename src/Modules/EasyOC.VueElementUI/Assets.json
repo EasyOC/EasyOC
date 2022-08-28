@@ -1,42 +1,4 @@
 [
-  {
-    "copy": true,
-    "inputs": [
-      "node_modules/vue/dist/vue.js"
-    ],
-    "output": "wwwroot/Scripts/vue.js"
-  },
-  {
-    "copy": true,
-    "inputs": [
-      "node_modules/vue/dist/vue.min.js"
-    ],
-    "output": "wwwroot/Scripts/vue.min.js"
-  },
-  {
-    "copy": true,
-    "inputs": [
-      "node_modules/bootstrap-vue/dist/bootstrap-vue.js"
-    ],
-    "output": "wwwroot/Scripts/bootstrap-vue.js"
-  },
-  {
-    "copy": true,
-    "inputs": [
-      "node_modules/bootstrap-vue/dist/bootstrap-vue.mini.js"
-    ],
-    "output": "wwwroot/Scripts/bootstrap-vue.mini.js"
-  },
-  {
-    "vue": true,
-    "file": "Assets/src/App.js",
-    "output": "wwwroot/dist",
-    "name": "vuetify-theme"
-  },
-  {
-    "vue": true,
-    "file": "Assets/src/header_scripts.js",
-    "output": "wwwroot/header_scripts",
-    "name": "head"
-  }
+
+
 ]

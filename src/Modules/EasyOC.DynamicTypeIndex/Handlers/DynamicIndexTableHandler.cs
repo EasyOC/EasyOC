@@ -1,7 +1,7 @@
 ﻿using System;
 using OrchardCore.ContentManagement.Handlers;
 using System.Threading.Tasks;
-using EasyOC.ContentExtentions.Handlers;
+using EasyOC.ContentExtensions.Handlers;
 using EasyOC.DynamicTypeIndex.Service;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,11 +44,10 @@ namespace EasyOC.DynamicTypeIndex.Handlers
         public async Task AfterImportAsync(IEnumerable<ImportContentContext> contentItems)
         {
             var contentTypes = contentItems.Select(x => x.ContentItem.ContentType).Distinct();
-
             var totalUpdated = new Dictionary<string, int>();
             foreach (var typeName in contentTypes)
             {
-                var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(typeName);
+                var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(typeName, true);
                 if (config != null)
                 {
                     var contentQuery = contentItems.Where(x => x.ContentItem.ContentType == typeName)

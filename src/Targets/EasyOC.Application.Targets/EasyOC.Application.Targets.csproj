@@ -10,6 +10,7 @@
     <RootNamespace>EasyOC.OrchardCore.Application.Targets</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\EasyOC.PowerBIClient\EasyOC.PowerBIClient.csproj" />
     <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Amis\EasyOC.Amis.csproj" PrivateAssets="none" />
@@ -17,7 +18,7 @@
     <ProjectReference Include="..\..\Modules\EasyOC.AntdAdmin\EasyOC.AntdAdmin.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.AuditTrail\EasyOC.AuditTrail.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.FreeSql\EasyOC.FreeSql.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Modules\EasyOC.ContentExtentions\EasyOC.ContentExtentions.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\..\Modules\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.OpenApi\EasyOC.OpenApi.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Scripting\EasyOC.Scripting.csproj" PrivateAssets="none" />

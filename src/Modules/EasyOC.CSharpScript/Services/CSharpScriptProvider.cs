@@ -4,19 +4,26 @@ using System.Reflection;
 using EasyOC;
 using Natasha.CSharp;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace EasyOC.CSharpScript.Services
 {
     public class CSharpScriptProvider : ICSharpScriptProvider
     {
         private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
-        private AssemblyCSharpBuilder _builder;
+        private readonly ILogger _logger;
 
-        public virtual Task<AssemblyCSharpBuilder> GetAssemblyCSharpBuilderAsync(
+        public CSharpScriptProvider(ILogger<CSharpScriptProvider> logger)
+        {
+            _logger = logger;
+        }
+
+        public virtual AssemblyCSharpBuilder GetAssemblyCSharpBuilder(
             bool useGlobalSharedBuilder = true)
         {
-            NatashaInitializer.Preheating();
-            return Task.FromResult(new AssemblyCSharpBuilder());
+            var builder = new AssemblyCSharpBuilder();
+            DefaultUsing.Remove("<CppImplementationDetails>");
+            return builder;
         }
 
         public virtual async Task<Type> GetOrCreateAsync(string fullName, string cSharpScripts,
@@ -28,8 +35,7 @@ namespace EasyOC.CSharpScript.Services
             }
             else
             {
-                var builder = await GetAssemblyCSharpBuilderAsync();
-                builder.Domain = DomainManagement.CurrentDomain;
+                var builder = GetAssemblyCSharpBuilder();
                 if (usings != null)
                     builder.Domain.UsingRecorder.Using(usings);
                 builder.Add(cSharpScripts);
@@ -53,7 +59,7 @@ namespace EasyOC.CSharpScript.Services
         {
             try
             {
-                var builder = await GetAssemblyCSharpBuilderAsync(false);
+                var builder = GetAssemblyCSharpBuilder();
                 //只包含命名空间，不含 using  xxx.xxx.xxx ；
                 //如： System.Text
                 if (usings != null)
@@ -64,7 +70,6 @@ namespace EasyOC.CSharpScript.Services
                 var asm = builder.GetAssembly();
 
                 var type = asm.GetType(fullName);
-
                 if (_types.ContainsKey(fullName))
                 {
                     _types[fullName] = type;
@@ -78,8 +83,9 @@ namespace EasyOC.CSharpScript.Services
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "脚本编译错误,{error}", e.Message);
                 Console.WriteLine(e);
-                throw;
+                throw new Exception("模型映射解析错误");
             }
         }
     }

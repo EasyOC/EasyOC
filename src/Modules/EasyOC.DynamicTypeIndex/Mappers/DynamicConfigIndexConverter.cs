@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using EasyOC.DynamicTypeIndex.Index;
+using EasyOC.DynamicTypeIndex.Indexing;
 using EasyOC.DynamicTypeIndex.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyOC.DynamicTypeIndex.Mappers
 {
@@ -41,7 +36,7 @@ namespace EasyOC.DynamicTypeIndex.Mappers
     //{
     //    public ContentItem Convert(DynamicIndexConfigModel sourceMember, ResolutionContext context)
     //    {
-            
+
     //        var part = sourceMember.As<DynamicIndexConfigSetting>();
     //        if (part == null)
     //        {
