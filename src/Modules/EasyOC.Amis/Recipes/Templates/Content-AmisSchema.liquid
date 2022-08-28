@@ -44,7 +44,12 @@
         let amisJSON = {{ Model.ContentItem.Content["AmisSchema"].Schema.Text |raw}};
         var env=buildEnv(axios);
         let amisScoped = amis.embed('#root', amisJSON,{},
-            env);
+            {
+                enableAMISDebug:false,
+                locale: 'zh-CN',
+                ...env
+            }
+            );
       })();
     </script>
 </body>

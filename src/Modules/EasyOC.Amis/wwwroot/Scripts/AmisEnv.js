@@ -1,4 +1,4 @@
-/*import axios from 'axios';*/
+﻿/*import axios from 'axios';*/
 
 
 const buildEnv = (axios, fetcherFn) => {
@@ -24,7 +24,7 @@ const buildEnv = (axios, fetcherFn) => {
         //     ret && (!options || options.shutup !== true) && toast.info('内容已拷贝到剪切板');
         //     return ret;
         // },
-        enableAMISDebug: true,
+        enableAMISDebug: false,
         locale: 'zh-CN'
     }
 
