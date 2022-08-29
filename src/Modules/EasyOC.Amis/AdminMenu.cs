@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Navigation;
 using System;
 using System.Threading.Tasks;
@@ -20,15 +20,15 @@ namespace EasyOC.Amis
             {
                 return Task.CompletedTask;
             }
-            builder.Add(S["Content"], content => content
-              .Add(S["Content Definition"], S["Content Definition"].PrefixPosition("9"), contentDefinition => contentDefinition
-                  .Add(S["Amis Editor"], S["Amis Editor"].PrefixPosition("4"),
-                                action => action
-                                .Action("AmisEditor", "Admin", new { area = "EasyOC.Amis" })
-                                .Permission(Permissions.Amis_Editor)
-                                .LocalNav())
-                            )
-                    );
+            //builder.Add(S["Content"], content => content
+            //  .Add(S["Content Definition"], S["Content Definition"].PrefixPosition("9"), contentDefinition => contentDefinition
+            //      .Add(S["Amis Editor"], S["Amis Editor"].PrefixPosition("4"),
+            //                    action => action
+            //                    .Action("AmisEditor", "Admin", new { area = "EasyOC.Amis" })
+            //                    .Permission(Permissions.Amis_Editor)
+            //                    .LocalNav())
+            //                )
+            //        );
             return Task.CompletedTask;
         }
     }

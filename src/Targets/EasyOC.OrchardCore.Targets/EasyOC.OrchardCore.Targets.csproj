@@ -81,7 +81,7 @@
     <PackageReference Include="OrchardCore.Redis" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Resources" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.ResponseCompression" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ReverseProxy" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <!--<PackageReference Include="OrchardCore.ReverseProxy" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <PackageReference Include="OrchardCore.Rules" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Scripting" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
