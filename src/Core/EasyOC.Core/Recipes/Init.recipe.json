@@ -1,10 +1,10 @@
 ﻿{
   "name": "InitCore",
   "displayName": "EasyOC Core init",
-  "description": "",
+  "description": "SPA Service",
   "author": "EasyOC",
   "website": "EasyOC.com",
-  "version": "",
+  "version": "0.1",
   "issetuprecipe": true,
   "categories": [],
   "tags": [],
@@ -41,7 +41,6 @@
         "OrchardCore.Users",
         "OrchardCore.ContentFields.Indexing.SQL.UserPicker",
         "OrchardCore.Localization",
-        "OrchardCore.Sitemaps",
         "OrchardCore.ContentPreview",
         "OrchardCore.Deployment",
         "OrchardCore.Contents.Deployment.AddToDeploymentPlan",
@@ -66,7 +65,6 @@
         "OrchardCore.Lucene.Worker",
         "OrchardCore.Markdown",
         "OrchardCore.Media",
-        "OrchardCore.Media.Cache",
         "OrchardCore.Media.Slugify",
         "OrchardCore.Menu",
         "OrchardCore.Navigation",
@@ -107,14 +105,13 @@
         "TheBlogTheme",
         "TheTheme",
         "EasyOCTheme",
-        "EasyOC.Core",
-        "Lombiq.HelpfulExtensions.CodeGeneration"
+        "EasyOC.Core"
       ]
     },
     {
       "name": "themes",
       "admin": "EasyOCTheme",
-      "site": "TheTheme"
+      "site": "EasyOCSiteTheme"
     },
     {
       "name": "settings",
@@ -139,17 +136,6 @@
       "DisableAccessTokenEncryption": true,
       "AllowImplicitFlow": false,
       "AllowLogoutEndpoint": true
-    },
-    {
-      "name": "OpenIdApplication",
-      "DisplayName": "SwaggerClient",
-      "ClientId": "SwaggerClient",
-      "ConsentType": "implicit",
-      "AllowAuthorizationCodeFlow": true,
-      "AllowLogoutEndpoint": false,
-      "AllowPasswordFlow": false,
-      "RedirectUris": "https://localhost:44389/swagger/oauth2-redirect.html http://localhost:2919/swagger/oauth2-redirect.html",
-      "Type": "public"
     },
     {
       "name": "OpenIdScope",

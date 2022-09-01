@@ -42,7 +42,6 @@
 
   <Import Project="..\EasyOC.Build\Commons.targets" />
 
-
 </Project>
 
 

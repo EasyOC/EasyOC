@@ -164,12 +164,12 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             }
 
 
-            var ls = model.InputList.Select((m) =>
+            var ls = model.InputList.Select((contentModel) =>
             {
                 var contentItem = ContentManager.NewAsync(model.ContentType).GetAwaiter().GetResult();
                 //var newContentItem = contentItem as ContentItem;
-                m[nameof(ContentModel.ContentType)] = model.ContentType;
-                return MergeFromSimpleData(contentItem, m, typeDef);
+                contentModel[nameof(ContentModel.ContentType)] = model.ContentType;
+                return MergeFromSimpleData(contentItem, contentModel, typeDef);
             });
 
             await ContentManager.ImportAsync(ls);
@@ -221,9 +221,20 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 var inputKeyPrefix = contentItem.ContentType == partName ? string.Empty : $"{partName.ToCamelCase()}.";
                 var inputKey = $"{inputKeyPrefix}{item.Name.ToCamelCase()}";
                 var filedValue = inputValue.SelectToken(inputKey);
+
+                //如果未指定布尔值，则直接指定为False ，因为 MVC 版本尚未处理此问题
+                if (item.FieldDefinition.Name == nameof(BooleanField))
+                {
+                    contentItem.Content[partName][item.Name] = new JObject
+                    {
+                        [valuePath] = filedValue ?? false
+                    };
+                    continue;
+                }
+                // 避免未指定的字段被覆盖
                 if (filedValue is null)
                 {
-                    return;
+                    continue;
                 }
 
                 if (item.FieldDefinition.Name is nameof(ContentPickerField) or nameof(UserPickerField) or "MediaField")
