@@ -57,7 +57,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             return true;
         }
 
-        public async Task<object> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
+        public async Task<object> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false, [FromQuery] bool merge = true)
         {
             // It is really important to keep the proper method calls order with the ContentManager
             // so that all event handlers gets triggered in the right sequence.
@@ -132,14 +132,14 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 await Notifier.SuccessAsync(H["已保存草稿"]);
             }
 
-            return new
+            return JObject.FromObject(new
             {
                 contentItem.Id,
                 contentItem.Latest,
                 contentItem.Published,
                 contentItem.ContentItemId,
                 contentItem.ContentItemVersionId,
-            };
+            });
         }
 
 
