@@ -16,7 +16,7 @@
     <PackageReference Include="AutoMapper" Version="11.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(OrchardCoreLibrariesRoot)' == '' AND '$(OrchardCoreModulesRoot)' == ''">
+  <ItemGroup >
     <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />

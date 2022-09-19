@@ -53,10 +53,8 @@ namespace EasyOC.DynamicTypeIndex.IndexModels
         [Column(Name = "AddressPart_PostalCode", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_PostalCode { get; set; }
 
-
         [Column(Name = "AddressPart_Details", IsNullable = true, StringLength = -1)]
-        public System.String AddressPart_Details { get; set; }
-
+        public System.String AddressPartDetails { get; set; }
 
         [Column(Name = "AddressPart_Name", IsNullable = true, StringLength = -1)]
         public System.String AddressPart_Name { get; set; }

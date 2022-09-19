@@ -3,7 +3,7 @@ using OrchardCore.ContentManagement.Records;
 
 namespace EasyOC.Core.Indexes
 {
-    [EOCTable("ContentItemIndex")]
+    [EOCTable(Name = "ContentItemIndex")]
     public class DIndexBase : FreeSqlDocumentIndex
     {
         [Column(IsPrimary = true)]

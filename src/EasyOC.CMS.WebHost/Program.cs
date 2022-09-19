@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OrchardCore.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace EasyOC.CMS.WebHost
@@ -10,12 +11,19 @@ namespace EasyOC.CMS.WebHost
     {
         public static Task Main(string[] args)
         {
-            _ = Task.Run(() => { NatashaInitializer.Preheating(); });//Natasha 预热
+            try
+            {
+                _ = Task.Run(() => { NatashaInitializer.Preheating(); });//Natasha 预热
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return BuildWebHost(args).RunAsync();
         }
 
         public static IHost BuildWebHost(string[] args) =>
-           Host.CreateDefaultBuilder(args)
+            Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging => logging.ClearProviders())
                 .ConfigureWebHostDefaults(webBuilder => webBuilder
                     .UseStartup<Startup>()
@@ -24,4 +32,3 @@ namespace EasyOC.CMS.WebHost
 
     }
 }
-

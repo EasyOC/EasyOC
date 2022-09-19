@@ -738,26 +738,6 @@
       ]
     },
     {
-      "Name": "VbenRoleMenus",
-      "DisplayName": "Vben Role Menus",
-      "Settings": {
-        "ContentTypeSettings": {
-          "Creatable": true,
-          "Listable": true,
-          "Draftable": true,
-          "Versionable": true,
-          "Securable": true
-        }
-      },
-      "ContentTypePartDefinitionRecords": [
-        {
-          "PartName": "VbenRoleMenus",
-          "Name": "VbenRoleMenus",
-          "Settings": {}
-        }
-      ]
-    },
-    {
       "Name": "AmisSchema",
       "DisplayName": "Amis Schema",
       "Settings": {
@@ -799,30 +779,6 @@
         {
           "PartName": "DynamicIndexConfigSetting",
           "Name": "DynamicIndexConfigSetting",
-          "Settings": {
-            "ContentTypePartSettings": {
-              "Position": "1"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "Name": "VbenMenu",
-      "DisplayName": "VbenMenu",
-      "Settings": {
-        "ContentTypeSettings": {
-          "Creatable": true,
-          "Listable": true,
-          "Draftable": true,
-          "Securable": true
-        },
-        "FullTextAspectSettings": {}
-      },
-      "ContentTypePartDefinitionRecords": [
-        {
-          "PartName": "VbenMenu",
-          "Name": "VbenMenu",
           "Settings": {
             "ContentTypePartSettings": {
               "Position": "1"
@@ -884,6 +840,22 @@
           "Settings": {
             "ContentTypePartSettings": {
               "Position": "0"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "DisplayName": "Title",
+              "Description": "Provides a Title for your content item.",
+              "Position": "1"
+            },
+            "GraphQLContentTypePartSettings": {},
+            "ContentIndexSettings": {},
+            "TitlePartSettings": {
+              "Pattern": "{{ContentItem.Content.AntdMenuItem.Name.Text}}"
             }
           }
         }
@@ -2751,191 +2723,6 @@
       ]
     },
     {
-      "Name": "VbenMenu",
-      "Settings": {},
-      "ContentPartFieldDefinitionRecords": [
-        {
-          "FieldName": "TextField",
-          "Name": "MenuName",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "菜单名称",
-              "Position": "0"
-            }
-          }
-        },
-        {
-          "FieldName": "ContentPickerField",
-          "Name": "ParentMenu",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "上级菜单",
-              "Position": "6"
-            },
-            "ContentPickerFieldSettings": {
-              "DisplayedContentTypes": [
-                "VbenMenu"
-              ]
-            },
-            "ContentIndexSettings": {
-              "Included": true,
-              "Stored": true,
-              "Analyzed": true
-            }
-          }
-        },
-        {
-          "FieldName": "NumericField",
-          "Name": "OrderNo",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "排序",
-              "Position": "7"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Icon",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "图标",
-              "Position": "8"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "RoutePath",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "路由地址",
-              "Position": "9"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Component",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "组件路径",
-              "Position": "10"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Permission",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "权限标识",
-              "Position": "11"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Status",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "状态",
-              "Position": "12"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "IsExt",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "是否外链",
-              "Position": "13"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Show",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "是否显示",
-              "Position": "15"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "MenuType",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "菜单类型",
-              "Position": "5"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Meta",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "Meta",
-              "Editor": "Monaco",
-              "Position": "2"
-            },
-            "TextFieldSettings": {},
-            "TextFieldMonacoEditorSettings": {
-              "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
-            },
-            "ContentIndexSettings": {}
-          }
-        },
-        {
-          "FieldName": "NumericField",
-          "Name": "ComponentType",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "ComponentType",
-              "Position": "3"
-            },
-            "NumericFieldSettings": {
-              "Hint": "组件 /  Layout / 动态页"
-            },
-            "ContentIndexSettings": {}
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "SchemaId",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "SchemaId",
-              "Position": "4"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "redirect",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "redirect",
-              "Position": "1"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "KeepAlive",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "KeepAlive"
-            }
-          }
-        }
-      ]
-    },
-    {
       "Name": "DbConnectionConfig",
       "Settings": {},
       "ContentPartFieldDefinitionRecords": [
@@ -3104,7 +2891,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "Name",
-              "Position": "7"
+              "Position": "11"
             }
           }
         },
@@ -3114,7 +2901,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "Icon",
-              "Position": "6"
+              "Position": "10"
             }
           }
         },
@@ -3124,7 +2911,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "Target",
-              "Position": "10"
+              "Position": "13"
             },
             "TextFieldSettings": {
               "Hint": "新页面打开"
@@ -3133,62 +2920,12 @@
           }
         },
         {
-          "FieldName": "BooleanField",
-          "Name": "HeaderRender",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "HeaderRender",
-              "Position": "12"
-            }
-          }
-        },
-        {
-          "FieldName": "BooleanField",
-          "Name": "FooterRender",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "FooterRender",
-              "Position": "13"
-            }
-          }
-        },
-        {
-          "FieldName": "BooleanField",
-          "Name": "MenuRender",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "MenuRender",
-              "Position": "14"
-            }
-          }
-        },
-        {
-          "FieldName": "BooleanField",
-          "Name": "MenuHeaderRender",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "MenuHeaderRender",
-              "Position": "15"
-            }
-          }
-        },
-        {
           "FieldName": "TextField",
           "Name": "Access",
           "Settings": {
             "ContentPartFieldSettings": {
-              "DisplayName": "Access",
-              "Position": "8"
-            }
-          }
-        },
-        {
-          "FieldName": "BooleanField",
-          "Name": "HideChildrenInMenu",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "HideChildrenInMenu",
-              "Position": "16"
+              "DisplayName": "页面权限",
+              "Position": "12"
             }
           }
         },
@@ -3198,27 +2935,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "HideInMenu",
-              "Position": "17"
-            }
-          }
-        },
-        {
-          "FieldName": "BooleanField",
-          "Name": "HideInBreadcrumb",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "HideInBreadcrumb",
-              "Position": "18"
-            }
-          }
-        },
-        {
-          "FieldName": "BooleanField",
-          "Name": "FlatMenu",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "FlatMenu",
-              "Position": "19"
+              "Position": "14"
             }
           }
         },
@@ -3228,18 +2945,14 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "OtherConfig",
-              "Position": "11"
-            }
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "Meta",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "Meta",
-              "Position": "9"
-            }
+              "Editor": "Monaco",
+              "Position": "15"
+            },
+            "TextFieldSettings": {},
+            "TextFieldMonacoEditorSettings": {
+              "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+            },
+            "ContentIndexSettings": {}
           }
         },
         {
@@ -3249,13 +2962,13 @@
             "ContentPartFieldSettings": {
               "DisplayName": "页面类型",
               "Editor": "PredefinedList",
-              "Position": "3"
+              "Position": "7"
             },
             "TextFieldSettings": {},
             "TextFieldPredefinedListEditorSettings": {
               "Options": [
                 {
-                  "name": "组件",
+                  "name": "普通页面",
                   "value": "Component"
                 },
                 {
@@ -3279,7 +2992,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "动态页面",
-              "Position": "4"
+              "Position": "8"
             },
             "ContentPickerFieldSettings": {
               "DisplayedContentTypes": [
@@ -3295,32 +3008,23 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "Redirect",
-              "Position": "5"
+              "Position": "9"
             }
           }
         },
         {
-          "FieldName": "TextField",
+          "FieldName": "BooleanField",
           "Name": "Locale",
           "Settings": {
             "ContentPartFieldSettings": {
-              "DisplayName": "Locale",
-              "Position": "1"
+              "DisplayName": "多语言",
+              "Position": "6"
             },
             "TextFieldSettings": {
-              "Hint": "自定义菜单的国际化 string | false"
+              "Hint": "自定义菜单的国际化 "
             },
-            "ContentIndexSettings": {}
-          }
-        },
-        {
-          "FieldName": "TextField",
-          "Name": "ParentRoute",
-          "Settings": {
-            "ContentPartFieldSettings": {
-              "DisplayName": "ParentRoute",
-              "Position": "2"
-            }
+            "ContentIndexSettings": {},
+            "BooleanFieldSettings": {}
           }
         },
         {
@@ -3328,10 +3032,48 @@
           "Name": "OrderIndex",
           "Settings": {
             "ContentPartFieldSettings": {
-              "DisplayName": "OrderIndex"
+              "DisplayName": "OrderIndex",
+              "Position": "4"
             },
             "NumericFieldSettings": {},
             "ContentIndexSettings": {}
+          }
+        },
+        {
+          "FieldName": "ContentPickerField",
+          "Name": "Parent",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "Parent",
+              "Position": "5"
+            },
+            "ContentPickerFieldSettings": {
+              "DisplayedContentTypes": [
+                "AntdMenuItem"
+              ],
+              "DisplayedStereotypes": []
+            },
+            "ContentIndexSettings": {}
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "zhCN",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "中文显示名",
+              "Position": "2"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "enUS",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "英文显示名",
+              "Position": "3"
+            }
           }
         }
       ]
@@ -4059,7 +3801,7 @@
           "Name": "PermissionSettings",
           "Settings": {
             "ContentPartFieldSettings": {
-              "DisplayName": "权限配置",
+              "DisplayName": "页面权限定义",
               "Position": "0"
             }
           }
@@ -4107,7 +3849,17 @@
           }
         }
       ]
+    },
+    {
+      "Name": "LocalizationPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true,
+          "Description": "Provides a way to create localized version of content."
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "4vqq6ft6x0h1x1ywxgbzr3qmn7"
+  "Identifier": "4xccc3hxpma214rp9eaggpw9ce"
 }

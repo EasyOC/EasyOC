@@ -21,7 +21,10 @@ namespace EasyOC.DynamicTypeIndex.Handlers
         private readonly ILogger _logger;
         private readonly IHtmlLocalizer H;
         private readonly ISession _session;
-        public virtual int DefaultPageSize { get; set; } = 100;
+        public virtual int DefaultPageSize
+        {
+            get => _dynamicIndexAppService.RebuildIndexPageSize;
+        }
 
         public DynamicIndexTableHandler(IDynamicIndexAppService dynamicIndexAppService, IFreeSql fsql,
             INotifier notifier,
@@ -50,25 +53,23 @@ namespace EasyOC.DynamicTypeIndex.Handlers
                 var config = await _dynamicIndexAppService.GetDynamicIndexConfigAsync(typeName, true);
                 if (config != null)
                 {
+                    var type = await _dynamicIndexAppService.GetDynamicIndexTypeAsync(config.EntityInfo);
+                    var table = _fsql.CodeFirst.GetTableByEntity(type);
                     var contentQuery = contentItems.Where(x => x.ContentItem.ContentType == typeName)
                         .Select(x => x.ContentItem);
                     var penddingUpdateList = contentQuery.Take(DefaultPageSize);
 
                     var pageIndex = 0;
                     totalUpdated[typeName] = 0;
-
                     while (penddingUpdateList.Any())
                     {
-                        var dictList = penddingUpdateList.ToDictModel(config);
-                        var tsFsql = _fsql.InsertOrUpdateDict(dictList.OrderByDescending(x => x.Keys.Count));
+                        var dictList = penddingUpdateList.ToModel(config, type, table);
+                        var tsFsql = _fsql.InsertOrUpdate<object>().AsType(type).SetSource(dictList);
                         if (_session.CurrentTransaction != null)
                         {
                             tsFsql.WithTransaction(_session.CurrentTransaction);
                         }
-
-                        totalUpdated[typeName] += await tsFsql
-                            .WherePrimary("Id")
-                            .ExecuteAffrowsAsync();
+                        totalUpdated[typeName] += await tsFsql.ExecuteAffrowsAsync();
                         pageIndex++;
                         penddingUpdateList = contentQuery.Skip(DefaultPageSize * pageIndex).Take(DefaultPageSize);
                     }
@@ -94,18 +95,16 @@ namespace EasyOC.DynamicTypeIndex.Handlers
             {
                 try
                 {
-                    var dictModel = context.ContentItem.ToDictModel(config);
-                    var tsFsql = _fsql.InsertOrUpdateDict(dictModel);
+                    var type = await _dynamicIndexAppService.GetDynamicIndexTypeAsync(config.EntityInfo);
+                    var table = _fsql.CodeFirst.GetTableByEntity(type);
+                    var dictModel = context.ContentItem.ToModel(config, type, table);
+                    var tsFsql = _fsql.InsertOrUpdate<object>().AsType(type).SetSource(dictModel);
                     if (_session.CurrentTransaction != null)
                     {
                         tsFsql.WithTransaction(_session.CurrentTransaction);
                     }
 
-                    await tsFsql
-                        .WithTransaction(_session.CurrentTransaction)
-                        .AsTable(config.TableName)
-                        .WherePrimary("Id")
-                        .ExecuteAffrowsAsync();
+                    await tsFsql.ExecuteAffrowsAsync();
                 }
                 catch (Exception e)
                 {
