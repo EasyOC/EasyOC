@@ -5,8 +5,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="OrchardCoreIndexModels\**" />
+    <Compile Remove="Queries\ExternalDb\**" />
     <EmbeddedResource Remove="OrchardCoreIndexModels\**" />
+    <EmbeddedResource Remove="Queries\ExternalDb\**" />
     <None Remove="OrchardCoreIndexModels\**" />
+    <None Remove="Queries\ExternalDb\**" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\ContentMappingAppService.cs" />
@@ -16,7 +19,7 @@
     <PackageReference Include="AutoMapper" Version="11.0.0" />
   </ItemGroup>
 
-  <ItemGroup >
+  <ItemGroup>
     <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />
@@ -28,6 +31,7 @@
     <PackageReference Include="OrchardCore.Queries.Abstractions" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\EasyOC.Extensions\EasyOC.Extensions.csproj" />
     <ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
     <ProjectReference Include="..\EasyOC.Excel\EasyOC.Excel.csproj" />
     <ProjectReference Include="..\EasyOC.VueElementUI\EasyOC.VueElementUI.csproj" />

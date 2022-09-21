@@ -97,8 +97,8 @@ namespace EasyOC.DynamicTypeIndex.Handlers
                 {
                     var type = await _dynamicIndexAppService.GetDynamicIndexTypeAsync(config.EntityInfo);
                     var table = _fsql.CodeFirst.GetTableByEntity(type);
-                    var dictModel = context.ContentItem.ToModel(config, type, table);
-                    var tsFsql = _fsql.InsertOrUpdate<object>().AsType(type).SetSource(dictModel);
+                    var entity = context.ContentItem.ToModel(config, type, table);
+                    var tsFsql = _fsql.InsertOrUpdate<object>().AsType(type).SetSource(entity);
                     if (_session.CurrentTransaction != null)
                     {
                         tsFsql.WithTransaction(_session.CurrentTransaction);

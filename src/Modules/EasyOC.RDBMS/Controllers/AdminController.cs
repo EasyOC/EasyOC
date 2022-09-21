@@ -11,6 +11,7 @@ using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
 using EasyOC.ContentExtensions.AppServices;
 using System;
+using YesSql;
 
 namespace EasyOC.RDBMS.Controllers
 {
@@ -22,13 +23,14 @@ namespace EasyOC.RDBMS.Controllers
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         private readonly IRDBMSAppService _rDbmsAppService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IStore _store;
 
         public AdminController(
             IAuthorizationService authorizationService,
             IContentManager contentManager,
             // IContentFieldsValuePathProvider contentFieldsValuePathProvider,
             IContentTypeManagementAppService contentManagementAppService,
-            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService)
+            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService, IStore store)
         {
             _authorizationService = authorizationService;
 
@@ -39,7 +41,16 @@ namespace EasyOC.RDBMS.Controllers
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
             _rDbmsAppService = rDbmsAppService;
+            _store = store;
         }
+
+        public async Task<IActionResult> Query(string query)
+        {
+            query = String.IsNullOrWhiteSpace(query) ? "" : System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(query));
+            var model = View(new ScriptQueryViewModel());
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)
         {
@@ -155,7 +166,7 @@ namespace EasyOC.RDBMS.Controllers
             {
                 return Forbid();
             }
-            return Json(await _rDbmsAppService.GetAllDbConnecton());
+            return Json(await _rDbmsAppService.GetAllDbConnection());
         }
 
         [HttpGet]
@@ -165,7 +176,7 @@ namespace EasyOC.RDBMS.Controllers
             {
                 return Forbid();
             }
-            return Json(await _rDbmsAppService.GetAllDbConnecton());
+            return Json(await _rDbmsAppService.GetAllDbConnection());
         }
         [HttpGet]
         public async Task<IActionResult> GetTypeDefinitionAsync(string name, bool withSettings = false)

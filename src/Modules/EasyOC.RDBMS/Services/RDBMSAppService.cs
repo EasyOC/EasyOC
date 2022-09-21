@@ -38,7 +38,7 @@ namespace EasyOC.RDBMS.Services
             IMapper mapper, IMemoryCache memoryCache,
             IDeploymentManager deploymentManager, IServiceProvider serviceProvider)
         {
-            this._mapper = mapper;
+             _mapper = mapper;
             _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
 
             _memoryCache = memoryCache;
@@ -46,6 +46,7 @@ namespace EasyOC.RDBMS.Services
             _serviceProvider = serviceProvider;
         }
 
+        [IgnoreWebApiMethod]
         public async Task<ContentItem> GetConnectionConfigAsync(string connectionConfigId)
         {
             var connectionSettings = await YesSession.Query<ContentItem, ContentItemIndex>()
@@ -61,26 +62,36 @@ namespace EasyOC.RDBMS.Services
         [IgnoreWebApiMethod]
         public async Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId)
         {
+            if (connectionConfigId == Constants.ShellDbName)
+                return _serviceProvider.GetFreeSql();
+
             var connectionObject = await GetConnectionConfigAsync(connectionConfigId);
             if (connectionObject == null) { return null; }
             var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
             var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
             //无法判断 dynamic 类型 ，所以要先显示指定类型
             return _serviceProvider.GetFreeSql(providerName, connectionStr);
+
         }
         /// <summary>
         /// Get all Connection Config
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnecton()
+        public async Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnection()
         {
             var connectionSettings = await YesSession.Query<ContentItem, ContentItemIndex>()
-                .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published || x.Latest)).ListAsync();
+                .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published)).ListAsync();
             var connectionList = connectionSettings.Select(x => new ConnectionConfigModel()
             {
-
                 ConfigName = x.DisplayText,
+                DbProvider = x.Content.DbConnectionConfig.DatabaseProvider.Text.Value,
                 ConfigId = x.ContentItemId
+            }).ToList();
+            connectionList.Insert(0, new ConnectionConfigModel()
+            {
+                ConfigName = Constants.ShellDbName,
+                DbProvider = Fsql.Ado.DataType.ToString(),
+                ConfigId = Constants.ShellDbName
             });
             return connectionList;
         }
@@ -108,16 +119,15 @@ namespace EasyOC.RDBMS.Services
                 x => $"{x.Schema}.{x.Name}".ToLower().Contains(queryTablesDto.FilterText))
                 .OrderBy(x => x.Schema).ThenBy(x => x.Name)
                 .Take(queryTablesDto.MaxResultCount)
-                .Select(x =>
+                .Select(x => {
+                    var mResult = new DbTableInfoDto()
                     {
-                        var mResult = new DbTableInfoDto()
-                        {
-                            ColumnsCount = x.Columns.Count
-                        };
-                        x.Columns.Clear();
-                        mResult = _mapper.Map(x, mResult);
-                        return mResult;
-                    }
+                        ColumnsCount = x.Columns.Count
+                    };
+                    x.Columns.Clear();
+                    mResult = _mapper.Map(x, mResult);
+                    return mResult;
+                }
                 );
 
             return tables;

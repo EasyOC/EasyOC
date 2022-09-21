@@ -1,0 +1,44 @@
+@model EasyOC.RDBMS.ViewModels.ScriptQueryViewModel
+
+<div class="mb-3">
+    <label asp-for="Script">@T["Script"]</label>
+    <div id="@Html.IdFor(x => x.Script)_editor" asp-for="Text" style="min-height: 400px;" class="form-control"></div>
+    <textarea asp-for="Script" hidden>@Html.Raw(Model.Script)</textarea>
+    <span asp-validation-for="Script"></span>
+    <span class="hint">@T["The script query to execute."]</span>
+</div>
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" asp-for="ReturnDocuments" checked="@Model.ReturnDocuments" />
+        <label class="form-check-label" asp-for="ReturnDocuments">@T["Return Documents"]</label>
+        <span class="hint dashed">@T["Check to return the corresponding documents."]</span>
+    </div>
+    <span class="hint">@T["When checked, the result has to be a list of document ids. sample :['4ytzwr8ht6hb1yz92nq21yf5d0','41msgnes61qvwvmm7sfzawjxcg']"]</span>
+</div>
+
+ 
+<script asp-name="monaco" depends-on="admin" at="Foot"></script>
+<script at="Foot"  depends-on="monaco, admin">
+    $(document).ready(function () {
+        require(['vs/editor/editor.main'], function () {
+            var editor = monaco.editor.create(document.getElementById('@Html.IdFor(x => x.Script)_editor'), {
+                automaticLayout: true,
+                language: "javascript",
+                lineNumbers: true,
+                minimap: { enabled: false }
+            });
+            var textArea = document.getElementById('@Html.IdFor(x => x.Script)');
+
+            editor.getModel().setValue(textArea.value);
+            //format
+            setTimeout(function () {
+                editor.getAction('editor.action.formatDocument').run();
+            }, 300);
+
+            window.addEventListener("submit", function () {
+                textArea.value = editor.getValue();
+            });
+        });         
+    });
+ 
+</script>

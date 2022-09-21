@@ -1,4 +1,6 @@
-﻿using EasyOC.RDBMS.Migrations;
+﻿using EasyOC.RDBMS.Drivers;
+using EasyOC.RDBMS.Migrations;
+using EasyOC.RDBMS.Queries.ScriptQuery;
 using EasyOC.RDBMS.Scripting;
 using EasyOC.RDBMS.Services;
 using EasyOC.RDBMS.Workflows.Activities;
@@ -7,8 +9,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Data.Migration;
+using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
+using OrchardCore.Queries;
 using OrchardCore.Scripting;
 using OrchardCore.Workflows.Helpers;
 using System;
@@ -20,11 +24,12 @@ namespace EasyOC.RDBMS
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(this.GetType().Assembly);
+            services.AddAutoMapper(GetType().Assembly);
             services.AddScoped<IContentFieldsValuePathProvider, ContentFieldsValuePathProvider>();
             // services.AddScoped<IQuerySource, FreeSqlQuerySource>();
+            services.AddScoped<IDisplayDriver<Query>, ScriptQueryDisplayDriver>();
+            services.AddScoped<IQuerySource, ScriptQuerySource>();
             services.AddSingleton<IGlobalMethodProvider, FreeSqlWorkflowMethodsProvider>();
-            //services.AddAutoMapper(GetType().Assembly);
             services.AddActivity<SQLTask, SQLTaskDisplayDriver>();
             services.AddScoped<IRDBMSAppService, RDBMSAppService>();
             //services.AddScoped<IPermissionProvider, Permissions>();

@@ -13,7 +13,18 @@ namespace EasyOC.CMS.WebHost
         {
             try
             {
-                _ = Task.Run(() => { NatashaInitializer.Preheating(); });//Natasha 预热
+                _ = Task.Run(() => {
+                    try
+                    {
+                        DefaultUsing.Remove("<CppImplementationDetails>");
+                        NatashaInitializer.Preheating();
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }   
+                });//Natasha 预热
             }
             catch (Exception e)
             {

@@ -16,7 +16,7 @@ public interface IRDBMSAppService
     /// Get all Connection Config
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnecton();
+    Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnection();
     /// <summary>
     /// 根据连接设置获取指定数据库的表信息
     /// </summary>
