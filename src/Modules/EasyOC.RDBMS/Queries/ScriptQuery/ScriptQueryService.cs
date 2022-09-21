@@ -5,6 +5,7 @@ using GraphQL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using NPOI.Util.ArrayExtensions;
 using OrchardCore.ContentManagement;
 using OrchardCore.Queries;
 using OrchardCore.Scripting;
@@ -51,6 +52,7 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
 
                 //注入页面参数为js变量
                 engine.SetValue("params", parameters);
+                #region 注册数据库访问对象
                 var connections = await _rDbmsAppService.GetAllDbConnection();
 
                 foreach (var item in connections)
@@ -64,29 +66,21 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
                 engine.SetValue(Constants.ShellDbName, new ExternalDbProvider(_serviceProvider, new ExternalDbConfig
                 {
                     UseShellDb = true
-                }, _logger));
-                var value = engine.Evaluate(extDbQuery.Scripts).GetValue();
-                if (extDbQuery.ReturnDocuments && value is JArray jArray1)
+                }, _logger)); 
+                #endregion
+
+
+                var jsValue = engine.Evaluate(extDbQuery.Scripts);
+                var value = jsValue.ToObject();
+                if (extDbQuery.ReturnDocuments && jsValue.IsArray()&&value is string[] ids)
                 {
-                    var ids = jArray1.Values<string>();
                     scriptResults.Items = await _contentManager.GetAsync(ids);
                     return scriptResults;
                 }
                 else
                 {
-                    if (value is JObject jObj)
-                    {
-                        scriptResults = jObj.ToObject<ScriptQueryResults>();
-                        return scriptResults;
-                    }
-                    Jint.Native.Array.ArrayInstance jArray;
-                    if ((jArray = value as Jint.Native.Array.ArrayInstance) != null)
-                    {
-                        var list = new List<object>();
-                        for (uint i = 0; i < jArray.Length; i++)
-                        {
-                            list.Add(jArray[i]);
-                        }
+                    if (value is object[] list)
+                    { 
                         scriptResults.Items = list;
                         return scriptResults;
                     }
