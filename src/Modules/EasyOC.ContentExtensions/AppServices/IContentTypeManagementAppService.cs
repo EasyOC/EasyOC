@@ -1,5 +1,7 @@
-﻿using EasyOC.ContentExtensions.AppServices.Dtos;
+﻿using EasyOC.Content;
+using EasyOC.ContentExtensions.AppServices.Dtos;
 using EasyOC.ContentExtensions.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,5 +15,13 @@ namespace EasyOC.ContentExtensions.AppServices
         ContentTypeDefinitionDto GetTypeDefinition(string name, bool withSettings = false);
         List<ContentFieldsMappingDto> GetFields(string typeName);
         Task<IEnumerable<QueryDefDto>> ListAllQueriesAsync();
+        
+        /// <summary>
+        /// 使用JSON更新类型
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        Task ImportDeploymentPackageAsync(ImportJsonInupt model);
     }
 }

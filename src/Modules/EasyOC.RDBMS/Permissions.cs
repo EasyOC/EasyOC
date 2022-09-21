@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OrchardCore.RelationDb
+namespace EasyOC.RDBMS
 {
     public class Permissions : IPermissionProvider
     {
         public static readonly Permission ManageRelationalDbTypes = new Permission(nameof(ManageRelationalDbTypes), "Manage Relational Database Types");
         public static readonly Permission SyncAllRelationalDbData = new Permission(nameof(SyncAllRelationalDbData), "Synchronization all relational Database");
+        public static readonly Permission ManageScriptQueries = new Permission("ManageScriptQueries", "Manage Script Queries");
 
 
         public async Task<IEnumerable<Permission>> GetPermissionsAsync()
         {
-            var list = new List<Permission> { ManageRelationalDbTypes, SyncAllRelationalDbData };
+            var list = new List<Permission> { ManageRelationalDbTypes, SyncAllRelationalDbData ,ManageScriptQueries};
             return await Task.FromResult(list);
         }
 
@@ -21,7 +22,7 @@ namespace OrchardCore.RelationDb
             return new[] {
                 new PermissionStereotype {
                     Name = "Administrator",
-                    Permissions = new[] { ManageRelationalDbTypes, SyncAllRelationalDbData }
+                    Permissions = new[] { ManageRelationalDbTypes, SyncAllRelationalDbData,ManageScriptQueries }
                 }
             };
         }

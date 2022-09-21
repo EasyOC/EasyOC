@@ -5,8 +5,7 @@ namespace EasyOC.RDBMS.ViewModels
 {
     public class ScriptQueryViewModel
     {
-        public string Script { get; set; } 
-        public bool ReturnDocuments { get; set; } 
-        public IEnumerable<ExternalDbConfig> ExternalDbConfigs { get; set; }
+        public string Script { get; set; }
+        public bool ReturnDocuments { get; set; }
     }
 }

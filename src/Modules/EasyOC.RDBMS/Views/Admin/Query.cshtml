@@ -1,9 +1,11 @@
-﻿@model EasyOC.RDBMS.ViewModels.ScriptQueryViewModel
+﻿@model EasyOC.RDBMS.ViewModels.AdminQueryViewModel
 <style at="Head" asp-name="amis"></style>
 <style at="Head" asp-name="amis-cxd"></style>
 <style at="Head" asp-name="amis-helper"></style>
 <style at="Head" asp-name="amis-iconfont"></style>
-<zone Name="Title"><h1>@RenderTitleSegments(T["Script Query"])</h1></zone>
+<zone Name="Title">
+    <h1>@RenderTitleSegments(T["Script Query"])</h1>
+</zone>
 
 <div asp-validation-summary="All"></div>
 <style at="Head" depends-on="amis-all">
@@ -18,12 +20,8 @@
     }
 </style>
 
-<div id="amis-root">
-</div>
-
-
-
-
+<div id="amis-root" class="app-wrapper">
+</div> 
 <script at="Foot" asp-name="amis"></script>
 <script at="Foot" asp-name="amis-ext"></script>
 <script at="Foot" asp-name="axios"></script>
@@ -31,12 +29,116 @@
 <script at="Foot" depends-on="amis">
     $(function () {
         let amis = amisRequire('amis/embed');
+        var formData=@Json.Serialize(Model)
+        formData["__RequestVerificationToken"]= $("input[name='__RequestVerificationToken']").val()
         // 通过替换下面这个配置来生成不同页面
         let amisJSON = {
-            "type": "page",
-            "title": "标题",
-            "body": "Hello World!"
-        };
+                         "type": "page", 
+                         "regions": [
+                           "body",
+                           "toolbar",
+                           "header"
+                         ],
+                       
+                         "id": "u:b977b1ff6f87",
+                         "body": [
+                           {
+                             "type": "form",
+                             "title": "表单", 
+                             data:formData,
+                             "api":{
+                               "method":"POST",
+                               "url":"Query",                              
+                               "dataType": "form",
+                               "replaceData": true,
+                               "adaptor":  (payload, response, api) =>{
+                                 console.log(response)
+                                 return {data:response}
+                               } 
+                             },
+                             "body": [
+                               {
+                                 "type": "grid",
+                                 "columns": [
+                                   {
+                                     "body": [
+                                       {
+                                         "type": "editor",
+                                         "label": "Parameters",
+                                         "name": "parameters",
+                                         "id": "u:515ba315759a",
+                                         "language": "json",
+                                         "description": "Json"
+                                       }
+                                     ],
+                                     "id": "u:f5b0cda2c673"
+                                   },
+                                   {
+                                     "body": [
+                                       {
+                                         "type": "crud",
+                                         "columns": [
+                                           {
+                                             "label": "引用名称",
+                                             "name": "configName",
+                                             "type": "text",
+                                             "id": "u:be65008b6c0f"
+                                           },
+                                           {
+                                             "type": "text",
+                                             "label": "数据库类型",
+                                             "name": "dbProvider",
+                                             "id": "u:e9394fa27b8c"
+                                           }
+                                         ],
+                                         "id": "u:a63e907d5fa0",
+                                         "api": "/api/RDBMS/GetAllDbConnection"
+                                       }
+                                     ],
+                                     "id": "u:ad62f08beaac",
+                                     "style": {
+                                       "overflow-y": "scroll"
+                                     }
+                                   }
+                                 ],
+                                 "id": "u:dae0c5d5a0ad"
+                               },
+                               {
+                                 "type": "checkbox",
+                                 "option": "返回文档",
+                                 "name": "returnDocuments",
+                                 "id": "u:f381f871517a"
+                               },
+                               {
+                                 "label": "Script",
+                                 "name": "decodedQuery",
+                                 "type": "editor",
+                                 "id": "u:57b6fb4bc910",
+                                 "language": "javascript",
+                                 "description": "JavaScript"
+                               },
+                               {
+                                 "type": "button",
+                                 "label": "Run",
+                                 "id": "u:a529cac9c319",
+                                  "actionType": "submit",                              
+                                 "level": "success"
+                               },
+                               {
+                                  "label": "执行结果",
+                                  "type": "editor",
+                                  "name": "result",
+                                  "id": "u:78037966a343",
+                                  "language": "json"
+                                }
+                             ],
+                             "id": "u:de5020ca8901",
+                             "wrapWithPanel": false,
+                             "debug": true
+                           },
+                            
+                         ]
+                       };
 
         var env = buildEnv(axios);
         let amisScoped = amis.embed('#amis-root', amisJSON, {},
@@ -48,5 +150,3 @@
         );
     });
 </script>
-
-

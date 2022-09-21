@@ -7,11 +7,13 @@ using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Records;
 using System.Collections.Generic;
-using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
 using EasyOC.ContentExtensions.AppServices;
+using EasyOC.RDBMS.Queries.ScriptQuery;
+using Newtonsoft.Json;
 using System;
-using YesSql;
+using System.Diagnostics;
+using ContentPermissions=OrchardCore.ContentTypes.Permissions;
 
 namespace EasyOC.RDBMS.Controllers
 {
@@ -23,14 +25,14 @@ namespace EasyOC.RDBMS.Controllers
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         private readonly IRDBMSAppService _rDbmsAppService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly IStore _store;
 
+        private readonly IScriptQueryService _scriptQueryService;
         public AdminController(
             IAuthorizationService authorizationService,
             IContentManager contentManager,
             // IContentFieldsValuePathProvider contentFieldsValuePathProvider,
             IContentTypeManagementAppService contentManagementAppService,
-            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService, IStore store)
+            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService, IScriptQueryService scriptQueryService)
         {
             _authorizationService = authorizationService;
 
@@ -41,14 +43,48 @@ namespace EasyOC.RDBMS.Controllers
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
             _rDbmsAppService = rDbmsAppService;
-            _store = store;
+            _scriptQueryService = scriptQueryService;
         }
-
+        [HttpGet]
         public async Task<IActionResult> Query(string query)
         {
             query = String.IsNullOrWhiteSpace(query) ? "" : System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(query));
-            var model = View(new ScriptQueryViewModel());
-            return View();
+            var model = new AdminQueryViewModel();
+            return View(model);
+        }
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Query(AdminQueryViewModel model)
+        {
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageScriptQueries))
+            {
+                return Forbid();
+            }
+
+            if (String.IsNullOrWhiteSpace(model.DecodedQuery))
+            {
+                return Json(model);
+            }
+
+            if (String.IsNullOrEmpty(model.Parameters))
+            {
+                model.Parameters = "{ }";
+            }
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(model.Parameters);
+            var result = await _scriptQueryService.ExcuteScriptQuery(new ScriptQuery()
+            {
+                Name = "TempQueryOnRunPage",
+                Scripts = model.DecodedQuery,
+                ReturnDocuments = model.ReturnDocuments
+            }, parameters);
+            model.Result = Json(result);
+            model.Elapsed = stopwatch.Elapsed;
+
+            return Json(model);
         }
 
         [HttpPost]
@@ -83,7 +119,7 @@ namespace EasyOC.RDBMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTablesAsync(QueryTablesDto queryTablesDto)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.EditContentTypes))
             {
                 return Forbid();
             }
@@ -97,13 +133,16 @@ namespace EasyOC.RDBMS.Controllers
             var connectionObject = await _contentManager.GetAsync(connectionConfigId);
 
             IFreeSql freeSql = _serviceProvider.GetFreeSql((string)connectionObject.Content.DbConnectionConfig.ProviderName.Text.Value,
-                (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
+            (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
             using (freeSql)
             {
                 var recipe = new RecipeModel();
 
                 var step = new Step();
-                recipe.steps = new List<Step>() { step };
+                recipe.steps = new List<Step>()
+                {
+                    step
+                };
                 step.name = "ContentDefinition";
                 step.ContentTypes = new List<ContentType>();
                 var contentType = new ContentType()
@@ -122,11 +161,14 @@ namespace EasyOC.RDBMS.Controllers
 
                 };
                 step.ContentTypes.Add(contentType);
-                contentType.ContentTypePartDefinitionRecords = new ContentTypePartDefinitionRecord[]{ new ContentTypePartDefinitionRecord
+                contentType.ContentTypePartDefinitionRecords = new ContentTypePartDefinitionRecord[]
+                {
+                    new ContentTypePartDefinitionRecord
                     {
                         Name = tableName,
-                        PartName =tableName
-                    }};
+                        PartName = tableName
+                    }
+                };
 
                 var recrods = new List<ContentPartFieldDefinitionRecord>();
                 try
@@ -140,14 +182,21 @@ namespace EasyOC.RDBMS.Controllers
                         recrod.Name = item.Name;
                         recrod.Settings = JObject.FromObject(new
                         {
-                            ContentPartFieldSettings = new { DisplayName = item.Name }
+                            ContentPartFieldSettings = new
+                            {
+                                DisplayName = item.Name
+                            }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.PropertyType);
                         recrod.FieldName = targetFieldType.FieldName;
                         recrods.Add(recrod);
                     }
 
-                    step.ContentParts.Add(new Contentpart { Name = tableName, ContentPartFieldDefinitionRecords = recrods.ToArray() });
+                    step.ContentParts.Add(new Contentpart
+                    {
+                        Name = tableName,
+                        ContentPartFieldDefinitionRecords = recrods.ToArray()
+                    });
 
                     return recipe;
                 }
@@ -162,7 +211,7 @@ namespace EasyOC.RDBMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllDbConnecton()
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.EditContentTypes))
             {
                 return Forbid();
             }
@@ -172,7 +221,7 @@ namespace EasyOC.RDBMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTypes()
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.ViewContentTypes))
             {
                 return Forbid();
             }
@@ -181,7 +230,7 @@ namespace EasyOC.RDBMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTypeDefinitionAsync(string name, bool withSettings = false)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.EditContentTypes))
             {
                 return Forbid();
             }
@@ -195,6 +244,3 @@ namespace EasyOC.RDBMS.Controllers
         }
     }
 }
-
-
-

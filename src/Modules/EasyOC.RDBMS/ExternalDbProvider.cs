@@ -21,8 +21,8 @@ namespace EasyOC.RDBMS
             _externalDbConfig = config;
             _logger = logger;
         }
-  
-        public IFreeSql FreeSql
+
+        private IFreeSql FreeSql
         {
             get
             {
@@ -30,7 +30,7 @@ namespace EasyOC.RDBMS
                 {
                     try
                     {
-                        if (_externalDbConfig.UseShellDb)
+                        if (!_externalDbConfig.UseShellDb)
                         {
                             var rdbMsService = _serviceProvider.GetRequiredService<IRDBMSAppService>();
                             _freeSql = rdbMsService
@@ -52,6 +52,13 @@ namespace EasyOC.RDBMS
                 return _freeSql;
             }
         }
+
+        public IEnumerable<object> GetRows(string cmdText, object parms = null)
+        {
+            var result = FreeSql.Ado.Query<object>(cmdText, parms);
+            return result.ToArray();
+        }
+
         /// <summary>
         /// 执行SQL返回对象集合，Query&lt;User&gt;("select * from user where age > @age", new { age = 25 })<para></para>
         /// 提示：parms 参数还可以传 Dictionary&lt;string, object&gt;

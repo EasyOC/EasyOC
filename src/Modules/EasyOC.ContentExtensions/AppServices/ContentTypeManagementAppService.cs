@@ -1,22 +1,21 @@
-﻿using EasyOC.ContentExtensions.AppServices.Dtos;
+﻿using EasyOC.Content;
+using EasyOC.ContentExtensions.AppServices.Dtos;
 using EasyOC.ContentExtensions.Models;
 using EasyOC.Core.Application;
 using EasyOC.DynamicWebApi.Attributes;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Linq;
-using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.ContentManagement.Metadata.Settings;
-using OrchardCore.Contents;
 using OrchardCore.Contents.Models;
-using OrchardCore.Lucene;
+using OrchardCore.Deployment.Services;
+using OrchardCore.DisplayManagement.Notify;
 using OrchardCore.Mvc.Utilities;
 using OrchardCore.Queries;
-using OrchardCore.Queries.Sql;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -28,13 +27,14 @@ namespace EasyOC.ContentExtensions.AppServices
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IQueryManager _queryManager;
-
-
+        private readonly IDeploymentManager _deploymentManager;
+        
         public ContentTypeManagementAppService(IContentDefinitionManager contentDefinitionManager,
-            IQueryManager queryManager)
+            IQueryManager queryManager, IDeploymentManager deploymentManager)
         {
             _contentDefinitionManager = contentDefinitionManager;
             _queryManager = queryManager;
+            _deploymentManager = deploymentManager;
         }
 
         /// <summary>
@@ -49,8 +49,7 @@ namespace EasyOC.ContentExtensions.AppServices
                 .WhereIf(!string.IsNullOrEmpty(input.Filter), x
                     => x.Name.Contains(input.Filter, StringComparison.OrdinalIgnoreCase)
                        || x.DisplayName.Contains(input.Filter, StringComparison.OrdinalIgnoreCase))
-                .Select(x =>
-                {
+                .Select(x => {
                     var listItem = new ContentTypeListItemDto();
                     listItem.Name = x.Name;
                     listItem.DisplayName = x.DisplayName;
@@ -96,8 +95,7 @@ namespace EasyOC.ContentExtensions.AppServices
         public async Task<IEnumerable<QueryDefDto>> ListAllQueriesAsync()
         {
             var queries = await _queryManager.ListQueriesAsync();
-            var result = queries.Select(x =>
-            {
+            var result = queries.Select(x => {
                 var queryDef = ObjectMapper.Map<QueryDefDto>(x);
                 var schema = JObject.Parse(x.Schema);
                 if (schema.ContainsKey("hasTotal") && schema["hasTotal"] != null)
@@ -152,11 +150,17 @@ namespace EasyOC.ContentExtensions.AppServices
             {
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["ID"].Value, FieldName = "ContentItemId", IsSelf = true, IsBasic = true,
+                    DisplayName = S["ID"].Value,
+                    FieldName = "ContentItemId",
+                    IsSelf = true,
+                    IsBasic = true,
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["标题"].Value, FieldName = "DisplayText", IsSelf = true, IsBasic = true
+                    DisplayName = S["标题"].Value,
+                    FieldName = "DisplayText",
+                    IsSelf = true,
+                    IsBasic = true
                 }
             });
 
@@ -164,39 +168,66 @@ namespace EasyOC.ContentExtensions.AppServices
             {
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["修改时间"].Value, FieldName = "ModifiedUtc", IsSelf = true, IsBasic = true
+                    DisplayName = S["修改时间"].Value,
+                    FieldName = "ModifiedUtc",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["创建时间"].Value, FieldName = "CreatedUtc", IsSelf = true, IsBasic = true
+                    DisplayName = S["创建时间"].Value,
+                    FieldName = "CreatedUtc",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["归属人"].Value, FieldName = "Owner", IsSelf = true, IsBasic = true
+                    DisplayName = S["归属人"].Value,
+                    FieldName = "Owner",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["作者"].Value, FieldName = "Author", IsSelf = true, IsBasic = true
+                    DisplayName = S["作者"].Value,
+                    FieldName = "Author",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["发布时间"].Value, FieldName = "PublishedUtc", IsSelf = true, IsBasic = true
+                    DisplayName = S["发布时间"].Value,
+                    FieldName = "PublishedUtc",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["版本号"].Value, FieldName = "ContentItemVersionId", IsSelf = true, IsBasic = true
+                    DisplayName = S["版本号"].Value,
+                    FieldName = "ContentItemVersionId",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["内容类型"].Value, FieldName = "ContentType", IsSelf = true, IsBasic = true
+                    DisplayName = S["内容类型"].Value,
+                    FieldName = "ContentType",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["最新版"].Value, FieldName = "Latest", IsSelf = true, IsBasic = true
+                    DisplayName = S["最新版"].Value,
+                    FieldName = "Latest",
+                    IsSelf = true,
+                    IsBasic = true
                 },
                 new ContentFieldsMappingDto
                 {
-                    DisplayName = S["已发布"].Value, FieldName = "Published", IsSelf = true, IsBasic = true
+                    DisplayName = S["已发布"].Value,
+                    FieldName = "Published",
+                    IsSelf = true,
+                    IsBasic = true
                 }
             };
 
@@ -272,5 +303,34 @@ namespace EasyOC.ContentExtensions.AppServices
             }
             return fields;
         }
+        /// <summary>
+        /// 使用JSON更新类型
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task ImportDeploymentPackageAsync(ImportJsonInupt model)
+        {
+            if (!model.RecipeContent.IsJson())
+            {
+                throw new ArgumentException(S["The recipe is written in an incorrect json format."]);
+            }
+            var tempArchiveFolder = PathExtensions.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            try
+            {
+                Directory.CreateDirectory(tempArchiveFolder);
+                await File.WriteAllTextAsync(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
+                await _deploymentManager.ImportDeploymentPackageAsync(new PhysicalFileProvider(tempArchiveFolder));
+                await Notifier.SuccessAsync(H["Import Success"]);
+            }
+            finally
+            {
+                if (Directory.Exists(tempArchiveFolder))
+                {
+                    Directory.Delete(tempArchiveFolder, true);
+                }
+            }
+        }
     }
+
 }

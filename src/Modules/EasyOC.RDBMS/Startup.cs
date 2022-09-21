@@ -14,6 +14,7 @@ using OrchardCore.Modules;
 using OrchardCore.Navigation;
 using OrchardCore.Queries;
 using OrchardCore.Scripting;
+using OrchardCore.Security.Permissions;
 using OrchardCore.Workflows.Helpers;
 using System;
 
@@ -32,10 +33,11 @@ namespace EasyOC.RDBMS
             services.AddSingleton<IGlobalMethodProvider, FreeSqlWorkflowMethodsProvider>();
             services.AddActivity<SQLTask, SQLTaskDisplayDriver>();
             services.AddScoped<IRDBMSAppService, RDBMSAppService>();
-            //services.AddScoped<IPermissionProvider, Permissions>();
+            services.AddScoped<IPermissionProvider, Permissions>();
             services.AddScoped<INavigationProvider, AdminMenu>();
             services.AddScoped<IDataMigration, RDBMSMappingConfigMigration>();
             services.AddScoped<IDataMigration, DbConnectionConfigMigration>();
+            services.AddTransient<IScriptQueryService,ScriptQueryService>();
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

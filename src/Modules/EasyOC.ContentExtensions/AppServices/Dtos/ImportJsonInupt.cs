@@ -1,4 +1,4 @@
-﻿namespace EasyOC.RDBMS.Models
+﻿namespace EasyOC.Content
 {
     public class ImportJsonInupt//: PostInputModel
     {

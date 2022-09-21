@@ -29,20 +29,15 @@ namespace EasyOC.RDBMS.Services
     public class RDBMSAppService : AppServiceBase, IRDBMSAppService
     {
         private readonly IMapper _mapper;
-        private readonly IMemoryCache _memoryCache;
-        private readonly IDeploymentManager _deploymentManager;
-        private readonly IServiceProvider _serviceProvider;
-
+        private readonly IMemoryCache _memoryCache; 
+        private readonly IServiceProvider _serviceProvider; 
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         public RDBMSAppService(
-            IMapper mapper, IMemoryCache memoryCache,
-            IDeploymentManager deploymentManager, IServiceProvider serviceProvider)
+            IMapper mapper, IMemoryCache memoryCache, IServiceProvider serviceProvider)
         {
              _mapper = mapper;
             _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
-
-            _memoryCache = memoryCache;
-            _deploymentManager = deploymentManager;
+            _memoryCache = memoryCache; 
             _serviceProvider = serviceProvider;
         }
 
@@ -292,34 +287,7 @@ namespace EasyOC.RDBMS.Services
         {
             return _contentFieldsValuePathProvider.GetAllOrchardCoreBaseFields();
         }
-        /// <summary>
-        /// 使用JSON更新类型
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task ImportDeploymentPackageAsync(ImportJsonInupt model)
-        {
-            if (!model.RecipeContent.IsJson())
-            {
-                throw new ArgumentException(S["The recipe is written in an incorrect json format."]);
-            }
-            var tempArchiveFolder = PathExtensions.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            try
-            {
-                Directory.CreateDirectory(tempArchiveFolder);
-                await File.WriteAllTextAsync(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
-                await _deploymentManager.ImportDeploymentPackageAsync(new PhysicalFileProvider(tempArchiveFolder));
-                await Notifier.SuccessAsync(H["Import Success"]);
-            }
-            finally
-            {
-                if (Directory.Exists(tempArchiveFolder))
-                {
-                    Directory.Delete(tempArchiveFolder, true);
-                }
-            }
-        }
+
         public JObject GetTableInfo(RDBMSMappingConfigViewModel config)
         {
             throw new NotImplementedException();
