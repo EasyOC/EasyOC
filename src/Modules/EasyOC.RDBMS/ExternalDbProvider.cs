@@ -30,7 +30,7 @@ namespace EasyOC.RDBMS
                 {
                     try
                     {
-                        if (!_externalDbConfig.UseShellDb)
+                        if (_externalDbConfig.Name != Constants.ShellDbName)
                         {
                             var rdbMsService = _serviceProvider.GetRequiredService<IRDBMSAppService>();
                             _freeSql = rdbMsService

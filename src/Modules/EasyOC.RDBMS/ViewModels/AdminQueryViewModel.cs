@@ -1,9 +1,4 @@
-﻿using EasyOC.RDBMS.Queries.ScriptQuery.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EasyOC.RDBMS.ViewModels
 {
@@ -11,15 +6,10 @@ namespace EasyOC.RDBMS.ViewModels
     {
         public string DecodedQuery { get; set; }
         public bool ReturnDocuments { get; set; }
-        public string Parameters { get; set; } = "";
+        public string Parameters { get; set; } = "{}";
         [BindNever]
-        public string ConsoleText { get; set; } = "";
-        [BindNever]
-        public TimeSpan Elapsed { get; set; } = TimeSpan.Zero;
-
+        public double? Elapsed { get; set; }
         [BindNever]
         public object Result { get; set; }
-
-
     }
 }

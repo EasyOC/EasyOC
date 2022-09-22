@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 using EasyOC.ContentExtensions.AppServices;
 using EasyOC.RDBMS.Queries.ScriptQuery;
 using Newtonsoft.Json;
+using OrchardCore.Queries.ViewModels;
 using System;
 using System.Diagnostics;
 using ContentPermissions=OrchardCore.ContentTypes.Permissions;
+using QueriesPermissions=OrchardCore.Queries.Permissions;
 
 namespace EasyOC.RDBMS.Controllers
 {
@@ -30,16 +32,12 @@ namespace EasyOC.RDBMS.Controllers
         public AdminController(
             IAuthorizationService authorizationService,
             IContentManager contentManager,
-            // IContentFieldsValuePathProvider contentFieldsValuePathProvider,
             IContentTypeManagementAppService contentManagementAppService,
             IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService, IScriptQueryService scriptQueryService)
         {
             _authorizationService = authorizationService;
-
             _contentManager = contentManager;
-            // _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
             _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
-
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
             _rDbmsAppService = rDbmsAppService;
@@ -49,9 +47,12 @@ namespace EasyOC.RDBMS.Controllers
         public async Task<IActionResult> Query(string query)
         {
             query = String.IsNullOrWhiteSpace(query) ? "" : System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(query));
-            var model = new AdminQueryViewModel();
-            return View(model);
+            return View(new AdminQueryViewModel
+            {
+                DecodedQuery = query
+            });
         }
+
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Query(AdminQueryViewModel model)
@@ -66,7 +67,7 @@ namespace EasyOC.RDBMS.Controllers
                 return Json(model);
             }
 
-            if (String.IsNullOrEmpty(model.Parameters))
+            if (string.IsNullOrEmpty(model.Parameters))
             {
                 model.Parameters = "{ }";
             }
@@ -81,11 +82,41 @@ namespace EasyOC.RDBMS.Controllers
                 Scripts = model.DecodedQuery,
                 ReturnDocuments = model.ReturnDocuments
             }, parameters);
-            model.Result = Json(result);
-            model.Elapsed = stopwatch.Elapsed;
+            model.Result = result;
+            model.Elapsed = stopwatch.Elapsed.Milliseconds;
 
             return Json(model);
         }
+
+
+        // [HttpGet]
+        // public async Task<IActionResult> CreateQuery(string id)
+        // {
+        //     if (!await _authorizationService.AuthorizeAsync(User, QueriesPermissions.ManageQueries))
+        //     {
+        //         return Forbid();
+        //     }
+        //
+        //     var query = _querySources.FirstOrDefault(x => x.Name == id)?.Create();
+        //
+        //     if (query == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     var model = new QueriesCreateViewModel
+        //     {
+        //         Editor = await _displayManager.BuildEditorAsync(query, updater: _updateModelAccessor.ModelUpdater, isNew: true),
+        //         SourceName = id
+        //     };
+        //
+        //     return View(model);
+        // }
+        // [HttpGet]
+        // public async Task<IActionResult> CreateQuery()
+        // {
+        //     
+        // }
 
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)

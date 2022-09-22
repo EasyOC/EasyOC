@@ -30,7 +30,8 @@
     $(function () {
         let amis = amisRequire('amis/embed');
         var formData=@Json.Serialize(Model)
-        formData["__RequestVerificationToken"]= $("input[name='__RequestVerificationToken']").val()
+        console.log("formData",formData)
+        // formData["__RequestVerificationToken"]= $("input[name='__RequestVerificationToken']").val()
         // 通过替换下面这个配置来生成不同页面
         let amisJSON = {
                          "type": "page", 
@@ -38,8 +39,7 @@
                            "body",
                            "toolbar",
                            "header"
-                         ],
-                       
+                         ],                       
                          "id": "u:b977b1ff6f87",
                          "body": [
                            {
@@ -51,6 +51,17 @@
                                "url":"Query",                              
                                "dataType": "form",
                                "replaceData": true,
+                               // "requestAdaptor":(api)=>{
+                               //  console.log("api111",api)
+                               //   var data= api.data
+                               //   api.data={
+                               //     returnDocuments:data.returnDocuments,
+                               //     decodedQuery:data.decodedQuery,
+                               //     parameters:data.parameters,
+                               //   }
+                               //   console.log("api222",api)
+                               //   return api;
+                               // },
                                "adaptor":  (payload, response, api) =>{
                                  console.log(response)
                                  return {data:response}
@@ -68,13 +79,20 @@
                                          "name": "parameters",
                                          "id": "u:515ba315759a",
                                          "language": "json",
-                                         "description": "Json"
+                                         "description": "Json 格式，使用 parameters 对入参进行引用"
                                        }
                                      ],
                                      "id": "u:f5b0cda2c673"
                                    },
                                    {
                                      "body": [
+                                       {
+                                         "type": "tpl",
+                                         "tpl": "可用数据库",
+                                         "inline": true,
+                                         "wrapperComponent": "",
+                                         "id": "u:71766373b675"
+                                       },
                                        {
                                          "type": "crud",
                                          "columns": [
@@ -93,6 +111,16 @@
                                          ],
                                          "id": "u:a63e907d5fa0",
                                          "api": "/api/RDBMS/GetAllDbConnection"
+                                       },
+                                       {
+                                         "type": "tpl",
+                                         "tpl": "使用方法：\nshellDb.GetRows('Select * from Document where id=@@id',params), 注意遵循不同数据库的语法规范",
+                                         "inline": true,
+                                         "id": "u:71766373b675",
+                                         "style": {
+                                           "color": "#5f5c5c",
+                                           "fontSize": 12
+                                         }
                                        }
                                      ],
                                      "id": "u:ad62f08beaac",
@@ -125,18 +153,30 @@
                                  "level": "success"
                                },
                                {
-                                  "label": "执行结果",
-                                  "type": "editor",
-                                  "name": "result",
-                                  "id": "u:78037966a343",
-                                  "language": "json"
-                                }
+                                 "type": "container",
+                                 "hiddenOn":"${!elapsed}",
+                                 "body": [
+                                   { 
+                                     "type": "tpl",
+                                     "tpl": "<p>执行耗时：${elapsed} 毫秒</p>",
+                                     "inline": false,
+                                     "id": "u:66747b83d237"
+                                   },
+                                   {
+                                     "label": "执行结果",
+                                     "type": "editor",
+                                     "name": "result",
+                                     "id": "u:78037966a343",
+                                     "language": "json"
+                                   }
+                                 ],
+                                 "id": "u:9f263a95f908"
+                               }
                              ],
                              "id": "u:de5020ca8901",
                              "wrapWithPanel": false,
-                             "debug": true
-                           },
-                            
+                             // "debug": true
+                           }                            
                          ]
                        };
 

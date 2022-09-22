@@ -13,7 +13,7 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery.Models
         public long? Total { get; set; }
         public object? Data { get; set; }
         public bool Success { get; set; } = true;
-        public object? Message { get; set; }
+        public string Message { get; set; }
     }
 
 }

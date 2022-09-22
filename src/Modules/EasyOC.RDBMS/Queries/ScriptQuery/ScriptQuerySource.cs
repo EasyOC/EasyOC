@@ -20,7 +20,11 @@ public class ScriptQuerySource : IQuerySource
 
     public async Task<IQueryResults> ExecuteQueryAsync(Query query, IDictionary<string, object> parameters)
     {
-        return await _scriptQueryService.ExcuteScriptQuery(query as ScriptQuery, parameters );
+        if (query is ScriptQuery extDbQuery)
+        {
+            return await _scriptQueryService.ExcuteScriptQuery(extDbQuery, parameters);
+        }
+        return null;
     }
-   
+
 }

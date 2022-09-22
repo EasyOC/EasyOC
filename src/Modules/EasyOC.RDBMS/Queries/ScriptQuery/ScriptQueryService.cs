@@ -36,14 +36,7 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
         }
         public async Task<ScriptQueryResults> ExcuteScriptQuery(ScriptQuery extDbQuery, IDictionary<string, object> parameters)
         {
-
             var scriptResults = new ScriptQueryResults();
-
-            if (extDbQuery == null)
-            {
-                return null;
-            }
-
             try
             {
                 var scope = _scriptingManager.CreateScope("js", _serviceProvider)
@@ -51,7 +44,7 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
                 var engine = scope.Engine;
 
                 //注入页面参数为js变量
-                engine.SetValue("params", parameters);
+                engine.SetValue("parameters", parameters);
                 #region 注册数据库访问对象
                 var connections = await _rDbmsAppService.GetAllDbConnection();
 
@@ -65,23 +58,31 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
                 }
                 engine.SetValue(Constants.ShellDbName, new ExternalDbProvider(_serviceProvider, new ExternalDbConfig
                 {
-                    UseShellDb = true
-                }, _logger)); 
+                    Name = Constants.ShellDbName,
+                    ConnectionConfigId = Constants.ShellDbName
+                }, _logger));
                 #endregion
-
 
                 var jsValue = engine.Evaluate(extDbQuery.Scripts);
                 var value = jsValue.ToObject();
-                if (extDbQuery.ReturnDocuments && jsValue.IsArray()&&value is string[] ids)
+                if (extDbQuery.ReturnDocuments)
                 {
-                    scriptResults.Items = await _contentManager.GetAsync(ids);
-                    return scriptResults;
+                    if (jsValue.IsArray())
+                    {
+                        var ids = Array.ConvertAll(value as object[], x => x.ToString());
+                        scriptResults.Items = await _contentManager.GetAsync(ids);
+                        scriptResults.Total = scriptResults.Items.Count();
+                        return scriptResults;
+                    }
+                    scriptResults.Message = "需要返回文档请直接返回 DocumentId 字符串集合";
+                    throw new Exception(scriptResults.Message);
                 }
                 else
                 {
                     if (value is object[] list)
-                    { 
+                    {
                         scriptResults.Items = list;
+                        scriptResults.Total = list.Length;
                         return scriptResults;
                     }
                     //Holding default
