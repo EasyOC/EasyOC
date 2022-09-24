@@ -20,18 +20,20 @@
     }
 </style>
 
-<div id="amis-root" class="app-wrapper">
+<div id="amis-root" >
 </div> 
 <script at="Foot" asp-name="amis"></script>
 <script at="Foot" asp-name="amis-ext"></script>
 <script at="Foot" asp-name="axios"></script>
 <script at="Foot" asp-name="amis-env"></script>
 <script at="Foot" depends-on="amis">
+
     $(function () {
         let amis = amisRequire('amis/embed');
         var formData=@Json.Serialize(Model)
         console.log("formData",formData)
         // formData["__RequestVerificationToken"]= $("input[name='__RequestVerificationToken']").val()
+ 
         // 通过替换下面这个配置来生成不同页面
         let amisJSON = {
                          "type": "page", 
@@ -88,7 +90,7 @@
                                      "body": [
                                        {
                                          "type": "tpl",
-                                         "tpl": "可用数据库",
+                                         "tpl": "Connection",
                                          "inline": true,
                                          "wrapperComponent": "",
                                          "id": "u:71766373b675"
@@ -138,13 +140,65 @@
                                  "id": "u:f381f871517a"
                                },
                                {
+                                 "type": "editor",
                                  "label": "Script",
                                  "name": "decodedQuery",
-                                 "type": "editor",
                                  "id": "u:57b6fb4bc910",
                                  "language": "javascript",
-                                 "description": "JavaScript"
+                                 "description":[
+                                    { "type":"container", 
+                                          body:
+                                          [ 
+                                            {  "type": "tpl", "tpl": "JavaScript 语法，","inline": false,
+                                                "id": "u:d8bade7dd45a",
+                                                "style": {
+                                                  "display": "inline-block",
+                                                  "fontSize": 12,
+                                                  "textAlign": "left"
+                                                }
+                                            },
+                                            {
+                                              "type": "button",
+                                              "level": "link",
+                                              "label": "API 参考",
+                                               "style":{ 
+                                                "text-decoration":"underline"
+                                               },
+                                              "id": "u:eb90c58e623b",
+                                              "onEvent": {
+                                                "click": {
+                                                  "actions": [
+                                                    {
+                                                      "componentId": "",
+                                                      "args": {
+                                                      },
+                                                      "actionType": "drawer",
+                                                      "drawer": {
+                                                        "type": "drawer",
+                                                          "position": "right",
+                                                          "overlay": false,
+                                                          "resizable": true,
+                                                        "title": "JavaScript 函数上下文可用函数清单",
+                                                        "body": [
+                                                          {
+                                                            "type": "markdown",
+                                                            "value": "- 收集日期 2022-01\r\n\r\n```typescript\r\n// eslint-disable\r\n// eslint-disable-next-line @@typescript-eslint/no-unused-vars\r\ninterface OCJavaScriptBackendMethods {\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Workflows\\Scripting\\WorkflowMethodsProvider.cs\r\n  //WorkflowMethodsProvider\r\n  workflow(): object //workflowContext\r\n  /**\r\n   * @@returns 返回工作流Id\r\n   */\r\n  workflowId(): string\r\n\r\n  input(str: string): object\r\n  property(str: string): object\r\n\r\n  output(name: string, value: string): void\r\n  setProperty(name: string, value: string): void\r\n  lastResult(): object\r\n  correlationId(): string\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Contents\\Scripting\\ContentMethodsProvider.cs\r\n  //ContentMethodsProvider\r\n  /**\r\n   *\r\n   * @@returns IContent\r\n   */\r\n  newContentItem(contentType: string): object //IContent;\r\n  /**\r\n   *\r\n   * @@returns IContent\r\n   */\r\n  createContentItem(\r\n    contentType: string,\r\n    publish: boolean,\r\n    properties: object,\r\n  ): object //IContent;\r\n  updateContentItem(contentItem: object, properties: object): void //contentItem: ContentItem\r\n  deleteContentItem(contentItem: object, properties: object): void //contentItem: ContentItem\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Contents\\Scripting\\UrlMethodsProvider.cs\r\n  //UrlMethodsProvider\r\n  getUrlPrefix(path: string): string\r\n\r\n  //OrchardCore\\src\\OrchardCore\\OrchardCore.Infrastructure\\Entities\\Scripting\\IdGeneratorMethod.cs\r\n  //IdGeneratorMethod\r\n  uuid(): string\r\n\r\n  //OrchardCore\\src\\OrchardCore\\OrchardCore.Infrastructure\\Scripting\\CommonGeneratorMethods.cs\r\n  //CommonGeneratorMethods\r\n  base64(encoded: string): string\r\n  html(encoded: string): string\r\n  gzip(encoded: string): string\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Layers\\Services\\DefaultLayersMethodProvider.cs\r\n  //DefaultLayersMethodProvider\r\n  isHomepage(): boolean\r\n  isAnonymous(): boolean\r\n  isAuthenticated(): boolean\r\n  isInRole(role: string): boolean\r\n  url(url: string): boolean\r\n  culture(culture: string): boolean\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Queries\\QueryGlobalMethodProvider.cs\r\n  //QueryGlobalMethodProvider\r\n  executeQuery(name: string, parameters: object): object\r\n\r\n  //OrchardCore\\src\\OrchardCore\\OrchardCore.Recipes.Core\\ConfigurationMethodProvider.cs\r\n  //ConfigurationMethodProvider\r\n  configuration(key: string, defaultValue: object): object\r\n\r\n  //OrchardCore\\src\\OrchardCore\\OrchardCore.Recipes.Core\\ParametersMethodProvider.cs\r\n  //ParametersMethodProvider\r\n  parameters(name: string): object\r\n\r\n  //OrchardCore\\src\\OrchardCore\\OrchardCore.Recipes.Core\\VariablesMethodProvider.cs\r\n  //VariablesMethodProvider\r\n  variables(name: string): object\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Scripting\\Providers\\LogProvider.cs\r\n  //LogProvider\r\n  log(level: string, text: string, param: object): void\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Workflows\\Http\\Scripting\\HttpMethodsProvider.cs\r\n  //HttpMethodsProvider\r\n  httpContext(): object //HttpContext\r\n  queryString(name: string): object\r\n  responseWrite(text: string): void\r\n  absoluteUrl(relativePath: string): string\r\n  readBody(): string\r\n  requestForm(field: string): object\r\n  queryStringAsJson(): object //Delegate//serviceProvider: IServiceProvider\r\n  requestFormAsJson(): object //Delegate//serviceProvider: IServiceProvider\r\n  /**\r\n   * 序列化 Body , FormData 或 QueryString 为字典\r\n   * @@returns Dictionary<string, object>\r\n   */\r\n  deserializeRequestData(): object //Dictionary<string, object>;\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Workflows\\Http\\Scripting\\SignalMethodProvider.cs\r\n  //SignalMethodProvider\r\n  signalUrl(signal: string): string\r\n  //TokenMethodProvider\r\n  createWorkflowToken(\r\n    workflowTypeId: string,\r\n    activityId: string,\r\n    days: number,\r\n  ): string\r\n\r\n  //OrchardCore\\src\\OrchardCore.Modules\\OrchardCore.Workflows\\Scripting\\OutcomeMethodProvider.cs\r\n  //OutcomeMethodProvider\r\n  setOutcome(name: string): void\r\n}\r\n\r\n```",
+                                                            "id": "u:159e9b6ccd4d"
+                                                          }
+                                                        ],
+                                                        "id": "u:925db842ab1a"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "weight": 0
+                                                }
+                                              }
+                                            }
+                                          ]
+                                    }                                                                       
+                                 ]
                                },
+                              
                                {
                                  "type": "button",
                                  "label": "Run",
@@ -160,7 +214,7 @@
                                      "type": "tpl",
                                      "tpl": "<p>执行耗时：${elapsed} 毫秒</p>",
                                      "inline": false,
-                                     "id": "u:66747b83d237"
+                                     "id": "u:66747b83d237" 
                                    },
                                    {
                                      "label": "执行结果",
@@ -175,11 +229,16 @@
                              ],
                              "id": "u:de5020ca8901",
                              "wrapWithPanel": false,
+                              "messages": {
+                                 "fetchFailed": "初始化失败",
+                                 "saveSuccess": "",
+                                 "saveFailed": "执行失败"
+                               }
                              // "debug": true
                            }                            
                          ]
                        };
-
+ 
         var env = buildEnv(axios);
         let amisScoped = amis.embed('#amis-root', amisJSON, {},
             {

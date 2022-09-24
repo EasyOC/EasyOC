@@ -7,7 +7,7 @@ namespace EasyOC.Amis
     {
 
         private const string AMISProjectPath = "~/EasyOC.Amis/";
-        private const string AmisVersion = "1.9.1.28";
+        private const string AmisVersion = "2.2.0";
    
 
         ResourceManifest BuildManifest()
