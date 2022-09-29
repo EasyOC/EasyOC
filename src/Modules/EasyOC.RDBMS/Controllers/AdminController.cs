@@ -9,13 +9,8 @@ using OrchardCore.ContentManagement.Metadata.Records;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyOC.ContentExtensions.AppServices;
-using EasyOC.RDBMS.Queries.ScriptQuery;
-using Newtonsoft.Json;
-using OrchardCore.Queries.ViewModels;
 using System;
-using System.Diagnostics;
 using ContentPermissions=OrchardCore.ContentTypes.Permissions;
-using QueriesPermissions=OrchardCore.Queries.Permissions;
 
 namespace EasyOC.RDBMS.Controllers
 {
@@ -28,12 +23,12 @@ namespace EasyOC.RDBMS.Controllers
         private readonly IRDBMSAppService _rDbmsAppService;
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly IScriptQueryService _scriptQueryService;
+        
         public AdminController(
             IAuthorizationService authorizationService,
             IContentManager contentManager,
             IContentTypeManagementAppService contentManagementAppService,
-            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService, IScriptQueryService scriptQueryService)
+            IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService)
         {
             _authorizationService = authorizationService;
             _contentManager = contentManager;
@@ -41,83 +36,10 @@ namespace EasyOC.RDBMS.Controllers
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
             _rDbmsAppService = rDbmsAppService;
-            _scriptQueryService = scriptQueryService;
+         
         }
-        [HttpGet]
-        public async Task<IActionResult> Query(string query)
-        {
-            query = String.IsNullOrWhiteSpace(query) ? "" : System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(query));
-            return View(new AdminQueryViewModel
-            {
-                DecodedQuery = query
-            });
-        }
-
-        [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Query(AdminQueryViewModel model)
-        {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageScriptQueries))
-            {
-                return Forbid();
-            }
-
-            if (String.IsNullOrWhiteSpace(model.DecodedQuery))
-            {
-                return Json(model);
-            }
-
-            if (string.IsNullOrEmpty(model.Parameters))
-            {
-                model.Parameters = "{ }";
-            }
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>(model.Parameters);
-            var result = await _scriptQueryService.ExcuteScriptQuery(new ScriptQuery()
-            {
-                Name = "TempQueryOnRunPage",
-                Scripts = model.DecodedQuery,
-                ReturnDocuments = model.ReturnDocuments
-            }, parameters);
-            model.Result = result;
-            model.Elapsed = stopwatch.Elapsed.Milliseconds;
-
-            return Json(model);
-        }
-
-
-        // [HttpGet]
-        // public async Task<IActionResult> CreateQuery(string id)
-        // {
-        //     if (!await _authorizationService.AuthorizeAsync(User, QueriesPermissions.ManageQueries))
-        //     {
-        //         return Forbid();
-        //     }
-        //
-        //     var query = _querySources.FirstOrDefault(x => x.Name == id)?.Create();
-        //
-        //     if (query == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     var model = new QueriesCreateViewModel
-        //     {
-        //         Editor = await _displayManager.BuildEditorAsync(query, updater: _updateModelAccessor.ModelUpdater, isNew: true),
-        //         SourceName = id
-        //     };
-        //
-        //     return View(model);
-        // }
-        // [HttpGet]
-        // public async Task<IActionResult> CreateQuery()
-        // {
-        //     
-        // }
-
+ 
+ 
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)
         {

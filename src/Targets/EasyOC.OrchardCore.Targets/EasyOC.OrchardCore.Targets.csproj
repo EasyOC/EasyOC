@@ -121,7 +121,7 @@
 
     <!--    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" PrivateAssets="none"/>-->
 
-    <ProjectReference Include="..\..\Core\EasyOC.Infrastructure\EasyOC.Infrastructure.csproj"/>
+    <!--<ProjectReference Include="..\..\Core\EasyOC.Infrastructure\EasyOC.Infrastructure.csproj"/>-->
 
 
   </ItemGroup>

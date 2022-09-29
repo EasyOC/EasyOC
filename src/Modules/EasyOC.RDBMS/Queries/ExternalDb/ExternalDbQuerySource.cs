@@ -1,4 +1,4 @@
-﻿using EasyOC.RDBMS.Queries.Models;
+﻿using EasyOC.RDBMS.Queries.ExternalDb.Models;
 using EasyOC.RDBMS.Services;
 using GraphQL;
 using Jint;
@@ -39,7 +39,7 @@ namespace EasyOC.RDBMS.Queries.ExternalDb
 
         public async Task<IQueryResults> ExecuteQueryAsync(Query query, IDictionary<string, object> parameters)
         {
-            var extDbQuery = query as ScriptQuery;
+            var extDbQuery = query as ExternalDbQuery;
             var sqlQueryResults = new ExternalDbQueryResults();
 
             if (extDbQuery == null)

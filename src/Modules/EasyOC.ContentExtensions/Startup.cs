@@ -1,4 +1,5 @@
 ﻿using EasyOC.ContentExtensions.AppServices;
+using EasyOC.ContentExtensions.Drivers;
 using EasyOC.ContentExtensions.Handlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
+using OrchardCore.ContentTypes.Editors;
 using OrchardCore.Modules;
 using System;
 
@@ -26,6 +28,10 @@ namespace EasyOC.ContentExtensions
             //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
             services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
             services.AddScoped(typeof(IHandleExecutor<>), typeof(HandleExecutorBase<>));
+            
+            
+            services.AddScoped<IContentTypeDefinitionDisplayDriver, ScriptHandlerDisplayDriver>();
+
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

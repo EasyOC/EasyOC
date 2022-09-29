@@ -1,12 +1,7 @@
-﻿using EasyOC.RDBMS.Models;
+﻿using EasyOC.RDBMS.Queries.ScriptQuery;
 using OrchardCore.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EasyOC.RDBMS.Queries.ScriptQuery
+namespace EasyOC.Scripting.Queries.ScriptQuery
 {
     public class ScriptQuery : Query
     {
@@ -17,6 +12,9 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
         public string Scripts { get; set; }
         public bool ReturnDocuments { get; set; }
     }
+    public class ScriptQueryTesting : ScriptQuery
+    {
+    };
 
 
 }

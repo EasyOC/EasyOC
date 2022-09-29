@@ -15,6 +15,31 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+	  <ProjectReference Include="..\EasyOC.RDBMS\EasyOC.RDBMS.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Views\Admin\Query.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\ScriptQuery.Edit.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\ScriptQuery.Buttons.SummaryAdmin.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\ScriptQuery.SummaryAdmin.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\Query.Fields.Edit.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\Query-ScriptQuery.Link.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\_ViewImports.cshtml">
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

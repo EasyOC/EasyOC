@@ -475,7 +475,13 @@
           "Versionable": true,
           "Securable": true
         },
-        "FullTextAspectSettings": {}
+        "FullTextAspectSettings": {},
+        "HandlerScripts": {
+          "CreateHandlerScript": "111111111",
+          "UpdateHandlerScript": "2222222222222",
+          "DeleteHandlerScript": "3333333333333333",
+          "PublishHandlerScript": "4444444444444"
+        }
       },
       "ContentTypePartDefinitionRecords": [
         {
@@ -483,7 +489,7 @@
           "Name": "Department",
           "Settings": {
             "ContentTypePartSettings": {
-              "Position": "1"
+              "Position": "0"
             }
           }
         }
@@ -619,7 +625,7 @@
           "Name": "Industry",
           "Settings": {
             "ContentTypePartSettings": {
-              "Position": "1"
+              "Position": "0"
             }
           }
         }
@@ -1864,7 +1870,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "排序",
-              "Position": "1"
+              "Position": "2"
             }
           }
         },
@@ -1875,7 +1881,7 @@
             "ContentPartFieldSettings": {
               "DisplayName": "启用状态",
               "Editor": "Switch",
-              "Position": "2"
+              "Position": "3"
             },
             "BooleanFieldSettings": {
               "DefaultValue": true
@@ -1890,7 +1896,7 @@
             "ContentPartFieldSettings": {
               "DisplayName": "备注",
               "Editor": "TextArea",
-              "Position": "3"
+              "Position": "4"
             },
             "TextFieldSettings": {},
             "ContentIndexSettings": {}
@@ -1901,7 +1907,8 @@
           "Name": "ParnetDepTAX",
           "Settings": {
             "ContentPartFieldSettings": {
-              "DisplayName": "上级部门TAX"
+              "DisplayName": "上级部门TAX",
+              "Position": "1"
             }
           }
         }
@@ -3861,5 +3868,5 @@
       "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "4xccc3hxpma214rp9eaggpw9ce"
+  "Identifier": "46y5w1hvy3wwgyjp8s1p2ehvwr"
 }

@@ -6,7 +6,7 @@ using static EasyOC.Constants.ManifestConstants;
     Website = Website,
     Version = CurrentVersion,
     Name = "EasyOC.Scripting",
-    Dependencies = new[] { "OrchardCore.Queries" },
+    Dependencies = new[] { "OrchardCore.Queries","EasyOC.RDBMS","EasyOC.Amis" },
     Description = "Provide getSiteSettings('CustomSettingType'), Override executeQuery ",
     Category = "Infrastructure"
 )]

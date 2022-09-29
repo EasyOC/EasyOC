@@ -1,13 +1,12 @@
-﻿using EasyOC.RDBMS.Models;
-using EasyOC.RDBMS.Queries.ScriptQuery.Models;
+﻿using EasyOC.RDBMS;
+using EasyOC.RDBMS.Models;
+using EasyOC.RDBMS.Queries.ScriptQuery;
 using EasyOC.RDBMS.Services;
-using GraphQL;
-using Microsoft.AspNetCore.Mvc;
+using EasyOC.Scripting.Queries.ScriptQuery.Models;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NPOI.Util.ArrayExtensions;
 using OrchardCore.ContentManagement;
-using OrchardCore.Queries;
 using OrchardCore.Scripting;
 using OrchardCore.Scripting.JavaScript;
 using System;
@@ -15,8 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
-namespace EasyOC.RDBMS.Queries.ScriptQuery
+namespace EasyOC.Scripting.Queries.ScriptQuery
 {
     public class ScriptQueryService : IScriptQueryService
     {
@@ -34,9 +32,9 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
             _contentManager = contentManager;
             _rDbmsAppService = rDbmsAppService;
         }
-        public async Task<ScriptQueryResults> ExcuteScriptQuery(ScriptQuery extDbQuery, IDictionary<string, object> parameters)
+        public async Task<ScriptQueryResult> ExcuteScriptQuery(ScriptQuery extDbQuery, IDictionary<string, object> parameters)
         {
-            var scriptResults = new ScriptQueryResults();
+            ScriptQueryResult scriptResults = null;
             try
             {
                 var scope = _scriptingManager.CreateScope("js", _serviceProvider)
@@ -56,10 +54,10 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
                         ConnectionConfigId = item.ConfigId
                     }, _logger));
                 }
-                engine.SetValue(Constants.ShellDbName, new ExternalDbProvider(_serviceProvider, new ExternalDbConfig
+                engine.SetValue(RDBMS.Constants.ShellDbName, new ExternalDbProvider(_serviceProvider, new ExternalDbConfig
                 {
-                    Name = Constants.ShellDbName,
-                    ConnectionConfigId = Constants.ShellDbName
+                    Name = RDBMS.Constants.ShellDbName,
+                    ConnectionConfigId = RDBMS.Constants.ShellDbName
                 }, _logger));
                 #endregion
 
@@ -79,6 +77,12 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
                 }
                 else
                 {
+                    var jobj = JObject.FromObject(value);
+                    scriptResults = jobj.ToObject<ScriptQueryResult>();
+                    if (scriptResults != null)
+                    {
+                        return scriptResults;
+                    }
                     if (value is object[] list)
                     {
                         scriptResults.Items = list;
@@ -96,6 +100,10 @@ namespace EasyOC.RDBMS.Queries.ScriptQuery
                 if (scriptResults?.Message is null)
                 {
                     scriptResults.Message = "操作失败";
+                }
+                if (extDbQuery is ScriptQueryTesting)
+                {
+                    scriptResults.Message = $"{extDbQuery.Name} 查询执行失败，处理程序：{nameof(ScriptQuerySource)}--{e}";
                 }
                 scriptResults.Success = false;
                 return scriptResults;

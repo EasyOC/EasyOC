@@ -8,7 +8,7 @@ using static EasyOC.Constants.ManifestConstants;
     Name = "EasyOC.RDBMS",
     Dependencies = new[]
     {
-        "OrchardCore.Contents", "EasyOC.Excel", "EasyOC.VueElementUI","OrchardCore.Queries","EasyOC.Amis"
+        "OrchardCore.Contents", "EasyOC.Excel", "EasyOC.VueElementUI","OrchardCore.Queries"
     },
     Description = "EasyOC.RDBMS",
     Category = "Content Management"

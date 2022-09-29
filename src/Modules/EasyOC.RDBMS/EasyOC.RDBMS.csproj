@@ -10,6 +10,8 @@
     <EmbeddedResource Remove="Queries\ExternalDb\**" />
     <None Remove="OrchardCoreIndexModels\**" />
     <None Remove="Queries\ExternalDb\**" />
+    <EmbeddedResource Remove="Queries\**" />
+    <Compile Remove="Queries\**" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\ContentMappingAppService.cs" />
@@ -20,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="OrchardCore.Apis.GraphQL.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentFields" Version="$(OrchardCoreVersion)" />

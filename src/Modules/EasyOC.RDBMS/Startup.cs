@@ -1,6 +1,4 @@
-﻿using EasyOC.RDBMS.Drivers;
-using EasyOC.RDBMS.Migrations;
-using EasyOC.RDBMS.Queries.ScriptQuery;
+﻿using EasyOC.RDBMS.Migrations;
 using EasyOC.RDBMS.Scripting;
 using EasyOC.RDBMS.Services;
 using EasyOC.RDBMS.Workflows.Activities;
@@ -9,10 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Data.Migration;
-using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
-using OrchardCore.Queries;
 using OrchardCore.Scripting;
 using OrchardCore.Security.Permissions;
 using OrchardCore.Workflows.Helpers;
@@ -21,6 +17,7 @@ using System;
 namespace EasyOC.RDBMS
 {
     [Feature("EasyOC.RDBMS")]
+    [RequireFeatures("EasyOC.GraphQL")]
     public class Startup : StartupBase
     {
         public override void ConfigureServices(IServiceCollection services)
@@ -28,8 +25,7 @@ namespace EasyOC.RDBMS
             services.AddAutoMapper(GetType().Assembly);
             services.AddScoped<IContentFieldsValuePathProvider, ContentFieldsValuePathProvider>();
             // services.AddScoped<IQuerySource, FreeSqlQuerySource>();
-            services.AddScoped<IDisplayDriver<Query>, ScriptQueryDisplayDriver>();
-            services.AddScoped<IQuerySource, ScriptQuerySource>();
+    
             services.AddSingleton<IGlobalMethodProvider, FreeSqlWorkflowMethodsProvider>();
             services.AddActivity<SQLTask, SQLTaskDisplayDriver>();
             services.AddScoped<IRDBMSAppService, RDBMSAppService>();
@@ -37,7 +33,7 @@ namespace EasyOC.RDBMS
             services.AddScoped<INavigationProvider, AdminMenu>();
             services.AddScoped<IDataMigration, RDBMSMappingConfigMigration>();
             services.AddScoped<IDataMigration, DbConnectionConfigMigration>();
-            services.AddTransient<IScriptQueryService,ScriptQueryService>();
+
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
@@ -48,7 +44,6 @@ namespace EasyOC.RDBMS
                 pattern: "Home/Index",
                 defaults: new { controller = "Home", action = "Index" }
             );
-
         }
     }
 }

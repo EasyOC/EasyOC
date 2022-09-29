@@ -35,6 +35,7 @@
     <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\ContentTypeScriptHandler.Edit.cshtml" />
   </ItemGroup>
 
 </Project>

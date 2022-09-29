@@ -285,7 +285,6 @@ namespace EasyOC.GraphQL.Queries
                 Console.WriteLine(e);
                 throw;
             }
-            return null;
         }
     }
 

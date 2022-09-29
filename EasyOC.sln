@@ -108,6 +108,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyOC.AppCenter", "src\Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyOC.Extensions", "src\Core\EasyOC.Extensions\EasyOC.Extensions.csproj", "{8369B9E7-E4BA-4621-B143-0843A454085D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphql.JsonSchema", "src\Lib\Graphql.JsonSchema\Graphql.JsonSchema.csproj", "{58E870E6-EF18-4CB3-8B41-41B004CEB411}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{58911974-BE90-4B4B-87F7-ECB408F44279}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -238,6 +242,10 @@ Global
 		{8369B9E7-E4BA-4621-B143-0843A454085D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8369B9E7-E4BA-4621-B143-0843A454085D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8369B9E7-E4BA-4621-B143-0843A454085D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58E870E6-EF18-4CB3-8B41-41B004CEB411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E870E6-EF18-4CB3-8B41-41B004CEB411}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E870E6-EF18-4CB3-8B41-41B004CEB411}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E870E6-EF18-4CB3-8B41-41B004CEB411}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -275,6 +283,7 @@ Global
 		{504ADCC3-9B1F-4854-AC70-3CFEE06A1597} = {5A30262C-639E-4734-AB2A-97425C5A1478}
 		{D5CAFCC1-7012-4CE5-BF98-4047C012066C} = {504ADCC3-9B1F-4854-AC70-3CFEE06A1597}
 		{8369B9E7-E4BA-4621-B143-0843A454085D} = {F57BF725-CA2C-4E30-BA75-1C99D8A40E4D}
+		{58E870E6-EF18-4CB3-8B41-41B004CEB411} = {58911974-BE90-4B4B-87F7-ECB408F44279}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AC3010-A6C0-4E54-9806-D2A45D57EE6E}

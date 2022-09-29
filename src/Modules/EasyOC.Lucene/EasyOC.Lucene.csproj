@@ -18,4 +18,8 @@
     <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <RazorGenerate Remove="Views\Home\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

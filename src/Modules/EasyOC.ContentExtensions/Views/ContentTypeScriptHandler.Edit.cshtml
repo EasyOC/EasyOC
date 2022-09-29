@@ -1,0 +1,121 @@
+﻿@model EasyOC.ContentExtensions.Models.HandlerScripts
+
+<style at="Head" asp-name="amis"></style>
+<style at="Head" asp-name="amis-cxd"></style>
+<style at="Head" asp-name="amis-helper"></style>
+<style at="Head" asp-name="amis-iconfont"></style>
+
+<input asp-for="CreateHandlerScript" hidden/>
+<input asp-for="UpdateHandlerScript" hidden/>
+<input asp-for="DeleteHandlerScript" hidden/>
+<input asp-for="PublishHandlerScript" hidden/>
+
+<div id="amis-root">
+</div>
+<script at="Foot" asp-name="amis"></script>
+<script at="Foot" asp-name="amis-ext"></script>
+<script at="Foot" asp-name="axios"></script>
+<script at="Foot" asp-name="amis-env"></script>
+<script at="Foot" depends-on="amis">
+
+    $(function () {
+        let amis = amisRequire('amis/embed');
+        var formData=@Json.Serialize(Model)
+        console.log("formData",formData)
+        // formData["__RequestVerificationToken"]= $("input[name='__RequestVerificationToken']").val()
+ 
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON = {
+                         "type": "page",
+                         "body": [
+                           {
+                             "type": "form",
+                             data:formData,
+                             "title": "脚本处理程序",
+                             "body": [
+                               {
+                                 "type": "grid",
+                                 "columns": [
+                                   {
+                                     "id": "u:3fa695746370",
+                                     "body": [
+                                       {
+                                         "label": "Create Handler",
+                                         "type": "editor",
+                                         "name": "createHandlerScript",
+                                         "id": "u:7d125702f034"
+                                       }
+                                     ],
+                                     "md": 6
+                                   },
+                                   {
+                                     "id": "u:f2d5567b1d12",
+                                     "body": [
+                                       {
+                                         "label": "Update Handler",
+                                         "type": "editor",
+                                         "name": "updateHandlerScript",
+                                         "id": "u:7d125702f034"
+                                       }
+                                     ],
+                                     "md": 6
+                                   }
+                                 ],
+                                 "id": "u:03fa1b6b6e7a"
+                               },
+                               {
+                                 "type": "grid",
+                                 "columns": [
+                                   {
+                                     "body": [
+                                       {
+                                         "label": "Delete Handler",
+                                         "type": "editor",
+                                         "name": "deleteHandlerScript",
+                                         "id": "u:7d125702f034"
+                                       }
+                                     ],
+                                     "id": "u:db4a232da28d",
+                                     "md": 6
+                                   },
+                                   {
+                                     "body": [
+                                       {
+                                         "label": "Publish Handler",
+                                         "type": "editor",
+                                         "name": "publishHandlerScript",
+                                         "id": "u:7d125702f034"
+                                       }
+                                     ],
+                                     "id": "u:07e7208b661f",
+                                     "md": 6
+                                   }
+                                 ],
+                                 "id": "u:69a34867ee48"
+                               }
+                             ],
+                             "id": "amisForm"
+                           }
+                         ],
+                         "id": "u:bc180a7db378"
+                       };
+ 
+        var env = buildEnv(axios);
+        let amisScoped = amis.embed('#amis-root', amisJSON, {},
+            {
+                enableAMISDebug: false,
+                locale: 'zh-CN',
+                ...env
+            }
+        );
+         window.addEventListener("submit", () => {
+             console.log("amisScoped",amisScoped)
+             var model =amisScoped.getComponentById("amisForm").getValues();
+             $('#@Html.IdFor(x => x.CreateHandlerScript)').val(model.createHandlerScript);
+             $('#@Html.IdFor(x => x.UpdateHandlerScript)').val(model.updateHandlerScript);
+             $('#@Html.IdFor(x => x.DeleteHandlerScript)').val(model.deleteHandlerScript);
+             $('#@Html.IdFor(x => x.PublishHandlerScript)').val(model.publishHandlerScript);
+        });    
+        
+    });
+</script>
