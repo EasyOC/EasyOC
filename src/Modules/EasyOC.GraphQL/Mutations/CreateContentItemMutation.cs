@@ -1,5 +1,6 @@
 ﻿using EasyOC.GraphQL.Abstractions.Mutations;
 using EasyOC.GraphQL.Abstractions.Types;
+using GraphQL;
 using GraphQL.Resolvers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

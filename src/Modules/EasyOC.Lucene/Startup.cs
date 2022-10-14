@@ -1,7 +1,7 @@
 using Lucene.Net.Analysis.Core;
 using Microsoft.Extensions.DependencyInjection;
-using OrchardCore.Lucene;
-using OrchardCore.Lucene.Services;
+using OrchardCore.Search.Lucene;
+using OrchardCore.Search.Lucene.Services;
 using OrchardCore.Modules;
 
 namespace EasyOC.Lucene

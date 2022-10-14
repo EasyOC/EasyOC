@@ -4,8 +4,10 @@ using EasyOC.Core.ResultWaper.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using OrchardCore.DisplayManagement.Notify;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Furion.UnifyResult
@@ -15,6 +17,8 @@ namespace Furion.UnifyResult
     /// </summary>
     public class SucceededUnifyResultFilter : IAsyncActionFilter, IOrderedFilter
     { 
+        
+       
         /// <summary>
         /// 过滤器排序
         /// </summary>
@@ -33,6 +37,7 @@ namespace Furion.UnifyResult
         /// <returns></returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+           
             // 执行 Action 并获取结果
             var actionExecutedContext = await next();
             //context.Result = actionExecutedContext.Result;

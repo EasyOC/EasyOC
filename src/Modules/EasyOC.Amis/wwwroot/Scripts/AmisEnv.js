@@ -42,9 +42,11 @@ const buildEnv = (axios, fetcherFn) => {
                  var firstmsg = result.data.msg 
                 if(result.data.msg instanceof Array){
                    firstmsg= result.data.msg[0]
-                }               
-                result.data.msg = firstmsg.message.value
-                result.data.status = firstmsg.type
+                }        
+                if(firstmsg){ 
+                    result.data.msg = firstmsg.message.value
+                    result.data.status = firstmsg.type
+                }
             } else if (!result.data.status) {
                 result.data.status = result.status == 200 ? 0 : result.status
             }

@@ -2,6 +2,7 @@
 using EasyOC.GraphQL.Handlers;
 using EasyOC.GraphQL.Queries;
 using EasyOC.GraphQL.Queries.Types;
+using EasyOC.GraphQL.Servicies;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.ContentFields.Fields;
@@ -30,6 +31,7 @@ namespace EasyOC.GraphQL
             services.AddTransient<PagedContentItemsType>();
             services.AddSingleton<ISchemaBuilder, PagedContentItemsQuery>();
             services.AddScoped<IPagedContentItemQueryWhereFilter, DefaultPagedContentItemQueryWhereFilter>();
+            services.AddScoped<IGraphqlExecuterService, GraphqlExecuterService>();
 
 
 

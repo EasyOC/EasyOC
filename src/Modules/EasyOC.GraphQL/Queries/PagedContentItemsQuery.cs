@@ -1,12 +1,12 @@
-﻿using EasyOC.GraphQL.Queries.Types;
+﻿using EasyOC.Core.Indexes;
 using EasyOC.DynamicTypeIndex;
 using EasyOC.DynamicTypeIndex.Models;
 using EasyOC.DynamicTypeIndex.Service;
+using EasyOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
+using GraphQL;
 using GraphQL.Types;
-using YesSql;
-using MSHttp = Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EasyOC.Core.Indexes;
+using MSHttp = Microsoft.AspNetCore.Http;
 
 namespace EasyOC.GraphQL.Queries
 {
@@ -41,7 +41,7 @@ namespace EasyOC.GraphQL.Queries
         }
 
         public Task<string> GetIdentifierAsync() => Task.FromResult(string.Empty);
-
+        const string dynamicfilterDescription = "The dynamic filter: see：http://www.freesql.net/guide/select.html#%E7%89%B9%E5%88%AB%E4%BB%8B%E7%BB%8D-wheredynamicfilter";
         public Task BuildAsync(ISchema schema)
         {
             var typeType = new PagedContentItemsType();
@@ -71,11 +71,11 @@ namespace EasyOC.GraphQL.Queries
                 },
                 new QueryArgument<DynamicFilterInput>()
                 {
-                    Name = "dynamicFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#%E7%89%B9%E5%88%AB%E4%BB%8B%E7%BB%8D-wheredynamicfilter", DefaultValue = ""
+                    Name = "dynamicFilter", Description = dynamicfilterDescription, DefaultValue = ""
                 },
                 new QueryArgument<StringGraphType>()
                 {
-                    Name = "dynamicJSONFilter", Description = "The dynamic filter: 参考：http://www.freesql.net/guide/select.html#%E7%89%B9%E5%88%AB%E4%BB%8B%E7%BB%8D-wheredynamicfilter", DefaultValue = ""
+                    Name = "dynamicJSONFilter", Description = dynamicfilterDescription, DefaultValue = ""
                 },
                 new QueryArgument<DynamicOrderByInput>()
                 {
@@ -90,7 +90,7 @@ namespace EasyOC.GraphQL.Queries
             // schema.RegisterType<DynamicOrderByInput>();
         }
 
-        private async Task<PagedContentItemResult> ResolveAsync(ResolveFieldContext context)
+        private async Task<PagedContentItemResult> ResolveAsync(IResolveFieldContext context)
         {
             var contentType = context.GetArgument<string>("contentType");
             if (string.IsNullOrEmpty(contentType))
@@ -101,8 +101,7 @@ namespace EasyOC.GraphQL.Queries
 
             var published = context.GetArgument<bool?>("published") ?? true;
             var latest = context.GetArgument<bool?>("latest") ?? true;
-            var graphContext = (GraphQLContext)context.UserContext;
-            var serviceProvider = graphContext.ServiceProvider;
+            var serviceProvider = context.RequestServices;
             var dynamicIndexAppService = serviceProvider.GetRequiredService<IDynamicIndexAppService>();
             var dIndexConfig = await dynamicIndexAppService.GetDynamicIndexConfigAsync(contentType);
 
@@ -286,7 +285,6 @@ namespace EasyOC.GraphQL.Queries
                 Console.WriteLine(e);
                 throw;
             }
-            return null;
         }
     }
 

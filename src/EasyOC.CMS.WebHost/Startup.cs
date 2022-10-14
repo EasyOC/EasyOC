@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,10 @@ namespace EasyOC.CMS.WebHost
                 {
                     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
+            });
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =ForwardedHeaders.All;
             });
             services.Configure<IdentityOptions>(options =>
             {
@@ -36,6 +41,8 @@ namespace EasyOC.CMS.WebHost
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseForwardedHeaders();
+
             app.UseCors(); // Enable CORS!
             app.UseStaticFiles();
             app.UseOrchardCore();

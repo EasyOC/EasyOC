@@ -1,4 +1,4 @@
-{
+﻿{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -20,13 +20,13 @@
     "web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:44389",
+      "launchUrl": "http://localhost:2919",
       "hotReloadProfile": "aspnetcore",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "nativeDebugging": false,
-      "applicationUrl": "http://localhost:2919;https://localhost:44389;http://0.0.0.0:2919",
+      "applicationUrl": "http://0.0.0.0:2919",
       "jsWebView2Debugging": true
     }
   }

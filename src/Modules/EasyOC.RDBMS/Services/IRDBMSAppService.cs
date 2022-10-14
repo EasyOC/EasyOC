@@ -16,7 +16,7 @@ public interface IRDBMSAppService
     /// Get all Connection Config
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnecton();
+    Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnection();
     /// <summary>
     /// 根据连接设置获取指定数据库的表信息
     /// </summary>
@@ -32,12 +32,5 @@ public interface IRDBMSAppService
     Task<DbTableInfoDto> GetTableDetailsAsync(string connectionConfigId, string tableName);
     Task<GenerateRecipeDto> GenerateRecipeAsync(string connectionConfigId, string tableName);
     IEnumerable<OrchardCoreBaseField> GetAllOrchardCoreBaseFields();
-    /// <summary>
-    /// 使用JSON更新类型
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
-    Task ImportDeploymentPackageAsync(ImportJsonInupt model);
     JObject GetTableInfo(RDBMSMappingConfigViewModel config);
 }

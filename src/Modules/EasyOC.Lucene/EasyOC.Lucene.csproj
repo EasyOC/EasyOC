@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Lucene.Net.Analysis.Common" Version="$(LuceneNetVersion)" />
-    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Lucene.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Search.Lucene.Abstractions" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\EasyOC.Constants\EasyOC.Constants.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <RazorGenerate Remove="Views\Home\Index.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using EasyOC.GraphQL.Queries.Types;
+using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,13 +10,13 @@ using OrchardCore.Apis.GraphQL;
 using OrchardCore.Apis.GraphQL.Resolvers;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.GraphQL.Queries;
-using OrchardCore.Lucene;
+using OrchardCore.Search.Lucene;
 using OrchardCore.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
+using LuceneQueryResults = OrchardCore.Search.Lucene.LuceneQueryResults;
 
 namespace EasyOC.GraphQL.Queries
 {
@@ -162,7 +163,7 @@ namespace EasyOC.GraphQL.Queries
             fieldType.ResolvedType = totalType;
             fieldType.Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
             {
-                var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                var queryManager = context.RequestServices.GetService<IQueryManager>();
                 var iquery = await queryManager.GetQueryAsync(query.Name);
 
                 var parameters = context.GetArgument<string>("parameters");
@@ -212,7 +213,7 @@ namespace EasyOC.GraphQL.Queries
             fieldType.ResolvedType = totalType;
             fieldType.Resolver = new LockedAsyncFieldResolver<object, object>(async context =>
             {
-                var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                var queryManager = context.RequestServices.GetService<IQueryManager>();
                 var iquery = await queryManager.GetQueryAsync(query.Name);
 
                 var parameters = context.GetArgument<string>("parameters");

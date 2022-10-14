@@ -30,7 +30,9 @@ namespace EasyOC.AntdAdmin.Services
             var partInfo = content.As<AntdSiteGlobalSettings>();
             var dto = new AntdSiteGlobalSettingsDto
             {
-                MenuData = partInfo.MenuData.Text
+                MenuData = partInfo.MenuData?.Text,
+                StaticMenus = partInfo.StaticMenus?.Text,
+                SiteSettingsData = partInfo.SettingData?.Text
             };
             return dto;
         }
@@ -43,9 +45,13 @@ namespace EasyOC.AntdAdmin.Services
             {
                 content.Alter<AntdSiteGlobalSettings>(part =>
                 {
-                    if (input.MenuData != null)
+                    if (input?.MenuData != null)
                     {
                         part.MenuData.Text = input.MenuData;
+                    }
+                    if (input?.SiteSettingsData != null)
+                    {
+                        part.SettingData.Text = input.SiteSettingsData;
                     }
                 });
             });

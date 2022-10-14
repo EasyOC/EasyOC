@@ -8,6 +8,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.ContentManagement.Metadata.Models;
+using OrchardCore.ContentManagement.Records;
 using OrchardCore.Contents;
 using OrchardCore.DisplayManagement.Notify;
 using System;
@@ -15,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using YesSql;
+using YesSql.Services;
 
 namespace EasyOC.ContentExtensions.AppServices.Dtos
 {
@@ -36,12 +39,39 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             _contentHandlers = contentHandlers;
             _handlers = handlers;
         }
+        [HttpDelete]
+        public async Task<JArray> BatchDeleteAsync([FromQuery] string ids)
+        {
+            var results = new List<JObject>();
+            if (ids == null)
+            {
+                return JArray.FromObject(results);
+            }
+            var idArray = ids.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            if (idArray.Any())
+            {
+                var checkedContentItems = await ContentManager.GetAsync(idArray);
+                foreach (var contentItem in checkedContentItems)
+                {
+                    if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.DeleteContent, contentItem))
+                    {
+                        await Notifier.ErrorAsync(H["Couldn't remove the content. Permission denied."]);
+                        await YesSession.CancelAsync();
+                    }
+                    await ContentManager.RemoveAsync(contentItem);
+                    results.Add(JObject.FromObject(new
+                    {
+                        contentItemId = contentItem.ContentItemId, displayText = contentItem.DisplayText
+                    }));
+                }
+            }
 
+            return JArray.FromObject(results);
+        }
 
-        public async Task<bool> DeleteAsync(string contentItemId)
+        public async Task<JObject> DeleteAsync(string contentItemId)
         {
             var contentItem = await ContentManager.GetAsync(contentItemId, VersionOptions.Latest);
-
             if (contentItem == null)
             {
                 throw new AppFriendlyException(HttpStatusCode.NotFound);
@@ -49,15 +79,24 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
 
             if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.DeleteContent, contentItem))
             {
-                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+                await Notifier.ErrorAsync(H["Couldn't remove the content. Permission denied."]);
             }
+
+            var typeDefinition = ContentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
 
             await ContentManager.RemoveAsync(contentItem);
 
-            return true;
+            await Notifier.SuccessAsync(String.IsNullOrWhiteSpace(contentItem.DisplayText)
+                ? H["That content has been removed."]
+                : H["That {0} has been removed.", contentItem.DisplayText]);
+
+            return JObject.FromObject(new
+            {
+                contentItemId = contentItem.ContentItemId, displayText = contentItem.DisplayText
+            });
         }
 
-        public async Task<object> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false)
+        public async Task<object> PostContent([FromBody] ContentModel model, [FromQuery] bool draft = false, [FromQuery] bool merge = true)
         {
             // It is really important to keep the proper method calls order with the ContentManager
             // so that all event handlers gets triggered in the right sequence.
@@ -132,14 +171,14 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 await Notifier.SuccessAsync(H["已保存草稿"]);
             }
 
-            return new
+            return JObject.FromObject(new
             {
                 contentItem.Id,
                 contentItem.Latest,
                 contentItem.Published,
                 contentItem.ContentItemId,
                 contentItem.ContentItemVersionId,
-            };
+            });
         }
 
 
@@ -164,12 +203,12 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             }
 
 
-            var ls = model.InputList.Select((m) =>
+            var ls = model.InputList.Select((contentModel) =>
             {
                 var contentItem = ContentManager.NewAsync(model.ContentType).GetAwaiter().GetResult();
                 //var newContentItem = contentItem as ContentItem;
-                m[nameof(ContentModel.ContentType)] = model.ContentType;
-                return MergeFromSimpleData(contentItem, m, typeDef);
+                contentModel[nameof(ContentModel.ContentType)] = model.ContentType;
+                return MergeFromSimpleData(contentItem, contentModel, typeDef);
             });
 
             await ContentManager.ImportAsync(ls);
@@ -221,9 +260,20 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 var inputKeyPrefix = contentItem.ContentType == partName ? string.Empty : $"{partName.ToCamelCase()}.";
                 var inputKey = $"{inputKeyPrefix}{item.Name.ToCamelCase()}";
                 var filedValue = inputValue.SelectToken(inputKey);
+
+                //如果未指定布尔值，则直接指定为False ，因为 MVC 版本尚未处理此问题
+                if (item.FieldDefinition.Name == nameof(BooleanField))
+                {
+                    contentItem.Content[partName][item.Name] = new JObject
+                    {
+                        [valuePath] = filedValue ?? false
+                    };
+                    continue;
+                }
+                // 避免未指定的字段被覆盖
                 if (filedValue is null)
                 {
-                    return;
+                    continue;
                 }
 
                 if (item.FieldDefinition.Name is nameof(ContentPickerField) or nameof(UserPickerField) or "MediaField")

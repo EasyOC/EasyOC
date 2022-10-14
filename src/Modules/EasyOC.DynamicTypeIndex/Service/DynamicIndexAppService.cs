@@ -31,6 +31,7 @@ namespace EasyOC.DynamicTypeIndex.Service
         public const string DefaultTableNameTemplate = "{0}DIndex_{1}";
         public const string DefaultEntityNameTemplate = "{0}DIndex";
         public const string DefaultNamespaceTemplate = "EasyOC.DynamicTypeIndex.{0}.IndexModels";
+        public virtual int RebuildIndexPageSize { get; set; } = 100;
         public string DefaultNamespace => string.Format(DefaultEntityNameTemplate, _tanentName);
 
         private readonly ICSharpScriptProvider _cSharpScriptProvider;
@@ -52,7 +53,7 @@ namespace EasyOC.DynamicTypeIndex.Service
         {
             _store = store;
             _shellConfiguration = shellConfiguration;
-            _tanentName = shellsSettings.Name; 
+            _tanentName = shellsSettings.Name;
             _cSharpScriptProvider = cSharpScriptProvider;
             _cachedTypeConfigurations = memoryCache.GetOrCreate("CachedTypeConfigurations", entry => new ConcurrentDictionary<string, Task<DynamicIndexConfigModel>>());
             _typesCache = memoryCache.GetOrCreate("CachedTypeDefs", entry => new ConcurrentDictionary<string, Task<Type>>());
@@ -63,19 +64,50 @@ namespace EasyOC.DynamicTypeIndex.Service
         /// 如果不存在，则生成默认配置
         /// </summary>
         /// <param name="typeName">ConntentTypeName</param>
+        /// <param name="renew">重置强制获取Default</param>
         /// <returns></returns>
-        public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName)
+        public async Task<DynamicIndexConfigModel> GetDynamicIndexConfigOrDefaultAsync(string typeName, bool renew = false)
         {
-            var config = await GetDynamicIndexConfigAsync(typeName);
-            if (config == null)
+            DynamicIndexConfigModel config;
+            if (renew)
             {
                 config = GetDefaultConfig(typeName);
+            }
+            else
+            {
+                config = await GetDynamicIndexConfigAsync(typeName, false);
+                if (config == null)
+                {
+                    config = GetDefaultConfig(typeName);
+                }
             }
             FillEntityInfo(config);
 
             return config;
         }
+        public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync([FromQuery] string typeName, [FromQuery] bool withCache = true)
+        {
+            if (typeName.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+            var pkg = _cachedTypeConfigurations.GetOrAdd(typeName,
+            async (key) =>
+            {
+                var contentItem = await YesSession
+                    .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
+                    .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
+                    .FirstOrDefaultAsync();
+                if (contentItem != null)
+                {
+                    return ToConfigModel(contentItem);
+                }
 
+                return null;
+            });
+
+            return pkg;
+        }
         [IgnoreWebApiMethod]
         public async Task<Type> GetDynamicIndexTypeAsync(string typeFullName, bool withCache = true)
         {
@@ -107,30 +139,7 @@ namespace EasyOC.DynamicTypeIndex.Service
             return await getTypeFn();
         }
 
-        public Task<DynamicIndexConfigModel> GetDynamicIndexConfigAsync(string typeName, bool withCache = true)
-        {
-            if (typeName.IsNullOrWhiteSpace())
-            {
-                return null;
-            }
 
-            var pkg = _cachedTypeConfigurations.GetOrAdd(typeName,
-                async (key) =>
-                {
-                    var contentItem = await YesSession
-                        .Query<ContentItem, ContentItemIndex>(x => x.Latest && x.Published)
-                        .With<DynamicIndexConfigDataIndex>(x => x.TypeName == typeName)
-                        .FirstOrDefaultAsync();
-                    if (contentItem != null)
-                    {
-                        return ToConfigModel(contentItem);
-                    }
-
-                    return null;
-                });
-
-            return pkg;
-        }
 
         private DynamicIndexEntityInfo FillEntityInfo(DynamicIndexConfigModel config)
         {
@@ -167,7 +176,6 @@ namespace EasyOC.DynamicTypeIndex.Service
                 var restAttr = new List<string>();
 
                 #region Field Attributes
-
                 if (item.IsPrimaryKey)
                 {
                     restAttr.Add("IsPrimary = true");
@@ -193,7 +201,6 @@ namespace EasyOC.DynamicTypeIndex.Service
                 {
                     restAttrText = "," + restAttr.JoinAsString(",");
                 }
-
                 #endregion
 
                 fields.Add($@"
@@ -202,11 +209,10 @@ namespace EasyOC.DynamicTypeIndex.Service
                 ");
             }
 
-
             // ReSharper disable once StringLiteralTypo
             var template = $@"
 using EasyOC.Core.Indexes;
-using FreeSql.DataAnnotations; 
+using FreeSql.DataAnnotations;
 // 此代码由程序生成，复制到代码文件后请更新命名空间，
 // 或者在命名空间处点击 Alt+Enter 自动更新命名空间
 namespace {entityInfo.NameSpace}
@@ -214,14 +220,10 @@ namespace {entityInfo.NameSpace}
     [EOCIndex(""IDX_{{tablename}}_DocumentId"",""{string.Join(",", indexNames)}"")]
     [EOCTable(Name = ""{config.TableName}"")]
     public class {entityInfo.EntityName} : DIndexBase
-    {{
-
-{fields.JoinAsString(string.Empty)}
+    {{{fields.JoinAsString(string.Empty)}
     }}
-}}
-";
+}}";
             entityInfo.EntityContent = template;
-
             return entityInfo;
         }
 
@@ -272,11 +274,11 @@ namespace {entityInfo.NameSpace}
                 };
             });
             var sucessed = await ContentManager.CreateOrUpdateAndPublishAsync(doc, isCreate,
-                new PublishOptions
-                {
-                    HtmlLocalizer = H,
-                    Notifier = Notifier
-                });
+            new PublishOptions
+            {
+                HtmlLocalizer = H,
+                Notifier = Notifier
+            });
 
             if (sucessed)
             {
@@ -301,7 +303,6 @@ namespace {entityInfo.NameSpace}
             {
                 await Notifier.ErrorAsync(H["DynamicIndex Config :{0} is not found", typeName]);
             }
-
             return await RebuildIndexData(model);
         }
 
@@ -312,43 +313,45 @@ namespace {entityInfo.NameSpace}
                 .Where(x => x.Latest && x.Published && x.ContentType == model.TypeName)
                 .OrderBy(x => x.Id);
 
-            var indexTableName = model.TableName;
             int page = 1;
             var totalRows = 0;
-
-
-            var take100 = await docs.Take(100).ListAsync();
-            while (take100.Any())
+            var indexTableName = model.TableName;
+            //获取类型映射 索引表
+            var type = await GetDynamicIndexTypeAsync(model.EntityInfo, false);
+            //清理数据
+            var deleteCmd = Fsql.Delete<DIndexBase>().AsType(type).Where(x => true);
+            //循环刷新索引
+            var takeByPageSize = await docs.Take(RebuildIndexPageSize).ListAsync();
+            if (takeByPageSize.Any())
             {
-                var pendingIds = take100.Select(x => x.ContentItemId);
-                var deleteCmd = Fsql.Delete<DIndexBase>()
-                    .AsTable(indexTableName)
-                    .Where(x => true);
                 if (YesSession.CurrentTransaction != null)
                 {
                     deleteCmd.WithTransaction(YesSession.CurrentTransaction);
                 }
-
                 await deleteCmd.ExecuteAffrowsAsync();
+            }
 
-                var freeModels = take100.ToDictModel(model);
-                // Specifies the collection of data dictionary objects to insert
-                var freeItems = Fsql.InsertOrUpdateDict(freeModels.OrderByDescending(x => x.Keys.Count))
-                    .AsTable(indexTableName) //Specify the name of the table to be inserted
-                    .WherePrimary("Id");
+            var table = Fsql.CodeFirst.GetTableByEntity(type);
+
+            while (takeByPageSize.Any())
+            {
+                var modleList = takeByPageSize.ToModel(model, type, table);
+                //内容项转为实体对象
+                var freeItems = Fsql.Insert<object>().AsType(type).AppendData(modleList).NoneParameter();
+                Console.WriteLine(freeItems.ToSql());
                 if (YesSession.CurrentTransaction != null)
                 {
                     freeItems.WithTransaction(YesSession.CurrentTransaction);
                 }
-
-                totalRows += await freeItems.ExecuteAffrowsAsync(); //Batch Insert
+                //批量插入新索引数据
+                totalRows += await freeItems.ExecuteAffrowsAsync();
                 page++;
-                take100 = await docs.Skip(page * 100).Take(100).ListAsync();
+                takeByPageSize = await docs.Skip(page * RebuildIndexPageSize).Take(RebuildIndexPageSize).ListAsync();
             }
-            // if (YesSession.CurrentTransaction != null)
-            // {
-            //     await YesSession.CurrentTransaction.CommitAsync();
-            // }
+            if (YesSession.CurrentTransaction != null)
+            {
+                await YesSession.CurrentTransaction.CommitAsync();
+            }
 
             return totalRows;
         }

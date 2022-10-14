@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GraphQL.DataLoader;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,14 +66,15 @@ namespace EasyOC.OpenApi.GraphQL.Types
                     }
 
                     var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
-                    var profile = await contentItemLoader.LoadAsync(x.Source.UserIds.FirstOrDefault());
-                    return profile;
+                    var profile = contentItemLoader.LoadAsync(x.Source.UserIds.FirstOrDefault());
+
+                    return profile.Then(x => x.FirstOrDefault());
                 });
-            Field<ListGraphType<ContentItemInterface>, ContentItem[]>()
+            Field<ListGraphType<ContentItemInterface>, IEnumerable<ContentItem>>()
                 .Name("UserProfiles")
                 .Description("the user profiles")
                 .PagingArguments()
-                .ResolveAsync(async x =>
+                .ResolveAsync(x =>
                 {
                     if (x.Source.UserIds == null || !x.Source.UserIds.Any())
                     {
@@ -80,8 +82,12 @@ namespace EasyOC.OpenApi.GraphQL.Types
                     }
                     var userIds = x.Source.UserIds;
                     var contentItemLoader = x.GetOrAddPublishedContentItemByIdDataLoader();
-                    var items = await contentItemLoader.LoadAsync(x.Page(userIds));
-                    return items.Where(item => item != null).ToArray();
+
+
+                    return (contentItemLoader.LoadAsync(x.Page(userIds))).Then(itemResultSet =>
+                    {
+                        return itemResultSet.SelectMany(x => x);
+                    });
                 });
         }
     }

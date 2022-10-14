@@ -8,6 +8,8 @@ namespace EasyOC.AntdAdmin.Models
     public class AntdSiteGlobalSettings : ContentPart
     {
         public TextField MenuData { get; set; }
+        public TextField StaticMenus { get; set; }
+        public TextField SettingData { get; set; }
         // public string SiteDescription { get; set; }
         // public string SiteKeywords { get; set; }
         // public string SiteLogo { get; set; }
@@ -22,6 +24,9 @@ namespace EasyOC.AntdAdmin.Models
     public class AntdSiteGlobalSettingsDto
     {
         public string MenuData { get; set; }
+        public string SiteSettingsData { get; set; }
+
+        public string StaticMenus { get; set; }
     }
 
 }

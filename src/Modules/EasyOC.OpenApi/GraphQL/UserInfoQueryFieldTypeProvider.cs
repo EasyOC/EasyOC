@@ -1,4 +1,5 @@
-﻿using GraphQL.Resolvers;
+﻿using GraphQL;
+using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -53,7 +54,7 @@ namespace EasyOC.OpenApi.GraphQL
             return Task.CompletedTask;
         }
 
-        private async Task<ContentItem> ResolveAsync(ResolveFieldContext context)
+        private async Task<ContentItem> ResolveAsync(IResolveFieldContext context)
         {
             var serviceProvider = _httpContextAccessor.HttpContext.RequestServices;
             var userManager = serviceProvider.GetRequiredService<UserManager<IUser>>();

@@ -1,8 +1,5 @@
 ﻿using FreeSql.Internal.Model;
 using GraphQL.Types;
-using GraphQL.Utilities;
-using Newtonsoft.Json.Linq;
-using OrchardCore.ContentManagement.GraphQL.Queries.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,14 +35,13 @@ namespace EasyOC.GraphQL.Queries.Types
             };
 
             Type enumType = typeof(DynamicFilterOperator);
-            this.Name = this.Name ?? StringUtils.ToPascalCase(enumType.Name);
             foreach (string name in Enum.GetNames(enumType).Where(x => !ExceptedValues.Contains(x)))
             {
-                this.AddValue(StringUtils.ToConstantCase(((IEnumerable<MemberInfo>)
-                    enumType.GetMember(name,
+                AddValue(
+                (enumType.GetMember(name,
                     BindingFlags.DeclaredOnly
                     | BindingFlags.Static | BindingFlags.Public))
-                .First<MemberInfo>().Name),
+                .First<MemberInfo>().Name.ToUpper(),
                 (string)null, Enum.Parse(enumType, name));
             }
 

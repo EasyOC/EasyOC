@@ -59,13 +59,13 @@
     <PackageReference Include="OrchardCore.Layers" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Liquid" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Lists" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Localization" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Markdown" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
 
-    <!--<PackageReference Include="OrchardCore.Media" Version="$(OrchardCoreVersion)" PrivateAssets="none" />-->
+    <PackageReference Include="OrchardCore.Media" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 
-    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.Media\OrchardCore.Media.csproj" PrivateAssets="none"/>
+<!--    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.Media\OrchardCore.Media.csproj" PrivateAssets="none"/>-->
 
     <PackageReference Include="OrchardCore.MiniProfiler" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
@@ -81,7 +81,7 @@
     <PackageReference Include="OrchardCore.Redis" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Resources" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.ResponseCompression" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
-    <PackageReference Include="OrchardCore.ReverseProxy" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+    <!--<PackageReference Include="OrchardCore.ReverseProxy" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
     <PackageReference Include="OrchardCore.Rules" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Roles" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
     <PackageReference Include="OrchardCore.Scripting" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
@@ -121,7 +121,7 @@
 
     <!--    <ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" PrivateAssets="none"/>-->
 
-    <ProjectReference Include="..\..\Core\EasyOC.Infrastructure\EasyOC.Infrastructure.csproj"/>
+    <!--<ProjectReference Include="..\..\Core\EasyOC.Infrastructure\EasyOC.Infrastructure.csproj"/>-->
 
 
   </ItemGroup>

@@ -14,8 +14,6 @@ namespace EasyOC.Core
     }
     public class RunAsDifferentUserPrincipal
     {
-
-
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
            int dwLogonType, int dwLogonProvider, out SafeAccessTokenHandle phToken);

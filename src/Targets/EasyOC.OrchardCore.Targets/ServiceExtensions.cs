@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using OrchardCore.ResourceManagement.TagHelpers;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -18,8 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var builder = services.AddOrchardCore()
 
                 .AddCommands()
-
-                .AddEocSecurity()
+                .AddSecurity()
                 .AddMvc()
                 .AddIdGeneration()
                 .AddEmailAddressValidator()
