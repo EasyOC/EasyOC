@@ -29,23 +29,19 @@ namespace EasyOC.RDBMS.Services
     public class RDBMSAppService : AppServiceBase, IRDBMSAppService
     {
         private readonly IMapper _mapper;
-        private readonly IMemoryCache _memoryCache;
-        private readonly IDeploymentManager _deploymentManager;
-        private readonly IServiceProvider _serviceProvider;
-
+        private readonly IMemoryCache _memoryCache; 
+        private readonly IServiceProvider _serviceProvider; 
         private readonly IContentFieldsValuePathProvider _contentFieldsValuePathProvider;
         public RDBMSAppService(
-            IMapper mapper, IMemoryCache memoryCache,
-            IDeploymentManager deploymentManager, IServiceProvider serviceProvider)
+            IMapper mapper, IMemoryCache memoryCache, IServiceProvider serviceProvider)
         {
-            this._mapper = mapper;
+             _mapper = mapper;
             _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
-
-            _memoryCache = memoryCache;
-            _deploymentManager = deploymentManager;
+            _memoryCache = memoryCache; 
             _serviceProvider = serviceProvider;
         }
 
+        [IgnoreWebApiMethod]
         public async Task<ContentItem> GetConnectionConfigAsync(string connectionConfigId)
         {
             var connectionSettings = await YesSession.Query<ContentItem, ContentItemIndex>()
@@ -61,26 +57,36 @@ namespace EasyOC.RDBMS.Services
         [IgnoreWebApiMethod]
         public async Task<IFreeSql> GetFreeSqlAsync(string connectionConfigId)
         {
+            if (connectionConfigId == Constants.ShellDbName)
+                return _serviceProvider.GetFreeSql();
+
             var connectionObject = await GetConnectionConfigAsync(connectionConfigId);
             if (connectionObject == null) { return null; }
             var providerName = (string)connectionObject.Content.DbConnectionConfig.DatabaseProvider.Text.Value;
             var connectionStr = (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value;
             //无法判断 dynamic 类型 ，所以要先显示指定类型
             return _serviceProvider.GetFreeSql(providerName, connectionStr);
+
         }
         /// <summary>
         /// Get all Connection Config
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnecton()
+        public async Task<IEnumerable<ConnectionConfigModel>> GetAllDbConnection()
         {
             var connectionSettings = await YesSession.Query<ContentItem, ContentItemIndex>()
-                .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published || x.Latest)).ListAsync();
+                .Where(x => x.ContentType == "DbConnectionConfig" && (x.Published)).ListAsync();
             var connectionList = connectionSettings.Select(x => new ConnectionConfigModel()
             {
-
                 ConfigName = x.DisplayText,
+                DbProvider = x.Content.DbConnectionConfig.DatabaseProvider.Text.Value,
                 ConfigId = x.ContentItemId
+            }).ToList();
+            connectionList.Insert(0, new ConnectionConfigModel()
+            {
+                ConfigName = Constants.ShellDbName,
+                DbProvider = Fsql.Ado.DataType.ToString(),
+                ConfigId = Constants.ShellDbName
             });
             return connectionList;
         }
@@ -108,16 +114,15 @@ namespace EasyOC.RDBMS.Services
                 x => $"{x.Schema}.{x.Name}".ToLower().Contains(queryTablesDto.FilterText))
                 .OrderBy(x => x.Schema).ThenBy(x => x.Name)
                 .Take(queryTablesDto.MaxResultCount)
-                .Select(x =>
+                .Select(x => {
+                    var mResult = new DbTableInfoDto()
                     {
-                        var mResult = new DbTableInfoDto()
-                        {
-                            ColumnsCount = x.Columns.Count
-                        };
-                        x.Columns.Clear();
-                        mResult = _mapper.Map(x, mResult);
-                        return mResult;
-                    }
+                        ColumnsCount = x.Columns.Count
+                    };
+                    x.Columns.Clear();
+                    mResult = _mapper.Map(x, mResult);
+                    return mResult;
+                }
                 );
 
             return tables;
@@ -282,34 +287,7 @@ namespace EasyOC.RDBMS.Services
         {
             return _contentFieldsValuePathProvider.GetAllOrchardCoreBaseFields();
         }
-        /// <summary>
-        /// 使用JSON更新类型
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task ImportDeploymentPackageAsync(ImportJsonInupt model)
-        {
-            if (!model.RecipeContent.IsJson())
-            {
-                throw new ArgumentException(S["The recipe is written in an incorrect json format."]);
-            }
-            var tempArchiveFolder = PathExtensions.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            try
-            {
-                Directory.CreateDirectory(tempArchiveFolder);
-                await File.WriteAllTextAsync(Path.Combine(tempArchiveFolder, "Recipe.json"), model.RecipeContent);
-                await _deploymentManager.ImportDeploymentPackageAsync(new PhysicalFileProvider(tempArchiveFolder));
-                await Notifier.SuccessAsync(H["Import Success"]);
-            }
-            finally
-            {
-                if (Directory.Exists(tempArchiveFolder))
-                {
-                    Directory.Delete(tempArchiveFolder, true);
-                }
-            }
-        }
+
         public JObject GetTableInfo(RDBMSMappingConfigViewModel config)
         {
             throw new NotImplementedException();

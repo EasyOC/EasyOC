@@ -1,8 +1,11 @@
 ﻿using EasyOC.DynamicTypeIndex.Models;
+using FreeSql.Extensions.EntityUtil;
+using FreeSql.Internal.Model;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EasyOC
 {
@@ -36,7 +39,7 @@ namespace EasyOC
                         try
                         {
                             dictModel.Add(valueKey,
-                                valueToken.GetOCFieldValue(fConfig.ContentFieldOption));
+                            valueToken.GetOCFieldValue(fConfig.ContentFieldOption));
                         }
                         catch (Exception e)
                         {
@@ -91,5 +94,28 @@ namespace EasyOC
             }
             return list;
         }
+
+        public static List<object> ToModel(this IEnumerable<ContentItem> docs, DynamicIndexConfigModel config, Type type, TableInfo table, bool useUnderline = true)
+        {
+
+            var modleList = docs.Select(dict => dict.ToModel(config, type, table, useUnderline)).ToList();
+            return modleList;
+        }
+
+        public static object ToModel(this ContentItem doc, DynamicIndexConfigModel config, Type type, TableInfo table, bool useUnderline = true)
+        {
+            var dict = doc.ToDictModel(config, useUnderline);
+            var model = type.CreateInstanceGetDefaultValue();
+            foreach (var kv in dict)
+            {
+                if (table.Columns.ContainsKey(kv.Key))
+                {
+                    // var value = Utils.GetDataReaderValue(table.Columns[kv.Key].CsType, kv.Value);
+                    table.SetPropertyValue(model, kv.Key, kv.Value);
+                }
+            }
+            return model;
+        }
+
     }
 }

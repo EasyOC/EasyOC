@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  <Publish>false</Publish>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,11 +1,17 @@
-﻿using EasyOC.ContentExtensions.AppServices;
+﻿using AngleSharp.Html.Dom;
+using EasyOC.ContentExtensions.AppServices;
 using EasyOC.Excel.Models;
+using EasyOC.GraphQL.Servicies;
 using GraphQL;
 using GraphQL.Execution;
+using GraphQL.SystemTextJson;
 using GraphQL.Validation;
 using GraphQL.Validation.Complexity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -13,10 +19,13 @@ using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 using OrchardCore.Apis.GraphQL;
+using OrchardCore.DisplayManagement.Notify;
 using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace EasyOC.Excel.Controllers;
@@ -30,13 +39,26 @@ public class ApiController : Controller
     private readonly ISchemaFactory _schemaService;
     private readonly GraphQLSettings _settings;
     private readonly IDocumentExecuter _executer;
+    private readonly IGraphqlExecuterService _graphqlExecuterService;
+    private readonly IHtmlLocalizer H;
     private readonly IContentTypeManagementAppService _contentTypeManagementAppService;
-    public ApiController(ISchemaFactory schemaService, IOptions<GraphQLSettings> settingsOptions, IDocumentExecuter executer, IContentTypeManagementAppService contentTypeManagementAppService)
+    internal static readonly Encoding _utf8Encoding = new UTF8Encoding(false);
+    private readonly static MediaType _jsonMediaType = new MediaType("application/json");
+    private readonly static MediaType _graphQlMediaType = new MediaType("application/graphql");
+    private readonly static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+    private readonly INotifier _notifier;
+    public ApiController(ISchemaFactory schemaService, IOptions<GraphQLSettings> settingsOptions,
+        IDocumentExecuter executer, IContentTypeManagementAppService contentTypeManagementAppService,
+        INotifier notifier, IHtmlLocalizer<ApiController> h, IGraphqlExecuterService graphqlExecuterService)
     {
         _schemaService = schemaService;
         _settings = settingsOptions.Value;
         _executer = executer;
         _contentTypeManagementAppService = contentTypeManagementAppService;
+        _notifier = notifier;
+        H = h;
+        _graphqlExecuterService = graphqlExecuterService;
     }
 
     [HttpPost]
@@ -62,10 +84,7 @@ public class ApiController : Controller
         {
             throw new AppFriendlyException(HttpStatusCode.BadRequest,
             "$pageSize参数不存在，请检查查询语句是否正确");
-        }
-
-
-
+        } 
 
         IWorkbook workbook = new XSSFWorkbook();
         ISheet excelSheet = workbook.CreateSheet(contentType.DisplayName.Substring(0, 30));
@@ -128,27 +147,86 @@ public class ApiController : Controller
     {
         var context = Request.HttpContext;
         var schema = await _schemaService.GetSchemaAsync();
-
-        // GraphQLRequest request = null;
-        var dataLoaderDocumentListener = context.RequestServices.GetRequiredService<IDocumentExecutionListener>();
-        var result = await _executer.ExecuteAsync(_ =>
+        GraphQLRequest request = null;
+        try
         {
-            _.Schema = schema;
-            _.Query = options.GraphQLQuery;
-            _.Inputs = options.QueryParams.ToInputs();
-            _.UserContext = _settings.BuildUserContext?.Invoke(context);
-            _.ExposeExceptions = _settings.ExposeExceptions;
-            _.ValidationRules = DocumentValidator.CoreRules()
-                .Concat(context.RequestServices.GetServices<IValidationRule>());
-            _.ComplexityConfiguration = new ComplexityConfiguration
+            if (HttpMethods.IsPost(context.Request.Method))
             {
-                MaxDepth = _settings.MaxDepth, MaxComplexity = _settings.MaxComplexity, FieldImpact = _settings.FieldImpact
-            };
-            _.Listeners.Add(dataLoaderDocumentListener);
-        });
-        ;
+                var mediaType = new MediaType(context.Request.ContentType);
+
+                if (mediaType.IsSubsetOf(_jsonMediaType) || mediaType.IsSubsetOf(_graphQlMediaType))
+                {
+
+                    if (mediaType.IsSubsetOf(_graphQlMediaType))
+                    {
+                        using var sr = new StreamReader(context.Request.Body);
+
+                        request = new GraphQLRequest
+                        {
+                            Query = await sr.ReadToEndAsync()
+                        };
+                    }
+                    else
+                    {
+                        request = await JsonSerializer.DeserializeAsync<GraphQLRequest>(context.Request.Body, _jsonSerializerOptions);
+                    }
+                }
+                else
+                {
+                    request = CreateRequestFromQueryString(context);
+                }
+            }
+            else if (HttpMethods.IsGet(context.Request.Method))
+            {
+                request = CreateRequestFromQueryString(context, true);
+            }
+
+            if (request == null)
+            {
+                throw new InvalidOperationException("Unable to create a graphqlrequest from this request");
+            }
+
+        }
+        catch (Exception e)
+        {
+            await _notifier.ErrorAsync(H["An error occurred while processing the GraphQL query"]);
+            return null;
+        }
+
+        var dataLoaderDocumentListener = context.RequestServices.GetRequiredService<IDocumentExecutionListener>();
+        var result = await _graphqlExecuterService.ExecuteQuery(request);
         var jResult = JObject.FromObject(result.Data);
         return jResult.SelectToken(options.ContentType.ToCamelCase()) as JArray;
+    }
+
+    private static GraphQLRequest CreateRequestFromQueryString(HttpContext context, bool validateQueryKey = false)
+    {
+        if (!context.Request.Query.ContainsKey("query"))
+        {
+            if (validateQueryKey)
+            {
+                throw new InvalidOperationException("The 'query' query string parameter is missing");
+            }
+
+            return null;
+        }
+
+        var request = new GraphQLRequest
+        {
+            Query = context.Request.Query["query"]
+        };
+
+        if (context.Request.Query.ContainsKey("variables"))
+        {
+            request.Variables = JsonSerializer.Deserialize<JsonElement>(context.Request.Query["variables"], _jsonSerializerOptions);
+        }
+
+        if (context.Request.Query.ContainsKey("operationName"))
+        {
+            request.OperationName = context.Request.Query["operationName"];
+        }
+
+        return request;
     }
     // [HttpPost]
     // [Route("import")]

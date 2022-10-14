@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using OrchardCore.Data;
-using OrchardCore.Lucene;
+using OrchardCore.Search.Lucene;
 using OrchardCore.Queries.Sql;
 
 namespace EasyOC.ContentExtensions.AppServices.Dtos

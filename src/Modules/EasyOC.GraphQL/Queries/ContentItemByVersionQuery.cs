@@ -1,4 +1,5 @@
-﻿using GraphQL.Resolvers;
+﻿using GraphQL;
+using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +48,7 @@ namespace EasyOC.GraphQL.Queries
             return Task.CompletedTask;
         }
 
-        private async Task<ContentItem> ResolveAsync(ResolveFieldContext context)
+        private async Task<ContentItem> ResolveAsync(IResolveFieldContext context)
         {
             var contentItemVersionId = context.GetArgument<string>("contentItemVersionId");
             var contentManager = _httpContextAccessor.HttpContext.RequestServices.GetService<IContentManager>();

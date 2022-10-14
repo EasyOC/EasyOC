@@ -1,14 +1,18 @@
-﻿
-using EasyOC.Core.Filter;
+﻿using EasyOC.Core.Filter;
 using EasyOC.Core.ResultWaper.Internal;
 using EasyOC.Core.ResultWaper.UnifyResult.Attributes;
 using EasyOC.Core.ResultWaper.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using EasyOC;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using OrchardCore.DisplayManagement.Notify;
+using OrchardCore.Modules;
 using System;
 using System.Linq;
+using System.Net;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace EasyOC.Core.ResultWaper.Providers
@@ -20,10 +24,11 @@ namespace EasyOC.Core.ResultWaper.Providers
     public class RESTfulResultProvider : IUnifyResultProvider
     {
         private readonly INotifier _notifier;
-
-        public RESTfulResultProvider(INotifier notifier)
+        private readonly HtmlEncoder _htmlEncoder;
+        public RESTfulResultProvider(INotifier notifier, HtmlEncoder htmlEncoder)
         {
             _notifier = notifier;
+            _htmlEncoder = htmlEncoder;
         }
 
         /// <summary>
@@ -50,12 +55,26 @@ namespace EasyOC.Core.ResultWaper.Providers
         /// <returns></returns>
         public IActionResult OnSucceeded(ActionExecutedContext context, object data)
         {
-            var notifyList = _notifier.List().ToArray();
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new NotifyEntryConverter(_htmlEncoder));
+            var notifyList = _notifier.List().ToArray().Select(x => new
+            {
+                Message = new
+                {
+                    //对Message解码
+                    Value = WebUtility.HtmlDecode(x.GetMessageAsString(_htmlEncoder)),
+                },
+                x.Type,
+            });
             _notifier.List().Clear();
+
+
             return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
-                message: notifyList,//处理OC 的代码内执行消息
-                httpContext: context.HttpContext));
+            message: notifyList,//处理OC 的代码内输出的消息
+            httpContext: context.HttpContext));
         }
+
+
 
         /// <summary>
         /// 验证失败返回值
@@ -81,12 +100,12 @@ namespace EasyOC.Core.ResultWaper.Providers
                 // 处理 401 状态码
                 case StatusCodes.Status401Unauthorized:
                     await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, message: "401 Unauthorized", httpContext: context)
-                        );
+                    );
                     break;
                 // 处理 403 状态码
                 case StatusCodes.Status403Forbidden:
                     await context.Response.WriteAsJsonAsync(RESTfulResult(statusCode, message: "403 Forbidden", httpContext: context)
-                        );
+                    );
                     break;
 
                 default: break;

@@ -11,6 +11,7 @@ using static EasyOC.Constants.ManifestConstants;
     Dependencies = new[] { EasyOC.Core.Constants.EasyOCCoreModuleId,
         "OrchardCore.Apis.GraphQL",
         "OrchardCore.ContentFields",
+        "EasyOC.GraphQL",
         "EasyOC.VueElementUI"}
 
 )]

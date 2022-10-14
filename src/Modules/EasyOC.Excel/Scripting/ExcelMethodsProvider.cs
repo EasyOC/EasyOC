@@ -47,9 +47,6 @@ namespace EasyOC.Excel.Scripting
                         return null;
                     })
                 }
-
-
-
             };
         }
     }

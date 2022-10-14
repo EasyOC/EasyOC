@@ -1,9 +1,9 @@
-﻿using GraphQL.Language.AST;
-using GraphQL.Types;
+﻿using GraphQL;
+using GraphQL.Language.AST;
 using System;
 using System.Linq;
 
-namespace EasyOC.GraphQL
+namespace EasyOC.GraphQL.Extensions
 {
     public static class ContextExtensions
     {

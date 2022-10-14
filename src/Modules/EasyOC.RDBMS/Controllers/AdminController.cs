@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Records;
 using System.Collections.Generic;
-using OrchardCore.ContentTypes;
 using System.Threading.Tasks;
 using EasyOC.ContentExtensions.AppServices;
 using System;
+using ContentPermissions=OrchardCore.ContentTypes.Permissions;
 
 namespace EasyOC.RDBMS.Controllers
 {
@@ -23,23 +23,23 @@ namespace EasyOC.RDBMS.Controllers
         private readonly IRDBMSAppService _rDbmsAppService;
         private readonly IServiceProvider _serviceProvider;
 
+        
         public AdminController(
             IAuthorizationService authorizationService,
             IContentManager contentManager,
-            // IContentFieldsValuePathProvider contentFieldsValuePathProvider,
             IContentTypeManagementAppService contentManagementAppService,
             IServiceProvider serviceProvider, IRDBMSAppService rDbmsAppService)
         {
             _authorizationService = authorizationService;
-
             _contentManager = contentManager;
-            // _contentFieldsValuePathProvider = contentFieldsValuePathProvider;
             _contentFieldsValuePathProvider = new ContentFieldsValuePathProvider();
-
             _contentManagementAppService = contentManagementAppService;
             _serviceProvider = serviceProvider;
             _rDbmsAppService = rDbmsAppService;
+         
         }
+ 
+ 
         [HttpPost]
         public async Task<IActionResult> CreateOrEditPost(RDBMSMappingConfigViewModel model)
         {
@@ -72,7 +72,7 @@ namespace EasyOC.RDBMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTablesAsync(QueryTablesDto queryTablesDto)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.EditContentTypes))
             {
                 return Forbid();
             }
@@ -86,13 +86,16 @@ namespace EasyOC.RDBMS.Controllers
             var connectionObject = await _contentManager.GetAsync(connectionConfigId);
 
             IFreeSql freeSql = _serviceProvider.GetFreeSql((string)connectionObject.Content.DbConnectionConfig.ProviderName.Text.Value,
-                (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
+            (string)connectionObject.Content.DbConnectionConfig.ConnectionString.Text.Value);
             using (freeSql)
             {
                 var recipe = new RecipeModel();
 
                 var step = new Step();
-                recipe.steps = new List<Step>() { step };
+                recipe.steps = new List<Step>()
+                {
+                    step
+                };
                 step.name = "ContentDefinition";
                 step.ContentTypes = new List<ContentType>();
                 var contentType = new ContentType()
@@ -111,11 +114,14 @@ namespace EasyOC.RDBMS.Controllers
 
                 };
                 step.ContentTypes.Add(contentType);
-                contentType.ContentTypePartDefinitionRecords = new ContentTypePartDefinitionRecord[]{ new ContentTypePartDefinitionRecord
+                contentType.ContentTypePartDefinitionRecords = new ContentTypePartDefinitionRecord[]
+                {
+                    new ContentTypePartDefinitionRecord
                     {
                         Name = tableName,
-                        PartName =tableName
-                    }};
+                        PartName = tableName
+                    }
+                };
 
                 var recrods = new List<ContentPartFieldDefinitionRecord>();
                 try
@@ -129,14 +135,21 @@ namespace EasyOC.RDBMS.Controllers
                         recrod.Name = item.Name;
                         recrod.Settings = JObject.FromObject(new
                         {
-                            ContentPartFieldSettings = new { DisplayName = item.Name }
+                            ContentPartFieldSettings = new
+                            {
+                                DisplayName = item.Name
+                            }
                         });
                         var targetFieldType = _contentFieldsValuePathProvider.GetField(item.PropertyType);
                         recrod.FieldName = targetFieldType.FieldName;
                         recrods.Add(recrod);
                     }
 
-                    step.ContentParts.Add(new Contentpart { Name = tableName, ContentPartFieldDefinitionRecords = recrods.ToArray() });
+                    step.ContentParts.Add(new Contentpart
+                    {
+                        Name = tableName,
+                        ContentPartFieldDefinitionRecords = recrods.ToArray()
+                    });
 
                     return recipe;
                 }
@@ -151,26 +164,26 @@ namespace EasyOC.RDBMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllDbConnecton()
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.EditContentTypes))
             {
                 return Forbid();
             }
-            return Json(await _rDbmsAppService.GetAllDbConnecton());
+            return Json(await _rDbmsAppService.GetAllDbConnection());
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllTypes()
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.ViewContentTypes))
             {
                 return Forbid();
             }
-            return Json(await _rDbmsAppService.GetAllDbConnecton());
+            return Json(await _rDbmsAppService.GetAllDbConnection());
         }
         [HttpGet]
         public async Task<IActionResult> GetTypeDefinitionAsync(string name, bool withSettings = false)
         {
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContentTypes))
+            if (!await _authorizationService.AuthorizeAsync(User, ContentPermissions.EditContentTypes))
             {
                 return Forbid();
             }
@@ -184,6 +197,3 @@ namespace EasyOC.RDBMS.Controllers
         }
     }
 }
-
-
-

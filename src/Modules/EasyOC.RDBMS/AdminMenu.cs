@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Navigation;
-using OrchardCore.RelationDb;
 using System;
 using System.Threading.Tasks;
 

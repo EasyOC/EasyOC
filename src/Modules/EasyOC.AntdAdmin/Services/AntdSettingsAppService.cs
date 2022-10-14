@@ -31,6 +31,7 @@ namespace EasyOC.AntdAdmin.Services
             var dto = new AntdSiteGlobalSettingsDto
             {
                 MenuData = partInfo.MenuData?.Text,
+                StaticMenus = partInfo.StaticMenus?.Text,
                 SiteSettingsData = partInfo.SettingData?.Text
             };
             return dto;
