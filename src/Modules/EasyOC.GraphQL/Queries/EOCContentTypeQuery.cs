@@ -1,4 +1,5 @@
 using EasyOC;
+using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -113,7 +114,7 @@ namespace EasyOC.GraphQL.Queries
                     }
                 };
                 //替换原有 Resolver
-                query.Resolver = new LockedAsyncFieldResolver<IEnumerable<ContentItem>>(Resolve);
+                query.Resolver =new LockedAsyncFieldResolver<IEnumerable<ContentItem>>(Resolve);
             }
 
             foreach (var builder in contentTypeBuilders)
@@ -125,9 +126,8 @@ namespace EasyOC.GraphQL.Queries
             return Task.CompletedTask;
         }
 
-        private async Task<IEnumerable<ContentItem>> Resolve(ResolveFieldContext context)
+        private async Task<IEnumerable<ContentItem>> Resolve(IResolveFieldContext context)
         {
-            var graphContext = (GraphQLContext)context.UserContext;
 
             var versionOption = VersionOptions.Published;
 
@@ -142,11 +142,11 @@ namespace EasyOC.GraphQL.Queries
                 where = JObject.FromObject(context.Arguments["where"]);
             }
 
-            var session = graphContext.ServiceProvider.GetService<ISession>();
+            var session = context.RequestServices.GetService<ISession>();
 
             var preQuery = session.Query<ContentItem>();
 
-            var filters = graphContext.ServiceProvider.GetServices<IGraphQLFilter<ContentItem>>();
+            var filters =context.RequestServices.GetServices<IGraphQLFilter<ContentItem>>();
 
             foreach (var filter in filters)
             {
@@ -179,8 +179,8 @@ namespace EasyOC.GraphQL.Queries
             query = FilterContentType(query, context);
             query = OrderBy(query, context);
 
-            var contentItemsQuery = FilterWhereArguments(query, where, context, session, graphContext);
-            contentItemsQuery = PageQuery(contentItemsQuery, context, graphContext);
+            var contentItemsQuery = FilterWhereArguments(query, where, context, session);
+            contentItemsQuery = PageQuery(contentItemsQuery, context);
 
             var contentItems = await contentItemsQuery.ListAsync();
 
@@ -195,9 +195,8 @@ namespace EasyOC.GraphQL.Queries
         private IQuery<ContentItem> FilterWhereArguments(
             IQuery<ContentItem, ContentItemIndex> query,
             JObject where,
-            ResolveFieldContext fieldContext,
-            ISession session,
-            GraphQLContext context)
+            IResolveFieldContext fieldContext,
+            ISession session)
         {
             if (where == null)
             {
@@ -208,15 +207,15 @@ namespace EasyOC.GraphQL.Queries
 
             IPredicateQuery predicateQuery = new PredicateQuery(
                 dialect: session.Store.Configuration.SqlDialect,
-                shellSettings: context.ServiceProvider.GetService<ShellSettings>(),
-                propertyProviders: context.ServiceProvider.GetServices<IIndexPropertyProvider>());
+                shellSettings: fieldContext.RequestServices.GetService<ShellSettings>(),
+                propertyProviders: fieldContext.RequestServices.GetServices<IIndexPropertyProvider>());
 
             // Create the default table alias
             predicateQuery.CreateAlias("", nameof(ContentItemIndex));
             predicateQuery.CreateTableAlias(nameof(ContentItemIndex), defaultTableAlias);
 
             // Add all provided table alias to the current predicate query
-            var providers = context.ServiceProvider.GetServices<IIndexAliasProvider>();
+            var providers = fieldContext.RequestServices.GetServices<IIndexAliasProvider>();
             var indexes = new Dictionary<string, IndexAlias>(StringComparer.OrdinalIgnoreCase);
             var indexAliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
@@ -264,8 +263,7 @@ namespace EasyOC.GraphQL.Queries
             return contentQuery;
         }
 
-        private IQuery<ContentItem> PageQuery(IQuery<ContentItem> contentItemsQuery, ResolveFieldContext context,
-            GraphQLContext graphQLContext)
+        private IQuery<ContentItem> PageQuery(IQuery<ContentItem> contentItemsQuery, IResolveFieldContext context)
         {
             var first = context.GetArgument<int>("first");
 
@@ -286,6 +284,7 @@ namespace EasyOC.GraphQL.Queries
             return contentItemsQuery;
         }
 
+
         private VersionOptions GetVersionOption(PublicationStatusEnum status)
         {
             switch (status)
@@ -299,11 +298,14 @@ namespace EasyOC.GraphQL.Queries
             }
         }
 
-        private static IQuery<ContentItem, ContentItemIndex> FilterContentType(
-            IQuery<ContentItem, ContentItemIndex> query, ResolveFieldContext context)
+        private static IQuery<ContentItem, ContentItemIndex> FilterContentType(IQuery<ContentItem, ContentItemIndex> query, IResolveFieldContext context)
         {
-            var contentType = ((ListGraphType)context.ReturnType).ResolvedType.Name;
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
 
+            var contentType = ((ListGraphType)(context.FieldDefinition).ResolvedType).ResolvedType.Name;
             return query.Where(q => q.ContentType == contentType);
         }
 
@@ -331,8 +333,7 @@ namespace EasyOC.GraphQL.Queries
             return query;
         }
 
-        private void BuildWhereExpressions(JToken where, Junction expressions, string tableAlias,
-            ResolveFieldContext fieldContext, IDictionary<string, string> indexAliases)
+        private void BuildWhereExpressions(JToken where, Junction expressions, string tableAlias, IResolveFieldContext fieldContext, IDictionary<string, string> indexAliases)
         {
             if (where is JArray array)
             {
@@ -350,11 +351,16 @@ namespace EasyOC.GraphQL.Queries
             }
         }
 
-        private void BuildExpressionsInternal(JObject where, Junction expressions, string tableAlias,
-            ResolveFieldContext fieldContext, IDictionary<string, string> indexAliases)
+    private void BuildExpressionsInternal(JObject where, Junction expressions, string tableAlias, IResolveFieldContext fieldContext, IDictionary<string, string> indexAliases)
         {
             foreach (var entry in where.Properties())
             {
+                // new typed arguments return default null values
+                if (entry.Value.Type == JTokenType.Undefined || entry.Value.Type == JTokenType.Null)
+                {
+                    continue;
+                }
+
                 IPredicate expression = null;
 
                 var values = entry.Name.Split('_', 2);
@@ -365,7 +371,7 @@ namespace EasyOC.GraphQL.Queries
                 // figure out table aliases for collapsed parts and ones with the part suffix removed by the dsl
                 if (tableAlias == null || !tableAlias.EndsWith("Part", StringComparison.OrdinalIgnoreCase))
                 {
-                    var whereArgument = fieldContext?.FieldDefinition?.Arguments.FirstOrDefault(x => x.Name == "where");
+                    var whereArgument = fieldContext?.FieldDefinition.Arguments.FirstOrDefault(x => x.Name == "where");
 
                     if (whereArgument != null)
                     {
@@ -374,14 +380,10 @@ namespace EasyOC.GraphQL.Queries
                         foreach (var field in whereInput.Fields.Where(x => x.GetMetadata<string>("PartName") != null))
                         {
                             var partName = field.GetMetadata<string>("PartName");
-                            if ((tableAlias == null && field.GetMetadata<bool>("PartCollapsed") &&
-                                 field.Name.Equals(property, StringComparison.OrdinalIgnoreCase)) ||
-                                (tableAlias != null && partName.ToFieldName()
-                                    .Equals(tableAlias, StringComparison.OrdinalIgnoreCase)))
+                            if ((tableAlias == null && field.GetMetadata<bool>("PartCollapsed") && field.Name.Equals(property, StringComparison.OrdinalIgnoreCase)) ||
+                                (tableAlias != null && partName.ToFieldName().Equals(tableAlias, StringComparison.OrdinalIgnoreCase)))
                             {
-                                tableAlias = indexAliases.TryGetValue(partName, out var indexTableAlias)
-                                    ? indexTableAlias
-                                    : tableAlias;
+                                tableAlias = indexAliases.TryGetValue(partName, out var indexTableAlias) ? indexTableAlias : tableAlias;
                                 break;
                             }
                         }
@@ -398,20 +400,17 @@ namespace EasyOC.GraphQL.Queries
                     if (string.Equals(values[0], "or", StringComparison.OrdinalIgnoreCase))
                     {
                         expression = Expression.Disjunction();
-                        BuildWhereExpressions(entry.Value, (Junction)expression, tableAlias, fieldContext,
-                            indexAliases);
+                        BuildWhereExpressions(entry.Value, (Junction)expression, tableAlias, fieldContext, indexAliases);
                     }
                     else if (string.Equals(values[0], "and", StringComparison.OrdinalIgnoreCase))
                     {
                         expression = Expression.Conjunction();
-                        BuildWhereExpressions(entry.Value, (Junction)expression, tableAlias, fieldContext,
-                            indexAliases);
+                        BuildWhereExpressions(entry.Value, (Junction)expression, tableAlias, fieldContext, indexAliases);
                     }
                     else if (string.Equals(values[0], "not", StringComparison.OrdinalIgnoreCase))
                     {
                         expression = Expression.Conjunction();
-                        BuildWhereExpressions(entry.Value, (Junction)expression, tableAlias, fieldContext,
-                            indexAliases);
+                        BuildWhereExpressions(entry.Value, (Junction)expression, tableAlias, fieldContext, indexAliases);
                         expression = Expression.Not(expression);
                     }
                     else if (entry.HasValues && entry.Value.Type == JTokenType.Object)
@@ -432,52 +431,21 @@ namespace EasyOC.GraphQL.Queries
 
                     switch (values[1])
                     {
-                        case "not":
-                            expression = Expression.Not(Expression.Equal(property, value));
-                            break;
-                        case "gt":
-                            expression = Expression.GreaterThan(property, value);
-                            break;
-                        case "gte":
-                            expression = Expression.GreaterThanOrEqual(property, value);
-                            break;
-                        case "lt":
-                            expression = Expression.LessThan(property, value);
-                            break;
-                        case "lte":
-                            expression = Expression.LessThanOrEqual(property, value);
-                            break;
-                        case "contains":
-                            expression = Expression.Like(property, (string)value, MatchOptions.Contains);
-                            break;
-                        case "not_contains":
-                            expression =
-                                Expression.Not(Expression.Like(property, (string)value, MatchOptions.Contains));
-                            break;
-                        case "starts_with":
-                            expression = Expression.Like(property, (string)value, MatchOptions.StartsWith);
-                            break;
-                        case "not_starts_with":
-                            expression =
-                                Expression.Not(Expression.Like(property, (string)value, MatchOptions.StartsWith));
-                            break;
-                        case "ends_with":
-                            expression = Expression.Like(property, (string)value, MatchOptions.EndsWith);
-                            break;
-                        case "not_ends_with":
-                            expression =
-                                Expression.Not(Expression.Like(property, (string)value, MatchOptions.EndsWith));
-                            break;
-                        case "in":
-                            expression = Expression.In(property, entry.Value.ToObject<object[]>());
-                            break;
-                        case "not_in":
-                            expression = Expression.Not(Expression.In(property, entry.Value.ToObject<object[]>()));
-                            break;
+                        case "not": expression = Expression.Not(Expression.Equal(property, value)); break;
+                        case "gt": expression = Expression.GreaterThan(property, value); break;
+                        case "gte": expression = Expression.GreaterThanOrEqual(property, value); break;
+                        case "lt": expression = Expression.LessThan(property, value); break;
+                        case "lte": expression = Expression.LessThanOrEqual(property, value); break;
+                        case "contains": expression = Expression.Like(property, (string)value, MatchOptions.Contains); break;
+                        case "not_contains": expression = Expression.Not(Expression.Like(property, (string)value, MatchOptions.Contains)); break;
+                        case "starts_with": expression = Expression.Like(property, (string)value, MatchOptions.StartsWith); break;
+                        case "not_starts_with": expression = Expression.Not(Expression.Like(property, (string)value, MatchOptions.StartsWith)); break;
+                        case "ends_with": expression = Expression.Like(property, (string)value, MatchOptions.EndsWith); break;
+                        case "not_ends_with": expression = Expression.Not(Expression.Like(property, (string)value, MatchOptions.EndsWith)); break;
+                        case "in": expression = Expression.In(property, entry.Value.ToObject<object[]>()); break;
+                        case "not_in": expression = Expression.Not(Expression.In(property, entry.Value.ToObject<object[]>())); break;
 
-                        default:
-                            expression = Expression.Equal(property, value);
-                            break;
+                        default: expression = Expression.Equal(property, value); break;
                     }
                 }
 
@@ -488,12 +456,12 @@ namespace EasyOC.GraphQL.Queries
             }
         }
 
-        private IQuery<ContentItem, ContentItemIndex> OrderBy(IQuery<ContentItem, ContentItemIndex> query,
-            ResolveFieldContext context)
+              private IQuery<ContentItem, ContentItemIndex> OrderBy(IQuery<ContentItem, ContentItemIndex> query,
+            IResolveFieldContext context)
         {
             if (context.HasPopulatedArgument("orderBy"))
             {
-                var orderByArguments = JObject.FromObject(context.Arguments["orderBy"]);
+                var orderByArguments = JObject.FromObject(context.Arguments["orderBy"].Value);
 
                 if (orderByArguments != null)
                 {
@@ -507,36 +475,16 @@ namespace EasyOC.GraphQL.Queries
 
                         switch (property.Name)
                         {
-                            case "contentItemId":
-                                selector = x => x.ContentItemId;
-                                break;
-                            case "contentItemVersionId":
-                                selector = x => x.ContentItemVersionId;
-                                break;
-                            case "displayText":
-                                selector = x => x.DisplayText;
-                                break;
-                            case "published":
-                                selector = x => x.Published;
-                                break;
-                            case "latest":
-                                selector = x => x.Latest;
-                                break;
-                            case "createdUtc":
-                                selector = x => x.CreatedUtc;
-                                break;
-                            case "modifiedUtc":
-                                selector = x => x.ModifiedUtc;
-                                break;
-                            case "publishedUtc":
-                                selector = x => x.PublishedUtc;
-                                break;
-                            case "owner":
-                                selector = x => x.Owner;
-                                break;
-                            case "author":
-                                selector = x => x.Author;
-                                break;
+                            case "contentItemId": selector = x => x.ContentItemId; break;
+                            case "contentItemVersionId": selector = x => x.ContentItemVersionId; break;
+                            case "displayText": selector = x => x.DisplayText; break;
+                            case "published": selector = x => x.Published; break;
+                            case "latest": selector = x => x.Latest; break;
+                            case "createdUtc": selector = x => x.CreatedUtc; break;
+                            case "modifiedUtc": selector = x => x.ModifiedUtc; break;
+                            case "publishedUtc": selector = x => x.PublishedUtc; break;
+                            case "owner": selector = x => x.Owner; break;
+                            case "author": selector = x => x.Author; break;
                         }
 
                         if (selector != null)

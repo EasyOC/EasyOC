@@ -2,6 +2,7 @@
 using EasyOC.Scripting.Graphql.Models;
 using EasyOC.Scripting.Queries.ScriptQuery;
 using EasyOC.Scripting.Queries.ScriptQuery.Models;
+using GraphQL;
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
@@ -114,7 +115,7 @@ namespace EasyOC.Scripting.Graphql
                 Description = "Represents the " + query.Source + " Query : " + query.Name,
                 ResolvedType = typetype,
                 Resolver = new LockedAsyncFieldResolver<JToken, JToken>(async context => {
-                    var queryManager = context.ResolveServiceProvider().GetService<IQueryManager>();
+                    var queryManager = context.RequestServices.GetService<IQueryManager>();
                     var iquery = await queryManager.GetQueryAsync(query.Name);
 
                     var parameters = context.GetArgument<string>("parameters");

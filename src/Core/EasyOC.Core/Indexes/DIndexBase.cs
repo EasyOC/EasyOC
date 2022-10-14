@@ -7,7 +7,7 @@ namespace EasyOC.Core.Indexes
     public class DIndexBase : FreeSqlDocumentIndex
     {
         [Column(IsPrimary = true)]
-        public override int Id { get => base.Id; set { base.Id = value; } }
+        public override long Id { get => base.Id; set { base.Id = value; } }
         public override int DocumentId { get; set; }
 
         [Column(StringLength = 26)]

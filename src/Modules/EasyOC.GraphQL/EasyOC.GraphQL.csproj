@@ -1,49 +1,49 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
+	<PropertyGroup>
 
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
-    <LangVersion>latest</LangVersion>
-    <RootNamespace>EasyOC.GraphQL</RootNamespace>
-  </PropertyGroup>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
+		<LangVersion>latest</LangVersion>
+		<RootNamespace>EasyOC.GraphQL</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Mutations\CreateOrUpdateContentItemMutationBuilder.cs" />
-    <Compile Remove="Queries\ContentItemConnectionType.cs" />
-    <Compile Remove="Queries\LuceneQueryFieldTypeProvider.cs" />
-    <Compile Remove="Queries\SqlQueryFieldTypeProvider.cs" />
-    <Compile Remove="ServiceCollectionExtensions.cs" />
-    <Compile Remove="Queries\Types\ContentTypePickerGraphType.cs" />
-    <Compile Remove="Queries\Types\MediaFieldQueryObjectType.cs" />
-    <Compile Remove="OverrideRegisteredObjectTypesProvider.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Mutations\CreateOrUpdateContentItemMutationBuilder.cs" />
+		<Compile Remove="Queries\ContentItemConnectionType.cs" />
+		<Compile Remove="Queries\LuceneQueryFieldTypeProvider.cs" />
+		<Compile Remove="Queries\SqlQueryFieldTypeProvider.cs" />
+		<Compile Remove="ServiceCollectionExtensions.cs" />
+		<Compile Remove="Queries\Types\ContentTypePickerGraphType.cs" />
+		<Compile Remove="Queries\Types\MediaFieldQueryObjectType.cs" />
+		<Compile Remove="OverrideRegisteredObjectTypesProvider.cs" />
+	</ItemGroup>
 
- 
 
-  <ItemGroup>
-    <PackageReference Include="OrchardCore.Apis.GraphQL.Abstractions" Version="$(OrchardCoreVersion)" />
-    <!--<ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.Apis.GraphQL.Abstractions\OrchardCore.Apis.GraphQL.Abstractions.csproj" />-->
 
-    <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentManagement.Abstractions" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentManagement.Display" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Lucene" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" /> 
-    
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Apis.GraphQL.Abstractions" Version="$(OrchardCoreVersion)" />
+		<!--<ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.Apis.GraphQL.Abstractions\OrchardCore.Apis.GraphQL.Abstractions.csproj" />-->
 
-  </ItemGroup>
+		<PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement.GraphQL" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement.Display" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Search.Lucene" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Queries" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" />
 
- 
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
-    <ProjectReference Include="..\..\Core\EasyOC.GraphQL.Abstractions\EasyOC.GraphQL.Abstractions.csproj" />
-    <ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
-    <ProjectReference Include="..\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" />
-  </ItemGroup> 
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
+		<ProjectReference Include="..\..\Core\EasyOC.GraphQL.Abstractions\EasyOC.GraphQL.Abstractions.csproj" />
+		<ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
+		<ProjectReference Include="..\EasyOC.DynamicTypeIndex\EasyOC.DynamicTypeIndex.csproj" />
+	</ItemGroup>
 </Project>
 
 

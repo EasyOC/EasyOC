@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using OrchardCore.Queries;
 using System.Collections.Generic;
-using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
+using LuceneQueryResults = OrchardCore.Search.Lucene.LuceneQueryResults;
 
 namespace EasyOC.GraphQL.Queries.Types
 {

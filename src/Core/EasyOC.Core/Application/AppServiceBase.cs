@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 namespace EasyOC.Core.Application
 {
     //Api, Identity.Application, Identity.External, Identity.TwoFactorRememberMe, Identity.TwoFactorUserId, OpenIddict.Server.AspNetCore, OpenIddict.Validation.AspNetCore, Wechat
-    [DynamicWebApi, IgnoreAntiforgeryToken, AllowAnonymous]
+    [DynamicWebApi, AllowAnonymous]
     [Authorize(AuthenticationSchemes = "Api,Identity.Application")]
     public class AppServiceBase : IAppServcieBase, IDynamicWebApi
     {
@@ -45,13 +45,7 @@ namespace EasyOC.Core.Application
         protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
-        protected ClaimsPrincipal HttpUser
-        {
-            get
-            {
-                return HttpContextAccessor.HttpContext?.User;
-            }
-        }
+        protected ClaimsPrincipal HttpUser => HttpContextAccessor.HttpContext?.User;
 
         protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetRequiredService<IAuthorizationService>();
 

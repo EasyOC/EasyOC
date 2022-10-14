@@ -1,4 +1,5 @@
 using EasyOC.GraphQL.Abstractions.Types;
+using GraphQL;
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;

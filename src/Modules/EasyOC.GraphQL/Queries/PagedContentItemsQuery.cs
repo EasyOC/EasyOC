@@ -5,6 +5,7 @@ using EasyOC.DynamicTypeIndex.Service;
 using EasyOC.GraphQL.Queries.Types;
 using FreeSql.Internal.CommonProvider;
 using FreeSql.Internal.Model;
+using GraphQL;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -89,7 +90,7 @@ namespace EasyOC.GraphQL.Queries
             // schema.RegisterType<DynamicOrderByInput>();
         }
 
-        private async Task<PagedContentItemResult> ResolveAsync(ResolveFieldContext context)
+        private async Task<PagedContentItemResult> ResolveAsync(IResolveFieldContext context)
         {
             var contentType = context.GetArgument<string>("contentType");
             if (string.IsNullOrEmpty(contentType))
@@ -100,8 +101,7 @@ namespace EasyOC.GraphQL.Queries
 
             var published = context.GetArgument<bool?>("published") ?? true;
             var latest = context.GetArgument<bool?>("latest") ?? true;
-            var graphContext = (GraphQLContext)context.UserContext;
-            var serviceProvider = graphContext.ServiceProvider;
+            var serviceProvider = context.RequestServices;
             var dynamicIndexAppService = serviceProvider.GetRequiredService<IDynamicIndexAppService>();
             var dIndexConfig = await dynamicIndexAppService.GetDynamicIndexConfigAsync(contentType);
 

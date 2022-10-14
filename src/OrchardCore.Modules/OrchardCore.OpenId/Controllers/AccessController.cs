@@ -67,7 +67,7 @@ namespace OrchardCore.OpenId.Controllers
             // Retrieve the claims stored in the authentication cookie.
             // If they can't be extracted, redirect the user to the login page.
             var result = await HttpContext.AuthenticateAsync();
-            if (result == null || !result.Succeeded || request.HasPrompt(Prompts.Login))
+            if (!result.Succeeded || request.HasPrompt(Prompts.Login))
             {
                 return RedirectToLoginPage(request);
             }
@@ -85,7 +85,7 @@ namespace OrchardCore.OpenId.Controllers
 
             var authorizations = await _authorizationManager.FindAsync(
                 subject: result.Principal.GetUserIdentifier(),
-                client: await _applicationManager.GetIdAsync(application),
+                client: await _applicationManager.GetIdAsync(application) ?? string.Empty,
                 status: Statuses.Valid,
                 type: AuthorizationTypes.Permanent,
                 scopes: request.GetScopes()).ToListAsync();

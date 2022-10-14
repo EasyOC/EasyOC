@@ -3866,7 +3866,16 @@
         }
       },
       "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "AppPermissionPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "46y5w1hvy3wwgyjp8s1p2ehvwr"
+  "Identifier": "490dmp4cgqv8k3wds0m3xjcdnw"
 }
