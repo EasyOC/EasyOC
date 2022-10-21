@@ -71,7 +71,7 @@ namespace EasyOC.GraphQL.Queries
                 },
                 new QueryArgument<DynamicFilterInput>()
                 {
-                    Name = "dynamicFilter", Description = dynamicfilterDescription, DefaultValue = ""
+                    Name = "dynamicFilter", Description = dynamicfilterDescription
                 },
                 new QueryArgument<StringGraphType>()
                 {
@@ -147,8 +147,8 @@ namespace EasyOC.GraphQL.Queries
             //如果 排序不为空
             if (context.HasPopulatedArgument("orderBy"))
             {
-                var orderByArguments = JObject.FromObject(context.Arguments["orderBy"]);
-                if (orderByArguments != null)
+                var orderByArguments = JObject.FromObject(context.Arguments["orderBy"].Value);
+                if (orderByArguments != null&& orderByArguments.ContainsKey("field"))
                 {
 
                     var orderByField = orderByArguments["field"].Value<string>();

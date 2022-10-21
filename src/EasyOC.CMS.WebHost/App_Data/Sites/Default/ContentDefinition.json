@@ -41,7 +41,7 @@
             },
             "GraphQLContentTypePartSettings": {},
             "HtmlBodyPartSettings": {},
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -109,17 +109,47 @@
         {
           "PartName": "FormInputElementPart",
           "Name": "FormInputElementPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
         },
         {
           "PartName": "FormElementPart",
           "Name": "FormElementPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "2"
+            }
+          }
         },
         {
           "PartName": "InputPart",
           "Name": "InputPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "4"
+            }
+          }
+        },
+        {
+          "PartName": "FormElementLabelPart",
+          "Name": "FormElementLabelPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "3"
+            }
+          }
+        },
+        {
+          "PartName": "FormElementValidationPart",
+          "Name": "FormElementValidationPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "5"
+            }
+          }
         }
       ]
     },
@@ -135,17 +165,47 @@
         {
           "PartName": "FormInputElementPart",
           "Name": "FormInputElementPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
         },
         {
           "PartName": "FormElementPart",
           "Name": "FormElementPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "2"
+            }
+          }
         },
         {
           "PartName": "TextAreaPart",
           "Name": "TextAreaPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "4"
+            }
+          }
+        },
+        {
+          "PartName": "FormElementLabelPart",
+          "Name": "FormElementLabelPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "3"
+            }
+          }
+        },
+        {
+          "PartName": "FormElementValidationPart",
+          "Name": "FormElementValidationPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "5"
+            }
+          }
         }
       ]
     },
@@ -161,17 +221,47 @@
         {
           "PartName": "FormInputElementPart",
           "Name": "FormInputElementPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
         },
         {
           "PartName": "FormElementPart",
           "Name": "FormElementPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "2"
+            }
+          }
         },
         {
           "PartName": "SelectPart",
           "Name": "SelectPart",
-          "Settings": {}
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "4"
+            }
+          }
+        },
+        {
+          "PartName": "FormElementLabelPart",
+          "Name": "FormElementLabelPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "3"
+            }
+          }
+        },
+        {
+          "PartName": "FormElementValidationPart",
+          "Name": "FormElementValidationPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "5"
+            }
+          }
         }
       ]
     },
@@ -430,10 +520,10 @@
               "Position": "0"
             },
             "GraphQLContentTypePartSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
               "Stored": true,
-              "Analyzed": true
+              "Keyword": true
             }
           }
         },
@@ -456,10 +546,10 @@
               "Position": "1"
             },
             "GraphQLContentTypePartSettings": {},
-            "ContentIndexSettings": {},
             "TitlePartSettings": {
               "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}}"
-            }
+            },
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -582,10 +672,10 @@
               "Position": "2"
             },
             "GraphQLContentTypePartSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
               "Stored": true,
-              "Analyzed": true
+              "Keyword": true
             }
           }
         },
@@ -601,7 +691,7 @@
               "Options": 1,
               "Pattern": "{{ContentItem.Content.Customer.CustNum.Text}}-{{ContentItem.Content.Customer.Name.Text}}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -859,10 +949,10 @@
               "Position": "1"
             },
             "GraphQLContentTypePartSettings": {},
-            "ContentIndexSettings": {},
             "TitlePartSettings": {
               "Pattern": "{{ContentItem.Content.AntdMenuItem.Name.Text}}"
-            }
+            },
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -1073,11 +1163,11 @@
               "Position": "1"
             },
             "GraphQLContentTypePartSettings": {},
-            "ContentIndexSettings": {},
             "TitlePartSettings": {
               "Options": 1,
               "Pattern": "{{ContentItem.Content.ViewGlobalViewCustomerInformations.CustNum.Text}} - {{ContentItem.Content.ViewGlobalViewCustomerInformations.Name.Text}}"
-            }
+            },
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -1574,7 +1664,7 @@
               "DisplayAllContentTypes": true,
               "DisplayedContentTypes": []
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -1617,7 +1707,7 @@
               "DisplayAllUsers": true,
               "DisplayedRoles": []
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1669,9 +1759,8 @@
               "Position": "0"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {
-              "Stored": true,
-              "Analyzed": true
+            "LuceneContentIndexSettings": {
+              "Stored": true
             }
           }
         },
@@ -1721,7 +1810,7 @@
                 }
               ]
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1733,10 +1822,9 @@
               "Position": "2"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -1753,10 +1841,9 @@
                 "Department"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -1774,10 +1861,9 @@
                 "User"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -1790,10 +1876,9 @@
               "Position": "3"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -1816,10 +1901,10 @@
               "Editor": "Attached",
               "Position": "2"
             },
-            "ContentIndexSettings": {},
             "MediaFieldSettings": {
               "Multiple": false
-            }
+            },
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1831,10 +1916,9 @@
               "Position": "4"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         }
@@ -1857,10 +1941,9 @@
                 "Department"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -1886,7 +1969,7 @@
             "BooleanFieldSettings": {
               "DefaultValue": true
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1899,7 +1982,7 @@
               "Position": "4"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1927,7 +2010,7 @@
               "Position": "0"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1945,7 +2028,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -1984,7 +2067,7 @@
               "Editor": 1,
               "DefaultValue": "Graphql"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2000,7 +2083,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2016,7 +2099,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"grapqhl\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2031,7 +2114,7 @@
             "BooleanFieldSettings": {
               "DefaultValue": true
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2061,8 +2144,9 @@
             "TextFieldSettings": {
               "Required": true
             },
-            "ContentIndexSettings": {
-              "Included": true
+            "LuceneContentIndexSettings": {
+              "Included": true,
+              "Keyword": true
             }
           }
         },
@@ -2075,10 +2159,9 @@
               "Position": "11"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -2095,10 +2178,9 @@
                 "MarketSegment"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -2115,10 +2197,9 @@
                 "CustomerSource"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -2135,10 +2216,9 @@
                 "Industry"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -2167,10 +2247,9 @@
                 "Administrator"
               ]
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         },
@@ -2202,7 +2281,7 @@
               "Editor": 1,
               "DefaultValue": "5"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2215,7 +2294,7 @@
               "Position": "12"
             },
             "HtmlFieldSettings": {},
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2256,8 +2335,8 @@
               "DisplayName": "图片",
               "Position": "1"
             },
-            "ContentIndexSettings": {},
-            "MediaFieldSettings": {}
+            "MediaFieldSettings": {},
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -2424,10 +2503,9 @@
               ],
               "Editor": 1
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         }
@@ -2455,10 +2533,9 @@
               "Editor": "Switch"
             },
             "BooleanFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         }
@@ -2478,10 +2555,9 @@
               "Position": "0"
             },
             "BooleanFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true,
-              "Analyzed": true
+              "Stored": true
             }
           }
         }
@@ -2501,7 +2577,7 @@
             "TextFieldSettings": {
               "Hint": "SQL 语法， 使用 DataTable.Select(\"Date<'2021-12-01' and 1=1\")"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2593,9 +2669,8 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {
-              "Stored": true,
-              "Analyzed": true
+            "LuceneContentIndexSettings": {
+              "Stored": true
             }
           }
         },
@@ -2620,9 +2695,10 @@
             "TextFieldSettings": {
               "Required": true
             },
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Keyword": true
             }
           }
         },
@@ -2663,9 +2739,10 @@
               "DisplayName": "UseLayout"
             },
             "BooleanFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Keyword": true
             }
           }
         }
@@ -2708,7 +2785,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2724,7 +2801,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -2853,7 +2930,7 @@
               "Position": "1"
             },
             "BooleanFieldSettings": {},
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2923,7 +3000,7 @@
             "TextFieldSettings": {
               "Hint": "新页面打开"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2959,7 +3036,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -2990,7 +3067,7 @@
               "Editor": 1,
               "DefaultValue": "Component"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3006,7 +3083,7 @@
                 "AmisSchema"
               ]
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3030,8 +3107,8 @@
             "TextFieldSettings": {
               "Hint": "自定义菜单的国际化 "
             },
-            "ContentIndexSettings": {},
-            "BooleanFieldSettings": {}
+            "BooleanFieldSettings": {},
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3043,7 +3120,7 @@
               "Position": "4"
             },
             "NumericFieldSettings": {},
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3060,7 +3137,7 @@
               ],
               "DisplayedStereotypes": []
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3104,7 +3181,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"javascript\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3122,7 +3199,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -3410,11 +3487,12 @@
               "DisplayName": "CustNum",
               "Position": "10"
             },
-            "ContentIndexSettings": {
+            "TextFieldSettings": {},
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
-            },
-            "TextFieldSettings": {}
+              "Stored": true,
+              "Keyword": true
+            }
           }
         },
         {
@@ -3495,11 +3573,12 @@
               "DisplayName": "Name",
               "Position": "18"
             },
-            "ContentIndexSettings": {
+            "TextFieldSettings": {},
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
-            },
-            "TextFieldSettings": {}
+              "Stored": true,
+              "Keyword": true
+            }
           }
         },
         {
@@ -3540,11 +3619,12 @@
               "DisplayName": "PartnerName",
               "Position": "22"
             },
-            "ContentIndexSettings": {
+            "TextFieldSettings": {},
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
-            },
-            "TextFieldSettings": {}
+              "Stored": true,
+              "Keyword": true
+            }
           }
         },
         {
@@ -3665,11 +3745,12 @@
               "DisplayName": "ShipTo",
               "Position": "34"
             },
-            "ContentIndexSettings": {
+            "TextFieldSettings": {},
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
-            },
-            "TextFieldSettings": {}
+              "Stored": true,
+              "Keyword": true
+            }
           }
         },
         {
@@ -3697,10 +3778,10 @@
               "Editor": "Monaco"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {},
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"javascript\"\r\n}"
-            }
+            },
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -3721,7 +3802,7 @@
             "HtmlFieldSettings": {
               "SanitizeHtml": false
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3733,9 +3814,10 @@
               "Position": "0"
             },
             "TextFieldSettings": {},
-            "ContentIndexSettings": {
+            "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Keyword": true
             }
           }
         }
@@ -3758,7 +3840,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -3779,7 +3861,7 @@
               "Hint": "多个客户端主机集合，逗号分隔",
               "Required": true
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3794,7 +3876,7 @@
             "TextFieldMonacoEditorSettings": {
               "Options": "{\r\n  \"automaticLayout\": true,\r\n   \"allowComments\": true,\r\n  \"language\": \"json\"\r\n}"
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -3824,7 +3906,7 @@
             "TextFieldSettings": {
               "Required": true
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3838,7 +3920,7 @@
             "TextFieldSettings": {
               "Required": true
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         },
         {
@@ -3852,7 +3934,7 @@
             "TextFieldSettings": {
               "Required": true
             },
-            "ContentIndexSettings": {}
+            "LuceneContentIndexSettings": {}
           }
         }
       ]
@@ -3875,7 +3957,68 @@
         }
       },
       "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "FormElementLabelPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true,
+          "DisplayName": "Form Element Label Part",
+          "Description": "Provides a way to capture element's label."
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "FormElementValidationPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true,
+          "DisplayName": "Form Element Validation Part"
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "HtmlDashboardWidget",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "MenuItemsListPart",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "LinkMenuItem",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "ContentMenuItem",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "HtmlMenuItem",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "TaxonomyPart",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "UserProfileInternal",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "Address",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "490dmp4cgqv8k3wds0m3xjcdnw"
+  "Identifier": "4mk2tp37hnaf3000tfbepjmxwt"
 }

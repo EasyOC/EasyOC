@@ -1,4 +1,5 @@
 ﻿using EasyOC.Core.Application;
+using EasyOC.Core.DtoModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,6 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.ContentManagement.Metadata.Models;
-using OrchardCore.ContentManagement.Records;
 using OrchardCore.Contents;
 using OrchardCore.DisplayManagement.Notify;
 using System;
@@ -16,8 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using YesSql;
-using YesSql.Services;
 
 namespace EasyOC.ContentExtensions.AppServices.Dtos
 {
@@ -39,6 +37,34 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             _contentHandlers = contentHandlers;
             _handlers = handlers;
         }
+
+
+
+
+        public async Task<ContentItemDto> GetAsync(string contentItemId)
+        {
+            if (!await AuthorizationService.AuthorizeAsync(User, Permissions.AccessContentApi))
+            {
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+            }
+
+            var contentItem = await ContentManager.GetAsync(contentItemId);
+
+            if (contentItem == null)
+            {
+                throw new AppFriendlyException(HttpStatusCode.NotFound);
+            }
+
+            if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.ViewContent, contentItem))
+            {
+                await Notifier.ErrorAsync(H["Permission denied."]);
+                throw new AppFriendlyException(HttpStatusCode.Unauthorized);
+            }
+
+            return contentItem.ToDto();
+        }
+
+
         [HttpDelete]
         public async Task<JArray> BatchDeleteAsync([FromQuery] string ids)
         {
@@ -53,7 +79,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 var checkedContentItems = await ContentManager.GetAsync(idArray);
                 foreach (var contentItem in checkedContentItems)
                 {
-                    if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.DeleteContent, contentItem))
+                    if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.DeleteContent, contentItem))
                     {
                         await Notifier.ErrorAsync(H["Couldn't remove the content. Permission denied."]);
                         await YesSession.CancelAsync();
@@ -61,7 +87,8 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                     await ContentManager.RemoveAsync(contentItem);
                     results.Add(JObject.FromObject(new
                     {
-                        contentItemId = contentItem.ContentItemId, displayText = contentItem.DisplayText
+                        contentItemId = contentItem.ContentItemId,
+                        displayText = contentItem.DisplayText
                     }));
                 }
             }
@@ -77,7 +104,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 throw new AppFriendlyException(HttpStatusCode.NotFound);
             }
 
-            if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.DeleteContent, contentItem))
+            if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.DeleteContent, contentItem))
             {
                 await Notifier.ErrorAsync(H["Couldn't remove the content. Permission denied."]);
             }
@@ -92,7 +119,8 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
 
             return JObject.FromObject(new
             {
-                contentItemId = contentItem.ContentItemId, displayText = contentItem.DisplayText
+                contentItemId = contentItem.ContentItemId,
+                displayText = contentItem.DisplayText
             });
         }
 
@@ -115,7 +143,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             var contentItem = await ContentManager.GetAsync(model.ContentItemId, VersionOptions.DraftRequired);
             if (contentItem == null)
             {
-                if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
+                if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.PublishContent))
                 {
                     throw new AppFriendlyException(HttpStatusCode.Unauthorized);
                 }
@@ -139,7 +167,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             }
             else
             {
-                if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.EditContent, contentItem))
+                if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.EditContent, contentItem))
                 {
                     throw new AppFriendlyException(HttpStatusCode.Unauthorized, "当前用户没有权限更新此内容");
                 }
@@ -197,7 +225,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             }
 
 
-            if (!await AuthorizationService.AuthorizeAsync(HttpUser, CommonPermissions.PublishContent))
+            if (!await AuthorizationService.AuthorizeAsync(User, CommonPermissions.PublishContent))
             {
                 throw new AppFriendlyException(HttpStatusCode.Unauthorized);
             }

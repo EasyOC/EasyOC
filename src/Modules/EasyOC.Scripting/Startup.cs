@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using EasyOC.Scripting.Drivers;
 using EasyOC.Scripting.Filters;
 using EasyOC.Scripting.Graphql;
@@ -15,6 +15,7 @@ using OrchardCore.Modules;
 using OrchardCore.Queries;
 using OrchardCore.Scripting;
 using System;
+using QueryGlobalMethodProvider = EasyOC.Scripting.Providers.OrchardCore.Queries.QueryGlobalMethodProvider;
 
 namespace EasyOC.Scripting
 {
@@ -24,13 +25,14 @@ namespace EasyOC.Scripting
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IGlobalMethodProvider, EasyOCScriptExtendsProvider>();
-            services.AddSingleton<IGlobalMethodProvider, QueryGlobalMethodProvider>();
+            services.AddSingleton<IGlobalMethodProvider,
+                QueryGlobalMethodProvider>();
             services.AddLiquidFilter<UsersByUserNameFilter>("users_by_userName");
             services.AddLiquidFilter<AbsoluteBaseUrlFilter>("absolute_baseUrl");
 
             services.AddScoped<IDisplayDriver<Query>, ScriptQueryDisplayDriver>();
             services.AddScoped<IQuerySource, ScriptQuerySource>();
-            services.AddTransient<IScriptQueryService,ScriptQueryService>();
+            services.AddTransient<IScriptQueryService, ScriptQueryService>();
             services.AddSingleton<ISchemaBuilder, ScriptQueryFiledTypeProvider>();
         }
 

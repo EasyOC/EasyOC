@@ -122,7 +122,7 @@ namespace EasyOC.GraphQL.Queries
                 builder.Clear();
             }
 
-            schema.RegisterType<PublicationStatusGraphType>();
+            //schema.RegisterType<EOCPublicationStatusGraphType>();
             return Task.CompletedTask;
         }
 
@@ -570,9 +570,9 @@ namespace EasyOC.GraphQL.Queries
         All
     }
 
-    public class PublicationStatusGraphType : EnumerationGraphType
+    public class EOCPublicationStatusGraphType : EnumerationGraphType
     {
-        public PublicationStatusGraphType()
+        public EOCPublicationStatusGraphType()
         {
             Name = "Status";
             Description = "publication status";

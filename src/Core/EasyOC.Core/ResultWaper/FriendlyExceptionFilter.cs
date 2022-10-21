@@ -66,7 +66,7 @@ namespace EasyOC.Core.Filter
             // 如果是验证异常，返回 400
             if (isValidationException) context.Result = new BadRequestResult();
             else
-            {
+            { 
                 context.Result = new JsonResult(new
                 {
                     Message = exceptionMetadata.Errors, StatusCode = exceptionMetadata.StatusCode

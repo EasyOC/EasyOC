@@ -11,8 +11,10 @@
 	<ItemGroup>
 		<Compile Remove="Mutations\CreateOrUpdateContentItemMutationBuilder.cs" />
 		<Compile Remove="Queries\ContentItemConnectionType.cs" />
+		<Compile Remove="Queries\EOCContentTypeQuery.cs" />
 		<Compile Remove="Queries\LuceneQueryFieldTypeProvider.cs" />
 		<Compile Remove="Queries\SqlQueryFieldTypeProvider.cs" />
+		<Compile Remove="Queries\Types\ContentPickerFieldQueryObjectType - 复制.cs" />
 		<Compile Remove="ServiceCollectionExtensions.cs" />
 		<Compile Remove="Queries\Types\ContentTypePickerGraphType.cs" />
 		<Compile Remove="Queries\Types\MediaFieldQueryObjectType.cs" />

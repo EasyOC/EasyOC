@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 namespace EasyOC.Core.Application
 {
     //Api, Identity.Application, Identity.External, Identity.TwoFactorRememberMe, Identity.TwoFactorUserId, OpenIddict.Server.AspNetCore, OpenIddict.Validation.AspNetCore, Wechat
-    [DynamicWebApi, AllowAnonymous]
+    [DynamicWebApi, AllowAnonymous,IgnoreAntiforgeryToken]
     [Authorize(AuthenticationSchemes = "Api,Identity.Application")]
     public class AppServiceBase : IAppServcieBase, IDynamicWebApi
     {
@@ -45,7 +45,7 @@ namespace EasyOC.Core.Application
         protected IMapper ObjectMapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         protected IHttpContextAccessor HttpContextAccessor => LazyServiceProvider.LazyGetRequiredService<IHttpContextAccessor>();
 
-        protected ClaimsPrincipal HttpUser => HttpContextAccessor.HttpContext?.User;
+        protected ClaimsPrincipal User => HttpContextAccessor.HttpContext?.User;
 
         protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetRequiredService<IAuthorizationService>();
 
@@ -90,7 +90,7 @@ namespace EasyOC.Core.Application
 
         protected UserManager<IUser> UserManager => LazyServiceProvider.LazyGetRequiredService<UserManager<IUser>>();
 
-        protected Task<IUser> CurrentUserAsync => LazyServiceProvider.LazyGetService(UserManager.GetUserAsync(HttpUser));
+        protected Task<IUser> CurrentUserAsync => LazyServiceProvider.LazyGetService(UserManager.GetUserAsync(User));
 
 
         protected IContentDefinitionManager ContentDefinitionManager => LazyServiceProvider.LazyGetRequiredService<IContentDefinitionManager>();

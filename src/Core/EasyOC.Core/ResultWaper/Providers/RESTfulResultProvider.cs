@@ -25,6 +25,11 @@ namespace EasyOC.Core.ResultWaper.Providers
     {
         private readonly INotifier _notifier;
         private readonly HtmlEncoder _htmlEncoder;
+
+        private readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+        };
         public RESTfulResultProvider(INotifier notifier, HtmlEncoder htmlEncoder)
         {
             _notifier = notifier;
@@ -68,10 +73,11 @@ namespace EasyOC.Core.ResultWaper.Providers
             });
             _notifier.List().Clear();
 
-
-            return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
-            message: notifyList,//处理OC 的代码内输出的消息
-            httpContext: context.HttpContext));
+            if (notifyList.Any())
+            {
+                context.HttpContext.Response.Headers.Add("Message", JsonConvert.SerializeObject(notifyList, jsonSerializerSettings));
+            }
+            return new JsonResult(data);
         }
 
 

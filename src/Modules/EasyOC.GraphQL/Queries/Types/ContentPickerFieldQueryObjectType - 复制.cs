@@ -11,9 +11,9 @@ using OrchardCore.ContentFields.GraphQL;
 
 namespace EasyOC.GraphQL.Queries.Types
 {
-    public class EOCContentPickerFieldQueryObjectType : ObjectGraphType<ContentPickerField>
+    public class ContentPickerFieldQueryObjectTypePatch : ObjectGraphType<ContentPickerField>
     {
-        public EOCContentPickerFieldQueryObjectType()
+        public ContentPickerFieldQueryObjectTypePatch()
         {
             Name = nameof(ContentPickerField);
             Field<StringGraphType>()
@@ -27,6 +27,7 @@ namespace EasyOC.GraphQL.Queries.Types
                     }
                     return null;
                 });
+
             Field<ListGraphType<StringGraphType>, IEnumerable<string>>()
                 .Name("contentItemIds")
                 .Description("content item ids")

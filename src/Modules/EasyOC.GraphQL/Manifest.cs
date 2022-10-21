@@ -11,7 +11,7 @@ using static EasyOC.Constants.ManifestConstants;
     Description = "EasyOC GraphQL Extensions",
     Dependencies = new[]
     {
-        Constants.EasyOCCoreModuleId, "OrchardCore.ContentFields","OrchardCore.Media"
+        Constants.EasyOCCoreModuleId, "OrchardCore.ContentFields","OrchardCore.Media","OrchardCore.Apis.GraphQL"
     },
     Category = "Content Management"
     )

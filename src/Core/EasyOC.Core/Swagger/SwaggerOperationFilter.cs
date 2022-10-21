@@ -38,7 +38,7 @@ namespace EasyOC.Core.Swagger
             //.Where(methodParm => methodParm.GetCustomAttribute(typeof(FromQueryAttribute), true) != null)
             .SelectMany(methodParm => methodParm.ParameterType.GetProperties())
             .Where(property => property.GetCustomAttribute<SwaggerIgnoreAttribute>() != null)
-            .Select(prop => prop.Name)
+            .Select(prop => prop.Name) 
             .ToHashSet(StringComparer.InvariantCultureIgnoreCase);
 
             foreach (var parm in operation.Parameters.ToList())
