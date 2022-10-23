@@ -71,7 +71,12 @@ namespace EasyOC.OpenApi.Handlers
             {
                 contentItem = existsContent.Merge(contentItem, _jsonMergeSettings);
             }
-
+            contentItem.Alter<UserProfile>(x =>
+            {
+                x.UserName.Text = user.UserName;
+                x.Email.Text = user.Email;
+                x.UserId.Text = user.UserId;
+            });
             contentItem.ContentItemId = user.UserId;
 
             await _contentManager.CreateOrUpdateAndPublishAsync(contentItem, isCreate, new PublishOptions

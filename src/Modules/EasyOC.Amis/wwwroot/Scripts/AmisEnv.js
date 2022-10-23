@@ -38,20 +38,32 @@ const buildEnv = (axios, fetcherFn) => {
             }
             var result = await axios(api);
             console.log("result", result)
-            if (result.data.msg) {
-                 var firstmsg = result.data.msg 
-                if(result.data.msg instanceof Array){
-                   firstmsg= result.data.msg[0]
-                }        
-                if(firstmsg){ 
-                    result.data.msg = firstmsg.message.value
+            if (result.headers.messages) {
+                var firstmsg = JSON.parse(headers.messages)
+                if (result.data.msg instanceof Array) {
+                    firstmsg = result.data.msg[0]
+                }
+                if (firstmsg) {
+                    result.data.msg = firstmsg.value
                     result.data.status = firstmsg.type
                 }
-            } else if (!result.data.status) {
+            }
+            if (!result.data.status) {
                 result.data.status = result.status == 200 ? 0 : result.status
             }
-            return result.data;
-           
+            if (result.data?.data?.data) {
+                result.data.data = {
+                    ...result.data.data.data || {}
+                }
+            }
+            if (!result.data.data) {
+                return {
+                    data: { data: result.data }
+                }
+            }
+
+            return result;
+
         }
     }
 

@@ -60,8 +60,9 @@ namespace EasyOC.Scripting.Queries.ScriptQuery
                     ConnectionConfigId = RDBMS.Constants.ShellDbName
                 }, _logger));
                 #endregion
-
-                var jsValue = engine.Evaluate(extDbQuery.Scripts);
+                var paserOptions = new Esprima.ParserOptions();
+            
+                var jsValue = engine.Evaluate(extDbQuery.Scripts, paserOptions);
                 var value = jsValue.ToObject();
                 if (extDbQuery.ReturnDocuments)
                 {

@@ -64,18 +64,15 @@ namespace EasyOC.Core.ResultWaper.Providers
             settings.Converters.Add(new NotifyEntryConverter(_htmlEncoder));
             var notifyList = _notifier.List().ToArray().Select(x => new
             {
-                Message = new
-                {
-                    //对Message解码
-                    Value = WebUtility.HtmlDecode(x.GetMessageAsString(_htmlEncoder)),
-                },
+                //对Message解码
+                Value = WebUtility.HtmlDecode(x.GetMessageAsString(_htmlEncoder)),
                 x.Type,
             });
             _notifier.List().Clear();
 
             if (notifyList.Any())
             {
-                context.HttpContext.Response.Headers.Add("Message", JsonConvert.SerializeObject(notifyList, jsonSerializerSettings));
+                context.HttpContext.Response.Headers["messages"] = WebUtility.UrlEncode(JsonConvert.SerializeObject(notifyList, jsonSerializerSettings));
             }
             return new JsonResult(data);
         }
