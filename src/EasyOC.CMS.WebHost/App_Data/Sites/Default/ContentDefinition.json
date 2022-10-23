@@ -1386,6 +1386,59 @@
           }
         }
       ]
+    },
+    {
+      "Name": "AMISMarkdown",
+      "DisplayName": "AMIS_Markdown",
+      "Settings": {
+        "ContentTypeSettings": {
+          "Creatable": true,
+          "Listable": true,
+          "Draftable": true,
+          "Versionable": true,
+          "Securable": true
+        },
+        "FullTextAspectSettings": {},
+        "HandlerScripts": {}
+      },
+      "ContentTypePartDefinitionRecords": [
+        {
+          "PartName": "AMISMarkdown",
+          "Name": "AMISMarkdown",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "0"
+            }
+          }
+        },
+        {
+          "PartName": "AutoroutePart",
+          "Name": "AutoroutePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "2"
+            }
+          }
+        },
+        {
+          "PartName": "MarkdownBodyPart",
+          "Name": "MarkdownBodyPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "3"
+            }
+          }
+        }
+      ]
     }
   ],
   "ContentPartDefinitionRecords": [
@@ -4018,7 +4071,12 @@
       "Name": "Address",
       "Settings": {},
       "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "AMISMarkdown",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "4mk2tp37hnaf3000tfbepjmxwt"
+  "Identifier": "4kyf84v44dxkk0gytc45k625df"
 }

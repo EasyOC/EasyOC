@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace EasyOC.Scripting.Providers.OrchardCore.Queries
 {
-    public class QueryGlobalMethodProvider : IGlobalMethodProvider
+    public class QueryGlobalMethodProviderPatch : IGlobalMethodProvider
     {
         private readonly GlobalMethod _executeQuery;
 
@@ -15,7 +15,7 @@ namespace EasyOC.Scripting.Providers.OrchardCore.Queries
         /// Usage: executeQuery(name, parameters)
         /// Ex: executeQuery("MySqlQuery", {"Owner":"bob"});
         /// </summary>
-        public QueryGlobalMethodProvider()
+        public QueryGlobalMethodProviderPatch()
         {
             _executeQuery = new GlobalMethod
             {

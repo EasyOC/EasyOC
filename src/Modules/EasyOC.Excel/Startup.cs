@@ -1,5 +1,6 @@
 ﻿using EasyOC.Excel.Migrations;
 using EasyOC.Excel.Models;
+using EasyOC.Excel.Scripting;
 //using EasyOC.Excel.Scripting;
 using EasyOC.Excel.Services;
 using EasyOC.Excel.Workflow;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
+using OrchardCore.Scripting;
 using OrchardCore.Workflows.Helpers;
 using System;
 
@@ -26,7 +28,7 @@ namespace EasyOC.Excel
             services.AddContentPart<ImportExcelSettings>();
 
             // services.AddHttpClient(Consts.GraphqlClient);
-            //services.AddSingleton<IGlobalMethodProvider, ExcelMethodsProvider>();
+            services.AddSingleton<IGlobalMethodProvider, ExcelMethodsProvider>();
         }
 
         public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

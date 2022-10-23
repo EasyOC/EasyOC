@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 
 namespace EasyOC.RDBMS
 {
@@ -53,9 +54,9 @@ namespace EasyOC.RDBMS
             }
         }
 
-        public IEnumerable<object> GetRows(string cmdText, object parms = null)
+        public IEnumerable<object> GetRows(string cmdText, ExpandoObject parms = null)
         {
-            var result = FreeSql.Ado.Query<object>(cmdText, parms);
+            var result = FreeSql.Ado.Query<object>(cmdText, parms.ToDictionary());
             return result.ToArray();
         }
 
@@ -65,14 +66,14 @@ namespace EasyOC.RDBMS
         /// </summary>
         /// <param name="cmdText"></param>
         /// <param name="parms"></param>
-        public DataTable GetTable(string cmdText, object parms = null)
+        public DataTable GetTable(string cmdText, ExpandoObject parms = null)
         {
-            var result = FreeSql.Ado.ExecuteDataTable(cmdText, parms);
+            var result = FreeSql.Ado.ExecuteDataTable(cmdText, parms.ToDictionary());
             return result;
         }
 
-        public DataSet GetDataSet(string cmdText, object parms = null)
-            => FreeSql.Ado.ExecuteDataSet(cmdText, parms);
+        public DataSet GetDataSet(string cmdText, ExpandoObject parms = null)
+            => FreeSql.Ado.ExecuteDataSet(cmdText, parms.ToDictionary());
 
 
         /// <summary>
@@ -81,9 +82,9 @@ namespace EasyOC.RDBMS
         /// </summary>
         /// <param name="cmdText"></param>
         /// <param name="parms"></param>
-        public IEnumerable<object> GetSingle(string cmdText, object parms = null)
+        public IEnumerable<object> GetSingle(string cmdText, ExpandoObject parms = null)
         {
-            var result = FreeSql.Ado.QuerySingle<object>(cmdText, parms);
+            var result = FreeSql.Ado.QuerySingle<object>(cmdText, parms.ToDictionary());
             return JObject.FromObject(result);
         }
 
@@ -93,9 +94,9 @@ namespace EasyOC.RDBMS
         /// <param name="cmdText"></param>
         /// <param name="parms"></param>
         /// <returns></returns>
-        public object ExcuteScalar(string cmdText, object parms = null)
+        public object ExcuteScalar(string cmdText, ExpandoObject parms = null)
         {
-            return FreeSql.Ado.ExecuteScalar(cmdText, parms);
+            return FreeSql.Ado.ExecuteScalar(cmdText, parms.ToDictionary());
         }
 
         /// <summary>
@@ -104,11 +105,10 @@ namespace EasyOC.RDBMS
         /// <param name="cmdText"></param>
         /// <param name="parms"></param>
         /// <returns></returns>
-        public object ExecuteNonQuery(string cmdText, object parms = null)
+        public object ExecuteNonQuery(string cmdText, ExpandoObject parms = null)
         {
-            return FreeSql.Ado.ExecuteNonQuery(cmdText, parms);
+            return FreeSql.Ado.ExecuteNonQuery(cmdText, parms.ToDictionary());
         }
-
-
+ 
     }
 }

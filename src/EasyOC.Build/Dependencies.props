@@ -6,7 +6,7 @@
       <OrchardCoreVersion>1.5.0-preview-17106</OrchardCoreVersion>
 
     <!--<OrchardCoreVersion>1.1.0</OrchardCoreVersion>-->
-    <FreeSqlVersion>3.2.666-preview20220826</FreeSqlVersion>
+    <FreeSqlVersion>3.2.665</FreeSqlVersion>
     <LuceneNetVersion>4.8.0-beta00016</LuceneNetVersion>
     <!-- Special case - this property is used by a DotNetCliToolReference -->
     <DotNetXunitVersion>2.3.0</DotNetXunitVersion>

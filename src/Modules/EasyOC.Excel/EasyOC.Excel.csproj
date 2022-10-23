@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 
@@ -8,12 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Workflow\UploadExcelTask.cs" />
-	  <Compile Remove="Controllers\ExcelApiController.cs" />
+		<Compile Remove="Workflow\UploadExcelTask.cs" />
+		<Compile Remove="Controllers\ExcelApiController.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" /> 
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
+		<PackageReference Include="MiniExcel" Version="1.28.1" />
 		<PackageReference Include="NPOI" />
 	</ItemGroup>
 	<!--
@@ -26,17 +27,17 @@
 		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Apis.GraphQL" Version="$(OrchardCoreVersion)" />
 		<ProjectReference Include="..\..\Core\EasyOC.Core\EasyOC.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Scripting\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
-	  <ProjectReference Include="..\EasyOC.GraphQL\EasyOC.GraphQL.csproj" />
-	  <ProjectReference Include="..\EasyOC.OpenApi\EasyOC.OpenApi.csproj" />
+		<ProjectReference Include="..\EasyOC.ContentExtensions\EasyOC.ContentExtensions.csproj" />
+		<ProjectReference Include="..\EasyOC.GraphQL\EasyOC.GraphQL.csproj" />
+		<ProjectReference Include="..\EasyOC.OpenApi\EasyOC.OpenApi.csproj" />
 	</ItemGroup>
 
 

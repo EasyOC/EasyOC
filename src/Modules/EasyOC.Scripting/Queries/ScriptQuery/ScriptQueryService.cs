@@ -34,7 +34,7 @@ namespace EasyOC.Scripting.Queries.ScriptQuery
         }
         public async Task<ScriptQueryResult> ExcuteScriptQuery(ScriptQuery extDbQuery, IDictionary<string, object> parameters)
         {
-            ScriptQueryResult scriptResults = null;
+            ScriptQueryResult scriptResults = new ScriptQueryResult();
             try
             {
                 var scope = _scriptingManager.CreateScope("js", _serviceProvider)
@@ -61,9 +61,10 @@ namespace EasyOC.Scripting.Queries.ScriptQuery
                 }, _logger));
                 #endregion
                 var paserOptions = new Esprima.ParserOptions();
-            
+
                 var jsValue = engine.Evaluate(extDbQuery.Scripts, paserOptions);
                 var value = jsValue.ToObject();
+                var jToken = JToken.FromObject(value);
                 if (extDbQuery.ReturnDocuments)
                 {
                     if (jsValue.IsArray())
@@ -78,20 +79,31 @@ namespace EasyOC.Scripting.Queries.ScriptQuery
                 }
                 else
                 {
-                    var jobj = JObject.FromObject(value);
-                    scriptResults = jobj.ToObject<ScriptQueryResult>();
-                    if (scriptResults != null)
+                    if (jToken is JArray jArray)
                     {
+                        scriptResults.Items = jArray.AsEnumerable();
+                        scriptResults.Total = scriptResults.Items.Count();
                         return scriptResults;
                     }
+                    if (jToken is JObject jobj)
+                    {
+                        scriptResults = jobj.ToObject<ScriptQueryResult>();
+                        if (scriptResults.Data == null)
+                        {
+                            scriptResults.Data = jobj;
+                        }
+                        return scriptResults;
+                    }
+
                     if (value is object[] list)
                     {
                         scriptResults.Items = list;
                         scriptResults.Total = list.Length;
                         return scriptResults;
                     }
+
                     //Holding default
-                    scriptResults.Data = value;
+                    scriptResults.Data = JToken.FromObject(value);
                     return scriptResults;
                 }
             }

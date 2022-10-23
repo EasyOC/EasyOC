@@ -4,10 +4,12 @@ using EasyOC.Scripting.Filters;
 using EasyOC.Scripting.Graphql;
 using EasyOC.Scripting.Liquid;
 using EasyOC.Scripting.Providers;
+using EasyOC.Scripting.Providers.OrchardCore.Queries;
 using EasyOC.Scripting.Queries.ScriptQuery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.Liquid;
@@ -15,7 +17,7 @@ using OrchardCore.Modules;
 using OrchardCore.Queries;
 using OrchardCore.Scripting;
 using System;
-using QueryGlobalMethodProvider = EasyOC.Scripting.Providers.OrchardCore.Queries.QueryGlobalMethodProvider;
+using System.Linq;
 
 namespace EasyOC.Scripting
 {
@@ -25,8 +27,11 @@ namespace EasyOC.Scripting
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IGlobalMethodProvider, EasyOCScriptExtendsProvider>();
-            services.AddSingleton<IGlobalMethodProvider,
-                QueryGlobalMethodProvider>();
+
+            //Fix Array
+            services.Remove(services.FirstOrDefault(x => x.ImplementationType == typeof(QueryGlobalMethodProvider)));
+            services.AddSingleton<IGlobalMethodProvider, QueryGlobalMethodProviderPatch>();
+            
             services.AddLiquidFilter<UsersByUserNameFilter>("users_by_userName");
             services.AddLiquidFilter<AbsoluteBaseUrlFilter>("absolute_baseUrl");
 
