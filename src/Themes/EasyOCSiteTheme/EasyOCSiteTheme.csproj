@@ -1,34 +1,35 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Remove="Views\Layout.liquid" />
-    <EmbeddedResource Update="Views\Layout-Login.cshtml">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Remove="Views\Layout.liquid" />
+		<EmbeddedResource Update="Views\Layout-Login.cshtml">
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
-   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
-<!--    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />-->
-        <ProjectReference Include="../../OrchardCore.Modules/OrchardCore.OpenId/OrchardCore.OpenId.csproj" Version="$(OrchardCoreVersion)" />
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
+		<!--    <PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" />-->
+		<!--<ProjectReference Include="../../OrchardCore.Modules/OrchardCore.OpenId/OrchardCore.OpenId.csproj" Version="$(OrchardCoreVersion)" />-->
+		<PackageReference Include="OrchardCore.OpenId" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 
-    <PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" /> 
+		<PackageReference Include="OrchardCore.Menu" Version="$(OrchardCoreVersion)" />
 
-    <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
-  </ItemGroup>
- 
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+	</ItemGroup>
+
 
 </Project>

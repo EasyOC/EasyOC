@@ -56,6 +56,9 @@
     <ProjectReference Include="..\EasyOC.DynamicWebApi\EasyOC.DynamicWebApi.csproj" />
     <ProjectReference Include="..\EasyOC.Extensions\EasyOC.Extensions.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Recipes\Template\" />
+  </ItemGroup>
 
 
 </Project>

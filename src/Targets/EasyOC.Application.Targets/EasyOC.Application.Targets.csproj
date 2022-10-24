@@ -35,6 +35,11 @@
     <!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
 
   </ItemGroup>
+  <ItemGroup>
+    <!--<Reference Include="EasyOC.ContentExtensions">
+      <HintPath>..\..\EasyOC.CMS.WebHost\bin\Debug\net6.0\EasyOC.ContentExtensions.dll</HintPath>
+    </Reference>-->
+  </ItemGroup>
 
 </Project>
 

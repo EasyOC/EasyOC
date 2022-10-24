@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyOC.Amis.Controllers
@@ -12,7 +11,6 @@ namespace EasyOC.Amis.Controllers
 
         [HttpGet]
         [Route("EasyOC.Amis/amis-editor/index")]
-        [AllowAnonymous]
         public IActionResult AmisEditor()
         {
             //return Redirect("~/EasyOC.Amis/amis-editor/index.html");

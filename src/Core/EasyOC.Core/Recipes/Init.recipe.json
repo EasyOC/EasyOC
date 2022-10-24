@@ -10,38 +10,1931 @@
   "tags": [],
   "steps": [
     {
+      "name": "ContentDefinition",
+      "ContentTypes": [
+        {
+          "Name": "UserProfile",
+          "DisplayName": "User Profiles",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "UserProfilePart",
+              "Name": "UserProfilePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                },
+                "GraphQLContentTypePartSettings": {},
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Keyword": true
+                }
+              }
+            },
+            {
+              "PartName": "UserProfile",
+              "Name": "UserProfile",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "DisplayName": "Title",
+                  "Description": "Provides a Title for your content item.",
+                  "Position": "1"
+                },
+                "GraphQLContentTypePartSettings": {},
+                "TitlePartSettings": {
+                  "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Department",
+          "DisplayName": "部门",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {},
+            "HandlerScripts": {
+              "CreateHandlerScript": "111111111",
+              "UpdateHandlerScript": "2222222222222",
+              "DeleteHandlerScript": "3333333333333333",
+              "PublishHandlerScript": "4444444444444"
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "Department",
+              "Name": "Department",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "UserProfileInternal",
+          "DisplayName": "User Profile Internal",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Stereotype": "CustomUserSettings"
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "UserProfileInternal",
+              "Name": "UserProfileInternal",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "UserProfilePart",
+              "Name": "UserProfilePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AmisSchema",
+          "DisplayName": "Amis Schema",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AmisSchema",
+              "Name": "AmisSchema",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DynamicIndexConfigSetting",
+          "DisplayName": "DynamicIndex Config",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "DynamicIndexConfigSetting",
+              "Name": "DynamicIndexConfigSetting",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DbConnectionConfig",
+          "DisplayName": "DbConnectionConfig",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "DbConnectionConfig",
+              "Name": "DbConnectionConfig",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AntdMenuItem",
+          "DisplayName": "Antd 路由菜单项",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AntdMenuItem",
+              "Name": "AntdMenuItem",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "DisplayName": "Title",
+                  "Description": "Provides a Title for your content item.",
+                  "Position": "1"
+                },
+                "GraphQLContentTypePartSettings": {},
+                "TitlePartSettings": {
+                  "Pattern": "{{ContentItem.Content.AntdMenuItem.Name.Text}}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AntdSiteGlobalSettings",
+          "DisplayName": "Antd 站点设置",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Stereotype": "CustomSettings",
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AntdSiteGlobalSettings",
+              "Name": "AntdSiteGlobalSettings",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "RDBMSMappingConfig",
+          "DisplayName": "RDBMS Mapping Config",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            }
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "RDBMSMappingConfig",
+              "Name": "RDBMSMappingConfig",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AmisPage",
+          "DisplayName": "Amis Page",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AmisPage",
+              "Name": "AmisPage",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "3"
+                }
+              }
+            },
+            {
+              "PartName": "AliasPart",
+              "Name": "AliasPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "AutoroutePart",
+              "Name": "AutoroutePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "PartName": "HtmlBodyPart",
+              "Name": "HtmlBodyPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "PartName": "PreviewPart",
+              "Name": "PreviewPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "5"
+                }
+              }
+            },
+            {
+              "PartName": "PublishLaterPart",
+              "Name": "PublishLaterPart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "6"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AmisPBIPage",
+          "DisplayName": "Amis PBI Page",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AmisPBIPage",
+              "Name": "AmisPBIPage",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "PartName": "AutoroutePart",
+              "Name": "AutoroutePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "ClientAppConfiguration",
+          "DisplayName": "ClientAppConfiguration",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "ClientAppConfiguration",
+              "Name": "ClientAppConfiguration",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "PartName": "TitlePart",
+              "Name": "TitlePart",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AppPermissionItem",
+          "DisplayName": "AppPermissionItem",
+          "Settings": {
+            "ContentTypeSettings": {
+              "Creatable": true,
+              "Listable": true,
+              "Draftable": true,
+              "Versionable": true,
+              "Securable": true
+            },
+            "FullTextAspectSettings": {}
+          },
+          "ContentTypePartDefinitionRecords": [
+            {
+              "PartName": "AppPermissionItem",
+              "Name": "AppPermissionItem",
+              "Settings": {
+                "ContentTypePartSettings": {
+                  "Position": "0"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "ContentParts": [
+        {
+          "Name": "UserProfile",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "UserPickerField",
+              "Name": "OwnerUser",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "OwnerUser",
+                  "Position": "0"
+                },
+                "UserPickerFieldSettings": {
+                  "Required": true,
+                  "DisplayAllUsers": true,
+                  "DisplayedRoles": []
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "UserName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UserName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Email",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Email",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "UserId",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UserId",
+                  "Position": "3"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "UserProfilePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true
+            }
+          },
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "NickName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Nick Name",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {},
+                "LuceneContentIndexSettings": {
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "FirstName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "First Name",
+                  "Position": "6"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "LastName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Last Name",
+                  "Position": "7"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Gender",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Gender",
+                  "Editor": "PredefinedList",
+                  "Position": "5"
+                },
+                "TextFieldSettings": {},
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "Male",
+                      "value": "Male"
+                    },
+                    {
+                      "name": "Female",
+                      "value": "Female"
+                    },
+                    {
+                      "name": "Unknown",
+                      "value": ""
+                    }
+                  ]
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "JobTitle",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Job Title",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {},
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "Department",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "部门",
+                  "Position": "4"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "Department"
+                  ]
+                },
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "UserPickerField",
+              "Name": "Manager",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "直属上级",
+                  "Position": "1"
+                },
+                "UserPickerFieldSettings": {
+                  "DisplayedRoles": [
+                    "Employee",
+                    "User"
+                  ]
+                },
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "EmployeCode",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "员工号",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {},
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "RealName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "真实姓名",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "MediaField",
+              "Name": "Avatar",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "用户头像",
+                  "Editor": "Attached",
+                  "Position": "2"
+                },
+                "MediaFieldSettings": {
+                  "Multiple": false
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "登录名",
+                  "Position": "4"
+                },
+                "TextFieldSettings": {},
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Department",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "ParentDepartmentId",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "上级部门",
+                  "Position": "0"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "Department"
+                  ]
+                },
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "NumericField",
+              "Name": "OrderIndex",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "排序",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "Status",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "启用状态",
+                  "Editor": "Switch",
+                  "Position": "3"
+                },
+                "BooleanFieldSettings": {
+                  "DefaultValue": true
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Description",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "备注",
+                  "Editor": "TextArea",
+                  "Position": "4"
+                },
+                "TextFieldSettings": {},
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TaxonomyField",
+              "Name": "ParnetDepTAX",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "上级部门TAX",
+                  "Position": "1"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AmisSchema",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Schema",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Schema",
+                  "Editor": "Monaco",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {
+                  "Stored": true
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Description",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Description",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Name",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Keyword": true
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "hasUrlParams",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "hasUrlParams",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "TargetTypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "TargetTypeName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "LayoutName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "LayoutName"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "UseLayout",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UseLayout"
+                },
+                "BooleanFieldSettings": {},
+                "LuceneContentIndexSettings": {
+                  "Included": true,
+                  "Stored": true,
+                  "Keyword": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DynamicIndexConfigSetting",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "TypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "TypeName",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "TableName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "TableName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ConfigData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ConfigData",
+                  "Editor": "Monaco",
+                  "Position": "3"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "EntityInfo",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "EntityInfo",
+                  "Editor": "Monaco",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "DbConnectionConfig",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "DatabaseProvider",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Database Provider",
+                  "Editor": "PredefinedList",
+                  "Position": "0"
+                },
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "MySql",
+                      "value": "MySql"
+                    },
+                    {
+                      "name": "SqlServer",
+                      "value": "SqlServer"
+                    },
+                    {
+                      "name": "PostgreSQL",
+                      "value": "PostgreSQL"
+                    },
+                    {
+                      "name": "Oracle",
+                      "value": "Oracle"
+                    },
+                    {
+                      "name": "Sqlite",
+                      "value": "Sqlite"
+                    },
+                    {
+                      "name": "OdbcOracle",
+                      "value": "OdbcOracle"
+                    },
+                    {
+                      "name": "OdbcSqlServer",
+                      "value": "OdbcSqlServer"
+                    },
+                    {
+                      "name": "OdbcMySql",
+                      "value": "OdbcMySql"
+                    },
+                    {
+                      "name": "OdbcPostgreSQL",
+                      "value": "OdbcPostgreSQL"
+                    },
+                    {
+                      "name": "Odbc",
+                      "value": "Odbc"
+                    },
+                    {
+                      "name": "OdbcDameng",
+                      "value": "OdbcDameng"
+                    },
+                    {
+                      "name": "MsAccess",
+                      "value": "MsAccess"
+                    },
+                    {
+                      "name": "Dameng",
+                      "value": "Dameng"
+                    },
+                    {
+                      "name": "OdbcKingbaseES",
+                      "value": "OdbcKingbaseES"
+                    },
+                    {
+                      "name": "ShenTong",
+                      "value": "ShenTong"
+                    },
+                    {
+                      "name": "KingbaseES",
+                      "value": "KingbaseES"
+                    },
+                    {
+                      "name": "Firebird",
+                      "value": "Firebird"
+                    },
+                    {
+                      "name": "Custom",
+                      "value": "Custom"
+                    },
+                    {
+                      "name": "ClickHouse",
+                      "value": "ClickHouse"
+                    },
+                    {
+                      "name": "GBase",
+                      "value": "GBase"
+                    }
+                  ],
+                  "Editor": 1,
+                  "DefaultValue": "Sqlite"
+                },
+                "TextFieldSettings": {
+                  "Hint": "FreeSql支持的所有数据库，已添加 MySql, Sqlite, SqlServer.\r\n                                    其它数据库请手动添加包引用到项目中"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ConnectionString",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ConnectionString",
+                  "Editor": "TextArea",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "UseIntergrationAuth",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "使用集成身份认证",
+                  "Position": "1"
+                },
+                "BooleanFieldSettings": {},
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "UserName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "UserName",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Password",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Password",
+                  "Position": "3"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AntdMenuItem",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Path",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Path",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Name",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Name",
+                  "Position": "11"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Icon",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Icon",
+                  "Position": "10"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Target",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Target",
+                  "Position": "13"
+                },
+                "TextFieldSettings": {
+                  "Hint": "新页面打开"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Access",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "页面权限",
+                  "Position": "12"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "HideInMenu",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "HideInMenu",
+                  "Position": "14"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "OtherConfig",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "OtherConfig",
+                  "Editor": "Monaco",
+                  "Position": "15"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "MenuType",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "页面类型",
+                  "Editor": "PredefinedList",
+                  "Position": "7"
+                },
+                "TextFieldSettings": {},
+                "TextFieldPredefinedListEditorSettings": {
+                  "Options": [
+                    {
+                      "name": "普通页面",
+                      "value": "Component"
+                    },
+                    {
+                      "name": "节点",
+                      "value": "Node"
+                    },
+                    {
+                      "name": "动态页面",
+                      "value": "DynamicPage"
+                    }
+                  ],
+                  "Editor": 1,
+                  "DefaultValue": "Component"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "SchemaId",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "动态页面",
+                  "Position": "8"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "AmisSchema"
+                  ]
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "Redirect",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Redirect",
+                  "Position": "9"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "Locale",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "多语言",
+                  "Position": "6"
+                },
+                "TextFieldSettings": {
+                  "Hint": "自定义菜单的国际化 "
+                },
+                "BooleanFieldSettings": {},
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "NumericField",
+              "Name": "OrderIndex",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "OrderIndex",
+                  "Position": "4"
+                },
+                "NumericFieldSettings": {},
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "ContentPickerField",
+              "Name": "Parent",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Parent",
+                  "Position": "5"
+                },
+                "ContentPickerFieldSettings": {
+                  "DisplayedContentTypes": [
+                    "AntdMenuItem"
+                  ],
+                  "DisplayedStereotypes": []
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "zhCN",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "中文显示名",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "enUS",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "英文显示名",
+                  "Position": "3"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AntdSiteGlobalSettings",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "MenuData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "MenuData",
+                  "Editor": "Monaco",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {
+                  "Hint": "Javascript 语法"
+                },
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"javascript\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "SettingData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "AntdSettingData",
+                  "Editor": "Monaco",
+                  "Position": "1"
+                },
+                "TextFieldSettings": {
+                  "Hint": "Json 语法，完整配置参考 antd LayoutSettings"
+                },
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "RDBMSMappingConfig",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "TargetTable",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Target Table",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ContentTypeName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "ContentTypeName",
+                  "Position": "1"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "MappingData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "MappingData",
+                  "Editor": "CodeMirror",
+                  "Position": "2"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "EnableAutoSync",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Enable Auto Sync",
+                  "Editor": "Switch",
+                  "Position": "4"
+                }
+              }
+            },
+            {
+              "FieldName": "BooleanField",
+              "Name": "ReadOnly",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Read Only",
+                  "Editor": "Switch",
+                  "Position": "5"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true,
+              "Description": "Provides a Title for your content item.",
+              "DefaultPosition": "0",
+              "Reusable": true
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "AmisPage",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "JsonSchema",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "JsonSchema",
+                  "Editor": "Monaco"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"javascript\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AmisPBIPage",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "Schema",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "Schema",
+                  "Editor": "Monaco",
+                  "Position": "0"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "ClientAppConfiguration",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "HostNames",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "允许的客户端主机名称",
+                  "Editor": "TextArea"
+                },
+                "TextFieldSettings": {
+                  "Hint": "多个客户端主机集合，逗号分隔",
+                  "Required": true
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ConfigurationData",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "配置信息",
+                  "Editor": "Monaco"
+                },
+                "TextFieldSettings": {},
+                "TextFieldMonacoEditorSettings": {
+                  "Options": "{\r\n  \"automaticLayout\": true,\r\n   \"allowComments\": true,\r\n  \"language\": \"json\"\r\n}"
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AppPermissionItem",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": [
+            {
+              "FieldName": "TextField",
+              "Name": "PermissionSettings",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "页面权限定义",
+                  "Position": "0"
+                }
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "TenantName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "租户名称",
+                  "Position": "1"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "AppName",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "客户端名称",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            },
+            {
+              "FieldName": "TextField",
+              "Name": "ContainerType",
+              "Settings": {
+                "ContentPartFieldSettings": {
+                  "DisplayName": "权限容器名称",
+                  "Position": "2"
+                },
+                "TextFieldSettings": {
+                  "Required": true
+                },
+                "LuceneContentIndexSettings": {}
+              }
+            }
+          ]
+        },
+        {
+          "Name": "AppPermissionPart",
+          "Settings": {
+            "ContentPartSettings": {
+              "Attachable": true
+            }
+          },
+          "ContentPartFieldDefinitionRecords": []
+        },
+        {
+          "Name": "UserProfileInternal",
+          "Settings": {},
+          "ContentPartFieldDefinitionRecords": []
+        }
+      ]
+    },
+    {
+      "name": "lucene-index",
+      "Indices": [
+        {
+          "basicIndex": {
+            "AnalyzerName": "KeywordAnalyzer",
+            "IndexLatest": true,
+            "IndexedContentTypes": [
+              "Department",
+              "UserProfileInternal",
+              "UserProfile",
+              "VbenList",
+              "VbenMenu"
+            ],
+            "Culture": "any",
+            "StoreSourceData": false
+          }
+        },
+        {
+          "Crm": {
+            "AnalyzerName": "KeywordAnalyzer",
+            "IndexLatest": true,
+            "IndexedContentTypes": [
+              "Customer",
+              "CustomerSource",
+              "Industry",
+              "MarketSegment"
+            ],
+            "Culture": "any",
+            "StoreSourceData": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "Queries",
+      "Queries": [
+        {
+          "Index": "basicIndex",
+          "Template": "\r\n\r\n{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                {\r\n                    \"term\": { \"Content.ContentItem.ContentType\": \"Department\" }\r\n                },\r\n                {\r\n                    \"term\": { \"Content.ContentItem.Published\": 'true' }\r\n                },\r\n                {\r\n                    \"term\": { \"Content.ContentItem.Latest\": \"true\" }\r\n                }\r\n            ],\r\n            {% if filters %}\r\n            \"filter\":[\r\n                  {% for filter in filters %} \r\n                \t{\"{{filter.method}}\": { \"{{filter.key}}\": \"{{filter.value}}\" }},\r\n\t\t\t\t  {% endfor %} \r\n            \t]\r\n            {% endif %}\r\n        }\r\n    },\r\n    \"from\":0,\r\n  \t\"size\":10000\r\n}",
+          "ReturnContentItems": true,
+          "Name": "queryDepartment",
+          "Source": "Lucene",
+          "Schema": "{\r\n  \"type\":\"contentItem/Department\"\r\n\r\n}"
+        },
+        {
+          "Index": "Crm",
+          "Template": "\r\n\r\n{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"Customer\" } },\r\n                { \"term\": { \"Content.ContentItem.Published\": 'true' } },\r\n                { \"term\": { \"Content.ContentItem.Latest\": \"true\" } }\r\n            ],\r\n            {% if filters %}\r\n            \"filter\":[\r\n                  {% for filter in filters %} \r\n              \t\t{%if filter.key %}\r\n      \t\t\t\t\t{\"{{filter.method}}\": { \"{{filter.key}}\": \"{{filter.value}}\" }},\r\n                    {%else%}\r\n                    \t{\"{{filter.method}}\":\"{{filter.value}}\"}},\r\n                    {%endif%}\r\n\t\t\t\t  {% endfor %} \r\n            \t]\r\n            {% endif %}\r\n        }\r\n    }\r\n  {% if from %}\r\n    ,\"from\":{{from}}\r\n  {% endif %}\r\n  {%if size %}\r\n   ,\"size\":{{size}}\r\n  {%endif%}  \t\r\n}",
+          "ReturnContentItems": true,
+          "Name": "crmCustomers",
+          "Source": "Lucene",
+          "Schema": "{\r\n  \"type\":\"contentItem/Customer\" ,\r\n  \"hasTotal\": true\r\n}"
+        },
+        {
+          "Index": "amis",
+          "Template": "{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"AmisSchema\" } },\r\n                {  \"term\": { \"Content.ContentItem.Latest\": \"true\" } }\r\n            ],\r\n            \"filter\":\r\n            {  \"fuzzy\": { \"AmisSchema.Name\": \"{{name}}\" } }\r\n            \r\n        }\r\n    },\r\n  \"size\":1\r\n}",
+          "ReturnContentItems": true,
+          "Name": "getAmisPageSchema",
+          "Source": "Lucene",
+          "Schema": "{\r\n\"type\": \"contentItem/AmisSchema\"\r\n}"
+        },
+        {
+          "Template": "SELECT count(1) as Total FROM DIndex_AmisSchema a\r\nwhere \r\nlatest=True and published=True and name=@name \r\n{% if ContentItemId  %}\r\nand ContentItemId!=@ContentItemId\r\n{% endif %}",
+          "ReturnDocuments": false,
+          "Name": "checkSchemaNameDuplicate",
+          "Source": "Sql",
+          "Schema": "{\r\n    \"type\": \"object\",\r\n    \"properties\": {  \r\n        \"Total\" : {\r\n            \"type\" : \"integer\",\r\n            \"description\" : \"This is your custom table 'Name' column.\"\r\n        }\r\n    }\r\n}"
+        },
+        {
+          "Index": "defaultIndex",
+          "Template": "{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"{{contentType}}\" } },\r\n                { \"term\": { \"Content.ContentItem.Published\": 'true' } },\r\n                { \"term\": { \"Content.ContentItem.Latest\": \"true\" } }\r\n            ],\r\n            {% if filters %}\r\n            \"filter\":[\r\n                  {% for filter in filters %} \r\n              \t\t{%if filter.key %}\r\n      \t\t\t\t\t{\"{{filter.method}}\": { \"{{filter.key}}\": \"{{filter.value}}\" }},\r\n                    {%else%}\r\n                    \t{\"{{filter.method}}\":\"{{filter.value}}\"}},\r\n                    {%endif%}\r\n\t\t\t\t  {% endfor %} \r\n            \t]\r\n            {% endif %}\r\n        }\r\n    }\r\n  {% if from %}\r\n    ,\"from\":{{from}}\r\n  {% endif %}\r\n  {%if size %}\r\n   ,\"size\":{{size}}\r\n  {%endif%}  \t\r\n}",
+          "ReturnContentItems": true,
+          "Name": "defaultPagingQuery",
+          "Source": "Lucene",
+          "Schema": null
+        },
+        {
+          "Template": "Select\r\nNormalizedEmail as Email\r\nfrom UserIndex where IsEnabled=1\r\nand NormalizedUserName in ({{userNames}})",
+          "ReturnDocuments": false,
+          "Name": "QueryUserEmailByUserName",
+          "Source": "Sql",
+          "Schema": null
+        },
+        {
+          "Index": "PBIIdex",
+          "Template": "{\r\n    \"query\": {\r\n        \"bool\": {\r\n            \"must\": [\r\n                { \"term\": { \"Content.ContentItem.ContentType\": \"PBIComments\" } },\r\n                {  \"term\": { \"Content.ContentItem.Latest\": \"true\" } }\r\n            ],\r\n            \"filter\":\r\n            {  \"fuzzy\": { \"PBIComments.CommentsKey\": \"{{key}}\" } }\r\n            \r\n        }\r\n    },\r\n  \"size\":1\r\n}",
+          "ReturnContentItems": true,
+          "Name": "getPBIComments",
+          "Source": "Lucene",
+          "Schema": "{ \"type\": \"contentItem/PBIComments\" }"
+        },
+        {
+          "Scripts": "\r\nvar customers = executeQuery(\"crmCustomers\", parameters );\r\nvar myList = customers.map(x => {\r\n    return { \"name\": \"张三1\", \"sex\": false, age: 53, weight: 33.22124, customer: x }\r\n})\r\nreturn {\r\n    \"items\": myList,\r\n    Data: { \"name\": \"张三1\", \"sex\": false, age: 53, weight: 33.22124 },\r\n    message: \"123123\"\r\n}",
+          "ReturnDocuments": false,
+          "Name": "testMyQuery",
+          "Source": "ScriptQuery",
+          "Schema": "{\r\n    \"items\": {\r\n        \"type\": {\r\n            \"name\": {\r\n                \"type\": \"string\"\r\n            },\r\n            \"sex\": {\r\n                \"type\": \"boolean\"\r\n            },\r\n            \"age\": {\r\n                \"type\": \"int\"\r\n            },\r\n            \"weight\": {\r\n                \"type\": \"float\"\r\n            },\r\n            \"customer\": {\r\n                \"type\": \"Customer\"\r\n            }\r\n        }\r\n    },\r\n    \"data\": {\r\n        \"type\": {\r\n            \"name\": {\r\n                \"type\": \"string\"\r\n            },\r\n            \"sex\": {\r\n                \"type\": \"boolean\"\r\n            },\r\n            \"age\": {\r\n                \"type\": \"int\"\r\n            },\r\n            \"weight\": {\r\n                \"type\": \"float\"\r\n            }\r\n        }\r\n    },\r\n    \"message\":\"string\"\r\n}"
+        },
+        {
+          "Scripts": " \r\nvar excel = readExcel(\"D:\\\\SourceCodes\\\\JZSoft\\\\副本zsdg0149 format new (1014).xlsx\", false )\r\n\r\nreturn excel;",
+          "ReturnDocuments": false,
+          "Name": "ReadExcelFromPost",
+          "Source": "ScriptQuery",
+          "Schema": null
+        }
+      ]
+    },
+    {
+      "name": "deployment",
+      "Plans": [
+        {
+          "Name": "Export content to deployment plan target",
+          "Steps": [
+            {
+              "Type": "ExportContentToDeploymentTargetDeploymentStep",
+              "Step": {
+                "Id": "4sfnhepvp3czvt660ka30ry5wg",
+                "Name": "ExportContentToDeploymentTargetDeploymentStep"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Export Basic Informations",
+          "Steps": [
+            {
+              "Type": "ContentDefinitionDeploymentStep",
+              "Step": {
+                "IncludeAll": false,
+                "ContentTypes": [
+                  "AmisPage",
+                  "AmisPBIPage",
+                  "AmisSchema",
+                  "AntdMenuItem",
+                  "AntdSiteGlobalSettings",
+                  "AppPermissionItem",
+                  "ClientAppConfiguration",
+                  "DbConnectionConfig",
+                  "Department",
+                  "DynamicIndexConfigSetting",
+                  "RDBMSMappingConfig",
+                  "UserProfile",
+                  "UserProfileInternal"
+                ],
+                "ContentParts": [
+                  "AmisPage",
+                  "AmisPBIPage",
+                  "AmisSchema",
+                  "AntdMenuItem",
+                  "AntdSiteGlobalSettings",
+                  "AppPermissionItem",
+                  "ClientAppConfiguration",
+                  "DbConnectionConfig",
+                  "Department",
+                  "DynamicIndexConfigSetting",
+                  "RDBMSMappingConfig",
+                  "UserProfile",
+                  "UserProfileInternal",
+                  "AppPermissionPart",
+                  "TitlePart",
+                  "UserProfilePart"
+                ],
+                "Id": "88709f7360df4826a0ef67c4cf63b651",
+                "Name": "ContentDefinition"
+              }
+            },
+            {
+              "Type": "LuceneIndexDeploymentStep",
+              "Step": {
+                "IncludeAll": false,
+                "IndexNames": [
+                  "basicIndex",
+                  "Crm"
+                ],
+                "Id": "e9f6f4cced974e2b85c258cf2eddc7c5",
+                "Name": "LuceneIndex"
+              }
+            },
+            {
+              "Type": "AllQueriesDeploymentStep",
+              "Step": {
+                "Id": "4b5c4387bd18432db1b20f26e19025a9",
+                "Name": "AllQueries"
+              }
+            },
+            {
+              "Type": "DeploymentPlanDeploymentStep",
+              "Step": {
+                "IncludeAll": false,
+                "DeploymentPlanNames": [
+                  "Export content to deployment plan target",
+                  "Export Basic Informations",
+                  "Export Sample Data"
+                ],
+                "Id": "878a9e87a9984211bb97e75eacecf761",
+                "Name": "DeploymentPlan"
+              }
+            },
+            {
+              "Type": "AllFeaturesDeploymentStep",
+              "Step": {
+                "IgnoreDisabledFeatures": false,
+                "Id": "34df5580f73b4d95a7425df0994c866d",
+                "Name": "AllFeatures"
+              }
+            },
+            {
+              "Type": "AllTemplatesDeploymentStep",
+              "Step": {
+                "ExportAsFiles": true,
+                "Id": "ca205091279942c08c1bb7438d15cd25",
+                "Name": "AllTemplates"
+              }
+            },
+            {
+              "Type": "AllAdminTemplatesDeploymentStep",
+              "Step": {
+                "ExportAsFiles": true,
+                "Id": "9f34c39ba513452885b522854738dc2a",
+                "Name": "AllAdminTemplates"
+              }
+            },
+            {
+              "Type": "OpenIdServerDeploymentStep",
+              "Step": {
+                "Id": "95869dc71ae54e79a893baaea1a9dbc8",
+                "Name": "OpenID Server"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Export Sample Data",
+          "Steps": [
+            {
+              "Type": "ContentDefinitionDeploymentStep",
+              "Step": {
+                "IncludeAll": false,
+                "ContentTypes": [
+                  "Customer",
+                  "CustomerSource",
+                  "Department",
+                  "Industry",
+                  "MarketSegment"
+                ],
+                "ContentParts": [
+                  "Customer",
+                  "CustomerSource",
+                  "Department",
+                  "Industry",
+                  "MarketSegment",
+                  "AddressPart",
+                  "TitlePart"
+                ],
+                "Id": "5a166c1e050d4b2db7d7a34526d73441",
+                "Name": "ContentDefinition"
+              }
+            },
+            {
+              "Type": "LuceneIndexDeploymentStep",
+              "Step": {
+                "IncludeAll": false,
+                "IndexNames": [
+                  "Crm"
+                ],
+                "Id": "3b3eca7f75474c7998fc390313eb0ffb",
+                "Name": "LuceneIndex"
+              }
+            },
+            {
+              "Type": "LuceneSettingsDeploymentStep",
+              "Step": {
+                "Id": "c86b287d5aff4fee8ba233704c318c83",
+                "Name": "LuceneSettings"
+              }
+            },
+            {
+              "Type": "ContentDeploymentStep",
+              "Step": {
+                "ContentTypes": [
+                  "Customer",
+                  "CustomerSource",
+                  "Department",
+                  "Industry",
+                  "MarketSegment",
+                  "VbenList",
+                  "VbenMenu"
+                ],
+                "ExportAsSetupRecipe": false,
+                "Id": "1f8131aa4165481bbc2db1a83ccc4610",
+                "Name": "ContentDeploymentStep"
+              }
+            },
+            {
+              "Type": "AllQueriesDeploymentStep",
+              "Step": {
+                "Id": "db5a582f177149aa961e944a101f9c25",
+                "Name": "AllQueries"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Feature",
       "enable": [
         "Application.Default",
+        "EasyOC.CMS.WebHost",
+        "EasyOC.Amis",
+        "EasyOC.AntdAdmin",
+        "EasyOC.AuditTrail",
+        "EasyOC.Core",
         "OrchardCore.Liquid",
         "OrchardCore.Settings",
         "OrchardCore.Contents",
         "OrchardCore.ContentTypes",
         "OrchardCore.Shortcodes",
         "OrchardCore.ContentFields",
-        "OrchardCore.Queries",
-        "OrchardCore.Queries.Sql",
+        "OrchardCore.ContentPreview",
+        "EasyOC.ContentExtensions",
+        "EasyOC.CSharpScript",
+        "EasyOC.DynamicTypeIndex",
+        "OrchardCore.Apis.GraphQL",
+        "OrchardCore.Media",
+        "EasyOC.GraphQL",
+        "EasyOC.VueElementUI",
+        "EasyOC.Excel",
+        "EasyOC.FreeSql",
+        "EasyOC.Lucene",
         "OrchardCore.Resources",
-        "OrchardCore.Autoroute",
-        "OrchardCore.Flows",
-        "OrchardCore.Title",
-        "OrchardCore.Html",
+        "OrchardCore.Features",
+        "OrchardCore.Scripting",
+        "OrchardCore.Recipes",
+        "EasyOC.OpenApi",
+        "OrchardCore.Queries",
+        "EasyOC.RDBMS",
+        "EasyOC.Scripting",
+        "OrchardCore.Queries.Sql",
+        "OrchardCore.Workflows",
+        "OrchardCore.Workflows.Http",
+        "EasyOC.Workflows",
         "OrchardCore.Admin",
         "OrchardCore.AdminDashboard",
         "OrchardCore.AdminMenu",
         "OrchardCore.Templates",
         "OrchardCore.AdminTemplates",
         "OrchardCore.Alias",
-        "OrchardCore.Apis.GraphQL",
+        "OrchardCore.ArchiveLater",
         "OrchardCore.AuditTrail",
-        "OrchardCore.Features",
-        "OrchardCore.Scripting",
-        "OrchardCore.Recipes",
+        "OrchardCore.Autoroute",
         "OrchardCore.BackgroundTasks",
         "OrchardCore.Users",
         "OrchardCore.ContentFields.Indexing.SQL.UserPicker",
         "OrchardCore.Localization",
-        "OrchardCore.ContentPreview",
+        "OrchardCore.ContentLocalization",
+        "OrchardCore.ContentLocalization.ContentCulturePicker",
         "OrchardCore.Deployment",
         "OrchardCore.Contents.Deployment.AddToDeploymentPlan",
         "OrchardCore.Contents.Deployment.Download",
@@ -54,18 +1947,20 @@
         "OrchardCore.DynamicCache",
         "OrchardCore.Email",
         "OrchardCore.Feeds",
+        "OrchardCore.Widgets",
+        "OrchardCore.Flows",
         "OrchardCore.Forms",
         "OrchardCore.HomeRoute",
+        "OrchardCore.Html",
+        "OrchardCore.Https",
         "OrchardCore.Indexing",
         "OrchardCore.Rules",
         "OrchardCore.Layers",
         "OrchardCore.Lists",
-        "OrchardCore.Search.Lucene",
-        "OrchardCore.Search.Lucene.ContentPicker",
-        "OrchardCore.Search.Lucene.Worker",
+        "OrchardCore.Localization.ContentLanguageHeader",
         "OrchardCore.Markdown",
-        "OrchardCore.Media",
         "OrchardCore.Media.Slugify",
+        "OrchardCore.Title",
         "OrchardCore.Menu",
         "OrchardCore.Navigation",
         "OrchardCore.OpenId",
@@ -76,16 +1971,15 @@
         "OrchardCore.Placements",
         "OrchardCore.Placements.FileStorage",
         "OrchardCore.PublishLater",
-        "OrchardCore.XmlRpc",
-        "OrchardCore.RemotePublishing",
         "OrchardCore.ResponseCompression",
-        "OrchardCore.ReverseProxy",
         "OrchardCore.Roles",
-        "OrchardCore.Sitemaps.Cleanup",
-        "OrchardCore.Sitemaps.RazorPages",
-        "OrchardCore.Spatial",
+        "OrchardCore.Search",
+        "OrchardCore.Search.Lucene",
+        "OrchardCore.Search.Lucene.ContentPicker",
+        "OrchardCore.Search.Lucene.Worker",
+        "OrchardCore.Security",
+        "OrchardCore.Shortcodes.Templates",
         "OrchardCore.Taxonomies",
-        "OrchardCore.Taxonomies.ContentsAdminList",
         "OrchardCore.Tenants",
         "OrchardCore.Tenants.FeatureProfiles",
         "OrchardCore.Tenants.FileProvider",
@@ -96,104 +1990,137 @@
         "OrchardCore.Users.Registration",
         "OrchardCore.Users.ResetPassword",
         "OrchardCore.Users.TimeZone",
-        "OrchardCore.Workflows",
-        "OrchardCore.Workflows.Http",
         "OrchardCore.Workflows.Session",
         "OrchardCore.Workflows.Timers",
-        "SafeMode",
-        "TheAdmin",
-        "TheBlogTheme",
+        "Wechat.Authentication",
         "TheTheme",
+        "EasyOCSiteTheme",
+        "TheAdmin",
         "EasyOCTheme",
-        "EasyOC.Core"
+        "EasyOCVbenAdminTheme",
+        "SafeMode",
+        "TheBlogTheme"
+      ],
+      "disable": [
+        "EasyOC.PowerBIClient",
+        "OrchardCore.AutoSetup",
+        "OrchardCore.ContentFields.Indexing.SQL",
+        "OrchardCore.ContentLocalization.Sitemaps",
+        "OrchardCore.DataProtection.Azure",
+        "OrchardCore.HealthChecks",
+        "OrchardCore.Media.Cache",
+        "OrchardCore.Media.Azure.Storage",
+        "OrchardCore.Microsoft.Authentication.AzureAD",
+        "OrchardCore.Microsoft.Authentication.MicrosoftAccount",
+        "OrchardCore.MiniProfiler",
+        "OrchardCore.Redis",
+        "OrchardCore.Redis.Bus",
+        "OrchardCore.Redis.Cache",
+        "OrchardCore.Redis.DataProtection",
+        "OrchardCore.Redis.Lock",
+        "OrchardCore.XmlRpc",
+        "OrchardCore.RemotePublishing",
+        "OrchardCore.ReverseProxy",
+        "OrchardCore.Search.Elasticsearch",
+        "OrchardCore.Search.Elasticsearch.ContentPicker",
+        "OrchardCore.Search.Elasticsearch.Worker",
+        "OrchardCore.Spatial",
+        "OrchardCore.Taxonomies.ContentsAdminList",
+        "OrchardCore.Tenants.Distributed",
+        "TheAgencyTheme",
+        "TheComingSoonTheme"
       ]
     },
     {
-      "name": "themes",
-      "admin": "EasyOCTheme",
-      "site": "EasyOCSiteTheme"
-    },
-    {
-      "name": "settings",
-      "HomeRoute": {
-        "Action": "Index",
-        "Controller": "Admin",
-        "Area": "OrchardCore.Admin"
+      "name": "Templates",
+      "Templates": {
+        "Content__AmisPage": {
+          "Content": "[file:text('Templates/Content-AmisPage.liquid')]",
+          "Description": null
+        },
+        "Content__AmisSchema": {
+          "Content": "[file:text('Templates/Content-AmisSchema.liquid')]",
+          "Description": null
+        },
+        "Content__AmisPBIPage": {
+          "Content": "[file:text('Templates/Content-AmisPBIPage.liquid')]",
+          "Description": null
+        },
+        "Content__AMISMarkdown1": {
+          "Content": "[file:text('Templates/Content-AMISMarkdown1.liquid')]",
+          "Description": null
+        }
       }
     },
     {
+      "name": "AdminTemplates",
+      "AdminTemplates": {}
+    },
+    {
       "name": "OpenIdServerSettings",
-      "TestingModeEnabled": false,
-      "AccessTokenFormat": "JsonWebToken",
+      "AccessTokenFormat": 1,
+      "Authority": null,
+      "DisableAccessTokenEncryption": false,
+      "EncryptionCertificateStoreLocation": null,
+      "EncryptionCertificateStoreName": null,
+      "EncryptionCertificateThumbprint": null,
+      "SigningCertificateStoreLocation": null,
+      "SigningCertificateStoreName": null,
+      "SigningCertificateThumbprint": null,
       "EnableTokenEndpoint": true,
       "EnableAuthorizationEndpoint": true,
       "EnableLogoutEndpoint": true,
       "EnableUserInfoEndpoint": true,
+      "EnableIntrospectionEndpoint": false,
+      "EnableRevocationEndpoint": false,
       "AllowPasswordFlow": true,
       "AllowClientCredentialsFlow": true,
       "AllowAuthorizationCodeFlow": true,
       "AllowRefreshTokenFlow": true,
-      "DisableAccessTokenEncryption": true,
-      "AllowImplicitFlow": false,
-      "AllowLogoutEndpoint": true
+      "AllowHybridFlow": true,
+      "AllowImplicitFlow": true,
+      "DisableRollingRefreshTokens": false,
+      "RequireProofKeyForCodeExchange": false,
+      "UseReferenceAccessTokens": false
     },
     {
-      "name": "OpenIdScope",
-      "Description": "A scope to provide openid for remote clients",
-      "DisplayName": "openid Scope",
-      "ScopeName": "openid"
+      "name": "Settings",
+      "AdminSettings": {
+        "DisplayDarkMode": true,
+        "DisplayMenuFilter": false,
+        "DisplayNewMenu": false,
+        "DisplayTitlesInTopbar": false
+      }
     },
     {
-      "name": "OpenIdScope",
-      "Description": "A scope to provide profile for remote clients",
-      "DisplayName": "profile Scope",
-      "ScopeName": "profile"
-    },
-    {
-      "name": "OpenIdScope",
-      "Description": "A scope to provide roles for remote clients",
-      "DisplayName": "roles Scope",
-      "ScopeName": "roles"
-    },
-    {
-      "name": "OpenIdScope",
-      "Description": "A scope to provide offline_access for remote clients",
-      "DisplayName": "offline_access Scope",
-      "ScopeName": "offline_access"
-    },
-    {
-      "name": "AdminMenu",
-      "data": [
-        {
-          "Id": "c9a8b1e213064e16912cf33266e500f6",
-          "Name": "Development",
-          "Enabled": true,
-          "MenuItems": [
-            {
-              "$type": "OrchardCore.AdminMenu.AdminNodes.LinkAdminNode, OrchardCore.AdminMenu",
-              "LinkText": "Swagger Api",
-              "LinkUrl": "/swagger",
-              "IconClass": "far fa-list-alt",
-              "PermissionNames": [
-                "ManageAdminSettings"
-              ],
-              "UniqueId": "ace742f959bf46bb94189792b73c6489",
-              "Enabled": true,
-              "Text": null,
-              "Id": null,
-              "Href": null,
-              "Url": null,
-              "Position": "9",
-              "Priority": 0,
-              "LinkToFirstChild": true,
-              "LocalNav": false,
-              "Culture": null,
-              "Items": [],
-              "Classes": []
-            }
-          ]
+      "name": "custom-settings",
+      "AntdSiteGlobalSettings": {
+        "ContentItemId": "40rey8tfh8gz4tt8vqr603wvmn",
+        "ContentItemVersionId": null,
+        "ContentType": "AntdSiteGlobalSettings",
+        "DisplayText": "",
+        "Latest": false,
+        "Published": false,
+        "ModifiedUtc": null,
+        "PublishedUtc": null,
+        "CreatedUtc": null,
+        "Owner": "",
+        "Author": "admin",
+        "AntdSiteGlobalSettings": {
+          "MenuData": {
+            "Text": "[{\r\n    name: \"system\",\r\n    icon: \"setting\",\r\n    path: \"/sys\",\r\n    routes: [\r\n        {\r\n            name: \"develop\",\r\n            icon: \"build\",\r\n            path: \"dev\",\r\n            routes: [\r\n                {\r\n                    path: 'develop',\r\n                    redirect: 'ManagePages',\r\n                },\r\n                {\r\n                    name: 'amisPages',\r\n                    path: 'ManagePages',\r\n                },\r\n                {\r\n                    name: \"page-editor\",\r\n                    path: \"page-editor\",\r\n                },\r\n                {\r\n                    name: 'menus',\r\n                    path: 'menus',\r\n                },\r\n                {\r\n                    name: 'dynamicIndex',\r\n                    path: 'dynamicIndex',\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            path: 'account',\r\n            name: 'Account',\r\n            icon: 'smile',\r\n            component: './sys/account',\r\n        }\r\n    ]\r\n},\r\n// {\r\n//     name: 'editor',\r\n//     icon: 'highlight',\r\n//     path: '/editor',\r\n//     routes: [\r\n//         {\r\n//             path: '/editor',\r\n//             redirect: '/editor/flow',\r\n//         },\r\n//         {\r\n//             name: 'EChartEditor',\r\n//             locale: false,\r\n//             icon: 'smile',\r\n//             path: '/editor/EChartEditor',\r\n//         },\r\n//         {\r\n//             name: 'flowchart',\r\n//             icon: 'smile',\r\n//             locale: false,\r\n//             path: '/editor/flowchart',\r\n//         },\r\n//         {\r\n//             name: 'flow',\r\n//             icon: 'smile',\r\n//             path: '/editor/flow',\r\n//         },\r\n//         {\r\n//             name: 'koni',\r\n//             icon: 'smile',\r\n//             path: '/editor/koni',\r\n//         },\r\n//     ],\r\n// },\r\n]"
+          },
+          "StaticMenus": null,
+          "SettingData": {
+            "Text": "{\r\n  \"navTheme\": \"dark\",\r\n  \"primaryColor\": \"#1890ff\",\r\n  \"layout\": \"side\",\r\n  \"contentWidth\": \"Fluid\",\r\n  \"fixedHeader\": true,\r\n  \"fixSiderbar\": true,\r\n  \"pwa\": true,\r\n  \"logo\": \"https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg\",\r\n  \"headerHeight\": 48,\r\n  \"splitMenus\": false,\r\n  \"token\": {\r\n    \"ProLayoutHeaderHeaderHeight\": \"60px\"\r\n  }\r\n}"
+          }
         }
-      ]
+      }
+    },
+    {
+      "name": "Themes",
+      "Site": "TheTheme",
+      "Admin": "EasyOCTheme"
     }
   ]
 }

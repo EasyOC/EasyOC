@@ -120,6 +120,7 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
             return JObject.FromObject(new
             {
                 contentItemId = contentItem.ContentItemId,
+                contentItemVersionId = contentItem.ContentItemVersionId,
                 displayText = contentItem.DisplayText
             });
         }
@@ -308,15 +309,19 @@ namespace EasyOC.ContentExtensions.AppServices.Dtos
                 {
 
                     var firstValue = filedValue.SelectToken("firstValue");
-                    if (firstValue?.Value<string>() != null)
+
+                    if (firstValue != null)
                     {
-                        contentItem.Content[partName][item.Name] = new JObject
+                        if (firstValue?.Value<string>() != null)
                         {
-                            [valuePath] = new JArray(new object[]
+                            contentItem.Content[partName][item.Name] = new JObject
+                            {
+                                [valuePath] = new JArray(new object[]
                             {
                                 firstValue.Value<string>()
                             })
-                        };
+                            };
+                        }
                     }
                     else
                     {

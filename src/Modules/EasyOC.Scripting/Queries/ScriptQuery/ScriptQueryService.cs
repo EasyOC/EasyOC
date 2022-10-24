@@ -64,6 +64,10 @@ namespace EasyOC.Scripting.Queries.ScriptQuery
 
                 var jsValue = engine.Evaluate(extDbQuery.Scripts, paserOptions);
                 var value = jsValue.ToObject();
+                if(value == null)
+                {
+                    return null;
+                }
                 var jToken = JToken.FromObject(value);
                 if (extDbQuery.ReturnDocuments)
                 {

@@ -4076,7 +4076,17 @@
       "Name": "AMISMarkdown",
       "Settings": {},
       "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "ArchiveLaterPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true,
+          "Description": "Adds the ability to schedule content items to be archived at a given future date and time."
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "4kyf84v44dxkk0gytc45k625df"
+  "Identifier": "4azrbj1d66rwp60ex5zj5ckzdt"
 }

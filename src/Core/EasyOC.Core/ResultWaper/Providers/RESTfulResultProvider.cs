@@ -70,11 +70,14 @@ namespace EasyOC.Core.ResultWaper.Providers
             });
             _notifier.List().Clear();
 
-            if (notifyList.Any())
-            {
-                context.HttpContext.Response.Headers["messages"] = WebUtility.UrlEncode(JsonConvert.SerializeObject(notifyList, jsonSerializerSettings));
-            }
-            return new JsonResult(data);
+            //if (notifyList.Any())
+            //{
+            //    context.HttpContext.Response.Headers["messages"] = WebUtility.UrlEncode(JsonConvert.SerializeObject(notifyList, jsonSerializerSettings));
+            //}
+            return new JsonResult(RESTfulResult(StatusCodes.Status200OK, true, data,
+                     message: notifyList,//处理OC 的代码内执行消息
+                     httpContext: context.HttpContext));
+            //return new JsonResult(data);
         }
 
 
