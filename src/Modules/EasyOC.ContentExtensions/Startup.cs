@@ -1,6 +1,7 @@
 ﻿using EasyOC.ContentExtensions.AppServices;
 using EasyOC.ContentExtensions.Drivers;
 using EasyOC.ContentExtensions.Handlers;
+using EasyOC.ContentExtensions.Scripting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentTypes.Editors;
 using OrchardCore.Modules;
+using OrchardCore.Scripting;
 using System;
 
 namespace EasyOC.ContentExtensions
@@ -22,6 +24,7 @@ namespace EasyOC.ContentExtensions
             services.AddScoped<IContentTypeManagementAppService, ContentTypeManagementAppService>();
             services.Replace(ServiceDescriptor.Scoped<IContentManager, EOCDefaultContentManager>());
             services.AddScoped<IBatchImportEventHandler, BatchImportEventHandlerBase>();
+            services.AddSingleton<IGlobalMethodProvider, ContentMethodsProvider>();
 
 
             //修改类型定义事件处理声明

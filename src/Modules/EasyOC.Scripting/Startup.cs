@@ -9,11 +9,11 @@ using EasyOC.Scripting.Queries.ScriptQuery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using OrchardCore.Apis.GraphQL;
 using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.Liquid;
 using OrchardCore.Modules;
+using OrchardCore.Navigation;
 using OrchardCore.Queries;
 using OrchardCore.Scripting;
 using System;
@@ -27,7 +27,7 @@ namespace EasyOC.Scripting
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IGlobalMethodProvider, EasyOCScriptExtendsProvider>();
-
+            services.AddScoped<INavigationProvider, AdminMenu>();
             //Fix Array
             services.Remove(services.FirstOrDefault(x => x.ImplementationType == typeof(QueryGlobalMethodProvider)));
             services.AddSingleton<IGlobalMethodProvider, QueryGlobalMethodProviderPatch>();
