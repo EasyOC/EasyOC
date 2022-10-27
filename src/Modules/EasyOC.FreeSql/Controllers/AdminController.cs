@@ -1,20 +1,17 @@
-using Dapper;
 using EasyOC.DynamicTypeIndex.Service;
 using EasyOC.FreeSql.Queries;
+using EasyOC.FreeSql.ViewModels;
 using Fluid;
+using FreeSql.Aop;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Natasha.CSharp;
 using Newtonsoft.Json;
 using OrchardCore.Liquid;
 using OrchardCore.Modules;
 using OrchardCore.Queries.Sql;
-using EasyOC.FreeSql.ViewModels;
-using FreeSql.Aop;
-using Natasha.CSharp;
-using OrchardCore.ContentManagement.Records;
-using Org.BouncyCastle.Tls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,9 +26,7 @@ namespace EasyOC.FreeSql.Controllers
     {
         private readonly IAuthorizationService _authorizationService;
         private readonly IStore _store;
-        private readonly ILiquidTemplateManager _liquidTemplateManager;
         private readonly IStringLocalizer S;
-        private readonly TemplateOptions _templateOptions;
         private readonly IDynamicIndexAppService _dynamicIndexAppService;
         private readonly IFreeSql freeSql;
 
@@ -45,11 +40,9 @@ namespace EasyOC.FreeSql.Controllers
         {
             _authorizationService = authorizationService;
             _store = store;
-            _liquidTemplateManager = liquidTemplateManager;
             S = stringLocalizer;
             _dynamicIndexAppService = dynamicIndexAppService;
             this.freeSql = freeSql;
-            _templateOptions = templateOptions.Value;
         }
 
         public Task<IActionResult> Query(string query)
