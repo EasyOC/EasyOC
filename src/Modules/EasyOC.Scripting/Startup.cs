@@ -1,21 +1,25 @@
-﻿
-using EasyOC.Scripting.Drivers;
+﻿using EasyOC.Scripting.Drivers;
 using EasyOC.Scripting.Filters;
 using EasyOC.Scripting.Graphql;
+using EasyOC.Scripting.Handlers;
 using EasyOC.Scripting.Liquid;
 using EasyOC.Scripting.Providers;
 using EasyOC.Scripting.Providers.OrchardCore.Queries;
 using EasyOC.Scripting.Queries.ScriptQuery;
+using EasyOC.Scripting.Servicies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Apis.GraphQL;
+using OrchardCore.ContentManagement.Handlers;
+using OrchardCore.ContentTypes.Editors;
 using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.Liquid;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
 using OrchardCore.Queries;
 using OrchardCore.Scripting;
+using OrchardCore.Title.Settings;
 using System;
 using System.Linq;
 
@@ -27,6 +31,12 @@ namespace EasyOC.Scripting
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IGlobalMethodProvider, EasyOCScriptExtendsProvider>();
+            services.AddScoped<IDbAccessableJSScopeBuilder, DbAccessableJSScopeBuilder>();
+
+            services.AddScoped<IContentHandler, ScriptHandlerPartHandler>();
+            services.AddScoped<IContentTypePartDefinitionDisplayDriver, ScriptHandlerPartSettingsDisplayDriver>();
+
+
             services.AddScoped<INavigationProvider, AdminMenu>();
             //Fix Array
             services.Remove(services.FirstOrDefault(x => x.ImplementationType == typeof(QueryGlobalMethodProvider)));

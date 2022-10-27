@@ -3,6 +3,8 @@ using EasyOC.RDBMS.Models;
 using EasyOC.RDBMS.Queries.ScriptQuery;
 using EasyOC.RDBMS.Services;
 using EasyOC.Scripting.Queries.ScriptQuery.Models;
+using EasyOC.Scripting.Servicies;
+using Jint;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,53 +20,35 @@ namespace EasyOC.Scripting.Queries.ScriptQuery
 {
     public class ScriptQueryService : IScriptQueryService
     {
-        private readonly IScriptingManager _scriptingManager;
-        private readonly IServiceProvider _serviceProvider;
         private readonly IContentManager _contentManager;
-        private readonly IRDBMSAppService _rDbmsAppService;
+        private readonly IDbAccessableJSScopeBuilder _dbAccessableJSScopeBuilder;
+
         private readonly ILogger _logger;
-        public ScriptQueryService(IScriptingManager scriptingManager, IServiceProvider serviceProvider,
-            ILogger<ScriptQuerySource> logger, IContentManager contentManager, IRDBMSAppService rDbmsAppService)
+        public ScriptQueryService(
+            ILogger<ScriptQuerySource> logger,
+            IContentManager contentManager,
+            IDbAccessableJSScopeBuilder dbAccessableJSScopeBuilder)
         {
-            _scriptingManager = scriptingManager;
-            _serviceProvider = serviceProvider;
             _logger = logger;
             _contentManager = contentManager;
-            _rDbmsAppService = rDbmsAppService;
+            _dbAccessableJSScopeBuilder = dbAccessableJSScopeBuilder;
         }
+
+
+
         public async Task<ScriptQueryResult> ExcuteScriptQuery(ScriptQuery extDbQuery, IDictionary<string, object> parameters)
         {
             ScriptQueryResult scriptResults = new ScriptQueryResult();
             try
             {
-                var scope = _scriptingManager.CreateScope("js", _serviceProvider)
-                    as JavaScriptScope;
-                var engine = scope.Engine;
-
+                var scriptScope = await _dbAccessableJSScopeBuilder.CreateScopeAsync();
+                var engine = scriptScope.Engine;
                 //注入页面参数为js变量
                 engine.SetValue("parameters", parameters);
-                #region 注册数据库访问对象
-                var connections = await _rDbmsAppService.GetAllDbConnection();
-
-                foreach (var item in connections)
-                {
-                    engine.SetValue(item.ConfigName, new ExternalDbProvider(_serviceProvider, new ExternalDbConfig
-                    {
-                        Name = item.ConfigName,
-                        ConnectionConfigId = item.ConfigId
-                    }, _logger));
-                }
-                engine.SetValue(RDBMS.Constants.ShellDbName, new ExternalDbProvider(_serviceProvider, new ExternalDbConfig
-                {
-                    Name = RDBMS.Constants.ShellDbName,
-                    ConnectionConfigId = RDBMS.Constants.ShellDbName
-                }, _logger));
-                #endregion
                 var paserOptions = new Esprima.ParserOptions();
-
                 var jsValue = engine.Evaluate(extDbQuery.Scripts, paserOptions);
                 var value = jsValue.ToObject();
-                if(value == null)
+                if (value == null)
                 {
                     return null;
                 }
