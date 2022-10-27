@@ -57,7 +57,7 @@
     <ProjectReference Include="..\EasyOC.Extensions\EasyOC.Extensions.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Recipes\Template\" />
+    <Folder Include="Recipes\Templates\" />
   </ItemGroup>
 
 

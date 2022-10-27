@@ -2045,10 +2045,6 @@
         "Content__AmisPBIPage": {
           "Content": "[file:text('Templates/Content-AmisPBIPage.liquid')]",
           "Description": null
-        },
-        "Content__AMISMarkdown1": {
-          "Content": "[file:text('Templates/Content-AMISMarkdown1.liquid')]",
-          "Description": null
         }
       }
     },
