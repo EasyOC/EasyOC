@@ -28,7 +28,6 @@
   </ItemGroup>-->
 
   <ItemGroup>
-    <PackageReference Include="GraphQL" Version="4.8.0" />
     <PackageReference Include="OrchardCore.Title" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
