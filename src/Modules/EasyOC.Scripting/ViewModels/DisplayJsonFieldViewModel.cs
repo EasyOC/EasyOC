@@ -6,7 +6,7 @@ namespace EasyOC.ContentExtensions.ViewModels
     public class DisplayJsonFieldViewModel
     {
         public string Value { get; set; };
-        public Fields.JsonField Field { get; set; }
+        // public Fields.JsonField Field { get; set; }
         public ContentPart Part { get; set; }
         public ContentPartFieldDefinition PartFieldDefinition { get; set; }
     }
