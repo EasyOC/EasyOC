@@ -2114,9 +2114,17 @@
       }
     },
     {
+      "name": "settings",
+      "HomeRoute": {
+        "Action": "Index",
+        "Controller": "Admin",
+        "Area": "OrchardCore.Admin"
+      }
+    },
+    {
       "name": "Themes",
       "Site": "TheTheme",
-      "Admin": "EasyOCTheme"
+      "Admin": "EasyOCVbenAdminTheme"
     }
   ]
 }
