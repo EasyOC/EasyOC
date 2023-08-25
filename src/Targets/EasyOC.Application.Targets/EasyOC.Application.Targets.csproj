@@ -11,7 +11,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\EasyOC.PowerBIClient\EasyOC.PowerBIClient.csproj" />
-    <ProjectReference Include="..\EasyOC.OrchardCore.Targets\EasyOC.OrchardCore.Targets.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Lucene\EasyOC.Lucene.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Modules\EasyOC.Amis\EasyOC.Amis.csproj" PrivateAssets="none" />
 

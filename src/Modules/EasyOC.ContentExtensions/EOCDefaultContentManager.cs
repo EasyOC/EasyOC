@@ -6,6 +6,7 @@ using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
+using OrchardCore.Contents.Recipes;
 using OrchardCore.Modules;
 using System;
 using System.Collections.Generic;
@@ -333,6 +334,11 @@ namespace OrchardCore.ContentManagement
         public Task<ContentItem> CloneAsync(ContentItem contentItem)
         {
             return _defaultContentManager.CloneAsync(contentItem);
+        }
+
+        public Task<IEnumerable<ContentItem>> GetAsync(IEnumerable<string> contentItemIds, VersionOptions options)
+        {
+            return _defaultContentManager.GetAsync(contentItemIds, options);
         }
     }
 }
