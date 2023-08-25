@@ -93,8 +93,6 @@
 		<PackageReference Include="OrchardCore.Search.Elasticsearch" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 		<PackageReference Include="OrchardCore.Security" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 
-		<!--<PackageReference Include="OrchardCore.Seo" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
-	  <PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none" />-->
 
 		<PackageReference Include="OrchardCore.Settings" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 		<PackageReference Include="OrchardCore.Setup" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
@@ -120,13 +118,13 @@
 		<PackageReference Include="TheTheme" Version="$(OrchardCoreVersion)" PrivateAssets="none" />
 	</ItemGroup>
 	<ItemGroup>
-		<!--<PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
-		<!--<PackageReference Include="OrchardCore.GitHub" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
-		<!--<PackageReference Include="OrchardCore.ReCaptcha" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
-		<!--<PackageReference Include="OrchardCore.Facebook" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
-		<!--<PackageReference Include="OrchardCore.Google" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
-		<!--<PackageReference Include="OrchardCore.Seo" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
-		<!--<PackageReference Include="OrchardCore.Twitter" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
+		<PackageReference Include="OrchardCore.Sitemaps" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+		<PackageReference Include="OrchardCore.GitHub" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+		<PackageReference Include="OrchardCore.ReCaptcha" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+		<PackageReference Include="OrchardCore.Facebook" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+		<PackageReference Include="OrchardCore.Google" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+		<PackageReference Include="OrchardCore.Seo" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
+		<PackageReference Include="OrchardCore.Twitter" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>
 
 		<!--<ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" PrivateAssets="none"/>-->
 
