@@ -43,6 +43,15 @@
             "HtmlBodyPartSettings": {},
             "LuceneContentIndexSettings": {}
           }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "0"
+            }
+          }
         }
       ]
     },
@@ -73,6 +82,18 @@
           "PartName": "FlowPart",
           "Name": "FlowPart",
           "Settings": {}
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "TitlePartSettings": {
+              "RenderTitle": false
+            },
+            "ContentTypePartSettings": {
+              "Position": "0"
+            }
+          }
         }
       ]
     },
@@ -94,6 +115,15 @@
           "PartName": "LabelPart",
           "Name": "LabelPart",
           "Settings": {}
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "TitlePartSettings": {
+              "RenderTitle": false
+            }
+          }
         }
       ]
     },
@@ -359,6 +389,15 @@
           "PartName": "MenuItemsListPart",
           "Name": "MenuItemsListPart",
           "Settings": {}
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "0"
+            }
+          }
         }
       ]
     },
@@ -496,6 +535,15 @@
               "Position": "4"
             }
           }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
         }
       ]
     },
@@ -523,7 +571,8 @@
             "LuceneContentIndexSettings": {
               "Included": true,
               "Stored": true,
-              "Keyword": true
+              "Keyword": true,
+              "Analyzed": true
             }
           }
         },
@@ -547,9 +596,14 @@
             },
             "GraphQLContentTypePartSettings": {},
             "TitlePartSettings": {
-              "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}}"
+              "Pattern": "{{ContentItem.Content.UserProfile.UserName.Text}} - {{ContentItem.Content.UserProfilePart.RealName.Text}} 【{{ContentItem.Content.UserProfilePart.NickName.Text}}】",
+              "Options": 1
             },
-            "LuceneContentIndexSettings": {}
+            "LuceneContentIndexSettings": {
+              "Included": true,
+              "Stored": true,
+              "Analyzed": true
+            }
           }
         }
       ]
@@ -579,6 +633,15 @@
           "Name": "Department",
           "Settings": {
             "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
               "Position": "0"
             }
           }
@@ -605,6 +668,15 @@
           "Settings": {
             "ContentTypePartSettings": {
               "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "0"
             }
           }
         }
@@ -648,7 +720,8 @@
           "Creatable": true,
           "Listable": true,
           "Draftable": true,
-          "Securable": true
+          "Securable": true,
+          "Versionable": true
         },
         "FullTextAspectSettings": {}
       },
@@ -658,7 +731,7 @@
           "Name": "Customer",
           "Settings": {
             "ContentTypePartSettings": {
-              "Position": "0"
+              "Position": "1"
             }
           }
         },
@@ -675,7 +748,8 @@
             "LuceneContentIndexSettings": {
               "Included": true,
               "Stored": true,
-              "Keyword": true
+              "Keyword": true,
+              "Analyzed": true
             }
           }
         },
@@ -684,12 +758,12 @@
           "Name": "TitlePart",
           "Settings": {
             "ContentTypePartSettings": {
-              "Position": "1"
+              "Position": "0"
             },
             "GraphQLContentTypePartSettings": {},
             "TitlePartSettings": {
               "Options": 1,
-              "Pattern": "{{ContentItem.Content.Customer.CustNum.Text}}-{{ContentItem.Content.Customer.Name.Text}}"
+              "Pattern": "{{ContentItem.Content.Customer.CustNum.Text}} - {{ContentItem.Content.Customer.Name.Text}}"
             },
             "LuceneContentIndexSettings": {}
           }
@@ -715,6 +789,15 @@
           "Name": "Industry",
           "Settings": {
             "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
               "Position": "0"
             }
           }
@@ -737,6 +820,11 @@
         {
           "PartName": "MarketSegment",
           "Name": "MarketSegment",
+          "Settings": {}
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
           "Settings": {}
         }
       ]
@@ -761,6 +849,15 @@
           "Settings": {
             "ContentTypePartSettings": {
               "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "0"
             }
           }
         }
@@ -852,6 +949,15 @@
           "Name": "AmisSchema",
           "Settings": {
             "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
               "Position": "0"
             }
           }
@@ -885,7 +991,7 @@
     },
     {
       "Name": "DbConnectionConfig",
-      "DisplayName": "DbConnectionConfig",
+      "DisplayName": "外部数据源",
       "Settings": {
         "ContentTypeSettings": {
           "Creatable": true,
@@ -1439,6 +1545,91 @@
           }
         }
       ]
+    },
+    {
+      "Name": "VueForm",
+      "DisplayName": "Vue Form",
+      "Settings": {
+        "ContentTypeSettings": {
+          "Draftable": true,
+          "Versionable": true,
+          "Securable": true
+        }
+      },
+      "ContentTypePartDefinitionRecords": [
+        {
+          "PartName": "AutoroutePart",
+          "Name": "AutoroutePart",
+          "Settings": {
+            "AutoroutePartSettings": {
+              "AllowCustomPath": true,
+              "ShowHomepageOption": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "SearchForm",
+      "DisplayName": "Search Form",
+      "Settings": {
+        "ContentTypeSettings": {
+          "Stereotype": "Widget",
+          "Description": "Provides a search form"
+        }
+      },
+      "ContentTypePartDefinitionRecords": [
+        {
+          "PartName": "SearchFormPart",
+          "Name": "SearchFormPart",
+          "Settings": {}
+        }
+      ]
+    },
+    {
+      "Name": "VbenMenu",
+      "DisplayName": "VbenMenu",
+      "Settings": {
+        "ContentTypeSettings": {
+          "Creatable": true,
+          "Listable": true,
+          "Draftable": true,
+          "Securable": true
+        },
+        "FullTextAspectSettings": {}
+      },
+      "ContentTypePartDefinitionRecords": [
+        {
+          "PartName": "VbenMenu",
+          "Name": "VbenMenu",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "1"
+            }
+          }
+        },
+        {
+          "PartName": "TitlePart",
+          "Name": "TitlePart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "DisplayName": "Title",
+              "Description": "Provides a Title for your content item.",
+              "Position": "0"
+            },
+            "GraphQLContentTypePartSettings": {},
+            "TitlePartSettings": {
+              "Options": 2,
+              "Pattern": "{{ContentItem.Content.VbenMenu.MenuName.Text}}"
+            },
+            "LuceneContentIndexSettings": {
+              "Included": true,
+              "Stored": true,
+              "Analyzed": true
+            }
+          }
+        }
+      ]
     }
   ],
   "ContentPartDefinitionRecords": [
@@ -1813,7 +2004,8 @@
             },
             "TextFieldSettings": {},
             "LuceneContentIndexSettings": {
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -1877,7 +2069,8 @@
             "TextFieldSettings": {},
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -1896,7 +2089,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -1916,7 +2110,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -1931,7 +2126,8 @@
             "TextFieldSettings": {},
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -1971,7 +2167,8 @@
             "TextFieldSettings": {},
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         }
@@ -1996,7 +2193,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2006,7 +2204,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "排序",
-              "Position": "2"
+              "Position": "1"
             }
           }
         },
@@ -2017,7 +2215,7 @@
             "ContentPartFieldSettings": {
               "DisplayName": "启用状态",
               "Editor": "Switch",
-              "Position": "3"
+              "Position": "2"
             },
             "BooleanFieldSettings": {
               "DefaultValue": true
@@ -2032,7 +2230,7 @@
             "ContentPartFieldSettings": {
               "DisplayName": "备注",
               "Editor": "TextArea",
-              "Position": "4"
+              "Position": "3"
             },
             "TextFieldSettings": {},
             "LuceneContentIndexSettings": {}
@@ -2199,7 +2397,9 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Keyword": true
+              "Keyword": true,
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2209,12 +2409,13 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "客户编号",
-              "Position": "11"
+              "Position": "5"
             },
             "TextFieldSettings": {},
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2224,7 +2425,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "市场细分",
-              "Position": "9"
+              "Position": "3"
             },
             "ContentPickerFieldSettings": {
               "DisplayedContentTypes": [
@@ -2233,7 +2434,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2243,7 +2445,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "客户来源",
-              "Position": "10"
+              "Position": "4"
             },
             "ContentPickerFieldSettings": {
               "DisplayedContentTypes": [
@@ -2252,7 +2454,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2262,7 +2465,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "行业",
-              "Position": "6"
+              "Position": "1"
             },
             "ContentPickerFieldSettings": {
               "DisplayedContentTypes": [
@@ -2271,7 +2474,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2281,7 +2485,7 @@
           "Settings": {
             "ContentPartFieldSettings": {
               "DisplayName": "客户分类",
-              "Position": "7"
+              "Position": "2"
             }
           }
         },
@@ -2302,7 +2506,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         },
@@ -2344,7 +2549,7 @@
             "ContentPartFieldSettings": {
               "DisplayName": "客户备注",
               "Editor": "Wysiwyg",
-              "Position": "12"
+              "Position": "7"
             },
             "HtmlFieldSettings": {},
             "LuceneContentIndexSettings": {}
@@ -2558,7 +2763,8 @@
             },
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         }
@@ -2588,7 +2794,8 @@
             "BooleanFieldSettings": {},
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         }
@@ -2610,7 +2817,8 @@
             "BooleanFieldSettings": {},
             "LuceneContentIndexSettings": {
               "Included": true,
-              "Stored": true
+              "Stored": true,
+              "Analyzed": true
             }
           }
         }
@@ -2723,7 +2931,9 @@
               "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
             },
             "LuceneContentIndexSettings": {
-              "Stored": true
+              "Stored": true,
+              "Included": true,
+              "Analyzed": true
             }
           }
         },
@@ -2970,7 +3180,7 @@
             "ContentPartFieldSettings": {
               "DisplayName": "ConnectionString",
               "Editor": "TextArea",
-              "Position": "1"
+              "Position": "4"
             }
           }
         },
@@ -3321,9 +3531,9 @@
       "Settings": {
         "ContentPartSettings": {
           "Attachable": true,
+          "Reusable": true,
           "Description": "Provides a Title for your content item.",
-          "DefaultPosition": "0",
-          "Reusable": true
+          "DefaultPosition": "0"
         }
       },
       "ContentPartFieldDefinitionRecords": []
@@ -4086,7 +4296,202 @@
         }
       },
       "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "SearchFormPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true,
+          "DisplayName": "Search Form Part"
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
+    },
+    {
+      "Name": "VbenMenu",
+      "Settings": {},
+      "ContentPartFieldDefinitionRecords": [
+        {
+          "FieldName": "TextField",
+          "Name": "MenuName",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "菜单名称",
+              "Position": "0"
+            }
+          }
+        },
+        {
+          "FieldName": "ContentPickerField",
+          "Name": "ParentMenu",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "上级菜单",
+              "Position": "6"
+            },
+            "ContentPickerFieldSettings": {
+              "DisplayedContentTypes": [
+                "VbenMenu"
+              ]
+            },
+            "LuceneContentIndexSettings": {
+              "Included": true,
+              "Stored": true,
+              "Analyzed": true
+            }
+          }
+        },
+        {
+          "FieldName": "NumericField",
+          "Name": "OrderNo",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "排序",
+              "Position": "7"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "Icon",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "图标",
+              "Position": "8"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "RoutePath",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "路由地址",
+              "Position": "9"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "Component",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "组件路径",
+              "Position": "10"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "Permission",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "权限标识",
+              "Position": "11"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "Status",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "状态",
+              "Position": "12"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "IsExt",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "是否外链",
+              "Position": "13"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "Show",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "是否显示",
+              "Position": "15"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "MenuType",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "菜单类型",
+              "Position": "5"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "Meta",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "Meta",
+              "Editor": "Monaco",
+              "Position": "2"
+            },
+            "TextFieldSettings": {},
+            "TextFieldMonacoEditorSettings": {
+              "Options": "{\r\n  \"automaticLayout\": true,\r\n  \"language\": \"json\"\r\n}"
+            },
+            "LuceneContentIndexSettings": {}
+          }
+        },
+        {
+          "FieldName": "NumericField",
+          "Name": "ComponentType",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "ComponentType",
+              "Position": "3"
+            },
+            "NumericFieldSettings": {
+              "Hint": "组件 /  Layout / 动态页"
+            },
+            "LuceneContentIndexSettings": {}
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "SchemaId",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "SchemaId",
+              "Position": "4"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "redirect",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "redirect",
+              "Position": "1"
+            }
+          }
+        },
+        {
+          "FieldName": "TextField",
+          "Name": "KeepAlive",
+          "Settings": {
+            "ContentPartFieldSettings": {
+              "DisplayName": "KeepAlive"
+            }
+          }
+        }
+      ]
     }
   ],
-  "Identifier": "4azrbj1d66rwp60ex5zj5ckzdt"
+  "Identifier": "43s8a9nq1p9q5v9hkvqfzd5vdr"
 }
