@@ -30,7 +30,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
     <PackageReference Include="IdleBus" Version="1.5.2" />
     <PackageReference Include="FreeSql" />
-    <PackageReference Include="FreeSql.Provider.MySql" />
+    <PackageReference Include="FreeSql.Provider.MySqlConnector" />
     <PackageReference Include="FreeSql.Provider.Sqlite" />
     <PackageReference Include="FreeSql.Provider.PostgreSQL" />
     <PackageReference Include="FreeSql.Provider.SqlServer" />
