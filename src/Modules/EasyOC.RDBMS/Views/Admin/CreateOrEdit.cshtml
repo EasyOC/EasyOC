@@ -136,7 +136,7 @@
         },
         methods: {
             loadConnections() {
-                $.get("@Href("~/api/RDBMS/GetAllDbConnecton")",{  __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()}, (data) => {
+                $.get("@Href("~/api/RDBMS/GetAllDbConnection")",{  __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()}, (data) => {
                     this.allDbConnecton = data.result;
                 })
             },
