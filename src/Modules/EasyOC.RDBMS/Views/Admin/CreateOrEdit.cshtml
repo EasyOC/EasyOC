@@ -136,8 +136,8 @@
         },
         methods: {
             loadConnections() {
-                $.get("@Href("~/api/RDBMS/GetAllDbConnecton")",{  __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()}, (data) => {
-                    this.allDbConnecton = data.result;
+                $.get("@Href("~/api/RDBMS/GetAllDbConnection")",{  __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()}, (data) => {
+                    this.allDbConnecton = data.data;
                 })
             },
             loadAllTables(filterText) {
@@ -146,11 +146,12 @@
                     this.tableFilter.filterText = filterText;
                     this.loading = true;
                     $.get("@Href("~/api/RDBMS/GetAllTables")", this.tableFilter, (data, status) => {
+                        console.log(data)
                         if (status != "success") {
                             console.log(status)
                             this.$message("查询失败")
                         } else {
-                            this.allTables = data.result;
+                            this.allTables = data.data;
                         }
                         this.loading = false;
                     })
@@ -168,8 +169,8 @@
                     if (status != "success") {
                         this.$message("查询失败")
                     } else {
-                        this.recipeText = JSON.stringify(data.result);
-                        monacoEditor.getModel().setValue(data.result);
+                        this.recipeText = JSON.stringify(data.data);
+                        monacoEditor.getModel().setValue(data.data);
                         monacoEditor.getAction(['editor.action.formatDocument'])._run();
                     }
                     this.loading = false;

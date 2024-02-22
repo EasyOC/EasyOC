@@ -42,7 +42,7 @@
 
   <Import Project="..\EasyOC.Build\Commons.targets" />
 
-  <ProjectExtensions><VisualStudio><UserProperties app_3data_4sites_4salesportal_4appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>
 
