@@ -185,7 +185,7 @@
                 console.log("this.recipeText", this.recipeText)
                 this.loading = true; 
                 $.ajax({
-                    url: "@Href("~/api/RDBMS/ImportDeploymentPackage")",
+                    url: "@Href("~/api/ContentTypeManagement/ImportDeploymentPackage")",
                     type: "POST",
                     contentType: "application/json",//指定消息请求类型
                     data:JSON.stringify({
