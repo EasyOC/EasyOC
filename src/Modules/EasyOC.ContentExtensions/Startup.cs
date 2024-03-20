@@ -27,9 +27,6 @@ namespace EasyOC.ContentExtensions
             services.AddSingleton<IGlobalMethodProvider, ContentMethodsProvider>();
 
 
-            //修改类型定义事件处理声明
-            //services.AddScoped<IContentDefinitionHandler, DefaultContentDefinitionHandlerBase>();
-            services.Replace(ServiceDescriptor.Scoped<IContentDefinitionManager, EOCContentDefinitionManager>());
             services.AddScoped(typeof(IHandleExecutor<>), typeof(HandleExecutorBase<>));
             
             

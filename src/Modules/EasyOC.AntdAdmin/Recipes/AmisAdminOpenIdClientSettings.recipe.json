@@ -1,0 +1,106 @@
+﻿{
+  "name": "AmisAdminOpenIdClientSettings",
+  "displayName": "AmisAdmin OpenId ClientSettings",
+  "description": "EasyOC ClientAuth",
+  "author": "EasyOC",
+  "website": "EasyOC",
+  "version": "",
+  "issetuprecipe": false,
+  "categories": [],
+  "tags": [],
+  "variables": {
+    "tenantUrl": "[js:parameters('TenantUrl')||'https://cloudservice.jizhousoft.com/']"
+  },
+  "steps": [
+    {
+      "name": "OpenIdServerSettings",
+      "AccessTokenFormat": 1,
+      "Authority": null,
+      "DisableAccessTokenEncryption": false,
+      "EncryptionCertificateStoreLocation": null,
+      "EncryptionCertificateStoreName": null,
+      "EncryptionCertificateThumbprint": null,
+      "SigningCertificateStoreLocation": null,
+      "SigningCertificateStoreName": null,
+      "SigningCertificateThumbprint": null,
+      "EnableTokenEndpoint": true,
+      "EnableAuthorizationEndpoint": true,
+      "EnableLogoutEndpoint": true,
+      "EnableUserInfoEndpoint": true,
+      "EnableIntrospectionEndpoint": false,
+      "EnableRevocationEndpoint": false,
+      "AllowPasswordFlow": false,
+      "AllowClientCredentialsFlow": false,
+      "AllowAuthorizationCodeFlow": true,
+      "AllowRefreshTokenFlow": true,
+      "AllowHybridFlow": false,
+      "AllowImplicitFlow": false,
+      "DisableRollingRefreshTokens": false,
+      "RequireProofKeyForCodeExchange": false,
+      "UseReferenceAccessTokens": true
+    },
+    {
+      "DisplayName": "Easyoc Antd Client",
+      "name": "OpenIdApplication",
+      "ClientId": "easyoc_antd_client",
+      "ConsentType": "implicit",
+      "RedirectUris": "[js: variables('tenantUrl')+configuration('OrchardCore_Admin:AdminUrlPrefix', 'Admin')+'/auth/redirect http://localhost:1688/auth/redirect' ]",
+      "PostLogoutRedirectUris": "[js: variables('tenantUrl')+'auth/logout_redirect  http://localhost:1688/auth/logout_redirect']",
+      "AllowAuthorizationCodeFlow": true,
+      "AllowLogoutEndpoint": true,
+      "AllowRefreshTokenFlow": true,
+      "AllowPasswordFlow": false,
+      "ScopeEntries": [
+        { "Name": "openid" },
+        { "Name": "profile" },
+        { "Name": "roles" },
+        { "Name": "offline_access" },
+        { "Name": "permission" },
+        { "Name": "email" }
+      ],
+      "Type": "public"
+    },
+    {
+      "name": "OpenIdScope",
+      "Description": "A scope to provide openid for remote clients",
+      "DisplayName": "openid Scope",
+      "ScopeName": "openid",
+      "Resources": "my_recipient"
+    },
+    {
+      "name": "OpenIdScope",
+      "Description": "A scope to provide profile for remote clients",
+      "DisplayName": "profile Scope",
+      "ScopeName": "profile",
+      "Resources": "my_recipient"
+    },
+    {
+      "name": "OpenIdScope",
+      "Description": "A scope to provide roles for remote clients",
+      "DisplayName": "roles Scope",
+      "ScopeName": "roles",
+      "Resources": "my_recipient"
+    },
+    {
+      "name": "OpenIdScope",
+      "Description": "A scope to provide offline_acces for remote clients",
+      "DisplayName": "offline_access Scope",
+      "ScopeName": "offline_access",
+      "Resources": "my_recipient"
+    },
+    {
+      "name": "OpenIdScope",
+      "Description": "A scope to provide email for remote clients",
+      "DisplayName": "email Scope",
+      "ScopeName": "email",
+      "Resources": "my_recipient"
+    },
+    {
+      "name": "OpenIdScope",
+      "Description": "A scope to provide permissions for remote clients",
+      "DisplayName": "permissions Scope",
+      "ScopeName": "permission",
+      "Resources": "my_recipient"
+    }
+  ]
+}

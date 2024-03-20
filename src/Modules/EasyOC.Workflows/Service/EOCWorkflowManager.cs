@@ -1,5 +1,4 @@
 ﻿using EasyOC.Workflows.Models;
-using EasyOC.Workflows.Servcie;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -537,6 +536,11 @@ namespace EasyOC.Workflows.Service
             var context = new SerializeWorkflowValueContext(value);
             await _workflowValueSerializers.Resolve().InvokeAsync((s, context) => s.DeserializeValueAsync(context), context, _logger);
             return context.Output;
+        }
+
+        public Task<WorkflowExecutionContext> RestartWorkflowAsync(WorkflowType workflowType, IDictionary<string, object> input = null, string correlationId = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

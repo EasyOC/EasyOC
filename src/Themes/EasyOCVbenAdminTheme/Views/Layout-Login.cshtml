@@ -1,7 +1,7 @@
-@inject DarkModeService DarkModeService
+@inject ThemeTogglerService themeTogglerService
 @{
     var adminSettings = Site.As<AdminSettings>();
-    var darkMode = await DarkModeService.IsDarkModeAsync();
+    var darkMode = await themeTogglerService.CurrentTheme();
 
     // Branding is pre-rendered to allow resource injection
     var brandingHtml = await DisplayAsync(await New.AdminBranding());
@@ -9,7 +9,8 @@
     var cssBaseUrl = $"{baseUrl}/css";
 }
 <!DOCTYPE html>
-<html lang="zh_CN" id="htmlRoot" data-theme="light"
+<html id="htmlRoot" data-theme="light"
+      lang="@Orchard.CultureName()" dir="@Orchard.CultureDir()" data-bs-theme="@await themeTogglerService.CurrentTheme()" data-tenant="@themeTogglerService.CurrentTenant"
       style="--header-bg-color:#ffffff; --header-bg-hover-color:#ffffff; --header-active-menu-bg-color:#ffffff;
    --sider-dark-bg-color:#001529; --sider-dark-darken-bg-color:#00061a; --sider-dark-lighten-bg-color:#0c2135;">
 
@@ -2121,7 +2122,10 @@
                                 @* 开箱即用的中后台管理系统 *@
                             </span>
                         </div>
-                        <div class="mt-5 font-normal text-white text-md dark:text-gray-500 -enter-x">输入您的个人详细信息开始使用！</div>
+                            @{
+                                var themeSettings = Site.Properties.SelectToken("AdminThemeSettings.AdminThemeSettings.LoginText.Html");
+                            }
+                            <div class="mt-5 font-normal text-white text-md dark:text-gray-500 -enter-x">@Html.Raw(themeSettings)</div>
                     </div>
                 </div>
                 @await RenderBodyAsync()

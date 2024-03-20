@@ -1,6 +1,5 @@
 ﻿using EasyOC.Workflows.Activities;
 using EasyOC.Workflows.Drivers;
-using EasyOC.Workflows.Servcie;
 using EasyOC.Workflows.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -23,9 +22,7 @@ namespace EasyOC.Workflows
             // 安全风险
             // services.AddActivity<PowerShellTask, PowerShellTaskDisplayDriver>();
             services.AddActivity<EmailPlus, EmailPlusDisplayDriver>();
-            services.AddActivity<WorkflowFaultEvent, WorkflowFaultEventDisplayDriver>();
             services.AddActivity<CreateUserTask, CreateUserTaskDriver>();
-            services.AddScoped<IWorkflowFaultHandler, WorkflowFaultHandler>();
             //services.AddScoped<IWorkflowExecutionContextHandler, WorkflowPlusExecutionContextHandler>();
             //services.AddScoped<IQuerySource, FreeSqlQuerySource>();
 

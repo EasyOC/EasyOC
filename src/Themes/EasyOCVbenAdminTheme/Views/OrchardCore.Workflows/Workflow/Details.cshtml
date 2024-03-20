@@ -6,6 +6,7 @@
 @using OrchardCore.ResourceManagement.TagHelpers
 @using ScriptTagHelper=Microsoft.AspNetCore.Mvc.TagHelpers.ScriptTagHelper
 @inject OrchardCore.Modules.ILocalClock LocalClock
+@inject IFreeSql _freeSql
 
 <zone Name="Title"><h1>@RenderTitleSegments(Model.WorkflowType.Name)</h1></zone>
 
@@ -31,9 +32,9 @@
             <a class="nav-link" id="state-tab" data-bs-toggle="pill" href="#state" role="tab" aria-controls="state">@T["State"]</a>
         </li>
         @*TODO: Enable this when workflow logging is implemented.*@
-        @*<li class="nav-item">
-                <a class="nav-link" id="log-tab" data-bs-toggle="pill" href="#log" role="tab" aria-controls="log">Log</a>
-            </li>*@
+        <li class="nav-item">
+            <a class="nav-link" id="log-tab" data-bs-toggle="pill" href="#log" role="tab" aria-controls="log">Log</a>
+        </li>
     </ul>
 </nav>
 
@@ -86,21 +87,40 @@
         <div class="editorContanner" id="@Html.IdFor(x => x.WorkflowJson)_editor"></div>
     </div>
     @*TODO: Enable this when workflow logging is implemented.*@
-    @*<div id="log" class="tab-pane" role="tabpanel" aria-labelledby="log-tab">
-            <div class="card">
-                <div class="card-body">
-                    Pretty LOG goes here...
+    <div id="log" class="tab-pane" role="tabpanel" aria-labelledby="log-tab">
+        @{
+            var executedActivities = await _freeSql.Select<EasyOC.Workflows.Models.WorkflowActivityLog>()
+            .Where(x => x.WorkflowTypeId == x.WorkflowTypeId && x.WorkflowId == Model.Workflow.Id)
+            .OrderBy(x => x.EnterOnUtc)
+            .ToListAsync();
+
+            for (var i = 0; i < executedActivities.Count; i++)
+            {
+                var item = executedActivities[i];
+                var enterOnUtc = DateTime.SpecifyKind(item.EnterOnUtc.Value, DateTimeKind.Utc);
+                <div class="card" style="margin-bottom:5px;">
+                    <div class="card-header"> [@(i + 1)] @item.ActivityName </div>
+                    <div class="card-body">
+                        <div class="card-title">@item.ExecutionByUser - @((await LocalClock.ConvertToLocalAsync(enterOnUtc)))</div>
+                        @if (item.ExceptionDetails is not null)
+                        {
+                            <div class="card-text">@Html.Raw(item.ExceptionDetails.Replace("\n", "<br/>"))</div>
+
+                        }
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            }
+        }
+    </div>
 </div>
 <div class="mb-3">
     <a class="btn btn-secondary" asp-route-action="Index" asp-route-workflowTypeId="@Model.WorkflowType.Id">@T["Back"]</a>
     <a class="btn btn-danger" data-message="@T["Are you sure you want to delete this workflow instance?"]" data-url-af="RemoveUrl UnsafeUrl" asp-action="Delete" asp-route-id="@Model.Workflow.Id">@T["Delete"]</a>
+    <a class="btn btn-warning" title="使用此实例中的各个用户输入节点数据，重新启动新的工作流实例" asp-area="EasyOC.Workflows" asp-controller="Workflow" asp-action="Retry" asp-route-id="@Model.Workflow.Id">@T["Retry"]</a>
 </div>
 <style at="Head">
-    .editorContanner{
-        height:500px;
+    .editorContanner {
+        height: 500px;
         height: calc(100vh - 310px);
     }
 </style>
@@ -113,10 +133,10 @@
     $(document).ready(function () {
         require(['vs/editor/editor.main'], function () {
 
-            var settings =  {
-                automaticLayout:true,
-                language:"json",
-                autoDetectHighContrast:true
+            var settings = {
+                automaticLayout: true,
+                language: "json",
+                autoDetectHighContrast: true
             }
 
             var html = document.getElementsByTagName("html")[0];

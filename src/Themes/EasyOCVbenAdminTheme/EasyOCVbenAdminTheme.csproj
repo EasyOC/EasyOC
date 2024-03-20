@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
@@ -6,6 +6,10 @@
     <!-- NuGet properties-->
     <Title>The VbenAdmin theme</Title>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\Layout.cshtml" />
+  </ItemGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -17,10 +21,11 @@
     <PackageReference Include="OrchardCore.Theme.Targets" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Themes" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.Workflows" Version="$(OrchardCoreVersion)" />
+    <ProjectReference Include="..\..\Modules\EasyOC.Workflows\EasyOC.Workflows.csproj" />
     <PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+    
     <PackageReference Include="OrchardCore.Admin" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 

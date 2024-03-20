@@ -28,7 +28,6 @@
     <ProjectReference Include="..\..\Modules\OrchardCore.Wechat\OrchardCore.Wechat.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Themes\EasyOCSiteTheme\EasyOCSiteTheme.csproj" PrivateAssets="none" />
     <ProjectReference Include="..\..\Themes\EasyOCVbenAdminTheme\EasyOCVbenAdminTheme.csproj" PrivateAssets="none" />
-    <ProjectReference Include="..\..\Themes\EasyOCTheme\EasyOCTheme.csproj" PrivateAssets="none" />
     <!--<ProjectReference Include="..\..\OrchardCore.Modules\OrchardCore.OpenId\OrchardCore.OpenId.csproj" Version="$(OrchardCoreVersion)" PrivateAssets="none"/>-->
 
     <!--    <ProjectReference Include="..\..\Modules\OrchardCore.Transformalize\OrchardCore.Transformalize.csproj" PrivateAssets="none" />-->
